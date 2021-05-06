@@ -133,21 +133,20 @@ function _makeEmpty( src )
   if( arguments.length === 1 )
   {
     if( _.argumentsArray.is( src ) )
-    return _.argumentsArray.make( 0 );
+    return _.argumentsArray._makeEmpty( 0 );
     else if( _.unroll.is( src ) )
-    return _.unroll.make();
-    if( _.routineIs( src ) )
+    return _.unroll._makeEmpty();
+    if( _.routine.is( src ) )
     {
       let result = new src( 0 );
       _.assert( _.long.is( result ) );
       return result;
     }
+    if( this.is( src ) )
     return new src.constructor();
   }
-  else
-  {
-    return this.tools.long.default.make();
-  }
+
+  return this.tools.long.default._makeEmpty();
 }
 
 //
@@ -158,8 +157,8 @@ function makeEmpty( src )
   _.assert( arguments.length === 0 || arguments.length === 1 );
   if( arguments.length === 1 )
   {
-    _.assert( _.vector.is( src ) || _.routineIs( src ) );
-    // _.assert( this.like( src ) || _.routineIs( src ) ); /* Dmytro : for compatibility with ContainerAdapters source instance should be a Vector, not simple Long */
+    _.assert( _.countable.is( src ) || _.routine.is( src ) );
+    // _.assert( this.like( src ) || _.routine.is( src ) ); /* Dmytro : for compatibility with ContainerAdapters source instance should be a Vector, not simple Long */
     return this._makeEmpty( src );
   }
   else
@@ -227,7 +226,7 @@ function makeUndefined( src, length )
   _.assert( 0 <= arguments.length && arguments.length <= 2 );
   if( arguments.length === 2 )
   {
-    _.assert( src === null || _.long.is( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.long.is( src ) || _.routine.is( src ) );
     _.assert( _.number.is( length ) || _.countable.is( length ) );
   }
   else if( arguments.length === 1 )
@@ -257,7 +256,7 @@ function _makeZeroed( src, length )
     return _.argumentsArray._makeZeroed( src, length );
     if( _.unroll.is( src ) )
     return _.unroll._makeZeroed( src, length );
-    if( _.routineIs( src ) )
+    if( _.routine.is( src ) )
     {
       let result = fill( new src( length ) );
       _.assert( _.long.is( result ) );
@@ -307,7 +306,7 @@ function makeZeroed( src, length )
   _.assert( 0 <= arguments.length && arguments.length <= 2 );
   if( arguments.length === 2 )
   {
-    _.assert( src === null || _.long.is( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.long.is( src ) || _.routine.is( src ) );
     _.assert( _.number.is( length ) || _.countable.is( length ) );
   }
   else if( arguments.length === 1 )
@@ -397,7 +396,7 @@ function _make( src, length )
     if( src === null )
     return fill( this.tools.long.default._make( length ), data );
     let result;
-    if( _.routineIs( src ) )
+    if( _.routine.is( src ) )
     result = fill( new src( length ), data )
     else if( src.constructor )
     result = fill( new src.constructor( length ), data );
@@ -418,7 +417,7 @@ function _make( src, length )
     return new src.constructor( src );
     if( _.countable.is( src ) )
     return this.tools.long.default._make( src );
-    if( _.routineIs( src ) )
+    if( _.routine.is( src ) )
     {
       let result = new src();
       _.assert( this.is( result ), 'Expects long as returned instance' );
@@ -450,12 +449,12 @@ function make( src, length )
   _.assert( arguments.length <= 2 );
   if( arguments.length === 2 )
   {
-    _.assert( src === null || _.long.is( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.long.is( src ) || _.routine.is( src ) );
     _.assert( _.number.is( length ) || _.countable.is( length ) );
   }
   else if( arguments.length === 1 )
   {
-    _.assert( src === null || _.number.is( src ) || _.long.is( src ) || _.countable.is( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.number.is( src ) || _.long.is( src ) || _.countable.is( src ) || _.routine.is( src ) );
   }
   return this._make( ... arguments );
 }
@@ -469,7 +468,7 @@ function _cloneShallow( src )
   return _.argumentsArray.make( src );
   if( _.unroll.is( src ) )
   return _.unroll.make( src );
-  // if( _.numberIs( src ) ) /* Dmytro : wrong branch, public interface forbids numbers as argument */
+  // if( _.number.is( src ) ) /* Dmytro : wrong branch, public interface forbids numbers as argument */
   // return this.tools.long.default.make( src );
   if( src.constructor === Array )
   return [ ... src ];

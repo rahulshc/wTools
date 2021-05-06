@@ -97,15 +97,15 @@ function make( src, length )
 
 function _makeEmpty()
 {
-  return this._make([]);
+  return this._make( 0 );
 }
 
 //
 
 function makeEmpty( src )
 {
-  _.assert( arguments.length === 0 || arguments.length === 1 );
-  _.assert( src === undefined || src === null || this.like( src ) );
+  _.assert( arguments.length === 0 || src === null || this.like( src ) || _.countable.is( src ) );
+  _.assert( arguments.length <= 1 );
   return this._makeEmpty( src );
 }
 

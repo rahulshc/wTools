@@ -2381,6 +2381,14 @@ function makeEmptyCommon( test )
 
     /* */
 
+    test.case = `filled countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+    var got = long.makeEmpty( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+
+    /* */
+
     if( Config.debug )
     {
       test.case = 'extra arguments';
@@ -2542,15 +2550,11 @@ function makeEmptyCommonWithLongDescriptor( test )
 
     /* */
 
-    if( Config.debug )
-    {
-      test.case = 'extra arguments';
-      test.shouldThrowErrorSync( () => long.makeEmpty( [], 1 ) );
-
-      test.case = 'wrong type of src';
-      test.shouldThrowErrorSync( () => long.makeEmpty( undefined ) );
-      test.shouldThrowErrorSync( () => long.makeEmpty( null ) );
-    }
+    test.case = `filled countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+    var got = long.makeEmpty( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
 
     test.close( `${__.entity.exportStringSolo( env )}` );
   }

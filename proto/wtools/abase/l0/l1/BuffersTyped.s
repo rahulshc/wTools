@@ -58,26 +58,26 @@ function _functor( fo )
 
   //
 
-  function makeEmpty( src )
-  {
-    if( arguments.length === 1 )
-    _.assert( this.like( src ) );
-    else
-    _.assert( arguments.length === 0 );
-
-    return this._makeEmpty( ... arguments );
-
-    // _.assert( arguments.length === 0 || arguments.length === 1 );
-    // if( arguments.length === 1 )
-    // {
-    //   _.assert( this.like( src ) );
-    //   return [];
-    // }
-    // else
-    // {
-    //   return [];
-    // }
-  }
+  // function makeEmpty( src )
+  // {
+  //   if( arguments.length === 1 )
+  //   _.assert( this.like( src ) );
+  //   else
+  //   _.assert( arguments.length === 0 );
+  //
+  //   return this._makeEmpty( ... arguments );
+  //
+  //   // _.assert( arguments.length === 0 || arguments.length === 1 );
+  //   // if( arguments.length === 1 )
+  //   // {
+  //   //   _.assert( this.like( src ) );
+  //   //   return [];
+  //   // }
+  //   // else
+  //   // {
+  //   //   return [];
+  //   // }
+  // }
 
   //
 
@@ -315,7 +315,8 @@ function _functor( fo )
 
     // maker
 
-    [ fo.name + 'MakeEmpty' ] : makeEmpty.bind( _[ fo.name ] ),
+    [ fo.name + 'MakeEmpty' ] : _.argumentsArray.makeEmpty.bind( _[ fo.name ] ),
+    // [ fo.name + 'MakeEmpty' ] : makeEmpty.bind( _[ fo.name ] ),
     [ fo.name + 'MakeUndefined' ] : _.argumentsArray.makeUndefined.bind( _[ fo.name ] ),
     // [ fo.name + 'MakeUndefined' ] : makeUndefined.bind( _[ fo.name ] ),
     [ fo.name + 'Make' ] : _.argumentsArray.make.bind( _[ fo.name ] ),
@@ -356,7 +357,7 @@ function _functor( fo )
     // maker
 
     _makeEmpty,
-    makeEmpty, /* qqq : for junior : cover */
+    makeEmpty : _.argumentsArray.makeEmpty, /* qqq : for junior : cover */
     _makeUndefined,
     makeUndefined : _.argumentsArray.makeUndefined, /* qqq : for junior : cover */
     _makeZeroed : _makeUndefined,

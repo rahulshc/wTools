@@ -86,26 +86,26 @@ function IsResizable()
 // maker
 // --
 
-function _makeEmpty( src )
-{
-  return [];
-}
-
+// function _makeEmpty( src )
+// {
+//   return [];
+// }
 //
-
-function makeEmpty( src )
-{
-  _.assert( arguments.length === 0 || arguments.length === 1 );
-  if( arguments.length === 1 )
-  {
-    _.assert( this.like( src ) );
-    return [];
-  }
-  else
-  {
-    return [];
-  }
-}
+// //
+//
+// function makeEmpty( src )
+// {
+//   _.assert( arguments.length === 0 || arguments.length === 1 );
+//   if( arguments.length === 1 )
+//   {
+//     _.assert( this.like( src ) );
+//     return [];
+//   }
+//   else
+//   {
+//     return [];
+//   }
+// }
 
 //
 
@@ -289,8 +289,8 @@ let ArrayExtension =
 
   // maker
 
-  _makeEmpty,
-  makeEmpty, /* qqq : for junior : cover */
+  _makeEmpty : _.argumentsArray._makeEmpty,
+  makeEmpty : _.argumentsArray.makeEmpty, /* qqq : for junior : cover */
   _makeUndefined : _.argumentsArray._makeUndefined,
   makeUndefined : _.argumentsArray.makeUndefined, /* qqq : for junior : cover */
   _makeZeroed : _.argumentsArray._makeZeroed,
@@ -341,7 +341,8 @@ let ToolsExtension =
 
   // maker
 
-  arrayMakeEmpty : makeEmpty.bind( _.array ),
+  arrayMakeEmpty : _.argumentsArray.makeEmpty.bind( _.array ),
+  // arrayMakeEmpty : makeEmpty.bind( _.array ),
   arrayMakeUndefined : _.argumentsArray.makeUndefined.bind( _.array ),
   arrayMake : _.argumentsArray.make.bind( _.array ),
   arrayCloneShallow : _.argumentsArray.cloneShallow.bind( _.array ),

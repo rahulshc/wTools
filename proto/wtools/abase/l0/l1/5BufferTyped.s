@@ -87,7 +87,7 @@ function _makeEmpty( src )
 {
   if( arguments.length === 1 )
   {
-    if( _.routineIs( src ) )
+    if( _.routine.is( src ) )
     {
       let result = new src( 0 );
       _.assert( this.like( result ) );
@@ -103,11 +103,12 @@ function _makeEmpty( src )
 
 function makeEmpty( src )
 {
-  _.assert( arguments.length === 0 || arguments.length === 1 );
-  if( arguments.length === 1 )
-  {
-    _.assert( this.like( src ) || _.countable.is( src ) || _.routineIs( src ) );
-  }
+  _.assert( arguments.length === 0 || this.like( src ) || _.countable.is( src ) || _.routine.is( src ) );
+  _.assert( arguments.length <= 1 );
+  // _.assert( arguments.length === 0 || arguments.length === 1 );
+  // if( arguments.length === 1 )
+  // _.assert( this.like( src ) || _.countable.is( src ) || _.routine.is( src ) );
+
   return this._makeEmpty( ... arguments );
 }
 
