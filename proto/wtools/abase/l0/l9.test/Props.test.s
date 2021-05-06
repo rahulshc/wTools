@@ -17,7 +17,7 @@ const __ = _globals_.testing.wTools;
 // implementation
 //--
 
-/* qqq : for Yevhen : extend */
+/* qqq : for junior : extend */
 function dichotomy( test )
 {
 
@@ -53,7 +53,7 @@ function dichotomy( test )
 const Proto =
 {
 
-  name : 'Tools.Props.l9',
+  name : 'Tools.Props.l0.l9',
   silencing : 1,
 
   tests :

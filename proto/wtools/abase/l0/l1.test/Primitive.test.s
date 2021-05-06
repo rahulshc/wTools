@@ -17,7 +17,7 @@ const __ = _globals_.testing.wTools;
 // tests
 // --
 
-/* qqq : for Yevhen : extend with like and other dichotomies */
+/* qqq : for junior : extend with like and other dichotomies */
 function dichotomy( test )
 {
 
@@ -82,7 +82,7 @@ function dichotomy( test )
   test.identical( got, false );
 
   test.case = 'check empty Map';
-  var got = _.primitive.is( new Map( [] ) );
+  var got = _.primitive.is( new HashMap( [] ) );
   test.identical( got, false );
 
   test.case = 'check empty BufferRaw';
@@ -122,6 +122,7 @@ function dichotomy( test )
   var src = new Constr();
   var got = _.primitive.is( src );
   test.identical( got, false );
+
 }
 
 // --
@@ -131,7 +132,7 @@ function dichotomy( test )
 const Proto =
 {
 
-  name : 'Tools.Primitive.l1',
+  name : 'Tools.Primitive.l0.l1',
   silencing : 1,
 
   tests :
@@ -139,7 +140,7 @@ const Proto =
 
     dichotomy,
 
-  }
+  },
 
 }
 

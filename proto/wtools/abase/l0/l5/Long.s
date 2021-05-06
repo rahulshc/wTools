@@ -109,8 +109,12 @@ function _longMake_functor( onMake )
     if( _.argumentsArray.is( src ) )
     src = null;
 
+    let self = this;
     if( src === null )
-    src = this.tools./*longDescriptor*/defaultLong.make;
+    src = function( src )
+    {
+      return self.tools.long.default.make( src );
+    };
 
     _.assert( arguments.length === 1 || arguments.length === 2 );
     _.assert( _.number.isFinite( length ) );
@@ -245,8 +249,6 @@ function _longMake_functor( onMake )
 //     {
 //       result = new src( length );
 //       // let minLength = Math.min( length, ins.length );
-//       // if( !ins && minLength )
-//       // debugger;
 //       for( let i = 0 ; i < minLength ; i++ )
 //       result[ i ] = ins[ i ];
 //     }
@@ -331,7 +333,7 @@ function _longMake_functor( onMake )
 //   src = null;
 //
 //   if( src === null )
-//   src = this.tools./*longDescriptor*/defaultLong.make;
+//   src = this.tools.long.default.make;
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.number.isFinite( length ) );
@@ -400,7 +402,7 @@ function _longMake_functor( onMake )
 //     }
 //   }
 //
-//   _.assert( result instanceof this.tools./*longDescriptor*/defaultLong.type );
+//   _.assert( result instanceof this.tools.long.default.InstanceConstructor );
 //   // _.assert( _.longLike( result ) );
 //
 //   return result;
@@ -414,7 +416,7 @@ function _longMake_functor( onMake )
 function longMakeEmpty( src )
 {
   if( arguments.length === 0 )
-  return this.tools./*longDescriptor*/defaultLong.make( 0 );
+  return this.tools.long.default.make( 0 );
 
   _.assert( arguments.length === 1 );
 
@@ -424,7 +426,7 @@ function longMakeEmpty( src )
   }
   else if( src === null || _.argumentsArray.is( src ) )
   {
-    return this.tools./*longDescriptor*/defaultLong.make( 0 );
+    return this.tools.long.default.make( 0 );
   }
   // else if( _.longLike( src ) )
   else if( _.vector.like( src ) )
@@ -480,7 +482,6 @@ function longMakeEmpty( src )
 //   }
 //   else if( _.arrayIs( src ) )
 //   {
-//     debugger;
 //     if( length === src.length )
 //     {
 //       result = new( _.constructorJoin( src.constructor, src ) );
@@ -545,10 +546,10 @@ function longMakeEmpty( src )
 //   len = 0;
 //
 //   if( _.argumentsArray.is( src ) )
-//   src = this.tools./*longDescriptor*/defaultLong.name === 'ArgumentsArray' ? this.tools./*longDescriptor*/defaultLong.make : this.tools./*longDescriptor*/defaultLong.make( src );
+//   src = this.tools.long.default.name === 'ArgumentsArray' ? this.tools.long.default.make : this.tools.long.default.make( src );
 //
 //   if( src === null )
-//   src = this.tools./*longDescriptor*/defaultLong.make;
+//   src = this.tools.long.default.make;
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.number.isFinite( len ) );
@@ -692,7 +693,7 @@ Dmytro : longMakeUndefined creates unrolls.
 //   else if( _.unrollIs( src ) )
 //   result = _.unroll.make( length );
 //   else if( src === null )
-//   result = this.tools./*longDescriptor*/defaultLong.make( length );
+//   result = this.tools.long.default.make( length );
 //   else
 //   result = new src.constructor( length );
 //
@@ -745,7 +746,7 @@ Dmytro : longMakeUndefined creates unrolls.
 //   else if( _.unrollIs( ins ) )
 //   result = _.unroll.make( length );
 //   else if( ins === null ) /* aaa3 : ask */
-//   result = this.tools./*longDescriptor*/defaultLong.make( length );
+//   result = this.tools.long.default.make( length );
 //   else
 //   result = new ins.constructor( length );
 //
@@ -760,31 +761,31 @@ Dmytro : longMakeUndefined creates unrolls.
 /* aaa3 : relevant to all routines longMake* of such kind */
 /* Dmytro : all requirements implemented and covered */
 
-let longMakeZeroed = _longMake_functor( function( /* src, ins, length, minLength */ )
-{
-  let src = arguments[ 0 ];
-  let ins = arguments[ 1 ];
-  let length = arguments[ 2 ];
-  let minLength = arguments[ 3 ];
-
-  let result;
-  if( _.routine.is( src ) )
-  result = new src( length );
-  else if( _.unrollIs( src ) )
-  result = _.unroll.make( length );
-  else if( src === null )
-  result = this.tools./*longDescriptor*/defaultLong.make( length );
-  else
-  result = new src.constructor( length );
-
-  if( !_.bufferTypedIs( result ) )
-  {
-    for( let i = 0 ; i < length ; i++ )
-    result[ i ] = 0;
-  }
-
-  return result;
-})
+// let longMakeZeroed = _longMake_functor( function( /* src, ins, length, minLength */ )
+// {
+//   let src = arguments[ 0 ];
+//   let ins = arguments[ 1 ];
+//   let length = arguments[ 2 ];
+//   let minLength = arguments[ 3 ];
+//
+//   let result;
+//   if( _.routine.is( src ) )
+//   result = new src( length );
+//   else if( _.unrollIs( src ) )
+//   result = _.unroll.make( length );
+//   else if( src === null )
+//   result = this.tools.long.default.make( length );
+//   else
+//   result = new src.constructor( length );
+//
+//   if( !_.bufferTypedIs( result ) )
+//   {
+//     for( let i = 0 ; i < length ; i++ )
+//     result[ i ] = 0;
+//   }
+//
+//   return result;
+// })
 
 // function longMakeZeroed( ins, src )
 // {
@@ -877,7 +878,7 @@ function longMakeFilling( type, value, length )
 function longFrom( src )
 {
   _.assert( arguments.length === 1 );
-  if( src instanceof this.tools./*longDescriptor*/defaultLong.type )
+  if( src instanceof this.tools.long.default.InstanceConstructor )
   if( !_.unrollIs( src ) && _.longIs( src ) )
   return src;
   return this.longMake.call( this, src );
@@ -933,7 +934,8 @@ function longFromCoercing( src )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( src instanceof this.tools./*longDescriptor*/defaultLong.type && _.longIs( src ) )
+  if( this.long.default.InstanceConstructor )
+  if( src instanceof this.long.default.InstanceConstructor && _.longIs( src ) )
   return src;
 
   /* Dmytro : this condition make recursive call with array from argumentsArray. But first condition return any long object
@@ -942,9 +944,9 @@ function longFromCoercing( src )
   // return this.longFromCoercing( Array.prototype.slice.call( src ) );
 
   if( _.longIs( src ) )
-  return this.tools./*longDescriptor*/defaultLong.from( src );
+  return this.long.default.from( src );
 
-  if( _.object.is( src ) )
+  if( _.object.isBasic( src ) )
   return this.longFromCoercing( _.props.pairs( src ) );
 
   /* aaa : cover */
@@ -1226,9 +1228,6 @@ function _longClone( src ) /* qqq for Dmyto : _longClone should not accept untyp
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.longLike( src ) || _.bufferAnyIs( src ) );
   // _.assert( !_.bufferNodeIs( src ), 'not tested' );
-
-  if( _.bufferViewIs( src ) )
-  debugger;
 
   if( _.unrollIs( src ) )
   return _.unroll.make( src );
@@ -1716,7 +1715,6 @@ function longEmpty( dstLong )
 //
 //   let result = _.long.makeUndefined( array, l2 );
 //
-//   // debugger;
 //   // _.assert( 0, 'not tested' )
 //
 //   for( let i = 0 ; i < range[ 0 ] ; i++ )
@@ -1861,7 +1859,6 @@ function longEmpty( dstLong )
 //   //
 //   // result = _.long.makeUndefined( src, range[ 1 ] );
 //   //
-//   // debugger;
 //   // _.assert( 0, 'not tested' )
 //   //
 //   // for( let i = 0 ; i < range[ 0 ] ; i++ )
@@ -2515,7 +2512,6 @@ function longOnly_( dst, src, cinterval )
 //   let f2 = Math.max( -range[ 0 ], 0 );
 //   let l2 = Math.min( array.length, l );
 //
-//   // debugger;
 //   let result = _.long.makeUndefined( array, range[ 1 ] > array.length ? l : array.length + f2 );
 //   for( let r = f2 ; r < l2 + f2 ; r++ )
 //   result[ r ] = array[ r - f2 ];
@@ -3145,7 +3141,7 @@ function longRelength_( /* dst, src, cinterval, ins */ )
 // function long.identicalShallow( src1, src2 )
 // {
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   // qqq : for Yevhen : !
+//   // qqq : for junior : !
 //   // _.assert( _.longLike( src1 ) );
 //   // _.assert( _.longLike( src2 ) );
 //
@@ -3521,12 +3517,10 @@ function longAny( src )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.longLike( src ) );
 
-  debugger;
   for( let s = 0 ; s < src.length ; s += 1 )
   if( src[ s ] )
   return true;
 
-  debugger;
   return false;
 }
 
@@ -3731,8 +3725,8 @@ let Extension =
   // longMakeEmpty,
   // _longMakeOfLength,
   // longMakeUndefined,
-  longMakeZeroed, /* xxx : review */
-  longMakeFilling,
+  // longMakeZeroed, /* xxx : review */
+  // longMakeFilling,
   /* qqq : check routine longMakeFilling, and add perfect coverage */
   /* qqq : implement routine arrayMakeFilling, and add perfect coverage */
 

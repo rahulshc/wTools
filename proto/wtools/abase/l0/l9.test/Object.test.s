@@ -17,30 +17,33 @@ const __ = _globals_.testing.wTools;
 // tests
 //--
 
-/* qqq : for Yevhen : extend */
+/* qqq : for junior : extend */
 function dichotomy( test )
 {
 
   test.case = 'map.polluted';
   var src = {};
   test.true( _.object.is( src ) );
+  test.true( _.object.isBasic( src ) );
   test.true( _.object.like( src ) );
   test.true( !_.object.likeStandard( src ) );
-  test.true( !_.object.isEmpty( src ) );
+  test.true( _.object.isEmpty( src ) );
   test.true( !_.object.isPopulated( src ) );
 
   test.case = 'escape';
   var src = _.escape.make( 1 );
-  test.true( !_.object.is( src ) );
+  test.true( _.object.is( src ) );
+  test.true( !_.object.isBasic( src ) );
   test.true( _.object.like( src ) );
   test.true( !_.object.likeStandard( src ) );
   test.true( !_.object.isEmpty( src ) );
-  test.true( !_.object.isPopulated( src ) );
+  test.true( _.object.isPopulated( src ) );
 
   test.case = 'propertyTransformer & filter';
-  var src = _.props.filter[ 'dstAndSrcOwn' ];
+  var src = _.props.condition[ 'dstAndSrcOwn' ];
   test.true( !_.object.is( src ) );
-  test.true( _.object.like( src ) );
+  test.true( !_.object.isBasic( src ) );
+  test.true( !_.object.like( src ) );
   test.true( !_.object.likeStandard( src ) );
   test.true( !_.object.isEmpty( src ) );
   test.true( !_.object.isPopulated( src ) );
@@ -48,7 +51,8 @@ function dichotomy( test )
   test.case = 'propertyTransformer & mapper';
   var src = _.props.mapper[ 'assigning' ];
   test.true( !_.object.is( src ) );
-  test.true( _.object.like( src ) );
+  test.true( !_.object.isBasic( src ) );
+  test.true( !_.object.like( src ) );
   test.true( !_.object.likeStandard( src ) );
   test.true( !_.object.isEmpty( src ) );
   test.true( !_.object.isPopulated( src ) );
@@ -56,7 +60,8 @@ function dichotomy( test )
   test.case = 'time';
   var src = _.time.now();
   test.true( !_.object.is( src ) );
-  test.true( _.object.like( src ) );
+  test.true( !_.object.isBasic( src ) );
+  test.true( !_.object.like( src ) );
   test.true( !_.object.likeStandard( src ) );
   test.true( !_.object.isEmpty( src ) );
   test.true( !_.object.isPopulated( src ) );
@@ -64,20 +69,23 @@ function dichotomy( test )
   test.case = 'timer';
   var src = _.time._begin( Infinity );
   test.true( _.object.is( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( _.object.isBasic( src ) );
+  test.true( _.object.isBasic( src ) );
   test.true( _.object.like( src ) );
   test.true( !_.object.likeStandard( src ) );
   test.true( !_.object.isEmpty( src ) );
-  test.true( !_.object.isPopulated( src ) );
+  test.true( _.object.isPopulated( src ) );
+  _.time.cancel( src );
 
   test.case = 'printerLike';
   var src = _global_.logger;
   test.true( _.object.is( src ) );
-  test.true( !_.object.is( src ) );
+  test.true( _.object.isBasic( src ) );
+  test.true( _.object.isBasic( src ) );
   test.true( _.object.like( src ) );
   test.true( !_.object.likeStandard( src ) );
   test.true( !_.object.isEmpty( src ) );
-  test.true( !_.object.isPopulated( src ) );
+  test.true( _.object.isPopulated( src ) );
 
 }
 
@@ -88,7 +96,7 @@ function dichotomy( test )
 const Proto =
 {
 
-  name : 'Tools.Object.l9',
+  name : 'Tools.Object.l0.l9',
   silencing : 1,
 
   tests :

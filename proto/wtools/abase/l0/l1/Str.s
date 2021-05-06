@@ -37,6 +37,17 @@ function is( src )
 
 //
 
+function like( src )
+{
+  if( _.str.is( src ) )
+  return true;
+  if( _.regexp.is( src ) )
+  return true;
+  return false;
+}
+
+//
+
 function strsAreAll( src )
 {
   _.assert( arguments.length === 1 );
@@ -120,284 +131,212 @@ function strHas( src, ins )
 }
 
 //
-
-function _identicalShallow( src1, src2 )
-{
-  return src1 === src2;
-}
-
+// //
 //
-
-function identicalShallow( src1, src2, accuracy )
-{
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  if( !this.is( src1 ) )
-  return false;
-  if( !this.is( src2 ) )
-  return false;
-  return this._identicalShallow( ... arguments );
-}
-
+// function _identicalShallow( src1, src2 )
+// {
+//   return src1 === src2;
+// }
 //
-
-function _equivalentShallow( src1, src2 )
-{
-  let strIs1 = _.strIs( src1 );
-  let strIs2 = _.strIs( src2 );
-
-  // _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  //
-  // if( !strIs1 && strIs2 )
-  // return this._equivalentShallow( src2, src1 );
-
-  // _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
-  // _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
-
-  if( strIs1 && strIs2 )
-  {
-    /* qqq : for Yevhen : bad | aaa : Fixed. */
-    if( src1 === src2 )
-    return true;
-    return _.strLinesStrip( src1 ) === _.strLinesStrip( src2 );
-  }
-  else
-  {
-    return false;
-    // return _.regexpIdentical( src1, src2 );
-  }
-
-  return false;
-}
-
+// //
 //
+// function identicalShallow( src1, src2, accuracy )
+// {
+//   _.assert( arguments.length === 2 || arguments.length === 3 );
+//   if( !this.is( src1 ) )
+//   return false;
+//   if( !this.is( src2 ) )
+//   return false;
+//   return this._identicalShallow( ... arguments );
+// }
+//
+// //
 //
 // function _equivalentShallow( src1, src2 )
 // {
 //   let strIs1 = _.strIs( src1 );
 //   let strIs2 = _.strIs( src2 );
 //
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   // _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   //
+//   // if( !strIs1 && strIs2 )
+//   // return this._equivalentShallow( src2, src1 );
 //
-//   if( !strIs1 && strIs2 )
-//   return this._equivalentShallow( src2, src1 );
-//
-//   _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
-//   _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
+//   // _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
+//   // _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
 //
 //   if( strIs1 && strIs2 )
 //   {
-//     /* qqq : for Yevhen : bad | aaa : Fixed. */
+//     /* qqq : for junior : bad | aaa : Fixed. */
 //     if( src1 === src2 )
 //     return true;
-//
 //     return _.strLinesStrip( src1 ) === _.strLinesStrip( src2 );
-//
-//   }
-//   else if( strIs1 )
-//   {
-//     _.assert( !!src2.exec );
-//     let matched = src2.exec( src1 );
-//     if( !matched )
-//     return false;
-//     if( matched[ 0 ].length !== src1.length )
-//     return false;
-//     return true;
 //   }
 //   else
 //   {
-//     return _.regexpIdentical( src1, src2 );
+//     return false;
+//     // return _.regexpIdentical( src1, src2 );
 //   }
 //
 //   return false;
 // }
-
 //
-
-function equivalentShallow( src1, src2, accuracy )
-{
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  if( !_.str.is( src1 ) )
-  return false;
-  if( !_.str.is( src2 ) )
-  return false;
-  return _.str._equivalentShallow( ... arguments );
-}
-
-  // _identicalShallow,
-  // identicalShallow,
-  // identical : identicalShallow,
-  // _equivalentShallow,
-  // equivalentShallow,
-  // equivalent : equivalentShallow,
-
+// //
+// //
+// // function _equivalentShallow( src1, src2 )
+// // {
+// //   let strIs1 = _.strIs( src1 );
+// //   let strIs2 = _.strIs( src2 );
+// //
+// //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+// //
+// //   if( !strIs1 && strIs2 )
+// //   return this._equivalentShallow( src2, src1 );
+// //
+// //   _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
+// //   _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
+// //
+// //   if( strIs1 && strIs2 )
+// //   {
+// //     /* qqq : for junior : bad | aaa : Fixed. */
+// //     if( src1 === src2 )
+// //     return true;
+// //
+// //     return _.strLinesStrip( src1 ) === _.strLinesStrip( src2 );
+// //
+// //   }
+// //   else if( strIs1 )
+// //   {
+// //     _.assert( !!src2.exec );
+// //     let matched = src2.exec( src1 );
+// //     if( !matched )
+// //     return false;
+// //     if( matched[ 0 ].length !== src1.length )
+// //     return false;
+// //     return true;
+// //   }
+// //   else
+// //   {
+// //     return _.regexpIdentical( src1, src2 );
+// //   }
+// //
+// //   return false;
+// // }
 //
-
-function strsEquivalent( src1, src2 )
-{
-
-  _.assert( _.strIs( src1 ) || _.regexpIs( src1 ) || _.longIs( src1 ), 'Expects string/regexp or array of strings/regexps {-src1-}' );
-  _.assert( _.strIs( src2 ) || _.regexpIs( src2 ) || _.longIs( src2 ), 'Expects string/regexp or array of strings/regexps {-src2-}' );
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  let isLong1 = _.longIs( src1 );
-  let isLong2 = _.longIs( src2 );
-
-  if( isLong1 && isLong2 )
-  {
-    let result = [];
-    _.assert( src1.length === src2.length );
-    for( let i = 0, len = src1.length ; i < len; i++ )
-    {
-      result[ i ] = _.str.equivalent( src1[ i ], src2[ i ] );
-    }
-    return result;
-  }
-  else if( !isLong1 && isLong2 )
-  {
-    let result = [];
-    for( let i = 0, len = src2.length ; i < len; i++ )
-    {
-      result[ i ] = _.str.equivalent( src1, src2[ i ] );
-    }
-    return result;
-  }
-  else if( isLong1 && !isLong2 )
-  {
-    let result = [];
-    for( let i = 0, len = src1.length ; i < len; i++ )
-    {
-      result[ i ] = _.str.equivalent( src1[ i ], src2 );
-    }
-    return result;
-  }
-  else
-  {
-    return _.str.equivalent( src1, src2 );
-  }
-
-}
+// //
+//
+// function equivalentShallow( src1, src2, accuracy )
+// {
+//   _.assert( arguments.length === 2 || arguments.length === 3 );
+//   if( !_.str.is( src1 ) )
+//   return false;
+//   if( !_.str.is( src2 ) )
+//   return false;
+//   return _.str._equivalentShallow( ... arguments );
+// }
+//
+// //
+//
+// function strsEquivalent( src1, src2 )
+// {
+//
+//   _.assert( _.strIs( src1 ) || _.regexpIs( src1 ) || _.longIs( src1 ), 'Expects string/regexp or array of strings/regexps {-src1-}' );
+//   _.assert( _.strIs( src2 ) || _.regexpIs( src2 ) || _.longIs( src2 ), 'Expects string/regexp or array of strings/regexps {-src2-}' );
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//
+//   let isLong1 = _.longIs( src1 );
+//   let isLong2 = _.longIs( src2 );
+//
+//   if( isLong1 && isLong2 )
+//   {
+//     let result = [];
+//     _.assert( src1.length === src2.length );
+//     for( let i = 0, len = src1.length ; i < len; i++ )
+//     {
+//       result[ i ] = _.str.equivalent( src1[ i ], src2[ i ] );
+//     }
+//     return result;
+//   }
+//   else if( !isLong1 && isLong2 )
+//   {
+//     let result = [];
+//     for( let i = 0, len = src2.length ; i < len; i++ )
+//     {
+//       result[ i ] = _.str.equivalent( src1, src2[ i ] );
+//     }
+//     return result;
+//   }
+//   else if( isLong1 && !isLong2 )
+//   {
+//     let result = [];
+//     for( let i = 0, len = src1.length ; i < len; i++ )
+//     {
+//       result[ i ] = _.str.equivalent( src1[ i ], src2 );
+//     }
+//     return result;
+//   }
+//   else
+//   {
+//     return _.str.equivalent( src1, src2 );
+//   }
+//
+// }
 
 // --
 // converter
 // --
-
-/* xxx : move to entity */
-function exportStringShallowDiagnostic( src, o )
-{
-  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects 1 or 2 arguments' );
-
-  let result = '';
-
-  if( _.primitive.is( src ) )
-  {
-    result = _.primitive.exportStringShallowDiagnostic( src );
-  }
-  else if( _.date.is( src ) )
-  {
-    result = _.date.exportStringShallowDiagnostic( src );
-  }
-  else if( _.regexpIs( src ) )
-  {
-    result = _.regexp.exportStringShallowDiagnostic( src );
-  }
-  else if( _.set.like( src ) )
-  {
-    result = _.set.exportStringShallowDiagnostic( src );
-  }
-  else if( _.hashMap.like( src ) )
-  {
-    result = _.hashMap.exportStringShallowDiagnostic( src );
-  }
-  else if( _.vector.like( src ) )
-  {
-    result = _.vector.exportStringShallowDiagnostic( src );
-  }
-  else if( _.routine.is( src ) )
-  {
-    result = _.routine.exportStringShallowDiagnostic( src );
-  }
-  else if( _.aux.like( src ) )
-  {
-    result = _.aux.exportStringShallowDiagnostic( src );
-  }
-  else if( _.object.like( src ) )
-  {
-    result = _.object.exportStringShallowDiagnostic( src );
-  }
-  else
-  {
-    result = String( src );
-    result = _.strShort( result );
-  }
-
-  return result;
-}
-
-//
 
 /**
  * Returns source string( src ) with limited number( limit ) of characters.
  * For example: src : 'string', limit : 4, result -> 'stng'.
  * Function can be called in two ways:
  * - First to pass only source string and limit;
- * - Second to pass all options map. Example: ({ src : 'string', limit : 5, prefix : '<', infix : '.', postfix : '>' }).
+ * - Second to pass all options map. Example: ({ src : 'string', limit : 5, delimeter : '.' }).
  *
  * @param {string|object} o - String to parse or object with options.
  * @param {string} [ o.src=null ] - Source string.
  * @param {number} [ o.limit=40 ] - Limit of characters in output.
- * @param {string} [ o.prefix=null ] - The leftmost part to be added to the returned string.
- * @param {string} [ o.postfix=null ] - The rightmost part to be added to the returned string.
- * @param {string} [ o.infix=null ] - The middle part to fill the reduced characters, if boolLikeTrue - the default ( '...' ) is used.
+ * @param {string} [ o.delimeter=null ] - The middle part to fill the reduced characters, if boolLikeTrue - the default ( '...' ) is used.
  * @param {function} [ o.onLength=null ] - callback function that calculates a length based on .
  * @returns {string} Returns simplified source string.
  *
  * @example
- * _.strShort( 'string', 4 );
- * // returns 'stng'
+ * _.strShort_( 'string', 4 );
+ * // returns o, o.result = 'stng'
  *
  * @example
- * _.strShort( 'a\nb', 3 );
- * // returns 'a\nb'
+ * _.strShort_( 'a\nb', 3 );
+ * // returns o, o.result = 'a\nb'
  *
  * @example
- * _.strShort( 'string', 0 );
- * // returns ''
+ * _.strShort_( 'string', 0 );
+ * // returns o, o.result = ''
  *
  * @example
- * _.strShort({ src : 'string', limit : 4 });g
- * // returns 'stng'
+ * _.strShort_({ src : 'string', limit : 4 });
+ * // returns o, o.result = 'stng'
  *
  * @example
- *  _.strShort({ src : 'simple', limit : 4, prefix : '<' });
- * // returns '<ile'
+ *  _.strShort_({ src : 'string', limit : 3, cutting : 'right' });
+ * // returns o, o.result = 'str'
  *
  * @example
- *  _.strShort({ src : 'string', limit : 5, infix : '.' });
- * // returns 'st.ng'
+ * _.strShort_({ src : 'st\nri\nng', limit : 1, heightLimit : 2, cutting : 'left', heightCutting : 'right' });
+ * // returns o, o.result = 't\ni'
  *
- * @example
- *  _.strShort({ src : 'string', limit : 5, prefix : '<', postfix : '>', infix : '.' });
- * // returns '<s.g>'
- *
- * @example
- *  _.strShort({ src : 'string', limit : 3, cutting : 'right' });
- * // returns 'str'
- *
- * @method strShort
+ * @method strShort_
  * @throws { Exception } If no argument provided.
  * @throws { Exception } If( arguments.length ) is not equal 1 or 2.
  * @throws { Exception } If( o ) is extended with unknown property.
  * @throws { Exception } If( o.src ) is not a String.
  * @throws { Exception } If( o.limit ) is not a Number.
- * @throws { Exception } If( o.prefix ) is not a String or null.
- * @throws { Exception } If( o.infix ) is not a String or null or boolLikeTrue.
- * @throws { Exception } If( o.postfix ) is not a String or null.
+ * @throws { Exception } If( o.delimeter ) is not a String or null or boolLikeTrue.
  *
  * @namespace Tools
  *
  */
 
-function strShort( o )  /* version with binary search cutting */
+function strShort_( o )  /* version with binary search cutting */
 {
 
   if( arguments.length === 2 )
@@ -406,99 +345,240 @@ function strShort( o )  /* version with binary search cutting */
   if( _.strIs( o ) )
   o = { src : arguments[ 0 ] };
 
-  _.routine.options( strShort, o );
+  _.routine.options( strShort_, o );
 
   _.assert( _.strIs( o.src ) );
   _.assert( _.number.is( o.widthLimit ) );
   _.assert( o.widthLimit >= 0, 'Option::o.widthLimit must be greater or equal to zero' );
-  _.assert( o.prefix === null || _.strIs( o.prefix ) );
-  _.assert( o.postfix === null || _.strIs( o.postfix ) );
-  _.assert( o.infix === null || _.strIs( o.infix ) || _.bool.likeTrue( o.infix ));
+  _.assert
+  (
+    _.number.is( o.heightLimit ) && o.heightLimit >= 0,
+    'If provided option::o.heightLimit must be greater or equal to zero'
+  );
+  _.assert( o.delimeter === null || _.strIs( o.delimeter ) || _.bool.likeTrue( o.delimeter ));
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  if( !o.infix )
-  o.infix = '';
-  if( !o.prefix )
-  o.prefix = '';
-  if( !o.postfix )
-  o.postfix = '';
+  if( !o.delimeter )
+  o.delimeter = '';
+  if( !o.heightDelimeter )
+  o.heightDelimeter = '';
   if( o.widthLimit === 0 )
   o.widthLimit = Infinity;
-  if( o.src.length < 1 )
-  {
-    if( o.prefix.length + o.postfix.length <= o.widthLimit )
-    return o.prefix + o.postfix
-    o.src = o.prefix + o.postfix;
-    o.prefix = '';
-    o.postfix = '';
-  }
-  if( _.bool.likeTrue( o.infix ) )
-  o.infix = '...';
+  if( o.heightLimit === 0 )
+  o.heightLimit = Infinity;
+
+  if( _.bool.likeTrue( o.delimeter ) )
+  o.delimeter = '...';
 
   if( !o.onLength )
   o.onLength = ( src ) => src.length;
 
-  if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.widthLimit )
-  return o.prefix + o.infix + o.postfix;
-
-  if( o.prefix.length + o.postfix.length + o.infix.length > o.widthLimit )
-  {
-    o.src = o.prefix + o.infix + o.postfix;
-    o.prefix = '';
-    o.postfix = '';
-    o.infix = '';
-  }
-
   let src = o.src;
-  let fixLength = 0;
-  fixLength += o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
 
-  if( o.onLength( src ) + fixLength <= o.widthLimit ) /* nothing to cut */
-  return o.prefix + src + o.postfix;
+  let isOneLine = o.src.indexOf( '\n' ) === -1;
 
-  let begin = '';
-  let end = '';
-  let startIndex = 0;
-  let endIndex = src.length - 1;
-  let beginLength = o.onLength( src );
-  let endLength = beginLength;
-  let middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
-
-  if( o.cutting === 'left' )
+  if( isOneLine && o.onLength( o.src ) < o.widthLimit )
   {
-    let end = cutLeft();
-    return o.prefix + o.infix + end + o.postfix;
+    o.changed = false;
+    o.result = o.src;
+
+    return o;
   }
-  else if( o.cutting === 'right' )
+
+  let options = Object.create( null ); /* width cutting options */
+  options.limit = o.widthLimit;
+  options.delimeter = o.delimeter;
+  options.onLength = o.onLength;
+  options.cutting = o.cutting;
+
+  if( isOneLine )
   {
-    let begin = cutRight();
-    return o.prefix + begin + o.infix + o.postfix;
+    options.src = src;
+    _.strShortWidth( options );
+
+    o.result = options.result;
+    o.changed = options.changed;
+
+    return o;
   }
   else
   {
-    let [ begin, end ] = cutMiddle();
-    return o.prefix + begin + o.infix + end + o.postfix;
+    let splitted = o.src.split( '\n' );
+
+    let options2 = Object.create( null );  /* height cutting */
+    options2.src = splitted;
+    options2.limit = o.heightLimit;
+    options2.delimeter = o.heightDelimeter;
+    options2.cutting = o.heightCutting;
+    _._strShortHeight( options2 );
+
+    options.src = options2.result;
+
+    _._strShortWidth( options );
+
+    let result = options.result.join( '\n' );
+
+    if( result === o.src )
+    o.changed = false;
+    else if( result !== o.src )
+    o.changed = true;
+
+    o.result = result;
+
+    return o;
   }
+}
+
+strShort_.defaults =
+{
+  src : null,
+  widthLimit : 40,
+  heightLimit : 0,
+  delimeter : null, /* xxx qqq : rename to 'widthDelimeter' */
+  heightDelimeter : null,
+  onLength : null,
+  cutting : 'center', /* xxx qqq : rename to 'widthCutting' */
+  heightCutting : 'center',
+}
+
+//
+
+function strShortWidth( o )
+{
+
+  if( arguments.length === 2 )
+  o = { src : arguments[ 0 ], limit : arguments[ 1 ] };
+  else if( arguments.length === 1 )
+  if( _.strIs( o ) )
+  o = { src : arguments[ 0 ] };
+
+  _.routine.options( strShortWidth, o );
+
+  _.assert( _.strIs( o.src ) );
+  _.assert( _.number.is( o.limit ) );
+  _.assert( o.limit >= 0, 'Option::o.limit must be greater or equal to zero' );
+  _.assert( o.delimeter === null || _.strIs( o.delimeter ) || _.bool.likeTrue( o.delimeter ));
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  let originalSrc = o.src;
+
+  if( !o.delimeter )
+  o.delimeter = '';
+  if( o.limit === 0 )
+  o.limit = Infinity;
+
+  if( _.bool.likeTrue( o.delimeter ) )
+  o.delimeter = '...';
+
+  if( !o.onLength )
+  o.onLength = ( src ) => src.length;
+
+  let splitted = o.src.split( '\n' );
+
+  o.src = splitted;
+  _._strShortWidth( o );
+
+  o.src = originalSrc;
+  o.result = o.result.join( '\n' );
+
+  return o;
+}
+
+strShortWidth.defaults =
+{
+  src : null,
+  limit : 40,
+  onLength : null,
+  cutting : 'center',
+  delimeter : null
+}
+
+//
+
+function _strShortWidth( o )
+{
+  /*
+    input : array of lines
+    output : array of lines ( each cutted down to o.limit )
+  */
+  _.assert( _.arrayIs( o.src ) );
+  _.routine.options( _strShortWidth, o );
+
+  let begin = '';
+  let end = '';
+  let fixLength = o.onLength( o.delimeter );
+
+  o.changed = false;
+
+  let result = o.src.map( ( el ) =>
+  {
+    let delimeter = o.delimeter;
+    fixLength = o.onLength( o.delimeter );
+
+    if( fixLength === o.limit )
+    {
+      o.changed = true;
+      return o.delimeter;
+    }
+    else if( o.onLength( el ) + fixLength <= o.limit ) /* nothing to cut */
+    {
+      return el;
+    }
+    else
+    {
+      if( o.onLength( delimeter ) > o.limit )
+      {
+        el = delimeter;
+        delimeter = '';
+        fixLength = 0;
+      }
+
+      o.changed = true;
+
+      if( o.cutting === 'left' )
+      {
+        return delimeter + cutLeft( el );
+      }
+      else if( o.cutting === 'right' )
+      {
+        return cutRight( el ) + delimeter;
+      }
+      else
+      {
+        let [ begin, end ] = cutMiddle( el );
+        return begin + delimeter + end;
+      }
+    }
+  });
+
+  o.result = result;
+
+  return o;
 
   /* - */
 
-  function cutLeft()
+  function cutLeft( src )
   {
-    while( endLength + fixLength > o.widthLimit ) /* binary */
+    let startIndex = 0;
+    let endIndex = src.length - 1;
+    let endLength = o.onLength( src );
+    let middleIndex = src.length - o.limit - 1; /* optimize default option::onLength */
+
+    while( endLength + fixLength > o.limit ) /* binary */
     {
-      [ begin, end ] = splitInTwo();
+      [ begin, end ] = splitInTwo( src, middleIndex + 1 );
       endLength = o.onLength( end );
 
       startIndex = middleIndex; /* all needed elements are in end */
       middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
     }
 
-    while( o.onLength( end ) + fixLength <= o.widthLimit ) /* add elements till o.widthLimit is satisfied */
+    while( o.onLength( end ) + fixLength <= o.limit ) /* add elements till o.limit is satisfied */
     {
       /*
         add elements and parts of element that might have been sliced,
         example : onLength considers as 1 element substring of the same characters
-                  'aabbccdd' with o.widthLimit = 2 might return 'cdd', but need 'ccdd'
+                  'aabbccdd' with o.limit = 2 might return 'cdd', but need 'ccdd'
       */
       end = begin[ begin.length - 1 ] + end;
       begin = begin.slice( 0, -1 );
@@ -507,23 +587,30 @@ function strShort( o )  /* version with binary search cutting */
     return end.slice( 1 );
   }
 
-  function cutRight()
+  //
+
+  function cutRight( src )
   {
-    while( beginLength + fixLength > o.widthLimit ) /* binary */
+    let startIndex = 0;
+    let endIndex = src.length - 1;
+    let beginLength = o.onLength( src );
+    let middleIndex = o.limit; /* optimize default option::onLength */
+
+    while( beginLength + fixLength > o.limit ) /* binary */
     {
-      [ begin, end ] = splitInTwo();
+      [ begin, end ] = splitInTwo( src, middleIndex );
       beginLength = o.onLength( begin );
 
       endIndex = middleIndex; /* all needed elements are in begin */
       middleIndex = Math.floor( ( startIndex + endIndex ) / 2 );
     }
 
-    while( o.onLength( begin ) + fixLength <= o.widthLimit ) /* add elements till o.widthLimit is satisfied */
+    while( o.onLength( begin ) + fixLength <= o.limit ) /* add elements till o.limit is satisfied */
     {
       /*
         add elements and parts of element that might have been sliced,
         example : onLength considers as 1 element substring of the same characters
-                  'aabbccdd' with o.widthLimit = 2 might return 'aab', but need 'aabb'
+                  'aabbccdd' with o.limit = 2 might return 'aab', but need 'aabb'
       */
       begin += end[ 0 ];
       end = end.slice( 1 );
@@ -532,23 +619,31 @@ function strShort( o )  /* version with binary search cutting */
     return begin.slice( 0, -1 );
   }
 
-  function cutMiddle()
+  //
+
+  function cutMiddle( src )
   {
     let originalStr = src;
+    let chunkSize, middleIndexLeft, middleIndexRight;
 
-    while( o.onLength( src ) + fixLength > o.widthLimit ) /* binary */
+    if( o.limit % 2 === 0 ) /* optimize default option::onLength */
     {
-      let chunkSize = Math.floor( src.length / 3 ); /* split str into 3 'equal' parts, middle is to be removed */
+      middleIndexLeft = ( o.limit / 2 ) - 1;
+      middleIndexRight = ( -o.limit / 2 ) + src.length;
+    }
+    else
+    {
+      middleIndexLeft = Math.floor( ( o.limit / 2 ) );
+      middleIndexRight = Math.ceil( ( -o.limit / 2 ) ) + src.length;
+    }
 
-      let middleIndexLeft = chunkSize;
-      let middleIndexRight = chunkSize * 2;
-
-      if( middleIndexLeft <= 1 ) /* src.length <= 5, indexes overlap, cut 1 element from bigger part or right if equal */
+    while( o.onLength( src ) + fixLength > o.limit ) /* binary */
+    {
+      if( src.length <= 5 ) /* src.length = 4 || 3 || 2, base case */
       {
-        if( o.onLength( begin ) > o.onLength( end ) )
-        begin = begin.slice( 0, -1 );
-        else
-        end = end.slice( 1 );
+        let index = Math.floor( src.length / 2 );
+        begin = src.slice( 0, index );
+        end = src.slice( index+1 );
       }
       else /* begin : first 1/3, end : last 1/3 */
       {
@@ -558,9 +653,13 @@ function strShort( o )  /* version with binary search cutting */
 
       /* delete middle, might delete part of the element, check later when desired length is obtained */
       src = begin + end;
+
+      chunkSize = Math.floor( src.length / 3 ); /* split str into 3 'equal' parts, middle is to be removed */
+      middleIndexLeft = chunkSize;
+      middleIndexRight = chunkSize * 2;
     }
 
-    while( o.onLength( begin + end ) + fixLength < o.widthLimit ) /* overcut */
+    while( o.onLength( begin + end ) + fixLength < o.limit ) /* overcut */
     {
       if( o.onLength( begin ) > o.onLength( end ) ) /* shrink middle from the right */
       {
@@ -575,7 +674,7 @@ function strShort( o )  /* version with binary search cutting */
     /*
       add parts of elements that might have been sliced,
       example : onLength considers as 1 element substring of the same characters
-                'aabbccdd' with o.widthLimit = 2 might return 'ad', but need 'aadd'
+                'aabbccdd' with o.limit = 2 might return 'ad', but need 'aadd'
     */
 
     let beginInitial = o.onLength( begin );
@@ -594,485 +693,182 @@ function strShort( o )  /* version with binary search cutting */
     return [ begin.slice( 0, -1 ), end.slice( 1 ) ];
   }
 
-  function splitInTwo()
+  //
+
+  function splitInTwo( src, middle )
   {
-    let begin = src.slice( 0, middleIndex );
-    let end = src.slice( middleIndex );
+    let begin = src.slice( 0, middle );
+    let end = src.slice( middle );
     return [ begin, end ];
   }
 
 }
 
-strShort.defaults =
+_strShortWidth.defaults =
 {
   src : null,
-  widthLimit : 40,
-  heightLimit : 0,
-  prefix : null,
-  postfix : null,
-  infix : null,
+  limit : 40,
+  delimeter : null,
   onLength : null,
   cutting : 'center',
 }
 
-// function strShort( o )
-// {
-
-//   if( arguments.length === 2 )
-//   o = { src : arguments[ 0 ], widthLimit : arguments[ 1 ] };
-//   else if( arguments.length === 1 )
-//   if( _.strIs( o ) )
-//   o = { src : arguments[ 0 ] };
-
-//   _.routine.options( strShort, o );
-
-//   _.assert( _.strIs( o.src ) );
-//   _.assert( _.number.is( o.widthLimit ) );
-//   _.assert( o.widthLimit >= 0, 'Option::o.widthLimit must be greater or equal to zero' );
-//   _.assert( o.prefix === null || _.strIs( o.prefix ) );
-//   _.assert( o.postfix === null || _.strIs( o.postfix ) );
-//   _.assert( o.infix === null || _.strIs( o.infix ) || _.bool.likeTrue( o.infix ));
-//   _.assert( arguments.length === 1 || arguments.length === 2 );
-
-//   if( !o.infix )
-//   o.infix = '';
-//   if( !o.prefix )
-//   o.prefix = '';
-//   if( !o.postfix )
-//   o.postfix = '';
-//   if( o.src.length < 1 )
-//   {
-//     if( o.prefix.length + o.postfix.length <= o.widthLimit )
-//     return o.prefix + o.postfix
-//     o.src = o.prefix + o.postfix;
-//     o.prefix = '';
-//     o.postfix = '';
-//   }
-//   if( _.bool.likeTrue( o.infix ) )
-//   o.infix = '...';
-
-//   if( !o.onLength )
-//   o.onLength = ( src ) => src.length;
-
-//   if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.widthLimit )
-//   return o.prefix + o.infix + o.postfix;
-
-//   if( o.prefix.length + o.postfix.length + o.infix.length > o.widthLimit )
-//   {
-//     o.src = o.prefix + o.infix + o.postfix;
-//     o.prefix = '';
-//     o.postfix = '';
-//     o.infix = '';
-//   }
-
-//   let src = o.src;
-//   let fixLength = 0;
-//   fixLength += o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
-
-//   if( o.cutting === 'left' )
-//   {
-//     while( o.onLength( src ) + fixLength > o.widthLimit ) /* qqq : find better solution, but first write/find the test expaining why it is needed */
-//     {
-//       src = src.slice( 1 );
-//     }
-//     return o.prefix + o.infix + src + o.postfix;
-//   }
-//   else if( o.cutting === 'right' )
-//   {
-//     while( o.onLength( src ) + fixLength > o.widthLimit )
-//     {
-//       src = src.slice( 0, src.length - 1 );
-//     }
-//     return o.prefix + src + o.infix + o.postfix;
-//   }
-//   else
-//   {
-//     if( o.onLength( src ) + fixLength <= o.widthLimit )
-//     return o.prefix + src + o.postfix;
-//     let begin = '';
-//     let end = '';
-//     while( o.onLength( src ) + fixLength > o.widthLimit )
-//     {
-//       begin = src.slice( 0, Math.floor( src.length / 2 ) );
-//       end = src.slice( Math.floor( src.length / 2 ) + 1 );
-//       src = begin + end;
-//     }
-//     return o.prefix + begin + o.infix + end + o.postfix;
-//   }
-
-// }
-
-// strShort.defaults =
-// {
-//   src : null,
-//   widthLimit : 40,
-//   heightLimit : 0,
-//   prefix : null,
-//   postfix : null,
-//   infix : null,
-//   onLength : null, /* xxx : investigate */
-//   cutting : 'center',
-// }
-
 //
 
-// function strShort2( o ) /* version with fixed cutting : center, 1 element cannot be splitted. */
-// {
-
-//   if( arguments.length === 2 )
-//   o = { src : arguments[ 0 ], widthLimit : arguments[ 1 ] };
-//   else if( arguments.length === 1 )
-//   if( _.strIs( o ) )
-//   o = { src : arguments[ 0 ] };
-
-//   _.routine.options( strShort2, o );
-
-//   _.assert( _.strIs( o.src ) );
-//   _.assert( _.number.is( o.widthLimit ) );
-//   _.assert( o.widthLimit >= 0, 'Option::o.widthLimit must be greater or equal to zero' );
-//   _.assert( o.prefix === null || _.strIs( o.prefix ) );
-//   _.assert( o.postfix === null || _.strIs( o.postfix ) );
-//   _.assert( o.infix === null || _.strIs( o.infix ) || _.bool.likeTrue( o.infix ));
-//   _.assert( arguments.length === 1 || arguments.length === 2 );
-
-//   if( !o.infix )
-//   o.infix = '';
-//   if( !o.prefix )
-//   o.prefix = '';
-//   if( !o.postfix )
-//   o.postfix = '';
-//   if( o.widthLimit === 0 )
-//   o.widthLimit = Infinity;
-//   if( o.src.length < 1 )
-//   {
-//     if( o.prefix.length + o.postfix.length <= o.widthLimit )
-//     return o.prefix + o.postfix
-//     o.src = o.prefix + o.postfix;
-//     o.prefix = '';
-//     o.postfix = '';
-//   }
-//   if( _.bool.likeTrue( o.infix ) )
-//   o.infix = '...';
-
-//   if( !o.onLength )
-//   o.onLength = ( src ) => src.length;
-
-//   if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.widthLimit )
-//   return o.prefix + o.infix + o.postfix;
-
-//   if( o.prefix.length + o.postfix.length + o.infix.length > o.widthLimit )
-//   {
-//     o.src = o.prefix + o.infix + o.postfix;
-//     o.prefix = '';
-//     o.postfix = '';
-//     o.infix = '';
-//   }
-
-//   let src = o.src;
-//   let fixLength = 0;
-//   fixLength += o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
-
-//   if( o.cutting === 'left' )
-//   {
-//     while( o.onLength( src ) + fixLength > o.widthLimit ) /* qqq : find better solution, but first write/find the test expaining why it is needed */
-//     {
-//       src = src.slice( 1 );
-//     }
-//     return o.prefix + o.infix + src + o.postfix;
-//   }
-//   else if( o.cutting === 'right' )
-//   {
-//     while( o.onLength( src ) + fixLength > o.widthLimit )
-//     {
-//       src = src.slice( 0, src.length - 1 );
-//     }
-//     return o.prefix + src + o.infix + o.postfix;
-//   }
-//   else
-//   {
-//     if( o.onLength( src ) + fixLength <= o.widthLimit )
-//     return o.prefix + src + o.postfix;
-
-//     let begin = '';
-//     let end = '';
-
-//     while( o.onLength( src ) + fixLength > o.widthLimit )
-//     {
-
-//       /* find a place between elements, not within element */
-//       let center = Math.floor( src.length / 2 );
-//       begin = src.slice( 0, center );
-//       end = src.slice( center );
-
-//       while( o.onLength( begin ) + o.onLength( end ) > o.onLength( src ) ) /* place is not between two elements, but within one element */
-//       {
-//         center = o.onLength( begin ) > o.onLength( end ) ? center - 1 : center + 1; /* move towards longer substring */
-//         begin = src.slice( 0, center );
-//         end = src.slice( center );
-//       }
-
-//       let beginLength = o.onLength( begin );
-//       let endLength = o.onLength( end );
-//       /* center is between elements, slice from bigger part until 1 complete element is removed */
-//       if( o.onLength( begin ) > o.onLength( end ) )
-//       while( o.onLength( begin ) >= beginLength )
-//         begin = begin.slice( 0, -1 );
-//       else
-//       while( o.onLength( end ) >= endLength )
-//         end = end.slice( 1 );
-
-//       src = begin + end;
-//     }
-//     return o.prefix + begin + o.infix + end + o.postfix;
-//   }
-// }
-
-// strShort2.defaults =
-// {
-//   src : null,
-//   widthLimit : 40,
-//   heightLimit : 0,
-//   prefix : null,
-//   postfix : null,
-//   infix : null,
-//   onLength : null, /* xxx : investigate */
-//   cutting : 'center',
-// }
-
-//
-
-function strPrimitive( src )
-{
-  let result = '';
-
-  _.assert( arguments.length === 1, 'Expects exactly one argument' );
-
-  if( src === null || src === undefined )
-  return;
-
-  if( _.primitive.is( src ) )
-  return String( src );
-
-  return;
-}
-
-//
-
-/**
- * Return primitive type of src.
- *
- * @example
- * let str = _.entity.strTypeSecondary( 'testing' );
- *
- * @param {*} src
- *
- * @return {string}
- * string name of type src
- * @function strTypeSecondary
- * @namespace Tools
- */
-
-function strTypeSecondary( src )
+function strShortHeight( o )
 {
 
-  let name = Object.prototype.toString.call( src );
-  let result = /\[(\w+) (\w+)\]/.exec( name );
-  _.assert( !!result, 'unknown type', name );
-  return result[ 2 ];
-}
+  if( arguments.length === 2 )
+  o = { src : arguments[ 0 ], limit : arguments[ 1 ] };
+  else if( arguments.length === 1 )
+  if( _.strIs( o ) )
+  o = { src : arguments[ 0 ] };
 
-//
+  _.routine.options( strShortHeight, o );
 
-/**
- * Return type of src.
- *
- * @example
- * let str = _.entity.strType( 'testing' );
- *
- * @param {*} src
- *
- * @return {string}
- * string name of type src
- * @function strType
- * @namespace Tools
- */
+  _.assert( _.strIs( o.src ) );
+  _.assert
+  (
+    ( _.number.is( o.limit ) && o.limit >= 0 ),
+    'option::o.limit must be greater or equal to zero'
+  );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
 
-/* qqq for Yevhen : jsdoc */
-/* xxx : optimize later */
-/* xxx : move to namesapce type? */
-function strTypeWithTraits( src )
-{
+  let originalSrc = o.src;
+  let splitted = o.src.split( '\n' );
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
+  if( !o.delimeter )
+  o.delimeter = '';
 
-  if( _.aux.is( src ) )
-  {
+  o.src = splitted;
 
-    if( _.mapIsPure( src ) )
-    return 'Map.pure';
-    else if( _.mapIsPolluted( src ) )
-    return 'Map.polluted';
-    else if( _.aux.isPure( src ) && _.aux.isPrototyped( src ) )
-    return 'Aux.pure.prototyped';
-    else if( _.aux.isPolluted( src ) && _.aux.isPrototyped( src ) )
-    return 'Aux.polluted.prototyped';
-    else _.assert( 0, 'undexpected' );
-
-  }
-
-  if( _.primitive.is( src ) )
-  return end( _.entity.strTypeSecondary( src ) );
-
-  let proto = Object.getPrototypeOf( src );
-  if( proto && proto.constructor && proto.constructor !== Object && proto.constructor.name )
-  return end( proto.constructor.name );
-
-  return end( _.entity.strTypeSecondary( src ) );
-
-  function end( result )
-  {
-    let translated = _.entity.TranslatedTypeMap[ result ];
-    if( translated )
-    result = translated;
-
-    if( !_.entity.StandardTypeSet.has( result ) )
-    {
-      if( _.countableIs( src ) )
-      result += '.countable';
-      if( _.constructibleIs( src ) )
-      result += '.constructible';
-    }
-
-    return result;
-  }
-
-}
-
-//
-
-/* qqq for Yevhen : jsdoc */
-function strTypeWithoutTraits( src )
-{
-
-  _.assert( arguments.length === 1, 'Expects single argument' );
-
-  if( _.aux.is( src ) )
-  {
-
-    if( _.mapIs( src ) )
-    return 'Map';
-    else
-    return 'Aux';
-
-  }
-
-  if( _.primitive.is( src ) )
-  return end( _.entity.strTypeSecondary( src ) );
-
-  let proto = Object.getPrototypeOf( src );
-  if( proto && proto.constructor && proto.constructor !== Object && proto.constructor.name )
-  return end( proto.constructor.name );
-
-  return end( _.entity.strTypeSecondary( src ) );
-
-  function end( result )
-  {
-    let translated = _.entity.TranslatedTypeMap[ result ];
-    if( translated )
-    result = translated;
-    return result;
-  }
-
-}
-
-//
-
-function strParseType( src )
-{
-  /*
-    - 'string'
-    - '5'
-    - '5n'
-    - 'null'
-    - 'undefined'
-    - 'Escape( 1 )'
-    - '{- Symbol undefined -}'
-    - '{- routine name -}'
-    - '{- routine.anonymous -}'
-    - '{- Map -}'
-    - '{- Map name -}'
-    - '{- Map with 9 elements -}'
-    - '{- Map.polluted with 9 elements -}'
-    - '{- Map name with 9 elements -}'
-  */
-
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.strIs( src ), 'Expects string' );
-
-  if( !( /^{- .+ -}$/g.test( src ) ) )
-  return Object.create( null );
-
-  src = src.slice( 3, -3 );
-
-  return _.entity._strParseType( src );
-
-}
-
-//
-
-function _strParseType( src )
-{
-  /*
-
-  {- with with 2 elements -} 4
-  {- with name with 2 elements -} 5
-  {- with.with with with 2 elements -} 5
-
-  */
-  _.assert( _.strIs( src ), 'Expects string' );
-
-  let o =
-  {
-    type : '',
-    traits : [],
-  }
-
-  let splitted = src.split( ' ' );
-  let type = splitted[ 0 ];
-  let length;
-
-  if( splitted.length === 2 ) /* with name & no length */
-  {
-    o.name = splitted[ 1 ];
-  }
-  else if( splitted.length === 4 ) /* without name & with length */
-  {
-    length = +splitted[ 2 ];
-  }
-  else if( splitted.length === 5 ) /* with name & with length */
-  {
-    o.name = splitted[ 1 ];
-    length = +splitted[ 3 ];
-  }
-
-  length = isNaN( length ) ? null : length;
-
-  if( type.indexOf( '.' ) === -1 )
-  {
-    o.type = type;
-  }
-  else
-  {
-    let [ t, ... traits ] = type.split( '.' );
-    o.type = t;
-    o.traits = traits;
-  }
-
-  if( length !== null )
-  o.length = length;
+  _._strShortHeight( o );
+  o.src = originalSrc;
+  o.result = o.result.join( '\n' );
 
   return o;
 
+}
+
+strShortHeight.defaults =
+{
+  src : null,
+  limit : null,
+  cutting : 'center',
+  delimeter : null,
+}
+
+//
+
+function _strShortHeight( o )  /* version with binary search cutting */
+{
+  /*
+    input : array of lines
+    output : array of lines ( cutted down to o.limit )
+  */
+
+  _.assert( _.arrayIs( o.src ) );
+  _.routine.options( strShortHeight, o );
+
+  o.changed = false;
+
+  let delimeterLength = o.delimeter === '' ? 0 : 1;
+
+  if( delimeterLength === o.limit )
+  {
+    o.changed = true;
+    o.result = [ o.delimeter ];
+
+    return o;
+  }
+
+  let result = cut( o.src.slice() );
+  o.result = result;
+
+  return o;
+
+  /* - */
+
+  function cut( src )
+  {
+    if( src.length + delimeterLength > o.limit )
+    {
+      o.changed = true;
+
+      if( o.cutting === 'left' )
+      {
+        src = src.slice( - ( o.limit - delimeterLength ) );
+
+        if( o.delimeter !== '' )
+        src.unshift( o.delimeter );
+      }
+      else if( o.cutting === 'right' )
+      {
+        src = src.slice( 0, o.limit - delimeterLength );
+
+        if( o.delimeter !== '' )
+        src.push( o.delimeter );
+      }
+      else
+      {
+        let [ left, right ] = handleHeightCuttingCenter( src );
+        let result = [];
+
+        result.push( ... left );
+
+        if( o.delimeter !== '' )
+        result.push( o.delimeter );
+
+        if( right !== undefined ) /* no right when o.limit = 2 and there is a delimeter */
+        result.push( ... right );
+
+        src = result;
+
+      }
+    }
+
+    return src;
+  }
+
+  //
+
+  function handleHeightCuttingCenter( src )
+  {
+    let indexLeft, indexRight;
+
+    let limit = o.limit - delimeterLength;
+
+    if( limit === 1 )
+    {
+      return [ src.slice( 0, 1 ) ];
+    }
+    else if( limit % 2 === 0 )
+    {
+      indexLeft = limit / 2;
+      indexRight = -indexLeft;
+    }
+    else
+    {
+      indexLeft = Math.floor( ( limit / 2 ) ) + 1;
+      indexRight = -indexLeft + 1;
+    }
+
+    let splittedLeft = src.slice( 0, indexLeft );
+    let splittedRight = src.slice( indexRight );
+
+    return [ splittedLeft, splittedRight ];
+  }
+
+}
+
+_strShortHeight.defaults =
+{
+  src : null,
+  limit : null,
+  cutting : 'center',
+  prefix : null,
+  postfix : null,
+  infix : null,
 }
 
 //
@@ -1167,6 +963,8 @@ function strConcat( srcs, o )
   };
 
   o.optionsForToStr = _.props.supplement( o.optionsForToStr, defaultOptionsForToStr, strConcat.defaults.optionsForToStr );
+  // o.optionsForToStr.format = o.optionsForToStr.format || 'string.code';
+  o.optionsForToStr.format = o.optionsForToStr.format || 'string.diagnostic';
 
   if( _.routine.is( srcs ) )
   srcs = srcs();
@@ -1679,66 +1477,8 @@ function strLinesStrip( src )
 }
 
 // --
-// implementation
+// declaration
 // --
-
-let TranslatedTypeMap =
-{
-
-  'BigUint64Array' : 'U64x',
-  'Uint32Array' : 'U32x',
-  'Uint16Array' : 'U16x',
-  'Uint8Array' : 'U8x',
-  'Uint8ClampedArray' : 'U8ClampedX',
-
-  'BigInt64Array' : 'I64x',
-  'Int32Array' : 'I32x',
-  'Int16Array' : 'I16x',
-  'Int8Array' : 'I8x',
-
-  'Float64Array' : 'F64x',
-  'Float32Array' : 'F32x',
-
-  'Buffer' : 'BufferNode',
-  'ArrayBuffer' : 'BufferRaw',
-  'SharedArrayBuffer' : 'BufferRawShared',
-  'Map' : 'HashMap',
-  'WeakMap' : 'HashMapWeak',
-  'Function' : 'Routine',
-  'Arguments' : 'ArgumentsArray',
-
-}
-
-let StandardTypeSet = new Set
-([
-
-  'U64x',
-  'U32x',
-  'U16x',
-  'U8x',
-  'U8ClampedX',
-  'I64x',
-  'I32x',
-  'I16x',
-  'I8x',
-  'F64x',
-  'F32x',
-
-  'BufferNode',
-  'BufferRaw',
-  'BufferRawShared',
-  'HashMap',
-  'HashMapWeak',
-
-  'ArgumentsArray',
-  'Array',
-  'Set',
-  'Routine',
-  'Global',
-
-]);
-
-//
 
 let ToolsExtension =
 {
@@ -1752,18 +1492,23 @@ let ToolsExtension =
   strDefined,
   strsDefined,
 
-  strType : strTypeWithTraits,
+  // strType : strTypeWithTraits,
   strHas,
 
-  // strEquivalent, /* qqq : for Yevhen : bad */
+  // strEquivalent, /* qqq : for junior : bad */
   // areEquivalentShallow : strEquivalent, xxx
-  strsEquivalent,
+  // strsEquivalent,
 
   // converter
 
-  strStrShort : strShort, /* xxx : remove */
-  strShort, /* qqq for Yevhen : cover | aaa : Done. */
-  // strShort2, /* non-binary search implementation */
+  strstrShort_ : strShort_, /* xxx : remove */
+  strShort_, /* qqq for junior : cover | aaa : Done. */
+  strShortWidth,
+  _strShortWidth,
+  strShortHeight,
+  _strShortHeight,
+  // strShort, /* original version without binary search cutting */
+  // strShort_2, /* non-binary search implementation */
   strConcat,
 
   //
@@ -1787,45 +1532,9 @@ let ToolsExtension =
   strLinesJoin,
   strLinesStrip,
 
-  // fields
-
-  // TranslatedTypeMap,
-  // StandardTypeSet,
-
 }
 
 Object.assign( _, ToolsExtension );
-
-//
-
-let ExtensionEntity =
-{
-
-  // exporter
-
-  exportString : exportStringShallowDiagnostic,
-  exportStringShallow : exportStringShallowDiagnostic,
-  exportStringShallowDiagnostic,
-  exportStringShallowCode : exportStringShallowDiagnostic,
-  exportStringDiagnostic : exportStringShallowDiagnostic,
-  exportStringCode : exportStringShallowDiagnostic,
-
-  strPrimitive,
-  strTypeSecondary,
-  strType : strTypeWithTraits,
-  strTypeWithTraits,
-  strTypeWithoutTraits,
-  strParseType,
-  _strParseType,
-
-  // fields
-
-  TranslatedTypeMap,
-  StandardTypeSet,
-
-}
-
-Object.assign( _.entity, ExtensionEntity );
 
 //
 
@@ -1835,24 +1544,7 @@ let StrExtension =
   // dichotomy
 
   is,
-
-  // equaler
-
-  _identicalShallow,
-  identicalShallow,
-  identical : identicalShallow,
-  _equivalentShallow,
-  equivalentShallow,
-  equivalent : equivalentShallow,
-
-  // exporter
-
-  // exportString : exportStringShallowDiagnostic,
-  // exportStringShallow : exportStringShallowDiagnostic,
-  // exportStringShallowDiagnostic,
-  // exportStringShallowCode : exportStringShallowDiagnostic,
-  // exportStringDiagnostic : exportStringShallowDiagnostic,
-  // exportStringCode : exportStringShallowDiagnostic,
+  like,
 
 }
 

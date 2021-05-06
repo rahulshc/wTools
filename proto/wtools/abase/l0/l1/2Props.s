@@ -29,6 +29,14 @@ function like( src )
   return _.props.is( src );
 }
 
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return true;
+}
+
 // --
 // maker
 // --
@@ -39,10 +47,8 @@ function _makeEmpty( src )
   return _.map._makeEmpty( src );
   if( _.aux.is( src ) )
   return _.aux._makeEmpty( src );
-  if( _.object.is( src ) )
+  if( _.object.isBasic( src ) )
   return _.object._makeEmpty( src );
-
-  _.assert( 0 );
 
   _.assert( 0, `Not clear how to make ${ _.strType( src ) }` );
 }
@@ -52,7 +58,7 @@ function _makeEmpty( src )
 function makeEmpty( src )
 {
   _.assert( arguments.length === 1 );
-  return this._make( src );
+  return this._makeEmpty( ... arguments );
 }
 
 //
@@ -63,7 +69,7 @@ function _makeUndefined( src, length )
   return _.map._makeUndefined( src );
   if( _.aux.is( src ) )
   return _.aux._makeUndefined( src );
-  if( _.object.is( src ) )
+  if( _.object.isBasic( src ) )
   return _.object._makeUndefined( src );
 
   _.assert( 0 );
@@ -76,7 +82,7 @@ function _makeUndefined( src, length )
 function makeUndefined( src, length )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  return this._makeUndefined( src );
+  return this._makeUndefined( ... arguments );
 }
 
 //
@@ -87,7 +93,7 @@ function _make( src )
   return _.map._make( src );
   if( _.aux.is( src ) )
   return _.aux._make( src );
-  if( _.object.is( src ) )
+  if( _.object.isBasic( src ) )
   return _.object._make( src );
 
   _.assert( 0 );
@@ -100,11 +106,11 @@ function _make( src )
 
 //
 
-function make( src )
+function make( src, length )
 {
   _.assert( this.like( src ) );
-  _.assert( arguments.length === 1 );
-  return this._make( src );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  return this._make( ... arguments );
 }
 
 //
@@ -115,7 +121,7 @@ function _cloneShallow( src )
   return _.map._cloneShallow( src );
   if( _.aux.is( src ) )
   return _.aux._cloneShallow( src );
-  if( _.object.is( src ) )
+  if( _.object.isBasic( src ) )
   return _.object._cloneShallow( src );
 
   let method = _.class.methodCloneShallowOf( src );
@@ -220,7 +226,7 @@ function _extendWithProps( dstMap, src )
 
 //
 
-function _extendVersatile( dstMap, srcMap )
+function _extendUniversal( dstMap, srcMap )
 {
 
   _.assert( !_.primitive.is( srcMap ), 'Expects non-primitive' );
@@ -242,7 +248,7 @@ function _extendVersatile( dstMap, srcMap )
 
 //
 
-function extendVersatile( dstMap, srcMap )
+function extendUniversal( dstMap, srcMap )
 {
 
   if( dstMap === null )
@@ -267,7 +273,7 @@ function extendVersatile( dstMap, srcMap )
     if( srcProto === null || srcProto === Object.prototype )
     Object.assign( dstMap, srcMap );
     else
-    this._extendVersatile( dstMap, srcMap );
+    this._extendUniversal( dstMap, srcMap );
 
   }
 
@@ -297,7 +303,7 @@ function extendVersatile( dstMap, srcMap )
  * @function extend
  * @throws { Error } Will throw an error if ( arguments.length < 2 ),
  * if the (dstMap) is not an Object.
- * @namespace Tools/map
+ * @namespace Tools/props
  */
 
 function extend( dstMap, srcMap )
@@ -378,7 +384,7 @@ function _supplementWithProps( dstMap, src )
 
 //
 
-function _supplementVersatile( dstMap, srcMap )
+function _supplementUniversal( dstMap, srcMap )
 {
 
   _.assert( !_.primitive.is( srcMap ), 'Expects non-primitive' );
@@ -400,7 +406,7 @@ function _supplementVersatile( dstMap, srcMap )
 
 //
 
-function supplementVersatile( dstMap, srcMap )
+function supplementUniversal( dstMap, srcMap )
 {
   if( dstMap === null && arguments.length === 2 )
   return Object.assign( Object.create( null ), srcMap );
@@ -435,7 +441,7 @@ function supplementVersatile( dstMap, srcMap )
  *
  * @returns { objectLike } Returns an object with unique [ key, value ].
  * @function supplement
- * @namespace Tools/map
+ * @namespace Tools/props
  */
 
 function supplement( dstMap, srcMap )
@@ -525,7 +531,7 @@ function _keys( o )
 
     if( !selectFilter )
     {
-      /* qqq : for Yevhen : rewrite without arrayAppend and without duplicating array */
+      /* qqq : for junior : rewrite without arrayAppend and without duplicating array */
       arrayAppendArrayOnce( result, keys );
     }
     else for( let k = 0 ; k < keys.length ; k++ )
@@ -533,7 +539,7 @@ function _keys( o )
       let e = selectFilter( srcMap, keys[ k ] );
       if( e !== undefined )
       arrayAppendOnce( result, e );
-      /* qqq : for Yevhen : rewrite without arrayAppend and without duplicating array */
+      /* qqq : for junior : rewrite without arrayAppend and without duplicating array */
     }
 
   }
@@ -604,7 +610,7 @@ _keys.defaults =
  * @function keys
  * @throws { Exception } Throw an exception if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @namespace Tools/map
+ * @namespace Tools/props
  */
 
 function keys( srcMap, o )
@@ -655,17 +661,16 @@ keys.defaults =
  * @function onlyOwnKeys
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @namespace Tools/map
+ * @namespace Tools/props
 */
 
 function onlyOwnKeys( srcMap, o )
 {
   let result;
 
-  // _.assert( this === _.object );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routine.options( onlyOwnKeys, o || null );
-  // _.assert( !_.primitive.is( srcMap ) );
+  _.assert( this.like( srcMap ) );
 
   o.srcMap = srcMap;
   o.onlyOwn = 1;
@@ -681,6 +686,29 @@ function onlyOwnKeys( srcMap, o )
 onlyOwnKeys.defaults =
 {
   onlyEnumerable : 1,
+}
+
+//
+
+function onlyEnumerableKeys( srcMap, o )
+{
+  let result;
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routine.options( onlyEnumerableKeys, o || null );
+  _.assert( this.like( srcMap ) );
+
+  o.srcMap = srcMap;
+  o.onlyEnumerable = 1;
+
+  result = this._keys( o );
+
+  return result;
+}
+
+onlyEnumerableKeys.defaults =
+{
+  onlyOwn : 0,
 }
 
 //
@@ -702,20 +730,16 @@ onlyOwnKeys.defaults =
  * corresponding to the all properties found on the object.
  * @function allKeys
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
- * @namespace Tools/map
+ * @namespace Tools/props
 */
 
 function allKeys( srcMap, o )
 {
 
-  // _.assert( this === _.object );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routine.options( allKeys, o || null );
-  // _.assert( !_.primitive.is( srcMap ) );
 
   o.srcMap = srcMap;
-  // o.onlyOwn = 0;
-  // o.onlyEnumerable = 0;
 
   let result = this._keys( o );
 
@@ -740,7 +764,6 @@ function _vals( o )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( o.selectFilter === null || _.routine.is( o.selectFilter ) );
   _.assert( o.selectFilter === null );
-  // _.assert( this === _.object );
 
   let result = this._keys( o );
 
@@ -793,7 +816,7 @@ _vals.defaults =
  * @function vals
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @namespace Tools/map
+ * @namespace Tools/props
  */
 
 function vals( srcMap, o )
@@ -801,9 +824,6 @@ function vals( srcMap, o )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routine.options( vals, o || null );
-  // _.assert( !_.primitive.is( srcMap ) );
-  // _.assert( this === _.object ); xxx
-
   o.srcMap = srcMap;
 
   let result = this._vals( o );
@@ -849,7 +869,7 @@ vals.defaults =
  * @function onlyOwnVals
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @namespace Tools/map
+ * @namespace Tools/props
  */
 
 function onlyOwnVals( srcMap, o )
@@ -857,21 +877,39 @@ function onlyOwnVals( srcMap, o )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routine.options( onlyOwnVals, o || null );
-  // _.assert( this.like( o.srcMap ) );
-  // _.assert( this === _.object );
 
   o.srcMap = srcMap;
   o.onlyOwn = 1;
 
   let result = this._vals( o );
 
-  debugger;
   return result;
 }
 
 onlyOwnVals.defaults =
 {
   onlyEnumerable : 1,
+}
+
+//
+
+function onlyEnumerableVals( srcMap, o )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routine.options( onlyEnumerableVals, o || null );
+
+  o.srcMap = srcMap;
+  o.onlyEnumerable = 1;
+
+  let result = this._vals( o );
+
+  return result;
+}
+
+onlyEnumerableVals.defaults =
+{
+  onlyOwn : 0,
 }
 
 //
@@ -895,7 +933,7 @@ onlyOwnVals.defaults =
  * corresponding to the onlyEnumerable property values found directly upon object.
  * @function allVals
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
- * @namespace Tools/map
+ * @namespace Tools/props
  */
 
 function allVals( srcMap, o )
@@ -903,8 +941,6 @@ function allVals( srcMap, o )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routine.options( allVals, o || null );
-  // _.assert( !_.primitive.is( srcMap ) );
-  // _.assert( this === _.object );
 
   o.srcMap = srcMap;
   o.onlyOwn = 0;
@@ -929,7 +965,6 @@ function _pairs( o )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( o.selectFilter === null || _.routine.is( o.selectFilter ) );
   _.assert( this.like( o.srcMap ) );
-  // _.assert( this === _.object );
 
   let selectFilter = o.selectFilter;
 
@@ -985,13 +1020,12 @@ _pairs.defaults =
  * @function pairs
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @namespace Tools/map
+ * @namespace Tools/props
  */
 
 function pairs( srcMap, o )
 {
 
-  // _.assert( this === _.object );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routine.options( pairs, o || null );
 
@@ -1042,13 +1076,12 @@ pairs.defaults =
  * @function onlyOwnPairs
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @namespace Tools/map
+ * @namespace Tools/props
  */
 
 function onlyOwnPairs( srcMap, o )
 {
 
-  // _.assert( this === _.object );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routine.options( onlyOwnPairs, o || null );
 
@@ -1064,6 +1097,28 @@ function onlyOwnPairs( srcMap, o )
 onlyOwnPairs.defaults =
 {
   onlyEnumerable : 1,
+}
+
+//
+
+function onlyEnumerablePairs( srcMap, o )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routine.options( onlyEnumerablePairs, o || null );
+
+  o.srcMap = srcMap;
+  o.onlyEnumerable = 1;
+
+  let result = this._pairs( o );
+
+  debugger;
+  return result;
+}
+
+onlyEnumerablePairs.defaults =
+{
+  onlyOwn : 0,
 }
 
 //
@@ -1092,13 +1147,12 @@ onlyOwnPairs.defaults =
  * @returns { array } A list of [ key, value ] pairs.
  * @function allPairs
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
- * @namespace Tools/map
+ * @namespace Tools/props
  */
 
 function allPairs( srcMap, o )
 {
 
-  // _.assert( this === _.object );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routine.options( allPairs, o || null );
 
@@ -1108,7 +1162,6 @@ function allPairs( srcMap, o )
 
   let result = this._pairs( o );
 
-  debugger;
   return result;
 }
 
@@ -1704,7 +1757,6 @@ function own( src, key )
   // return false;
   // if( src === undefined )
   // return false;
-  /* xxx */
   if( _.primitive.is( src ) )
   return false;
   return Object.hasOwnProperty.call( src, key );
@@ -1812,7 +1864,139 @@ function descriptorOwnOf( object, name )
 }
 
 // --
-// extension
+// meta
+// --
+
+/* qqq : optimize */
+function namespaceOf( src )
+{
+
+  if( _.map.is( src ) )
+  return _.map;
+  if( _.aux.is( src ) )
+  return _.aux;
+  if( _.object.is( src ) )
+  return _.object;
+  if( _.props.is( src ) )
+  return _.props;
+
+  return null;
+}
+
+// --
+// props extension
+// --
+
+let PropsExtension =
+{
+
+  //
+
+  NamespaceName : 'props',
+  NamespaceNames : [ 'props' ],
+  NamespaceQname : 'wTools/props',
+  MoreGeneralNamespaceName : 'props',
+  MostGeneralNamespaceName : 'props',
+  TypeName : 'Props',
+  TypeNames : [ 'Props', 'Properties' ],
+  // SecondTypeName : 'Properties',
+  InstanceConstructor : null,
+  tools : _,
+
+  // dichotomy
+
+  is,
+  like,
+  IsResizable,
+
+  // maker
+
+  _makeEmpty,
+  makeEmpty, /* qqq : for junior : cover */
+  _makeUndefined,
+  makeUndefined, /* qqq : for junior : cover */
+  _make,
+  make, /* qqq : for junior : cover */
+  _cloneShallow,
+  cloneShallow, /* qqq : for junior : cover */
+  from,
+
+  // amender
+
+  _extendWithHashmap,
+  _extendWithSet,
+  _extendWithCountable,
+  _extendWithProps,
+  _extendUniversal,
+  extendUniversal,
+  extend,
+
+  _supplementWithHashmap,
+  _supplementWithSet,
+  _supplementWithCountable,
+  _supplementWithProps,
+  _supplementUniversal,
+  supplementUniversal,
+  supplement,
+
+  // properties
+
+  _keys,
+  keys, /* qqq : for junior : cover */
+  onlyOwnKeys, /* qqq : for junior : cover */
+  onlyEnumerableKeys, /* qqq : for junior : implement and cover properly */
+  allKeys, /* qqq : for junior : cover */
+
+  _vals,
+  vals, /* qqq : for junior : cover */
+  onlyOwnVals, /* qqq : for junior : cover */
+  onlyEnumerableVals, /* qqq : for junior : implement and cover properly */
+  allVals, /* qqq : for junior : cover */
+
+  _pairs, /* qqq : for junior : cover */
+  pairs, /* qqq : for junior : cover */
+  onlyOwnPairs, /* qqq : for junior : cover */
+  onlyEnumerablePairs, /* qqq : for junior : implement and cover properly */
+  allPairs, /* qqq : for junior : cover */
+
+  _ofAct,
+  of : _of,
+  onlyOwn,
+  onlyExplicit,
+
+  routines,
+  onlyOwnRoutines,
+  onlyExplicitRoutines,
+
+  fields,
+  onlyOwnFields,
+  onlyExplicitFields,
+
+  own, /* qqq : cover please */
+  has, /* qqq : cover please */
+  ownEnumerable, /* qqq : cover please */
+  hasEnumerable, /* qqq : cover please */
+
+  // propertyDescriptorActiveGet,
+  // propertyDescriptorGet,
+  descriptorActiveOf, /* qqq : cover please */
+  descriptorOf, /* qqq : cover please */
+  descriptorOwnOf,
+
+  // meta
+
+  namespaceOf,
+  namespaceWithDefaultOf : _.long.namespaceWithDefaultOf,
+  _functor_functor : _.long._functor_functor,
+
+}
+
+//
+
+Object.assign( _.props, PropsExtension );
+
+// --
+// tools extension
 // --
 
 let ToolsExtension =
@@ -1841,103 +2025,5 @@ let ToolsExtension =
 //
 
 Object.assign( _, ToolsExtension );
-
-//
-
-let PropsExtension =
-{
-
-  //
-
-  NamespaceName : 'props',
-  TypeName : 'Props',
-  SecondTypeName : 'Properties',
-  InstanceConstructor : null,
-  tools : _,
-
-  // dichotomy
-
-  is,
-  like,
-
-  // maker
-
-  _makeEmpty,
-  makeEmpty, /* qqq : for Yevhen : cover */
-  _makeUndefined,
-  makeUndefined, /* qqq : for Yevhen : cover */
-  _make,
-  make, /* qqq : for Yevhen : cover */
-  _cloneShallow,
-  cloneShallow, /* qqq : for Yevhen : cover */
-  from,
-
-  // amender
-
-  _extendWithHashmap,
-  _extendWithSet,
-  _extendWithCountable,
-  _extendWithProps,
-  _extendVersatile,
-  extendVersatile,
-  extend,
-
-  _supplementWithHashmap,
-  _supplementWithSet,
-  _supplementWithCountable,
-  _supplementWithProps,
-  _supplementVersatile,
-  supplementVersatile,
-  supplement,
-
-  // properties
-
-  _keys, /* qqq : for Yevhen : cover */
-  keys, /* qqq : for Yevhen : cover */
-  onlyOwnKeys, /* qqq : for Yevhen : cover */
-  // onlyEnumerableKeys, /* qqq : for Yevhen : implement and cover properly */
-  allKeys, /* qqq : for Yevhen : cover */
-
-  _vals, /* qqq : for Yevhen : cover */
-  vals, /* qqq : for Yevhen : cover */
-  onlyOwnVals, /* qqq : for Yevhen : cover */
-  // onlyEnumerableVals, /* qqq : for Yevhen : implement and cover properly */
-  allVals, /* qqq : for Yevhen : cover */
-
-  _pairs, /* qqq : for Yevhen : cover */
-  pairs, /* qqq : for Yevhen : cover */
-  onlyOwnPairs, /* qqq : for Yevhen : cover */
-  // onlyEnumerablePairs, /* qqq : for Yevhen : implement and cover properly */
-  allPairs, /* qqq : for Yevhen : cover */
-
-  _ofAct,
-  of : _of,
-  onlyOwn,
-  onlyExplicit,
-
-  routines,
-  onlyOwnRoutines,
-  onlyExplicitRoutines,
-
-  fields,
-  onlyOwnFields,
-  onlyExplicitFields,
-
-  own, /* qqq : cover please */
-  has, /* qqq : cover please */
-  ownEnumerable, /* qqq : cover please */
-  hasEnumerable, /* qqq : cover please */
-
-  // propertyDescriptorActiveGet,
-  // propertyDescriptorGet,
-  descriptorActiveOf, /* qqq : cover please */
-  descriptorOf, /* qqq : cover please */
-  descriptorOwnOf,
-
-}
-
-//
-
-Object.assign( _.props, PropsExtension );
 
 })();

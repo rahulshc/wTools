@@ -11,6 +11,7 @@ if( typeof module !== 'undefined' )
 
 const _global = _global_;
 const _ = _global_.wTools;
+const __ = _globals_.testing.wTools;
 
 // --
 //
@@ -3473,9 +3474,9 @@ function hashMapExtend( test )
 {
   test.case = 'dst - null, src - empty hash map';
   var dst = null;
-  var src = new Map();
+  var src = new HashMap();
   var got = _.hashMap.extend( dst, src );
-  var exp = new Map();
+  var exp = new HashMap();
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got !== dst );
   test.true( got !== src );
@@ -3484,16 +3485,16 @@ function hashMapExtend( test )
   var dst = null;
   var src = {};
   var got = _.hashMap.extend( dst, src );
-  var exp = new Map();
+  var exp = new HashMap();
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got !== dst );
   test.true( got !== src );
 
   test.case = 'dst - null, src - filled hash map';
   var dst = null;
-  var src = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
+  var src = new HashMap( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
   var got = _.hashMap.extend( dst, src );
-  var exp = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
+  var exp = new HashMap( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got !== dst );
   test.true( got !== src );
@@ -3502,7 +3503,7 @@ function hashMapExtend( test )
   var dst = null;
   var src = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   var got = _.hashMap.extend( dst, src );
-  var exp = new Map( [ [ '1', 1 ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
+  var exp = new HashMap( [ [ '1', 1 ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got !== dst );
   test.true( got !== src );
@@ -3512,55 +3513,55 @@ function hashMapExtend( test )
   test.open( 'dst - hash map, src - hash map' );
 
   test.case = 'dst - empty, src - empty';
-  var dst = new Map();
-  var src = new Map();
+  var dst = new HashMap();
+  var src = new HashMap();
   var got = _.hashMap.extend( dst, src );
-  var exp = new Map();
+  var exp = new HashMap();
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
   test.true( got !== src );
 
   test.case = 'dst - empty, src - filled';
-  var dst = new Map();
-  var src = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
+  var dst = new HashMap();
+  var src = new HashMap( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
   var got = _.hashMap.extend( dst, src );
-  var exp = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
+  var exp = new HashMap( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
   test.true( got !== src );
 
   test.case = 'dst - filled, src - filled';
-  var dst = new Map( [ [ { a : 1 }, { a : 1 } ] ] );
-  var src = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
+  var dst = new HashMap( [ [ { a : 1 }, { a : 1 } ] ] );
+  var src = new HashMap( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
   var got = _.hashMap.extend( dst, src );
-  var exp = new Map( [ [ { a : 1 }, { a : 1 } ], [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
+  var exp = new HashMap( [ [ { a : 1 }, { a : 1 } ], [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
   test.true( got !== src );
 
   test.case = 'dst and src - almost identical';
-  var dst = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
-  var src = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
+  var dst = new HashMap( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
+  var src = new HashMap( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
   var got = _.hashMap.extend( dst, src );
-  var exp = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ], [ [ 1 ], [ 1 ] ] ] );
+  var exp = new HashMap( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ], [ [ 1 ], [ 1 ] ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
   test.true( got !== src );
 
   test.case = 'dst and src have identical keys';
-  var dst = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
-  var src = new Map( [ [ 1, 2 ], [ null, undefined ], [ 'str', '' ], [ undefined, null ], [ '', 'str' ], [ false, true ], [ [ 1 ], [ 2 ] ] ] );
+  var dst = new HashMap( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
+  var src = new HashMap( [ [ 1, 2 ], [ null, undefined ], [ 'str', '' ], [ undefined, null ], [ '', 'str' ], [ false, true ], [ [ 1 ], [  2 ] ] ] );
   var got = _.hashMap.extend( dst, src );
-  var exp = new Map( [ [ 1, 2 ], [ null, undefined ], [ 'str', '' ], [ undefined, null ], [ '', 'str' ], [ false, true ], [ [ 1 ], [ 1 ] ], [ [ 1 ], [ 2 ] ] ] );
+  var exp = new HashMap( [ [ 1, 2 ], [ null, undefined ], [ 'str', '' ], [ undefined, null ], [ '', 'str' ], [ false, true ], [ [ 1 ], [ 1 ] ], [ [ 1 ], [  2 ] ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
   test.true( got !== src );
 
   test.case = 'dst === src';
-  var dst = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
+  var dst = new HashMap( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
   var src = dst;
   var got = _.hashMap.extend( dst, src );
-  var exp = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
+  var exp = new HashMap( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
   test.true( got === src );
@@ -3572,46 +3573,46 @@ function hashMapExtend( test )
   test.open( 'dst - hash map, src - simple map' );
 
   test.case = 'dst - empty, src - empty';
-  var dst = new Map();
+  var dst = new HashMap();
   var src = {};
   var got = _.hashMap.extend( dst, src );
-  var exp = new Map();
+  var exp = new HashMap();
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
   test.true( got !== src );
 
   test.case = 'dst - empty, src - filled';
-  var dst = new Map();
+  var dst = new HashMap();
   var src = { 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false, '1' : [ 1 ] };
   var got = _.hashMap.extend( dst, src );
-  var exp = new Map( [ [ '1', [ 1 ] ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
+  var exp = new HashMap( [ [ '1', [ 1 ] ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
   test.true( got !== src );
 
   test.case = 'dst - filled, src - filled';
-  var dst = new Map( [ [ { a : 1 }, { a : 1 } ] ] );
+  var dst = new HashMap( [ [ { a : 1 }, { a : 1 } ] ] );
   var src = { 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false, '1' : [ 1 ] };
   var got = _.hashMap.extend( dst, src );
-  var exp = new Map( [ [ { a : 1 }, { a : 1 } ], [ '1', [ 1 ] ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
+  var exp = new HashMap( [ [ { a : 1 }, { a : 1 } ], [ '1', [ 1 ] ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
   test.true( got !== src );
 
   test.case = 'dst and src - almost identical';
-  var dst = new Map( [ [ 1, [ 1 ] ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ] ] );
+  var dst = new HashMap( [ [ 1, [ 1 ] ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ] ] );
   var src = { 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false, '1' : [ 1 ] };
   var got = _.hashMap.extend( dst, src );
-  var exp = new Map( [ [ 1, [ 1 ] ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ '1', [ 1 ] ], [ 'null', null ], [ 'undefined', undefined ], [ 'false', false ] ] );
+  var exp = new HashMap( [ [ 1, [ 1 ] ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ '1', [ 1 ] ], [ 'null', null ], [ 'undefined', undefined ], [ 'false', false ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
   test.true( got !== src );
 
   test.case = 'dst and src have identical keys';
-  var dst = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
+  var dst = new HashMap( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
   var src = { 'null' : undefined, 'str' : '', 'undefined' : null, '' : 'str', 'false' : true, '1' : 2 };
   var got = _.hashMap.extend( dst, src );
-  var exp = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', '' ], [ undefined, undefined ], [ '', 'str' ], [ false, false ], [ [ 1 ], [ 1 ] ], [ '1', 2 ], [ 'null', undefined ], [ 'undefined', null ], [ 'false', true ] ] );
+  var exp = new HashMap( [ [ 1, 1 ], [ null, null ], [ 'str', '' ], [ undefined, undefined ], [ '', 'str' ], [ false, false ], [ [ 1 ], [ 1 ] ], [ '1', 2 ], [ 'null', undefined ], [ 'undefined', null ], [ 'false', true ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
   test.true( got === dst );
   test.true( got !== src );
@@ -3624,7 +3625,7 @@ function hashMapExtend( test )
 
   test.case = 'dst - empty, src - empty';
   var dst = {};
-  var src = new Map();
+  var src = new HashMap();
   var got = _.hashMap.extend( dst, src );
   var exp = {};
   test.identical( got, exp );
@@ -3633,7 +3634,7 @@ function hashMapExtend( test )
 
   test.case = 'dst - empty, src - filled';
   var dst = {};
-  var src = new Map( [ [ '1', [ 1 ] ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
+  var src = new HashMap( [ [ '1', [ 1 ] ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
   var got = _.hashMap.extend( dst, src );
   var exp = { '1' : [ 1 ], 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   test.identical( got, exp );
@@ -3642,7 +3643,7 @@ function hashMapExtend( test )
 
   test.case = 'dst - filled, src - filled';
   var dst = { a : 1 };
-  var src = new Map( [ [ '1', [ 1 ] ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
+  var src = new HashMap( [ [ '1', [ 1 ] ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
   var got = _.hashMap.extend( dst, src );
   var exp = { 'a' : 1, '1' : [ 1 ], 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   test.identical( got, exp );
@@ -3651,7 +3652,7 @@ function hashMapExtend( test )
 
   test.case = 'dst and src - almost identical';
   var dst = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
-  var src = new Map( [ [ '1', 1 ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
+  var src = new HashMap( [ [ '1', 1 ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
   var got = _.hashMap.extend( dst, src );
   var exp = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   test.identical( got, exp );
@@ -3660,7 +3661,7 @@ function hashMapExtend( test )
 
   test.case = 'dst and src have identical keys';
   var dst = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
-  var src = new Map( [ [ '1', [ 1 ] ], [ 'null', undefined ], [ 'str', '' ], [ 'undefined', null ], [ '', 'str' ], [ 'false', true ] ] );
+  var src = new HashMap( [ [ '1', [ 1 ] ], [ 'null', undefined ], [ 'str', '' ], [ 'undefined', null ], [ '', 'str' ], [ 'false', true ] ] );
   var got = _.hashMap.extend( dst, src );
   var exp = { '1' : [ 1 ], 'null' : undefined, 'str' : '', 'undefined' : null, '' : 'str', 'false' : true };
   test.identical( got, exp );
@@ -3738,20 +3739,20 @@ function hashMapExtend( test )
   test.shouldThrowErrorSync( () => _.hashMap.extend() );
 
   test.case = 'one argument';
-  test.shouldThrowErrorSync( () => _.hashMap.extend( new Map( [ [ 1, 1 ] ] ) ) );
+  test.shouldThrowErrorSync( () => _.hashMap.extend( new HashMap( [ [ 1, 1 ] ] ) ) );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.hashMap.extend( new Map( [ [ 1, 1 ] ] ), {}, {} ) );
+  test.shouldThrowErrorSync( () => _.hashMap.extend( new HashMap( [ [ 1, 1 ] ] ), {}, {} ) );
 
   test.case = 'wrong type of dst';
   test.shouldThrowErrorSync( () => _.hashMap.extend( 'wrong', {} ) );
 
   test.case = 'wrong type of src';
-  test.shouldThrowErrorSync( () => _.hashMap.extend( new Map( [ [ 1, 2 ] ] ), 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.hashMap.extend( new HashMap( [ [ 1, 2 ] ] ), 'wrong' ) );
   test.shouldThrowErrorSync( () => _.hashMap.extend( null, null ) );
 
   test.case = 'dst - simple map, src - hash map with unliteral keys';
-  test.shouldThrowErrorSync( () => _.hashMap.extend( { a : 1 }, new Map( [ [ 1, 2 ], [ null, null ] ] ) ) );
+  test.shouldThrowErrorSync( () => _.hashMap.extend( { a : 1 }, new HashMap( [ [ 1, 2 ], [ null, null ] ] ) ) );
 }
 
 //
@@ -3840,7 +3841,7 @@ function mapOnlyPrimitives( test )
 //
 //     return true;
 //   };
-//   filter.identity = { propertyFilter : true, propertyTransformer : true };
+//   filter.identity = { propertyCondition : true, propertyTransformer : true };
 //
 //   /* - */
 //
@@ -4051,7 +4052,7 @@ function mapOnlyPrimitives( test )
 //     return true;
 //     return false;
 //   };
-//   filter.identity = { propertyFilter : true, propertyTransformer : true };
+//   filter.identity = { propertyCondition : true, propertyTransformer : true };
 //
 //   /* - */
 //
@@ -4205,7 +4206,7 @@ function mapButConditional_WithThreeArguments( test )
 
     return true;
   };
-  filter.identity = { propertyFilter : true, propertyTransformer : true };
+  filter.identity = { propertyCondition : true, propertyTransformer : true };
 
   /* - */
 
@@ -4430,11 +4431,11 @@ function mapButConditional_WithThreeArguments( test )
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.mapButConditional_( filter, {}, {}, {}, [] ) );
 
-  test.case = 'wrong type of propertyFilter';
+  test.case = 'wrong type of propertyCondition';
   test.shouldThrowErrorSync( () => _.mapButConditional_( 'wrong', {}, [] ) );
   test.shouldThrowErrorSync( () => _.mapButConditional_( [], null, {}, {} ) );
 
-  test.case = 'propertyFilter has no PropertyFilter';
+  test.case = 'propertyCondition has no PropertyFilter';
   var filter = ( a, b, c ) => a > ( b + c );
   test.shouldThrowErrorSync( () => _.mapButConditional_( filter, null, {}, {} ) );
 
@@ -4462,7 +4463,7 @@ function mapButConditional_DstMapIsNull( test )
 
     return true;
   };
-  filter.identity = { propertyFilter : true, propertyTransformer : true };
+  filter.identity = { propertyCondition : true, propertyTransformer : true };
 
   /* - */
 
@@ -4653,7 +4654,7 @@ function mapButConditional_DstMapIsMap( test )
 
     return true;
   };
-  filter.identity = { propertyFilter : true, propertyTransformer : true };
+  filter.identity = { propertyCondition : true, propertyTransformer : true };
 
   /* - */
 
@@ -4866,7 +4867,7 @@ function mapButConditional_ButMapIsVector( test )
     return true;
     return false;
   };
-  filter.identity = { propertyFilter : true, propertyTransformer : true };
+  filter.identity = { propertyCondition : true, propertyTransformer : true };
 
   /* - */
 
@@ -5443,7 +5444,7 @@ function mapButConditional_ButMapIsVector( test )
 //     return true;
 //     return false;
 //   };
-//   filter.identity = { propertyFilter : true, propertyTransformer : true };
+//   filter.identity = { propertyCondition : true, propertyTransformer : true };
 //
 //   /* - */
 //
@@ -16491,6 +16492,4334 @@ function mapHasNoneMapOnlyPerformance( test )
 mapHasNoneMapOnlyPerformance.timeOut = 1e7;
 mapHasNoneMapOnlyPerformance.experimental = true;
 
+/* countable */
+
+
+function mapHasAllCountable( test )
+{
+  test.case = 'screen - empty vector';
+  var src = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1, length : 2 });
+  var got = _.mapHasAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - empty countable';
+  var src = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 });
+  var got = _.mapHasAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same vector';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b' ], countable : 1, length : 2 });
+  var got = _.mapHasAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same countable';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b' ], countable : 1 });
+  var got = _.mapHasAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - vector > src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b', 'c' ], countable : 1, length : 2 });
+  var got = _.mapHasAll( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable > src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b', 'c' ], countable : 1 });
+  var got = _.mapHasAll( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - vector < src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a' ], countable : 1, length : 2 });
+  var got = _.mapHasAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable < src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a' ], countable : 1 });
+  var got = _.mapHasAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r', 'a', 'c' ], countable : 1, length : 2 });
+  var got = _.mapHasAll( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r', 'a', 'c' ], countable : 1 });
+  var got = _.mapHasAll( src, screen );
+  test.true( !got );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+
+function mapHasAnyCountable( test )
+{
+  test.case = 'screen - empty vector';
+  var src = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1, length : 2 });
+  var got = _.mapHasAny( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - empty countable';
+  var src = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 });
+  var got = _.mapHasAny( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - same vector';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b' ], countable : 1, length : 2 });
+  var got = _.mapHasAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same countable';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b' ], countable : 1 });
+  var got = _.mapHasAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - vector > src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b', 'c' ], countable : 1, length : 2 });
+  var got = _.mapHasAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable > src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b', 'c' ], countable : 1 });
+  var got = _.mapHasAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - vector < src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a' ], countable : 1, length : 2 });
+  var got = _.mapHasAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable < src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a' ], countable : 1 });
+  var got = _.mapHasAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r', 'a', 'c' ], countable : 1, length : 2 });
+  var got = _.mapHasAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r', 'a', 'c' ], countable : 1 });
+  var got = _.mapHasAny( src, screen );
+  test.true( got );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+
+function mapHasNoneCountable( test )
+{
+  test.case = 'screen - empty vector';
+  var src = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1, length : 2 });
+  var got = _.mapHasNone( src, screen );
+  test.true( got );
+
+  test.case = 'screen - empty countable';
+  var src = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 });
+  var got = _.mapHasNone( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same vector';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b' ], countable : 1, length : 2 });
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - same countable';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b' ], countable : 1 });
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - vector > src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b', 'c' ], countable : 1, length : 2 });
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable > src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b', 'c' ], countable : 1 });
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - vector < src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a' ], countable : 1, length : 2 });
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable < src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a' ], countable : 1 });
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r', 'a', 'c' ], countable : 1, length : 2 });
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r', 'a', 'c' ], countable : 1 });
+  var got = _.mapHasNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r' ], countable : 1, length : 2 });
+  var got = _.mapHasNone( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r' ], countable : 1 });
+  var got = _.mapHasNone( src, screen );
+  test.true( got );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+
+function mapOnlyOwnAllCountable( test )
+{
+  test.case = 'screen - empty vector';
+  var src = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - empty countable';
+  var src = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same vector';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same countable';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b' ], countable : 1 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - vector > src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b', 'c' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable > src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b', 'c' ], countable : 1 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - vector < src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable < src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a' ], countable : 1 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r', 'a', 'c' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r', 'a', 'c' ], countable : 1 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r' ], countable : 1 });
+  var got = _.mapOnlyOwnAll( src, screen );
+  test.true( !got );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+
+function mapOnlyOwnAnyCountable( test )
+{
+  test.case = 'screen - empty vector';
+  var src = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - empty countable';
+  var src = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - same vector';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same countable';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b' ], countable : 1 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - vector > src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b', 'c' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable > src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b', 'c' ], countable : 1 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - vector < src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable < src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a' ], countable : 1 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r', 'a', 'c' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r', 'a', 'c' ], countable : 1 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r' ], countable : 1 });
+  var got = _.mapOnlyOwnAny( src, screen );
+  test.true( !got );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+
+function mapOnlyOwnNoneCountable( test )
+{
+
+  test.case = 'screen - empty vector';
+  var src = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( got );
+
+  test.case = 'screen - empty countable';
+  var src = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same vector';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - same countable';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b' ], countable : 1 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - vector > src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b', 'c' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable > src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b', 'c' ], countable : 1 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - vector < src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable < src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a' ], countable : 1 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r', 'a', 'c' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r', 'a', 'c' ], countable : 1 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r' ], countable : 1 });
+  var got = _.mapOnlyOwnNone( src, screen );
+  test.true( got );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapHasExactlyCountable( test )
+{
+
+  test.case = 'screen - empty vector';
+  var src = { a : 1 };
+  var screen = { b : 2 };
+  var got = _.mapHasExactly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - empty vector';
+  var src = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1, length : 2 });
+  var got = _.mapHasExactly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - empty countable';
+  var src = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 });
+  var got = _.mapHasExactly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - same vector';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b' ], countable : 1, length : 2 });
+  var got = _.mapHasExactly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same countable';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b' ], countable : 1 });
+  var got = _.mapHasExactly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - vector > src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b', 'c' ], countable : 1, length : 2 });
+  var got = _.mapHasExactly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable > src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b', 'c' ], countable : 1 });
+  var got = _.mapHasExactly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - vector < src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a' ], countable : 1, length : 2 });
+  var got = _.mapHasExactly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable < src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a' ], countable : 1 });
+  var got = _.mapHasExactly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r', 'a', 'c' ], countable : 1, length : 2 });
+  var got = _.mapHasExactly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r', 'a', 'c' ], countable : 1 });
+  var got = _.mapHasExactly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r' ], countable : 1, length : 2 });
+  var got = _.mapHasExactly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r' ], countable : 1 });
+  var got = _.mapHasExactly( src, screen );
+  test.true( !got );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapOnlyOwnExactlyCountable( test )
+{
+
+  test.case = 'screen - map';
+  var src = { a : 1 };
+  var screen = { b : 2 };
+  var got = _.mapOnlyOwnExactly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - empty vector';
+  var src = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnExactly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - empty countable';
+  var src = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 });
+  var got = _.mapOnlyOwnExactly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same vector';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnExactly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same countable';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b' ], countable : 1 });
+  var got = _.mapOnlyOwnExactly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - vector > src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b', 'c' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnExactly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable > src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b', 'c' ], countable : 1 });
+  var got = _.mapOnlyOwnExactly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - vector < src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnExactly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable < src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a' ], countable : 1 });
+  var got = _.mapOnlyOwnExactly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r', 'a', 'c' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnExactly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r', 'a', 'c' ], countable : 1 });
+  var got = _.mapOnlyOwnExactly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnExactly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r' ], countable : 1 });
+  var got = _.mapOnlyOwnExactly( src, screen );
+  test.true( got );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapHasOnlyCountable( test )
+{
+
+  test.case = 'screen - empty vector';
+  var src = { a : 1 };
+  var screen = { b : 2 };
+  var got = _.mapHasOnly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - empty vector';
+  var src = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1, length : 2 });
+  var got = _.mapHasOnly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - empty countable';
+  var src = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 });
+  var got = _.mapHasOnly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - same vector';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b' ], countable : 1, length : 2 });
+  var got = _.mapHasOnly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same countable';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b' ], countable : 1 });
+  var got = _.mapHasOnly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - vector > src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b', 'c' ], countable : 1, length : 2 });
+  var got = _.mapHasOnly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable > src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b', 'c' ], countable : 1 });
+  var got = _.mapHasOnly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - vector < src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a' ], countable : 1, length : 2 });
+  var got = _.mapHasOnly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable < src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a' ], countable : 1 });
+  var got = _.mapHasOnly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r', 'a', 'c' ], countable : 1, length : 2 });
+  var got = _.mapHasOnly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r', 'a', 'c' ], countable : 1 });
+  var got = _.mapHasOnly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r' ], countable : 1, length : 2 });
+  var got = _.mapHasOnly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r' ], countable : 1 });
+  var got = _.mapHasOnly( src, screen );
+  test.true( !got );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapOnlyOwnOnlyCountable( test )
+{
+
+  test.case = 'screen - empty vector';
+  var src = { a : 1 };
+  var screen = { b : 2 };
+  var got = _.mapOnlyOwnOnly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - empty vector';
+  var src = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnOnly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - empty countable';
+  var src = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 });
+  var got = _.mapOnlyOwnOnly( src, screen );
+  test.true( !got );
+
+  /* */
+
+  test.case = 'screen - same array';
+  var src = { a : 1, b : 2 };
+  var screen = [ 'a', 'b' ];
+  var got = _.mapOnlyOwnOnly( src, screen );
+  test.true( got );
+
+  /* */
+
+  test.case = 'screen - same vector';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnOnly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - same countable';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b' ], countable : 1 });
+  var got = _.mapOnlyOwnOnly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - vector > src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b', 'c' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnOnly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - countable > src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'b', 'c' ], countable : 1 });
+  var got = _.mapOnlyOwnOnly( src, screen );
+  test.true( got );
+
+  test.case = 'screen - vector < src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnOnly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable < src';
+  var src = { a : 1, b : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a' ], countable : 1 });
+  var got = _.mapOnlyOwnOnly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r', 'a', 'c' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnOnly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, some the same el';
+  var src = { a : 1, c : 2, d : 3, f : 4 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r', 'a', 'c' ], countable : 1 });
+  var got = _.mapOnlyOwnOnly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r' ], countable : 1, length : 2 });
+  var got = _.mapOnlyOwnOnly( src, screen );
+  test.true( !got );
+
+  test.case = 'screen - countable = src, different';
+  var src = { a : 1, c : 2 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'r' ], countable : 1 });
+  var got = _.mapOnlyOwnOnly( src, screen );
+  test.true( !got );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapSetWithKeysCountable( test )
+{
+  test.case = 'screen - empty countable';
+  var dst = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 });
+  var got = _.mapSetWithKeys( dst, screen, undefined );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty countable without values';
+  var dst = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'c' ], countable : 1 });
+  var got = _.mapSetWithKeys( dst, screen, undefined );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty countable without values, remove existing';
+  var dst = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'c' ], countable : 1 });
+  var got = _.mapSetWithKeys( dst, screen, undefined );
+  var expected = {};
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty countable without values, add properties with values';
+  var dst = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'c' ], countable : 1 });
+  var got = _.mapSetWithKeys( dst, screen, 100 );
+  var expected = { a : 1, b : 100, c : 100 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapSetWithKeyStrictlyCountable( test )
+{
+  test.case = 'screen - empty vector';
+  var dst = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 });
+  var got = _.mapSetWithKeyStrictly( dst, screen, undefined );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - empty countable';
+  var dst = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1, length : 2 });
+  var got = _.mapSetWithKeyStrictly( dst, screen, undefined );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty vector without values';
+  var dst = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'c' ], countable : 1 });
+  var got = _.mapSetWithKeyStrictly( dst, screen, undefined );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty countable without values';
+  var dst = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'c' ], countable : 1, length : 2 });
+  var got = _.mapSetWithKeyStrictly( dst, screen, undefined );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty vector without values, remove existing';
+  var dst = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'c' ], countable : 1 });
+  var got = _.mapSetWithKeyStrictly( dst, screen, undefined );
+  var expected = {};
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty countable without values, remove existing';
+  var dst = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'c' ], countable : 1, length : 2 });
+  var got = _.mapSetWithKeyStrictly( dst, screen, undefined );
+  var expected = {};
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty vector without values, add properties with values';
+  var dst = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'c' ], countable : 1 });
+  var got = _.mapSetWithKeyStrictly( dst, screen, 100 );
+  var expected = { a : 1, b : 100, c : 100 };
+  test.identical( got, expected );
+
+  test.case = 'screen - non empty countable without values, add properties with values';
+  var dst = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'b', 'c' ], countable : 1, length : 2 });
+  var got = _.mapSetWithKeyStrictly( dst, screen, 100 );
+  var expected = { a : 1, b : 100, c : 100 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapsFlattenCountable( test )
+{
+  test.case = 'src - empty countable';
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 });
+  var got = _.mapsFlatten( src );
+  var expected = {};
+  test.identical( got, expected );
+
+  test.case = 'src - non empty countable';
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { a : 1 } ], countable : 1 });
+  var got = _.mapsFlatten( src );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'src - non empty countable, several, nested';
+  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { a : 1, dir : { b : 2 } }, { c : 3 } ], countable : 1 });
+  var got = _.mapsFlatten({ src, delimeter : '.' });
+  var expected = { 'a' : 1, 'dir.b' : 2, 'c' : 3 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapBut_ButMapCountable( test )
+{
+
+  test.case = 'srcMap - empty map, butMap - empty array';
+  var srcMap = {};
+  var butMap = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 });;
+  var got = _.mapBut_( null, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.identical( srcMap, {} );
+
+  test.case = 'srcMap - empty map, butMap - filled array';
+  var srcMap = {};
+  var butMap = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 0, 'b', 1 ], countable : 1 });
+  var got = _.mapBut_( null, srcMap, butMap );
+  var expected = {};
+  test.identical( got, expected );
+
+  test.case = 'srcMap - filled map, butMap - filled array, not identical keys';
+  var srcMap = { aa : 1, bb : 2, cc : 3 };
+  var butMap = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 0, 'b', 1 ], countable : 1 });
+  var got = _.mapBut_( null, srcMap, butMap );
+  var expected = { aa : 1, bb : 2, cc : 3 };
+  test.identical( got, expected );
+
+  test.case = 'srcMap - filled map, butMap - filled array, not identical keys';
+  var srcMap = { aa : 1, bb : 2, cc : 3 };
+  var butMap = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'aa', 0, 'bb', 1 ], countable : 1 });
+  var got = _.mapBut_( null, srcMap, butMap );
+  var expected = { cc : 3 };
+  test.identical( got, expected );
+
+  test.case = 'srcMap - filled map, butMap - filled array, has identical keys';
+  var srcMap = { a : 1, b : 2, cc : 3 };
+  var butMap = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 0, 'b', 1 ], countable : 1 });
+  var got = _.mapBut_( null, srcMap, butMap );
+  var expected = { cc : 3 };
+  test.identical( got, expected );
+
+  test.case = 'srcMap - filled map, butMap - array with maps, nested maps has same keys';
+  var srcMap = { a : 1, b : 2 };
+  var butMap = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { c : 0 }, { a : 0 } ], countable : 1 });
+  var got = _.mapBut_( null, srcMap, butMap );
+  var expected = { b : 2 };
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapOnly_SrcMapCountable( test )
+{
+  test.case = 'srcMap - empty vector, screenMap - empty map';
+  var srcMap = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 });
+  var screenMap = {};
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - empty vector, screenMap - filled map';
+  var srcMap = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 });
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, screenMap - empty map';
+  var srcMap = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { a : 'abc' }, { c : 33 }, { d : 'name' } ], countable : 1 });
+  var screenMap = {};
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - vector of maps, all keys in srcMap exists in screenMap - map';
+  var srcMap = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { a : 'abc' }, { c : 33 }, { d : 'name' } ], countable : 1 });
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = { a : 'abc', c : 33, d : 'name' };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - vector of maps, none keys in srcMap exists in screenMap - map';
+  var srcMap = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { a : 'abc' }, { c : 33 }, { d : 'name' } ], countable : 1 });
+  var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapOnly_ScreenMapIsCountable( test )
+{
+
+  test.case = 'srcMap - empty map, screenMap - empty countable';
+  var srcMap = {};
+  var screenMap = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 });
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+
+  test.case = 'srcMap - empty map, screenMap - filled countable';
+  var srcMap = {};
+  var screenMap = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'c', { b : 77 } ], countable : 1 });
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, {} );
+
+  test.case = 'screenMap - empty countable';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 });
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+
+  test.case = 'all keys in srcMap exists in screenMap - countable';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'a', 'c', 'd' ], countable : 1 });
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = { d : 'name', c : 33, a : 'abc' };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+
+  test.case = 'none keys in srcMap exists in screenMap - countable';
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ 'd', 'a', { bb : 77 } ], countable : 1 });
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = { d : 'name', a : 'abc' };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { d : 'name', c : 33, a : 'abc' } );
+
+  test.case = 'srcMap has numerical keys, screenMap has not primitives';
+  var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
+  var screenMap = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { a : 13 }, [ 'a', 'b', 'c' ] ], countable : 1 });
+  var got = _.mapOnly_( null, srcMap, screenMap );
+  var expected = { '0' : 'name', '1' : 33, '2' : 'abc' };
+  test.identical( got, expected );
+  test.true( got !== srcMap );
+  test.identical( srcMap, { 0 : 'name', 1 : 33, 2 : 'abc' } );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapsExtendConditionalCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendConditional
+  (
+    _.props.mapper.dstNotHas(),
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendConditional
+  (
+    _.props.mapper.dstNotHas(),
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendConditional
+  (
+    _.props.mapper.dstNotHas(),
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendConditional
+  (
+    _.props.mapper.dstNotHas(),
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapsExtendCountable( test )
+{
+
+  test.case = 'screen - empty vector';
+  var dst = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 });
+  var got = _.mapsExtend( dst, screen );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - empty countable';
+  var dst = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1, length : 2 });
+  var got = _.mapsExtend( dst, screen );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - same vector';
+  var dst = { a : 1 };
+  var src1 = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ src1 ], countable : 1 });
+  var got = _.mapsExtend( dst, screen );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - same vector';
+  var dst = { a : 1 };
+  var src1 = { a : 1 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ src1 ], countable : 1, length : 2 });
+  var got = _.mapsExtend( dst, screen );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  test.case = 'screen - vector > src';
+  var dst = { a : 1 };
+  var src1 = { a : 2, b : 3 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ src1 ], countable : 1 });
+  var got = _.mapsExtend( dst, screen );
+  var expected = { a : 2, b : 3 };
+  test.identical( got, expected );
+
+  test.case = 'screen - countable > src';
+  var dst = { a : 1 };
+  var src1 = { a : 2, b : 3 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ src1 ], countable : 1, length : 2 });
+  var got = _.mapsExtend( dst, screen );
+  var expected = { a : 2, b : 3 };
+  test.identical( got, expected );
+
+  test.case = 'screen - vector, several srcs';
+  var dst = { a : 1 };
+  var src1 = { a : 2, b : 3 };
+  var src2 = { b : 4, c : 5 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ src1, src2 ], countable : 1 });
+  var got = _.mapsExtend( dst, screen );
+  var expected = { a : 2, b : 4, c : 5 };
+  test.identical( got, expected );
+
+  test.case = 'screen - countable, several srcs';
+  var dst = { a : 1 };
+  var src1 = { a : 2, b : 3 };
+  var src2 = { b : 4, c : 5 };
+  var screen = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ src1, src2 ], countable : 1, length : 2 });
+  var got = _.mapsExtend( dst, screen );
+  var expected = { a : 2, b : 4, c : 5 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapsExtendAppendingCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendAppending
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendAppending
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendAppending
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { a : [ 1, 2 ], b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendAppending
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { a : [ 1, 2 ], b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapsExtendPrependingCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendPrepending
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendPrepending
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendPrepending
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { a : [ 2, 1 ], b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendPrepending
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { a : [ 2, 1 ], b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapsExtendAppendingOnlyArraysCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendAppendingOnlyArrays
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendAppendingOnlyArrays
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendAppendingOnlyArrays
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 2, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : [ 1 ], b : 2 };
+  var got = _.mapsExtendAppendingOnlyArrays
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : [ 2 ] } ], countable : 1 })
+  );
+  var expected = { a : [ 1, 2 ], b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapsExtendByDefinedCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendByDefined
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendByDefined
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendByDefined
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 2, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendByDefined
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 2, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects, 1 property undefined';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendByDefined
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, und : undefined }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 2, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapsExtendNullsCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendNulls
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendNulls
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendNulls
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendNulls
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects, 1 property undefined';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendNulls
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, und : undefined, g : null }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5, und : undefined };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapsExtendDstNotOwnCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendDstNotOwn
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendDstNotOwn
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendDstNotOwn
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendDstNotOwn
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects, 1 property undefined';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendDstNotOwn
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2, und : undefined }, ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5, und : undefined };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapsExtendNotIdenticalCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendNotIdentical
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendNotIdentical
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendNotIdentical
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 2, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendNotIdentical
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 2, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects, 1 property undefined';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendNotIdentical
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2, und : undefined } ], countable : 1 })
+  );
+  var expected = { a : 2, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapsSupplementAppendingCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsSupplementAppending
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsSupplementAppending
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsSupplementAppending
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsSupplementAppending
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects, 1 property undefined';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsSupplementAppending
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2, und : undefined } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5, und : undefined };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapsComplementCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsComplement
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsComplement
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsComplement
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsComplement
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapsComplementReplacingUndefinesCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsComplementReplacingUndefines
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsComplementReplacingUndefines
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsComplementReplacingUndefines
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : 1, b : 2, c : undefined };
+  var got = _.mapsComplementReplacingUndefines
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapsComplementPreservingUndefinesCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsComplementPreservingUndefines
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsComplementPreservingUndefines
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsComplementPreservingUndefines
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : 1, b : 2, c : undefined };
+  var got = _.mapsComplementPreservingUndefines
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : undefined, d : 5 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapsExtendRecursiveConditionalCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendRecursiveConditional
+  (
+    _.props.condition.bypass(),
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendRecursiveConditional
+  (
+    _.props.condition.bypass(),
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendRecursiveConditional
+  (
+    _.props.condition.bypass(),
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 2, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : 1, b : 2, c : undefined };
+  var got = _.mapsExtendRecursiveConditional
+  (
+    _.props.condition.bypass(),
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 2, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapsExtendRecursiveCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 2, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : 1, b : 2, c : undefined };
+  var got = _.mapsExtendRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 2, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapsExtendAppendingAnythingRecursiveCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendAppendingAnythingRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendAppendingAnythingRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendAppendingAnythingRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { a : [ 1, 2 ], b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : 1, b : 2, c : undefined };
+  var got = _.mapsExtendAppendingAnythingRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { a : [ 1, 2 ], b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapsExtendAppendingArraysRecursiveCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendAppendingArraysRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendAppendingArraysRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : [ 1 ], b : 2 };
+  var got = _.mapsExtendAppendingArraysRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : [ 2 ] } ], countable : 1 })
+  );
+  var expected = { a : [ 1, 2 ], b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : [ 1 ], b : 2, c : undefined };
+  var got = _.mapsExtendAppendingArraysRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : [ 2 ] } ], countable : 1 })
+  );
+  var expected = { a : [ 1, 2 ], b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapsExtendAppendingOnceRecursiveCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendAppendingOnceRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsExtendAppendingOnceRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : [ 1 ], b : 2 };
+  var got = _.mapsExtendAppendingOnceRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : [ 2 ] } ], countable : 1 })
+  );
+  var expected = { a : [ 1, 2 ], b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : [ 1 ], b : 2, c : undefined };
+  var got = _.mapsExtendAppendingOnceRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : [ 2 ] } ], countable : 1 })
+  );
+  var expected = { a : [ 1, 2 ], b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapSupplementByMapsRecursiveCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapSupplementByMapsRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapSupplementByMapsRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapSupplementByMapsRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : 1, b : 2, c : 3 };
+  var got = _.mapSupplementByMapsRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : 3, d : 5 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapsSupplementOwnRecursiveCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsSupplementOwnRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsSupplementOwnRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapsSupplementOwnRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 2, b : 2 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : 2, b : 2, c : 3 };
+  var got = _.mapsSupplementOwnRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 2, b : 2, c : 3 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapSupplementByMapsRemovingRecursiveCountable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapSupplementByMapsRemovingRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapSupplementByMapsRemovingRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var dst = { a : 1, b : 2 };
+  var got = _.mapSupplementByMapsRemovingRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var dst = { a : 2, b : 2, c : 3 };
+  var got = _.mapSupplementByMapsRemovingRecursive
+  (
+    dst,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { b : 2 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapButConditional_Countable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var src = { a : 1, b : 2 };
+  var got = _.mapButConditional_
+  (
+    _.props.condition.bypass(),
+    null,
+    src,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var src = { a : 1, b : 2 };
+  var got = _.mapButConditional_
+  (
+    _.props.condition.bypass(),
+    null,
+    src,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var src = { a : 1, b : 2 };
+  var got = _.mapButConditional_
+  (
+    _.props.condition.bypass(),
+    null,
+    src,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var src = { a : 2, b : 2, c : 3 };
+  var got = _.mapButConditional_
+  (
+    _.props.condition.bypass(),
+    null,
+    src,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 2, b : 2, c : 3 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj, undefined in src';
+  var src = { a : 1, b : 2, c : undefined };
+  var got = _.mapButConditional_
+  (
+    _.props.condition.bypass(),
+    null,
+    src,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : undefined };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj, undefined in screen';
+  var src = { a : 1, b : 2, c : undefined };
+  var got = _.mapButConditional_
+  (
+    _.props.condition.bypass(),
+    null,
+    src,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : undefined } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2, c : undefined };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapButIgnoringUndefines_Countable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var src = { a : 1, b : 2 };
+  var got = _.mapButIgnoringUndefines_
+  (
+    null,
+    src,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var src = { a : 1, b : 2 };
+  var got = _.mapButIgnoringUndefines_
+  (
+    null,
+    src,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var src = { a : 1, b : 2 };
+  var got = _.mapButIgnoringUndefines_
+  (
+    null,
+    src,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { b : 2 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var src = { a : 2, b : 2, c : 3 };
+  var got = _.mapButIgnoringUndefines_
+  (
+    null,
+    src,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { b : 2 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj, undefined in src';
+  var src = { a : 1, b : 2, c : undefined };
+  var got = _.mapButIgnoringUndefines_
+  (
+    null,
+    src,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { b : 2 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj, undefined in screen';
+  var src = { a : 1, b : 2, c : undefined };
+  var got = _.mapButIgnoringUndefines_
+  (
+    null,
+    src,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : undefined } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapOnlyOwnBut_Countable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var src = { a : 1, b : 2 };
+  var got = _.mapOnlyOwnBut_
+  (
+    null,
+    src,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var src = { a : 1, b : 2 };
+  var got = _.mapOnlyOwnBut_
+  (
+    null,
+    src,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 })
+  );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var src = { a : 1, b : 2 };
+  var got = _.mapOnlyOwnBut_
+  (
+    null,
+    src,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { b : 2 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var src = { a : 2, b : 2, c : 3 };
+  var got = _.mapOnlyOwnBut_
+  (
+    null,
+    src,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 })
+  );
+  var expected = { b : 2 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj, undefined in src';
+  var src = { a : 1, b : 2, c : undefined };
+  var got = _.mapOnlyOwnBut_
+  (
+    null,
+    src,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 })
+  );
+  var expected = { b : 2 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj, undefined in screen';
+  var src = { a : 1, b : 2, c : undefined };
+  var got = _.mapOnlyOwnBut_
+  (
+    null,
+    src,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : undefined } ], countable : 1 })
+  );
+  var expected = { b : 2 };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapOnlyOwn_Countable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var src = { a : 1, b : 2 };
+  var got = _.mapOnlyOwn_
+  (
+    null,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 }),
+    src,
+  );
+  var expected = {};
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var src = { a : 1, b : 2 };
+  var got = _.mapOnlyOwn_
+  (
+    null,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 }),
+    src,
+  );
+  var expected = {};
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var src = { a : 1, b : 2 };
+  var got = _.mapOnlyOwn_
+  (
+    null,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 }),
+    src,
+  );
+  var expected = { a : 2 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var src = { a : 2, b : 2, c : 3 };
+  var got = _.mapOnlyOwn_
+  (
+    null,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 }),
+    src,
+  );
+  var expected = { c : 3, a : 2 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj, undefined in src';
+  var src = { a : 1, b : 2, c : undefined };
+  var got = _.mapOnlyOwn_
+  (
+    null,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 }),
+    src,
+  );
+  var expected = { a : 2 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj, undefined in screen';
+  var src = { a : 1, b : 2, c : undefined };
+  var got = _.mapOnlyOwn_
+  (
+    null,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : undefined } ], countable : 1 }),
+    src,
+  );
+  var expected = { a : undefined };
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
+//
+
+function mapOnlyComplementing_Countable( test )
+{
+
+  test.case = 'all new fields in 1 obj';
+  var src = { a : 1, b : 2 };
+  var got = _.mapOnlyComplementing_
+  (
+    null,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3 } ], countable : 1 }),
+    src,
+  );
+  var expected = {};
+  test.identical( got, expected );
+
+  test.case = 'all new fields in different objects';
+  var src = { a : 1, b : 2 };
+  var got = _.mapOnlyComplementing_
+  (
+    null,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 } ], countable : 1 }),
+    src,
+  );
+  var expected = {};
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj';
+  var src = { a : 1, b : 2 };
+  var got = _.mapOnlyComplementing_
+  (
+    null,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 }),
+    src,
+  );
+  var expected = { a : 2 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in different objects';
+  var src = { a : 2, b : 2, c : 3 };
+  var got = _.mapOnlyComplementing_
+  (
+    null,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5 }, { c : 3 }, { a : 2 } ], countable : 1 }),
+    src,
+  );
+  var expected = { c : 3, a : 2 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj, undefined in src';
+  var src = { a : 1, b : 2, c : undefined };
+  var got = _.mapOnlyComplementing_
+  (
+    null,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : 2 } ], countable : 1 }),
+    src,
+  );
+  var expected = { a : 2 };
+  test.identical( got, expected );
+
+  test.case = 'new fields in 1 obj, undefined in screen';
+  var src = { a : 1, b : 2, c : undefined };
+  var got = _.mapOnlyComplementing_
+  (
+    null,
+    __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ { d : 5, c : 3, a : undefined } ], countable : 1 }),
+    src,
+  );
+  var expected = {};
+  test.identical( got, expected );
+
+  /* - */
+
+  // function _iterate()
+  // {
+  //
+  //   let iterator = Object.create( null );
+  //   iterator.next = next;
+  //   iterator.index = 0;
+  //   iterator.instance = this;
+  //   return iterator;
+  //
+  //   function next()
+  //   {
+  //     let result = Object.create( null );
+  //     result.done = this.index === this.instance.elements.length;
+  //     if( result.done )
+  //     return result;
+  //     result.value = this.instance.elements[ this.index ];
+  //     this.index += 1;
+  //     return result;
+  //   }
+  //
+  // }
+  //
+  // /* */
+  //
+  // function countableConstructor( o )
+  // {
+  //   return countableMake( this, o );
+  // }
+  //
+  // /* */
+  //
+  // function countableMake( dst, o )
+  // {
+  //   if( dst === null )
+  //   dst = Object.create( null );
+  //   _.mapExtend( dst, o );
+  //   if( o.countable )
+  //   dst[ Symbol.iterator ] = _iterate;
+  //   return dst;
+  // }
+
+}
+
 // --
 // define test suite
 // --
@@ -16498,7 +20827,7 @@ mapHasNoneMapOnlyPerformance.experimental = true;
 const Proto =
 {
 
-  name : 'Tools.Map.l9',
+  name : 'Tools.Map.l0.l9',
   silencing : 1,
 
   tests :
@@ -16671,10 +21000,67 @@ const Proto =
     sureMapHasNoUndefine,
     assertMapHasNoUndefine,
 
-    mapHasNoneMapOnlyPerformance
+    mapHasNoneMapOnlyPerformance,
 
+    // countable
+
+    mapHasAllCountable,
+    mapHasAnyCountable,
+    mapHasNoneCountable,
+
+    mapOnlyOwnAllCountable,
+    mapOnlyOwnAnyCountable,
+    mapOnlyOwnNoneCountable,
+    mapHasExactlyCountable,
+    // mapOnlyOwnExactlyCountable, /* not working with array ( and countable ) */
+    mapHasOnlyCountable,
+    // mapOnlyOwnOnlyCountable, /* not working with array ( and countable ) */
+
+    mapSetWithKeysCountable,
+    mapSetWithKeyStrictlyCountable,
+
+    mapsFlattenCountable,
+
+    mapBut_ButMapCountable,
+
+    mapOnly_SrcMapCountable,
+    mapOnly_ScreenMapIsCountable,
+
+    mapsExtendConditionalCountable,
+    mapsExtendCountable,
+
+    mapsExtendAppendingCountable,
+    mapsExtendPrependingCountable,
+    mapsExtendAppendingOnlyArraysCountable,
+    mapsExtendByDefinedCountable,
+    mapsExtendNullsCountable,
+    mapsExtendDstNotOwnCountable,
+    mapsExtendNotIdenticalCountable,
+
+    mapsSupplementAppendingCountable,
+
+    mapsComplementCountable,
+    mapsComplementReplacingUndefinesCountable,
+    mapsComplementPreservingUndefinesCountable,
+
+    mapsExtendRecursiveConditionalCountable,
+    mapsExtendRecursiveCountable,
+    mapsExtendAppendingAnythingRecursiveCountable,
+    mapsExtendAppendingArraysRecursiveCountable,
+    mapsExtendAppendingOnceRecursiveCountable,
+
+    mapSupplementByMapsRecursiveCountable,
+    mapsSupplementOwnRecursiveCountable,
+    mapSupplementByMapsRemovingRecursiveCountable,
+
+    mapButConditional_Countable,
+    mapButIgnoringUndefines_Countable,
+
+    mapOnlyOwnBut_Countable,
+
+    mapOnlyOwn_Countable,
+    mapOnlyComplementing_Countable
   }
-
 }
 
 const Self = wTestSuite( Proto );

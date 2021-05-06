@@ -5,7 +5,9 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-_global_.wTools.vector = _global_.wTools.vector || Object.create( null );
+_.vector = _.vector || Object.create( null );
+
+_.assert( !!_.long.make, 'Expects routine _.long.make' );
 
 // --
 // implementation
@@ -34,6 +36,31 @@ function like( src )
   return _.vector.is( src );
 }
 
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return this.default.IsResizable();
+}
+
+// --
+// meta
+// --
+
+/* qqq : optimize */
+function namespaceOf( src )
+{
+  if( !this.is( src ) )
+  return null;
+
+  let result = _.long.namespaceOf( src );
+  if( result )
+  return result;
+
+  return this;
+}
+
 // --
 // extension
 // --
@@ -56,8 +83,13 @@ var VectorExtension =
   //
 
   NamespaceName : 'vector',
+  NamespaceNames : [ 'vector' ],
+  NamespaceQname : 'wTools/vector',
+  MoreGeneralNamespaceName : 'countable',
+  MostGeneralNamespaceName : 'countable',
   TypeName : 'Vector',
-  SecondTypeName : 'Vector',
+  TypeNames : [ 'Vector' ],
+  // SecondTypeName : 'Vector',
   InstanceConstructor : null,
   tools : _,
 
@@ -65,19 +97,25 @@ var VectorExtension =
 
   is, /* qqq : cover here and in the module::MathVector */
   like, /* qqq : cover here and in the module::MathVector */
+  IsResizable,
 
-  /* xxx : implement */
   // maker
-  //
-  // _makeEmpty,
-  // makeEmpty, /* qqq : for Yevhen : cover */
-  // _makeUndefined,
-  // makeUndefined, /* qqq : for Yevhen : cover */
-  // _make,
-  // make, /* qqq : for Yevhen : cover */
-  // _cloneShallow,
-  // cloneShallow, /* qqq : for Yevhen : cover */
-  // from, /* qqq : for Yevhen : cover */
+
+  _makeEmpty : _.long._makeEmpty,
+  makeEmpty : _.long.makeEmpty, /* qqq : for junior : cover */
+  _makeUndefined : _.long._makeUndefined,
+  makeUndefined : _.long.makeUndefined, /* qqq : for junior : cover */
+  _make : _.long._make,
+  make : _.long.make, /* qqq : for junior : cover */
+  _cloneShallow : _.long._cloneShallow,
+  cloneShallow : _.long.cloneShallow, /* qqq : for junior : cover */
+  from : _.long.from, /* qqq : for junior : cover */
+
+  // meta
+
+  namespaceOf,
+  namespaceWithDefaultOf : _.props.namespaceWithDefaultOf,
+  _functor_functor : _.props._functor_functor,
 
 }
 

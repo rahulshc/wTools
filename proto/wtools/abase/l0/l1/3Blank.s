@@ -23,6 +23,14 @@ function like( src )
   return this.is( src );
 }
 
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return false;
+}
+
 // --
 // maker
 // --
@@ -79,6 +87,23 @@ function _cloneShallow( src )
 }
 
 // --
+// meta
+// --
+
+/* qqq : optimize */
+function namespaceOf( src )
+{
+  return this;
+}
+
+//
+
+function namespaceWithDefaultOf( src )
+{
+  return this;
+}
+
+// --
 // extension
 // --
 
@@ -102,8 +127,13 @@ let BlankExtension =
   //
 
   NamespaceName : 'blank',
+  NamespaceNames : [ 'blank' ],
+  NamespaceQname : 'wTools/blank',
+  MoreGeneralNamespaceName : 'blank',
+  MostGeneralNamespaceName : 'blank',
   TypeName : 'Blank',
-  SecondTypeName : 'Blank',
+  TypeNames : [ 'Blank' ],
+  // SecondTypeName : 'Blank',
   InstanceConstructor : null,
   tools : _,
 
@@ -111,18 +141,25 @@ let BlankExtension =
 
   is,
   like,
+  IsResizable,
 
   // maker
 
   _makeEmpty,
-  makeEmpty, /* qqq : for Yevhen : cover */
+  makeEmpty, /* qqq : for junior : cover */
   _makeUndefined,
-  makeUndefined, /* qqq : for Yevhen : cover */
+  makeUndefined, /* qqq : for junior : cover */
   _make,
-  make, /* qqq : for Yevhen : cover */
+  make, /* qqq : for junior : cover */
   _cloneShallow,
-  cloneShallow : _.props.cloneShallow, /* qqq : for Yevhen : cover */
-  from : _.props.from, /* qqq : for Yevhen : cover */
+  cloneShallow : _.props.cloneShallow, /* qqq : for junior : cover */
+  from : _.props.from, /* qqq : for junior : cover */
+
+  // meta
+
+  namespaceOf,
+  namespaceWithDefaultOf,
+  _functor_functor : _.props._functor_functor,
 
 }
 

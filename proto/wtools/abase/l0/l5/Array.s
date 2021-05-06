@@ -322,7 +322,7 @@ function arrayFromCoercing( src )
   if( _.strIs( src ) )
   return this.arrayFromStr( src );
 
-  if( _.object.is( src ) )
+  if( _.object.isBasic( src ) )
   return _.props.pairs( src );
 
   _.assert( 0, 'Unknown data type : ' + _.entity.strType( src ) );
@@ -1811,10 +1811,10 @@ function arrayRemovedOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
   {
     dstArray.splice( index, 1 );
   }
-  else _.assert( 0, () => 'Array does not have element ' + _.entity.exportStringShallow( ins ) );
+  else _.assert( 0, () => 'Array does not have element ' + _.entity.exportStringDiagnosticShallow( ins ) );
 
   let newIndex = _.longLeftIndex.apply( _, arguments );
-  _.assert( newIndex < 0, () => 'The element ' + _.entity.exportStringShallow( ins ) + ' is several times in dstArray' );
+  _.assert( newIndex < 0, () => 'The element ' + _.entity.exportStringDiagnosticShallow( ins ) + ' is several times in dstArray' );
 
   return index;
 }
@@ -1892,7 +1892,7 @@ function arrayRemoveElementOnceStrictly( /* dstArray, ins, evaluator1, evaluator
     let result = _.arrayRemovedElementOnce.apply( this, arguments );
     let index = _.longLeftIndex.apply( _, arguments );
     _.assert( index < 0 );
-    _.assert( result >= 0, () => 'Array does not have element ' + _.entity.exportStringShallow( ins ) );
+    _.assert( result >= 0, () => 'Array does not have element ' + _.entity.exportStringDiagnosticShallow( ins ) );
   }
   else
   {
@@ -1905,7 +1905,7 @@ function arrayRemoveElementOnceStrictly( /* dstArray, ins, evaluator1, evaluator
 function arrayRemoveElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
   let result = arrayRemovedElementOnce.apply( this, arguments );
-  _.assert( result >= 0, () => 'Array does not have element ' + _.entity.exportStringShallow( ins ) );
+  _.assert( result >= 0, () => 'Array does not have element ' + _.entity.exportStringDiagnosticShallow( ins ) );
   return dstArray;
 }
 */
@@ -2084,10 +2084,10 @@ function arrayRemovedElementOnceStrictly( /* dstArray, ins, evaluator1, evaluato
     result = dstArray[ index ];
     dstArray.splice( index, 1 );
   }
-  else _.assert( 0, () => 'Array does not have element ' + _.entity.exportStringShallow( ins ) );
+  else _.assert( 0, () => 'Array does not have element ' + _.entity.exportStringDiagnosticShallow( ins ) );
 
   index = _.longLeftIndex.apply( _, arguments );
-  _.assert( index < 0, () => 'The element ' + _.entity.exportStringShallow( ins ) + ' is several times in dstArray' );
+  _.assert( index < 0, () => 'The element ' + _.entity.exportStringDiagnosticShallow( ins ) + ' is several times in dstArray' );
 
   return result;
 }
@@ -2108,10 +2108,10 @@ function arrayRemovedElementOnceStrictly_( /* dstArray, ins, evaluator1, evaluat
     removedElement = dstArray[ index ];
     dstArray.splice( index, 1 );
   }
-  else _.assert( 0, () => 'Array does not have element ' + _.entity.exportStringShallow( ins ) );
+  else _.assert( 0, () => 'Array does not have element ' + _.entity.exportStringDiagnosticShallow( ins ) );
 
   index = _.longLeftIndex.apply( _, arguments );
-  _.assert( index < 0, () => 'The element ' + _.entity.exportStringShallow( ins ) + ' is several times in dstArray' );
+  _.assert( index < 0, () => 'The element ' + _.entity.exportStringDiagnosticShallow( ins ) + ' is several times in dstArray' );
 
   return removedElement;
 }
@@ -2127,7 +2127,7 @@ function arrayRemovedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 
     result = dstArray[ index ];
     dstArray.splice( index, 1 );
   }
-  else _.assert( 0, () => 'Array does not have element ' + _.entity.exportStringShallow( ins ) );
+  else _.assert( 0, () => 'Array does not have element ' + _.entity.exportStringDiagnosticShallow( ins ) );
 
   return result;
 }
@@ -2689,7 +2689,7 @@ function arrayFlattened( dstArray, src )
   let visited = [];
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.object.is( this ) );
+  _.assert( _.object.isBasic( this ) );
   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${dstArray}"` );
 
   if( arguments.length === 1 )
@@ -3255,7 +3255,7 @@ function arrayFlattenedDefined( dstArray, src )
   let visited = [];
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.object.is( this ) );
+  _.assert( _.object.isBasic( this ) );
   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 
   if( arguments.length === 1 )
@@ -3374,7 +3374,7 @@ function arrayFlattenedDefined( dstArray, src )
 // {
 //
 //   _.assert( arguments.length >= 1 );
-//   _.assert( _.object.is( this ) );
+//   _.assert( _.object.isBasic( this ) );
 //   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 //
 //   if( arguments.length === 1 )
@@ -3968,9 +3968,9 @@ function arrayReplaceOnceStrictly( /* dstArray, ins, sub, evaluator1, evaluator2
   if( Config.debug )
   {
     result = arrayReplacedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => 'Array does not have element ' + _.entity.exportStringShallow( ins ) );
+    _.assert( result >= 0, () => 'Array does not have element ' + _.entity.exportStringDiagnosticShallow( ins ) );
     result = arrayReplacedOnce.apply( this, arguments );
-    _.assert( result < 0, () => 'The element ' + _.entity.exportStringShallow( ins ) + 'is several times in dstArray' );
+    _.assert( result < 0, () => 'The element ' + _.entity.exportStringDiagnosticShallow( ins ) + 'is several times in dstArray' );
   }
   else
   {
@@ -3983,7 +3983,7 @@ function arrayReplaceOnceStrictly( /* dstArray, ins, sub, evaluator1, evaluator2
 function arrayReplaceOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   let result = arrayReplacedOnce.apply( this, arguments );
-  _.assert( result >= 0, () => 'Array does not have element ' + _.entity.exportStringShallow( ins ) );
+  _.assert( result >= 0, () => 'Array does not have element ' + _.entity.exportStringDiagnosticShallow( ins ) );
   return dstArray;
 }
 */
@@ -4057,9 +4057,9 @@ function arrayReplacedOnceStrictly( /* dstArray, ins, sub, evaluator1, evaluator
   if( Config.debug )
   {
     result = arrayReplacedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => 'Array does not have element ' + _.entity.exportStringShallow( ins ) );
+    _.assert( result >= 0, () => 'Array does not have element ' + _.entity.exportStringDiagnosticShallow( ins ) );
     let newResult = arrayReplacedOnce.apply( this, arguments );
-    _.assert( newResult < 0, () => 'The element ' + _.entity.exportStringShallow( ins ) + 'is several times in dstArray' );
+    _.assert( newResult < 0, () => 'The element ' + _.entity.exportStringDiagnosticShallow( ins ) + 'is several times in dstArray' );
   }
   else
   {
@@ -4124,9 +4124,9 @@ function arrayReplaceElementOnceStrictly( /* dstArray, ins, sub, evaluator1, eva
   if( Config.debug )
   {
     result = arrayReplacedElementOnce.apply( this, arguments );
-    _.assert( result !== undefined, () => 'Array does not have element ' + _.entity.exportStringShallow( ins ) );
+    _.assert( result !== undefined, () => 'Array does not have element ' + _.entity.exportStringDiagnosticShallow( ins ) );
     result = arrayReplacedElementOnce.apply( this, arguments );
-    _.assert( result === undefined, () => 'The element ' + _.entity.exportStringShallow( ins ) + 'is several times in dstArray' );
+    _.assert( result === undefined, () => 'The element ' + _.entity.exportStringDiagnosticShallow( ins ) + 'is several times in dstArray' );
   }
   else
   {
@@ -4206,9 +4206,9 @@ function arrayReplacedElementOnceStrictly( /* dstArray, ins, sub, evaluator1, ev
   if( Config.debug )
   {
     result = arrayReplacedElementOnce.apply( this, arguments );
-    _.assert( result !== undefined, () => 'Array does not have element ' + _.entity.exportStringShallow( ins ) );
+    _.assert( result !== undefined, () => 'Array does not have element ' + _.entity.exportStringDiagnosticShallow( ins ) );
     let newResult = arrayReplacedElementOnce.apply( this, arguments );
-    _.assert( newResult === undefined, () => 'The element ' + _.entity.exportStringShallow( ins ) + 'is several times in dstArray' );
+    _.assert( newResult === undefined, () => 'The element ' + _.entity.exportStringDiagnosticShallow( ins ) + 'is several times in dstArray' );
   }
   else
   {
@@ -4222,7 +4222,7 @@ function arrayReplacedElementOnceStrictly( /* dstArray, ins, sub, evaluator1, ev
 function arrayReplacedOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   let result = arrayReplacedOnce.apply( this, arguments );
-  _.assert( result >= 0, () => 'Array does not have element ' + _.entity.exportStringShallow( ins ) );
+  _.assert( result >= 0, () => 'Array does not have element ' + _.entity.exportStringDiagnosticShallow( ins ) );
   return result;
 }
 */
@@ -4278,7 +4278,7 @@ function arrayReplaceArrayOnceStrictly( /* dstArray, ins, sub, evaluator1, evalu
 
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
 
-    _.assert( newResult === 0, () => 'The element ' + _.entity.exportStringShallow( ins ) + 'is several times in dstArray' );
+    _.assert( newResult === 0, () => 'The element ' + _.entity.exportStringDiagnosticShallow( ins ) + 'is several times in dstArray' );
   }
   else
   {
@@ -4411,7 +4411,7 @@ function arrayReplacedArrayOnceStrictly( /* dstArray, ins, sub, evaluator1, eval
     return result;
 
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
-    _.assert( newResult === 0, () => 'One element of ' + _.entity.exportStringShallow( ins ) + 'is several times in dstArray' );
+    _.assert( newResult === 0, () => 'One element of ' + _.entity.exportStringDiagnosticShallow( ins ) + 'is several times in dstArray' );
   }
   else
   {
@@ -4480,7 +4480,7 @@ function arrayReplaceArraysOnceStrictly( /* dstArray, ins, sub, evaluator1, eval
     return dstArray;
 
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
-    _.assert( newResult === 0, () => 'One element of ' + _.entity.exportStringShallow( ins ) + 'is several times in dstArray' );
+    _.assert( newResult === 0, () => 'One element of ' + _.entity.exportStringDiagnosticShallow( ins ) + 'is several times in dstArray' );
   }
   else
   {
@@ -4660,7 +4660,7 @@ function arrayReplacedArraysOnceStrictly( /* dstArray, ins, sub, evaluator1, eva
     return result;
 
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
-    _.assert( newResult === 0, () => 'The element ' + _.entity.exportStringShallow( ins ) + 'is several times in dstArray' );
+    _.assert( newResult === 0, () => 'The element ' + _.entity.exportStringDiagnosticShallow( ins ) + 'is several times in dstArray' );
   }
   else
   {
@@ -4766,16 +4766,16 @@ let ToolsExtension =
 
   arrayBut,
   arrayButInplace, /* !!! : use instead of arrayBut, arrayButInplace */
-  arrayBut_,
+  arrayBut_, /* qqq : for Dmytro : use in wTools */
   arrayShrink,
   arrayShrinkInplace, /* !!! : use instead of arrayShrink, arrayShrinkInplace */
-  arrayShrink_,
+  arrayShrink_, /* qqq : for Dmytro : use in wTools */
   arrayGrow,
   arrayGrowInplace, /* !!! : use instead of arrayGrow, arrayGrowInplace */
-  arrayGrow_,
+  arrayGrow_, /* qqq : for Dmytro : use in wTools */
   arrayRelength,
   arrayRelengthInplace, /* !!! : use instead of arrayRelength, arrayRelengthInplace */
-  arrayRelength_,
+  arrayRelength_, /* qqq : for Dmytro : use in wTools */
 
   // array prepend on l3
 

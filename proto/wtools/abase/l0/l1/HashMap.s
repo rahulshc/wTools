@@ -43,6 +43,14 @@ function isPopulated()
   return !!src.size;
 }
 
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return true;
+}
+
 // --
 // maker
 // --
@@ -192,6 +200,53 @@ function from( src )
 }
 
 // --
+// properties
+// --
+
+function _keys( src )
+{
+  return [ ... src.keys() ];
+}
+
+//
+
+function keys( src )
+{
+  _.assert( this.like( src ) );
+  return this._keys( src );
+}
+
+//
+
+function _vals( src )
+{
+  return [ ... src.values() ];
+}
+
+//
+
+function vals( src )
+{
+  _.assert( this.like( src ) );
+  return this._vals( src );
+}
+
+//
+
+function _pairs( src )
+{
+  return [ ... src.entries() ];
+}
+
+//
+
+function pairs( src )
+{
+  _.assert( this.like( src ) );
+  return this._pairs( src );
+}
+
+// --
 // extension
 // --
 
@@ -225,6 +280,10 @@ let Extension =
   //
 
   NamespaceName : 'hashMap',
+  NamespaceNames : [ 'hashMap' ],
+  NamespaceQname : 'wTools/hashMap',
+  MoreGeneralNamespaceName : 'hashMap',
+  MostGeneralNamespaceName : 'countable',
   TypeName : 'HashMap',
   SecondTypeName : 'Map',
   InstanceConstructor : HashMap,
@@ -236,21 +295,37 @@ let Extension =
   like,
   isEmpty,
   isPopulated,
+  IsResizable,
 
   /* xxx : qqq : implement keys* routines */
 
   // maker
 
   _makeEmpty,
-  makeEmpty, /* qqq : for Yevhen : cover */
+  makeEmpty, /* qqq : for junior : cover */
   _makeUndefined,
-  makeUndefined, /* qqq : for Yevhen : cover */
+  makeUndefined, /* qqq : for junior : cover */
   _make,
-  make, /* qqq : for Yevhen : cover */
+  make, /* qqq : for junior : cover */
   _cloneShallow,
-  cloneShallow, /* qqq : for Yevhen : cover */
-  fromProps, /* qqq : for Yevhen : cover */
-  from, /* qqq : for Yevhen : cover */
+  cloneShallow, /* qqq : for junior : cover */
+  fromProps, /* qqq : for junior : cover */
+  from, /* qqq : for junior : cover */
+
+  // properties
+
+  _keys,
+  keys, /* qqq : for junior : cover */
+  _vals,
+  vals, /* qqq : for junior : cover */
+  _pairs,
+  pairs, /* qqq : for junior : cover */
+
+  // meta
+
+  namespaceOf : _.blank.namespaceOf,
+  namespaceWithDefaultOf : _.blank.namespaceWithDefaultOf,
+  _functor_functor : _.blank._functor_functor,
 
 }
 

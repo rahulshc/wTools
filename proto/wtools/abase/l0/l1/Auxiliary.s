@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.aux = _global_.wTools.aux || Object.create( null );
+_global_.wTools.aux = _global_.wTools.aux || Object.create( null );
 
 _.assert( !!_.props.keys, 'Expects routine _.props.keys' );
 _.assert( !!_.props._extendWithHashmap, 'Expects routine _.props._extendWithHashmap' );
@@ -20,16 +20,20 @@ function is( src )
   if( !src )
   return false;
 
-  if( src[ Symbol.iterator ] )
-  return false;
-
   let proto = Object.getPrototypeOf( src );
 
   if( proto === null )
   return true;
 
   if( proto === Object.prototype )
-  return true;
+  {
+    if( src[ Symbol.iterator ] )
+    return Object.prototype.toString.call( src ) !== '[object Arguments]';
+    return true;
+  }
+
+  if( _.routineIs( proto[ Symbol.iterator ] ) )
+  return false;
 
   if( !_.primitive.is( proto ) )
   if( !Reflect.has( proto, 'constructor' ) || proto.constructor === Object.prototype.constructor )
@@ -38,13 +42,36 @@ function is( src )
   return false;
 }
 
+// function is( src )
+// {
+//
+//   if( !src )
+//   return false;
+//
+//   if( src[ Symbol.iterator ] )
+//   return false;
+//
+//   let proto = Object.getPrototypeOf( src );
+//
+//   if( proto === null )
+//   return true;
+//
+//   if( proto === Object.prototype )
+//   return true;
+//
+//   if( !_.primitive.is( proto ) )
+//   if( !Reflect.has( proto, 'constructor' ) || proto.constructor === Object.prototype.constructor )
+//   return true;
+//
+//   return false;
+// }
+
 //
 
 function like( src )
 {
   return _.aux.is( src );
 }
-
 //
 
 function isPrototyped( src )
@@ -53,15 +80,15 @@ function isPrototyped( src )
   if( !src )
   return false;
 
-  if( src[ Symbol.iterator ] )
-  return false;
-
   let proto = Object.getPrototypeOf( src );
 
   if( proto === null )
   return false;
 
   if( proto === Object.prototype )
+  return false;
+
+  if( _.routineIs( proto[ Symbol.iterator ] ) )
   return false;
 
   if( !_.primitive.is( proto ) )
@@ -79,15 +106,15 @@ function isPure( src )
   if( !src )
   return false;
 
-  if( src[ Symbol.iterator ] )
-  return false;
-
   let proto = Object.getPrototypeOf( src );
 
   if( proto === null )
   return true;
 
   if( proto.constructor === Object )
+  return false;
+
+  if( _.routineIs( proto[ Symbol.iterator ] ) )
   return false;
 
   if( !_.primitive.is( proto ) )
@@ -105,12 +132,19 @@ function isPolluted( src )
   if( !src )
   return false;
 
-  if( src[ Symbol.iterator ] )
-  return false;
-
   let proto = Object.getPrototypeOf( src );
 
   if( proto === null )
+  return false;
+
+ if( proto === Object.prototype )
+ {
+   if( src[ Symbol.iterator ] )
+   return Object.prototype.toString.call( src ) !== '[object Arguments]';
+   return true;
+ }
+
+  if( _.routineIs( proto[ Symbol.iterator ] ) )
   return false;
 
   if( proto.constructor === Object )
@@ -118,6 +152,80 @@ function isPolluted( src )
 
   return false;
 }
+
+// //
+//
+// function isPrototyped( src )
+// {
+//
+//   if( !src )
+//   return false;
+//
+//   if( src[ Symbol.iterator ] )
+//   return false;
+//
+//   let proto = Object.getPrototypeOf( src );
+//
+//   if( proto === null )
+//   return false;
+//
+//   if( proto === Object.prototype )
+//   return false;
+//
+//   if( !_.primitive.is( proto ) )
+//   if( !Reflect.has( proto, 'constructor' ) || proto.constructor === Object.prototype.constructor )
+//   return true;
+//
+//   return false;
+// }
+//
+// //
+//
+// function isPure( src )
+// {
+//
+//   if( !src )
+//   return false;
+//
+//   if( src[ Symbol.iterator ] )
+//   return false;
+//
+//   let proto = Object.getPrototypeOf( src );
+//
+//   if( proto === null )
+//   return true;
+//
+//   if( proto.constructor === Object )
+//   return false;
+//
+//   if( !_.primitive.is( proto ) )
+//   if( !Reflect.has( proto, 'constructor' ) )
+//   return true;
+//
+//   return false;
+// }
+//
+// //
+//
+// function isPolluted( src )
+// {
+//
+//   if( !src )
+//   return false;
+//
+//   if( src[ Symbol.iterator ] )
+//   return false;
+//
+//   let proto = Object.getPrototypeOf( src );
+//
+//   if( proto === null )
+//   return false;
+//
+//   if( proto.constructor === Object )
+//   return true;
+//
+//   return false;
+// }
 
 //
 
@@ -137,6 +245,14 @@ function isPopulated( src )
   return this.keys( src ).length > 0;
 }
 
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return true;
+}
+
 // --
 // maker
 // --
@@ -146,8 +262,11 @@ function _makeEmpty( src )
   let result = Object.create( null );
   let src2 = _.prototype.of( src );
   while( src2 )
-  result = Object.create( result );
-  _.assert( 0, 'not tested' );
+  {
+    result = Object.create( result );
+    src2 = _.prototype.of( src2 );
+  }
+  // _.assert( 0, 'not tested' );
   return result;
 }
 
@@ -166,7 +285,8 @@ function makeEmpty( src )
 function _makeUndefined( src, length )
 {
   let result = Object.create( null );
-  _.assert( 0, 'not tested' );
+  // debugger;
+  // _.assert( 0, 'not tested' );
   return result;
 }
 
@@ -198,7 +318,7 @@ function _make( src )
     if( this.like( src ) )
     return this._cloneShallow( src );
     else
-    return this.extendVersatile( Object.create( null ), src );
+    return this.extendUniversal( Object.create( null ), src );
   }
   return Object.create( null );
 }
@@ -253,6 +373,22 @@ function _cloneShallow( src )
 }
 
 // --
+// meta
+// --
+
+/* qqq : optimize */
+function namespaceOf( src )
+{
+
+  if( _.map.is( src ) )
+  return _.map;
+  if( _.aux.is( src ) )
+  return _.aux;
+
+  return null;
+}
+
+// --
 // extension
 // --
 
@@ -293,53 +429,59 @@ var AuxiliaryExtension =
   //
 
   NamespaceName : 'aux',
+  NamespaceNames : [ 'aux' ],
+  NamespaceQname : 'wTools/aux',
+  MoreGeneralNamespaceName : 'props',
+  MostGeneralNamespaceName : 'props',
   TypeName : 'Aux',
-  SecondTypeName : 'Auxiliary',
+  TypeNames : [ 'Aux', 'Auxiliary' ],
+  // SecondTypeName : 'Auxiliary',
   InstanceConstructor : null,
   tools : _,
 
   // dichotomy
 
-  is, /* qqq : cover */
-  like, /* qqq : cover */
-  isPrototyped, /* qqq : cover */
-  isPure, /* qqq : cover */
-  isPolluted, /* qqq : cover */
+  is,
+  like,
+  isPrototyped,
+  isPure,
+  isPolluted,
 
   isEmpty, /* qqq : cover */
   isPopulated, /* qqq : cover */
+  IsResizable,
 
   // maker
 
   _makeEmpty,
-  makeEmpty, /* qqq : for Yevhen : cover */
+  makeEmpty, /* qqq : for junior : cover */
   _makeUndefined,
-  makeUndefined, /* qqq : for Yevhen : cover */
+  makeUndefined, /* qqq : for junior : cover */
   _make,
-  make, /* qqq : for Yevhen : cover */
+  make, /* qqq : for junior : cover */
   _cloneShallow,
-  cloneShallow : _.props.cloneShallow, /* qqq : for Yevhen : cover */
-  from : _.props.from, /* qqq : for Yevhen : cover */
+  cloneShallow : _.props.cloneShallow, /* qqq : for junior : cover */
+  from : _.props.from, /* qqq : for junior : cover */
 
   // properties
 
-  _keys : _.props._keys, /* qqq : for Yevhen : cover */
-  keys : _.props.keys, /* qqq : for Yevhen : cover */
-  onlyOwnKeys : _.props.onlyOwnKeys, /* qqq : for Yevhen : cover */
-  // onlyEnumerableKeys : _.props.onlyEnumerableKeys, /* qqq : for Yevhen : implement and cover properly */
-  allKeys : _.props.allKeys, /* qqq : for Yevhen : cover */
+  _keys : _.props._keys,
+  keys : _.props.keys, /* qqq : for junior : cover */
+  onlyOwnKeys : _.props.onlyOwnKeys, /* qqq : for junior : cover */
+  onlyEnumerableKeys : _.props.onlyEnumerableKeys, /* qqq : for junior : implement and cover properly */
+  allKeys : _.props.allKeys, /* qqq : for junior : cover */
 
-  _vals : _.props._vals, /* qqq : for Yevhen : cover */
-  vals : _.props.vals, /* qqq : for Yevhen : cover */
-  onlyOwnVals : _.props.onlyOwnVals, /* qqq : for Yevhen : cover */
-  // onlyEnumerableVals : _.props.onlyEnumerableVals, /* qqq : for Yevhen : implement and cover properly */
-  allVals : _.props.allVals, /* qqq : for Yevhen : cover */
+  _vals : _.props._vals,
+  vals : _.props.vals, /* qqq : for junior : cover */
+  onlyOwnVals : _.props.onlyOwnVals, /* qqq : for junior : cover */
+  onlyEnumerableVals : _.props.onlyEnumerableVals, /* qqq : for junior : implement and cover properly */
+  allVals : _.props.allVals, /* qqq : for junior : cover */
 
-  _pairs : _.props._pairs, /* qqq : for Yevhen : cover */
-  pairs : _.props.pairs, /* qqq : for Yevhen : cover */
-  onlyOwnPairs : _.props.onlyOwnPairs, /* qqq : for Yevhen : cover */
-  // onlyEnumerablePairs : _.props.onlyEnumerablePairs, /* qqq : for Yevhen : implement and cover properly */
-  allPairs : _.props.allPairs, /* qqq : for Yevhen : cover */
+  _pairs : _.props._pairs,
+  pairs : _.props.pairs, /* qqq : for junior : cover */
+  onlyOwnPairs : _.props.onlyOwnPairs, /* qqq : for junior : cover */
+  onlyEnumerablePairs : _.props.onlyEnumerablePairs, /* qqq : for junior : implement and cover properly */
+  allPairs : _.props.allPairs, /* qqq : for junior : cover */
 
   // amender
 
@@ -347,17 +489,23 @@ var AuxiliaryExtension =
   _extendWithSet : _.props._extendWithSet,
   _extendWithCountable : _.props._extendWithCountable,
   _extendWithProps : _.props._extendWithProps,
-  _extendVersatile : _.props._extendVersatile,
-  extendVersatile : _.props.extendVersatile,
+  _extendUniversal : _.props._extendUniversal,
+  extendUniversal : _.props.extendUniversal,
   extend : _.props.extend,
 
   _supplementWithHashmap : _.props._supplementWithHashmap,
   _supplementWithSet : _.props._supplementWithSet,
   _supplementWithCountable : _.props._supplementWithCountable,
   _supplementWithProps : _.props._supplementWithProps,
-  _supplementVersatile : _.props._supplementVersatile,
-  supplementVersatile : _.props.supplementVersatile,
+  _supplementUniversal : _.props._supplementUniversal,
+  supplementUniversal : _.props.supplementUniversal,
   supplement : _.props.supplement,
+
+  // meta
+
+  namespaceOf,
+  namespaceWithDefaultOf : _.props.namespaceWithDefaultOf,
+  _functor_functor : _.props._functor_functor,
 
 }
 

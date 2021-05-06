@@ -31,7 +31,7 @@ let Location =
 // implementation
 // --
 
-/* qqq : for Yevhen : write performance test for this
+/* qqq : for junior : write performance test for this
 let basePath = _.path.dir( _.introspector.location({ level : 2 }).filePath )
 qqq : make it super optimal
 qqq : implement routine _.introspector.dirPathOf( 2 );
@@ -1048,7 +1048,7 @@ function stackFilter( stack, onEach )
       result.push( r );
       return;
     }
-    _.assert( _.object.is( r ) );
+    _.assert( _.object.isBasic( r ) );
     _.assert( _.strIs( r.original ) );
     result.push( r.original );
   });

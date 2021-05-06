@@ -369,7 +369,7 @@ function _setupUncaughtErrorHandler9()
 
 //
 
-/* qqq : for Yevhen : implement performance test */
+/* qqq : for junior : implement performance test */
 /* xxx : optimize */
 function error_functor( name, onErrorMake )
 {
@@ -428,7 +428,6 @@ function error_functor( name, onErrorMake )
           break;
         }
 
-        debugger;
         if( err1 )
         return ErrorConstructor.apply( err1, arguments );
         return new ErrorConstructor( ... arguments );

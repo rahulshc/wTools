@@ -16,7 +16,7 @@ const _ = _global_.wTools;
 // tests
 // --
 
-/* qqq : for Yevhen : extend please */
+/* qqq : for junior : extend please */
 function dichotomy( test )
 {
 
@@ -49,7 +49,7 @@ function dichotomy( test )
 const Proto =
 {
 
-  name : 'Tools.Auxiliary.l9',
+  name : 'Tools.Auxiliary.l0.l9',
   silencing : 1,
 
   tests :
