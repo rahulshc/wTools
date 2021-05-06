@@ -674,6 +674,7 @@ function _filterAct1()
     _.assert( arguments.length === 6, `Expects 3 arguments` );
     _.assert( this.is( dst ), () => `dst is not ${this.TypeName}` );
     _.assert( general.is( src ), () => `src is not ${general.TypeName}` );
+    _.assert( _.routineIs( onEach ), () => 'onEach is not a routine' )
   }
 
   this._filterAct0( dst, src, onEach, general[ eachRoutineName ].bind( general ), escape );
@@ -766,6 +767,7 @@ function _mapAct1()
     _.assert( arguments.length === 6, `Expects 3 arguments` );
     _.assert( this.is( dst ), () => `dst is not ${this.TypeName}` );
     _.assert( general.is( src ), () => `src is not ${general.TypeName}` );
+    _.assert( _.routineIs( onEach ), () => `onEach is not a routine` );
   }
 
   this._mapAct0( dst, src, onEach, general[ eachRoutineName ].bind( general ), escape );
