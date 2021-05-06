@@ -48,7 +48,7 @@ _.withLong = _.long.toolsNamespacesByType;
  */
 
 /* xxx : optimize! */
-/* qqq : for junior : optimize. ask how to */
+/* qqq2 : for junior : optimize. ask how to */
 /* qqq : check coverage */
 
 function is( src )
