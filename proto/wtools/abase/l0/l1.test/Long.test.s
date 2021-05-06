@@ -249,7 +249,6 @@ function makeCommon( test )
     var src = [ 2, 3 ];
     var got = long[ env.method ]( src );
     test.true( got instanceof InstanceConstructor );
-    test.identical( got.length, 2 );
     test.identical( got, InstanceConstructor.from([ 2, 3 ]) );
 
     /* */
@@ -264,7 +263,6 @@ function makeCommon( test )
     var src = _.unroll.make([ 2, 3 ]);
     var got = long[ env.method ]( src );
     test.true( got instanceof InstanceConstructor );
-    test.identical( got.length, 2 );
     test.identical( got, InstanceConstructor.from([ 2, 3 ]) );
 
     /* */
@@ -310,6 +308,14 @@ function makeCommon( test )
 
     if( env.method !== 'cloneShallow' )
     {
+      test.case = `filled countable`;
+      var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 2, 3 ]) );
+
+      /* */
+
       test.case = `null and length - number`;
       var got = long[ env.method ]( null, 2 );
       test.true( got instanceof Constructor );
@@ -634,6 +640,14 @@ function makeCommonWithLongDescriptor( test )
 
     if( env.method !== 'cloneShallow' )
     {
+      test.case = `filled countable`;
+      var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 2, 3 ]) );
+
+      /* */
+
       test.case = `null and length - number`;
       var got = long[ env.method ]( null, 2 );
       test.true( got instanceof Constructor );

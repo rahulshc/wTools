@@ -63,7 +63,7 @@ function _make( src, length )
   {
     if( _.numberIs( src ) )
     return _.argumentsArray._makeAct.apply( _, Array( src ) );
-    if( _.long.is( src ) )
+    if( _.countable.is( src ) )
     return _.argumentsArray._makeAct.apply( _, [ ... src ] );
   }
   return _.argumentsArray._makeAct.apply( _, [] );

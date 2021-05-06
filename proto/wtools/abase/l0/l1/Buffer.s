@@ -288,7 +288,7 @@ function _make( src, length )
     return fill( new src.constructor( src ) );
     if( _.buffer.nodeIs( src ) )
     return fill( BufferNode.from( src ) );
-    if( _.long.is( src ) )
+    if( _.countable.is( src ) )
     return this.tools.bufferTyped.make( src );
   }
 

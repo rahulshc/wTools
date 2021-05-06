@@ -44,7 +44,8 @@ function _make( src, length )
     {
       data = src;
     }
-    else if( _.long.is( length ) )
+    else if( length.length )
+    // else if( _.long.is( length ) )
     {
       length = length.length;
     }

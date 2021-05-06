@@ -339,7 +339,7 @@ function _makeFilling( type, value, length )
   else if( _.countable.is( length ) )
   length = [ ... length ].length;
 
-  let result = this.make( type, length );
+  let result = this._make( type, length );
   for( let i = 0 ; i < length ; i++ )
   result[ i ] = value;
 
@@ -391,11 +391,11 @@ function _make( src, length )
       }
     }
     if( _.argumentsArray.is( src ) )
-    return fill( _.argumentsArray.make( length ), data );
+    return fill( _.argumentsArray._make( length ), data );
     if( _.unroll.is( src ) )
-    return fill( _.unroll.make( length ), data );
+    return fill( _.unroll._make( length ), data );
     if( src === null )
-    return fill( this.tools.long.default.make( length ), data );
+    return fill( this.tools.long.default._make( length ), data );
     let result;
     if( _.routineIs( src ) )
     result = fill( new src( length ), data )
@@ -406,17 +406,24 @@ function _make( src, length )
   }
   else if( src !== undefined && src !== null )
   {
-    if( _.argumentsArray.is( src ) )
-    return _.argumentsArray.make( src );
-    if( _.unroll.is( src ) )
-    return _.unroll.make( src );
     if( _.number.is( src ) )
-    return this.tools.long.default.make( src );
-    if( _.routineIs( src ) )
-    return new src();
+    return this.tools.long.default._make( src );
+    if( _.unroll.is( src ) )
+    return _.unroll._make( src );
+    if( _.argumentsArray.is( src ) )
+    return _.argumentsArray._make( src );
     if( src.constructor === Array )
     return [ ... src ];
+    if( _.buffer.typedIs( src ) )
     return new src.constructor( src );
+    if( _.countable.is( src ) )
+    return this.tools.long.default._make( src );
+    if( _.routineIs( src ) )
+    {
+      let result = new src();
+      _.assert( this.is( result ), 'Expects long as returned instance' );
+      return result;
+    }
   }
 
   return this.tools.long.default.make();
@@ -448,7 +455,7 @@ function make( src, length )
   }
   else if( arguments.length === 1 )
   {
-    _.assert( src === null || _.number.is( src ) || _.long.is( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.number.is( src ) || _.long.is( src ) || _.countable.is( src ) || _.routineIs( src ) );
   }
   return this._make( ... arguments );
 }

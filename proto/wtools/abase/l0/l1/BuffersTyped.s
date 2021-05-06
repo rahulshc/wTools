@@ -215,9 +215,18 @@ function _functor( fo )
     {
       let data = length;
       if( _.number.is( length ) )
-      data = src;
-      if( _.countable.is( length ) )
-      length = length.length;
+      {
+        data = src;
+      }
+      else if( length.length )
+      {
+        length = length.length;
+      }
+      else if( _.countable.is( length ) )
+      {
+        data = [ ... length ];
+        length = data.length;
+      }
       return fill( new this.InstanceConstructor( length ), data );
     }
     else if( arguments.length === 1 )
