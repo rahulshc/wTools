@@ -140,7 +140,7 @@ function makeUndefined( src, length )
   }
   else if( arguments.length === 1 )
   {
-    _.assert( src === null || _.numberIs( src ) || _.long.is( src ) || _.countable.is( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.numberIs( src ) || _.countable.is( src ) || _.routineIs( src ) );
   }
   return this._makeUndefined( ... arguments );
 }

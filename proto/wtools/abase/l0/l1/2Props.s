@@ -314,7 +314,6 @@ function extend( dstMap, srcMap )
 
   if( arguments.length === 2 )
   {
-    _.assert( !!srcMap ); /* xxx2 : tmp */
     let srcProto = Object.getPrototypeOf( srcMap );
     if( srcProto === null || srcProto === Object.prototype )
     return Object.assign( dstMap, srcMap );
