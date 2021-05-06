@@ -35,6 +35,15 @@ function like( src )
   return _.countable.is( src );
 }
 
+//
+
+function isFixedLength( src )
+{
+  if( _.array.is( src ) )
+  return false;
+  return this.is( src );
+}
+
 // --
 // maker
 // --
@@ -202,6 +211,8 @@ var CountableExtension =
 
   NamespaceName : 'countable',
   NamespaceQname : 'wTools/countable',
+  MoreGeneralNamespaceName : 'countable',
+  MostGeneralNamespaceName : 'countable',
   TypeName : 'Countable',
   SecondTypeName : 'Countable',
   InstanceConstructor : null,
@@ -211,6 +222,7 @@ var CountableExtension =
 
   is, /* qqq : cover here and in the module::MathVector */
   like, /* qqq : cover here and in the module::MathVector */
+  isFixedLength,
 
   // maker
 

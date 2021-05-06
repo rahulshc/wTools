@@ -1113,10 +1113,9 @@ function filterMapCommonPass( test )
 
   function caseEach( _env )
   {
+    test.case = `${__.entity.exportStringSolo( env )}`;
     env = _env;
     test.identical( _.strType( _[ env.namespace ][ env.method ] ), 'Routine' );
-    if( _.strType( _[ env.namespace ][ env.method ] ) !== 'Routine' )
-    debugger;
 
     /* */
 
@@ -1138,6 +1137,8 @@ function filterMapCommonPass( test )
     test.identical( __.select( ops, '*/#2' ), exp );
     var exp = order([ src, src, src ]);
     test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    test.identical( __.select( ops, '*/#4' ), exp );
 
     /* */
 
@@ -1145,6 +1146,7 @@ function filterMapCommonPass( test )
     clean();
     var src = { a : 1, b : 2, c : 3 };
     var got = _[ env.namespace ][ env.method ]( null, src, f1 );
+    test.true( _[ env.namespace ].is( got ) );
     test.true( got !== src );
     var exp = { a : 11, b : 12, c : 13 }
     test.identical( got, exp );
@@ -1158,6 +1160,8 @@ function filterMapCommonPass( test )
     test.identical( __.select( ops, '*/#2' ), exp );
     var exp = order([ src, src, src ]);
     test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    test.identical( __.select( ops, '*/#4' ), exp );
 
     /* */
 
@@ -1176,6 +1180,8 @@ function filterMapCommonPass( test )
     test.identical( __.select( ops, '*/#2' ), exp );
     var exp = order([ src, src, src ]);
     test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    test.identical( __.select( ops, '*/#4' ), exp );
 
     /* */
 
@@ -1194,6 +1200,8 @@ function filterMapCommonPass( test )
     test.identical( __.select( ops, '*/#2' ), exp );
     var exp = order([ src, src, src ]);
     test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    test.identical( __.select( ops, '*/#4' ), exp );
 
     /* */
 
@@ -1219,7 +1227,7 @@ function filterMapCommonPass( test )
 
   function f1( e, k, c, src )
   {
-    ops.push([ ... arguments ]);
+    ops.push([ ... arguments ]); debugger;
     return e + 10;
   }
 
@@ -1227,6 +1235,7 @@ function filterMapCommonPass( test )
 
 }
 
+filterMapCommonPass.rapidity = -1;
 filterMapCommonPass.timeOut = 60000;
 
 //
@@ -1282,6 +1291,7 @@ function filterCommonDropping( test )
     test.case = `${__.entity.exportStringSolo( env )}, pass, dst === null`;
     var src = { a : 1, b : 2, c : 3 };
     var got = _[ env.namespace ][ env.method ]( null, src, f1 );
+    test.true( _[ env.namespace ].is( got ) );
     test.true( got !== src );
     var exp = { a : 11, c : 13 }
     test.identical( got, exp );
@@ -1323,6 +1333,7 @@ function filterCommonDropping( test )
 
 }
 
+filterCommonDropping.rapidity = -1;
 filterCommonDropping.timeOut = 60000;
 
 //
@@ -1378,6 +1389,7 @@ function mapCommonReturningUndefined( test )
     test.case = `${__.entity.exportStringSolo( env )}, pass, dst === null`;
     var src = { a : 1, b : 2, c : 3 };
     var got = _[ env.namespace ][ env.method ]( null, src, f1 );
+    test.true( _[ env.namespace ].is( got ) );
     test.true( got !== src );
     var exp = { a : 11, b : 2, c : 13 }
     test.identical( got, exp );
@@ -1419,6 +1431,7 @@ function mapCommonReturningUndefined( test )
 
 }
 
+mapCommonReturningUndefined.rapidity = -1;
 mapCommonReturningUndefined.timeOut = 60000;
 
 //
@@ -1482,6 +1495,7 @@ function filterMapCommonEscaping( test )
     test.case = `${__.entity.exportStringSolo( env )}, pass, dst === null`;
     var src = { a : 1, b : 2, c : 3 };
     var got = _[ env.namespace ][ env.method ]( null, src, f1 );
+    test.true( _[ env.namespace ].is( got ) );
     test.true( got !== src );
     var exp = { a : 11, b : escape( undefined ), c : 13 }
     test.identical( got, exp );
@@ -1533,6 +1547,7 @@ function filterMapCommonEscaping( test )
 }
 
 filterMapCommonEscaping.timeOut = 60000;
+filterMapCommonEscaping.rapidity = -1;
 
 // --
 // define test suite

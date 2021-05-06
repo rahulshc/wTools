@@ -1,4 +1,4 @@
-( function _l3_Unroll_s_()
+( function _l3_BufferTyped_s_()
 {
 
 'use strict';
@@ -6,40 +6,14 @@
 const _global = _global_;
 const _ = _global_.wTools;
 
-_.assert( !!_.long._elementWithKey, 'Expects routine array._elementWithKey' );
+_.assert( !!_.long._aptLeft, 'Expects routine props._aptLeft' );
+_.assert( !!_.long._elementWithKey, 'Expects routine long._elementWithKey' );
 
 // --
-// exporter
+// extension
 // --
 
-function _exportStringDiagnosticShallow( src )
-{
-  return `{- ${_.entity.strType( src )}.unroll with ${this._lengthOf( src )} elements -}`;
-}
-
-// --
-// declaration
-// --
-
-let unrollSymbol = Symbol.for( 'unroll' );
-
-// --
-// declaration
-// --
-
-let ToolsExtension =
-{
-}
-
-//
-
-Object.assign( _, ToolsExtension );
-
-//
-
-/* qqq : for junior : make replacements */
-
-let UnrollExtension =
+var BufferTypedExtension =
 {
 
   // equaler
@@ -53,9 +27,9 @@ let UnrollExtension =
 
   // exporter
 
-  _exportStringDiagnosticShallow,
+  _exportStringDiagnosticShallow : _.long._exportStringDiagnosticShallow,
   exportStringDiagnosticShallow : _.long.exportStringDiagnosticShallow,
-  _exportStringCodeShallow : _exportStringDiagnosticShallow,
+  _exportStringCodeShallow : _.long._exportStringCodeShallow,
   exportStringCodeShallow : _.long.exportStringCodeShallow,
   exportString : _.long.exportString,
 
@@ -89,19 +63,19 @@ let UnrollExtension =
   _elementWithCardinalSet : _.long._elementWithCardinalSet,
   elementWithCardinalSet : _.long.elementWithCardinalSet,  /* qqq : cover */
 
-  _elementAppend : _.array._elementAppend,
-  elementAppend : _.array.elementAppend, /* qqq : cover */
-  _elementPrepend : _.array._elementPrepend,
-  elementPrepend : _.array.elementPrepend, /* qqq : cover */
+  _elementAppend : _.argumentsArray._elementAppend,
+  elementAppend : _.argumentsArray.elementAppend, /* qqq : cover */
+  _elementPrepend : _.argumentsArray._elementPrepend,
+  elementPrepend : _.argumentsArray.elementPrepend, /* qqq : cover */
 
-  _elementDel : _.array._elementDel,
-  elementDel : _.array.elementDel, /* qqq : cover */
-  _elementWithKeyDel : _.array._elementWithKeyDel,
-  elementWithKeyDel : _.array.elementWithKeyDel, /* qqq : cover */
-  _elementWithCardinalDel : _.array._elementWithCardinalDel,
-  elementWithCardinalDel : _.array.elementWithCardinalDel,  /* qqq : cover */
-  _empty : _.array._empty,
-  empty : _.array.empty, /* qqq : for junior : cover */
+  _elementDel : _.argumentsArray._elementDel,
+  elementDel : _.argumentsArray.elementDel, /* qqq : cover */
+  _elementWithKeyDel : _.argumentsArray._elementWithKeyDel,
+  elementWithKeyDel : _.argumentsArray.elementWithKeyDel, /* qqq : cover */
+  _elementWithCardinalDel : _.argumentsArray._elementWithCardinalDel,
+  elementWithCardinalDel : _.argumentsArray.elementWithCardinalDel,  /* qqq : cover */
+  _empty : _.argumentsArray._empty,
+  empty : _.argumentsArray.empty, /* qqq : for junior : cover */
 
   _each : _.long._each,
   each : _.long.each, /* qqq : cover */
@@ -146,8 +120,16 @@ let UnrollExtension =
 
 }
 
+Object.assign( _.bufferTyped, BufferTypedExtension );
+
 //
 
-Object.assign( _.unroll, UnrollExtension );
+var ToolsExtension =
+{
+}
+
+//
+
+Object.assign( _, ToolsExtension );
 
 })();

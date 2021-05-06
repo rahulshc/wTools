@@ -18,6 +18,8 @@ if( typeof module !== 'undefined' )
   require( './l3/Auxiliary.s' );
   require( './l3/Bool.s' );
   require( './l3/Buffer.s' );
+  require( './l3/BuffersTyped.s' );
+  require( './l3/BufferTyped.s' );
   require( './l3/Container.s' );
   require( './l3/Countable.s' );
   require( './l3/Diagnostic.s' );

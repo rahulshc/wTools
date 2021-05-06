@@ -12113,7 +12113,7 @@ function bufferLeft( test )
   [
     I8x,
     // U8x,
-    // U8ClampedX,
+    // U8xClamped,
     // I16x,
     U16x,
     // I32x,

@@ -200,8 +200,9 @@ module:
           - ../proto/wtools/abase/l0/l1/1Diagnostic.s
           - ../proto/wtools/abase/l0/l1/2Long.s
           - ../proto/wtools/abase/l0/l1/2Props.s
+          - ../proto/wtools/abase/l0/l1/3ArgumentsArray.s
           - ../proto/wtools/abase/l0/l1/3Blank.s
-          - ../proto/wtools/abase/l0/l1/ArgumentsArray.s
+          - ../proto/wtools/abase/l0/l1/3BufferTyped.s
           - ../proto/wtools/abase/l0/l1/Array.s
           - ../proto/wtools/abase/l0/l1/ArraySet.s
           - ../proto/wtools/abase/l0/l1/Auxiliary.s
@@ -212,7 +213,6 @@ module:
           - ../proto/wtools/abase/l0/l1/BufferNode.s
           - ../proto/wtools/abase/l0/l1/BufferRaw.s
           - ../proto/wtools/abase/l0/l1/BuffersTyped.s
-          - ../proto/wtools/abase/l0/l1/BufferTyped.s
           - ../proto/wtools/abase/l0/l1/BufferView.s
           - ../proto/wtools/abase/l0/l1/Class.s
           - ../proto/wtools/abase/l0/l1/Constructible.s
@@ -260,6 +260,7 @@ module:
           - ../proto/wtools/abase/l0/l1/Wrap.s
           - ../proto/wtools/abase/l0/l1/zErr.s
           - ../proto/wtools/abase/l0/l1.test
+          - ../proto/wtools/abase/l0/l1.test/ArgumentsArray.test.s
           - ../proto/wtools/abase/l0/l1.test/Array.test.s
           - ../proto/wtools/abase/l0/l1.test/Auxiliary.test.s
           - ../proto/wtools/abase/l0/l1.test/Blank.test.s
@@ -293,6 +294,8 @@ module:
           - ../proto/wtools/abase/l0/l3/Auxiliary.s
           - ../proto/wtools/abase/l0/l3/Bool.s
           - ../proto/wtools/abase/l0/l3/Buffer.s
+          - ../proto/wtools/abase/l0/l3/BuffersTyped.s
+          - ../proto/wtools/abase/l0/l3/BufferTyped.s
           - ../proto/wtools/abase/l0/l3/Container.s
           - ../proto/wtools/abase/l0/l3/Countable.s
           - ../proto/wtools/abase/l0/l3/Diagnostic.s

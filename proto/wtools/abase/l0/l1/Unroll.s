@@ -833,9 +833,12 @@ let UnrollExtension =
 
   NamespaceName : 'unroll',
   NamespaceQname : 'wTools/unroll',
+  MoreGeneralNamespaceName : 'long',
+  MostGeneralNamespaceName : 'countable',
   TypeName : 'Unroll',
   SecondTypeName : 'Unroll',
   InstanceConstructor : null,
+  IsFixedLength : false,
   tools : _,
 
   // dichotomy
@@ -856,8 +859,8 @@ let UnrollExtension =
   _makeFilling : _.argumentsArray._makeFilling,
   makeFilling : _.argumentsArray.makeFilling,
   _make,
-  make : _.argumentsArray.make, /* qqq : for Yevhen : cover */
-  // make, /* qqq : for Yevhen : cover */
+  make : _.argumentsArray.make, /* qqq : for junior : cover */
+  // make, /* qqq : for junior : cover */
   _cloneShallow,
   cloneShallow : _.argumentsArray.cloneShallow, /* qqq : for junior : cover */
   // _from,

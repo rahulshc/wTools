@@ -18,7 +18,7 @@ function is( src )
 
 //
 
-function like( src ) /* qqq : cover */
+function like( src )
 {
   if( _.argumentsArray.is( src ) )
   return true;
@@ -72,12 +72,6 @@ function _make( src, length )
     return dst;
   }
 
-  // if( src === undefined || src === null )
-  // src = 0;
-  // if( _.number.is( src ) )
-  // return _.argumentsArray._makeAct.apply( _, Array( src ) );
-  // else
-  // return _.argumentsArray._makeAct.apply( _, src );
 }
 
 //
@@ -89,9 +83,6 @@ function make( src, length )
   _.assert( arguments.length < 2 || _.number.is( length ) || _.countable.is( length ) );
   _.assert( arguments.length <= 2 );
   return this._make( ... arguments );
-  // _.assert( arguments.length === 0 || arguments.length === 1 );
-  // _.assert( src === undefined || src === null || _.number.is( src ) || _.longLike( src ) );
-  // return this._make( src );
 }
 
 //
@@ -103,11 +94,11 @@ function _makeEmpty()
 
 //
 
-function makeEmpty()
+function makeEmpty( src )
 {
   _.assert( arguments.length === 0 || arguments.length === 1 );
   _.assert( src === undefined || src === null || this.like( src ) );
-  return this._makeEmpty();
+  return this._makeEmpty( src );
 }
 
 //
@@ -145,21 +136,6 @@ function makeUndefined( src, length )
   }
   return this._makeUndefined( ... arguments );
 }
-
-// function makeUndefined( src, length )
-// {
-//   if( length === undefined )
-//   {
-//     length = src;
-//   }
-//   else
-//   {
-//     _.assert( this.like( src ) );
-//   }
-//   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   _.assert( _.number.is( length ) || this.like( length ) );
-//   return this.make( length );
-// }
 
 //
 
@@ -248,15 +224,6 @@ function cloneShallow( src )
 
 //
 
-// function cloneShallow( src )
-// {
-//   _.assert( arguments.length === 1 );
-//   _.assert( this.like( src ) );
-//   return this._cloneShallow( src );
-// }
-
-//
-
 function from( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -300,15 +267,18 @@ var ArgumentsArrayExtension =
 
   NamespaceName : 'argumentsArray',
   NamespaceQname : 'wTools/argumentsArray',
+  MoreGeneralNamespaceName : 'long',
+  MostGeneralNamespaceName : 'countable',
   TypeName : 'ArgumentsArray',
   SecondTypeName : 'Arguments',
   InstanceConstructor : null,
+  IsFixedLength : true,
   tools : _,
 
   // dichotomy
 
-  is,
-  like,
+  is, /* qqq : cover */
+  like, /* qqq : cover */
 
   // maker
 

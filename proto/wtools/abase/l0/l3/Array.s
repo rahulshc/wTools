@@ -1853,6 +1853,40 @@ function arrayAppendedArraysOnceStrictly( dstArray, ins )
 // container interface
 // --
 
+function _elementAppend( dst, val )
+{
+  dst.push( val );
+  return dst.length-1;
+}
+
+//
+
+function elementAppend( dst, val )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( this.is( dst ) );
+  return this._elementAppend( dst, val );
+}
+
+//
+
+function _elementPrepend( dst, val )
+{
+  dst.unshift( val );
+  return 0;
+}
+
+//
+
+function elementPrepend( dst, val )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( this.is( dst ) );
+  return this._elementAppend( dst, val );
+}
+
+//
+
 function _elementWithKeyDel( src, key )
 {
   if( !this._hasKey( src, key ) )
@@ -2042,6 +2076,11 @@ let ArrayExtension =
   _elementWithCardinalSet : _.long._elementWithCardinalSet,
   elementWithCardinalSet : _.long.elementWithCardinalSet,  /* qqq : cover */
 
+  _elementAppend,
+  elementAppend, /* qqq : cover */
+  _elementPrepend,
+  elementPrepend, /* qqq : cover */
+
   _elementDel : _elementWithKeyDel,
   elementDel : elementWithKeyDel, /* qqq : cover */
   _elementWithKeyDel,
@@ -2072,7 +2111,8 @@ let ArrayExtension =
   aptRight : _.long.aptRight,
   last : _.long.last, /* qqq : cover */
 
-  _filter : _.long._filter,
+  _filterAct0 : _.long._filterAct0,
+  _filterAct1 : _.long._filterAct1,
   filterWithoutEscapeLeft : _.long.filterWithoutEscapeLeft,
   filterWithoutEscapeRight : _.long.filterWithoutEscapeRight,
   filterWithoutEscape : _.long.filterWithoutEscape,
@@ -2081,7 +2121,8 @@ let ArrayExtension =
   filterWithEscape : _.long.filterWithEscape,
   filter : _.long.filter,
 
-  _map : _.long._map,
+  _mapAct0 : _.props._mapAct0,
+  _mapAct1 : _.long._mapAct1,
   mapWithoutEscapeLeft : _.long.mapWithoutEscapeLeft,
   mapWithoutEscapeRight : _.long.mapWithoutEscapeRight,
   mapWithoutEscape : _.long.mapWithoutEscape,

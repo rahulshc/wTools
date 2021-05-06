@@ -59,6 +59,8 @@ var VectorExtension =
 
   NamespaceName : 'vector',
   NamespaceQname : 'wTools/vector',
+  MoreGeneralNamespaceName : 'countable',
+  MostGeneralNamespaceName : 'countable',
   TypeName : 'Vector',
   SecondTypeName : 'Vector',
   InstanceConstructor : null,

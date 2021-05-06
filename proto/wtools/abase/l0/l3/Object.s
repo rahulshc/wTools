@@ -225,20 +225,20 @@ function _whileRight( src, onEach )
 
 //
 
-function _filter( dst, src, onEach, each, escape )
+function _filterAct0( dst, src, ... args )
 {
   if( _.countable.is( src ) )
-  return _.countable._filter( dst, src, onEach, each, escape );
-  return _.props._filter( dst, src, onEach, each, escape );
+  return _.countable._filterAct0( dst, src, ... args );
+  return _.props._filterAct0( dst, src, ... args );
 }
 
 //
 
-function _map( dst, src, onEach, each, escape )
+function _mapAct0( dst, src, ... args )
 {
   if( _.countable.is( src ) )
-  return _.countable._map( dst, src, onEach, each, escape );
-  return _.props._map( dst, src, onEach, each, escape );
+  return _.countable._mapAct0( dst, src, ... args );
+  return _.props._mapAct0( dst, src, ... args );
 }
 
 // --
@@ -336,7 +336,8 @@ let ObjectExtension =
   aptRight : _.props.aptRight,
   last : _.props.last, /* qqq : cover */
 
-  _filter,
+  _filterAct0,
+  _filterAct1 : _.props._filterAct1,
   filterWithoutEscapeLeft : _.props.filterWithoutEscapeLeft,
   filterWithoutEscapeRight : _.props.filterWithoutEscapeRight,
   filterWithoutEscape : _.props.filterWithoutEscape,
@@ -345,7 +346,8 @@ let ObjectExtension =
   filterWithEscape : _.props.filterWithEscape,
   filter : _.props.filter,
 
-  _map,
+  _mapAct0,
+  _mapAct1 : _.props._mapAct1,
   mapWithoutEscapeLeft : _.props.mapWithoutEscapeLeft,
   mapWithoutEscapeRight : _.props.mapWithoutEscapeRight,
   mapWithoutEscape : _.props.mapWithoutEscape,

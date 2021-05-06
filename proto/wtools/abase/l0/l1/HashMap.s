@@ -273,6 +273,8 @@ let Extension =
 
   NamespaceName : 'hashMap',
   NamespaceQname : 'wTools/hashMap',
+  MoreGeneralNamespaceName : 'hashMap',
+  MostGeneralNamespaceName : 'countable',
   TypeName : 'HashMap',
   SecondTypeName : 'Map',
   InstanceConstructor : HashMap,

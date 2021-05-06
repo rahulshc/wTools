@@ -751,18 +751,21 @@ function filterLeftBasic( test )
         'a',
         0,
         ( env.dst === 'self' || env.dst === 'src' ) ? { 'a' : 11, 'b' : 12, 'c' : 13 } : { 'a' : 1, 'b' : 2, 'c' : 3 },
+        got,
       ],
       [
         2,
         'b',
         1,
         ( env.dst === 'self' || env.dst === 'src' ) ? { 'a' : 11, 'b' : 12, 'c' : 13 } : { 'a' : 1, 'b' : 2, 'c' : 3 },
+        got,
       ],
       [
         3,
         'c',
         2,
         ( env.dst === 'self' || env.dst === 'src' ) ? { 'a' : 11, 'b' : 12, 'c' : 13 } : { 'a' : 1, 'b' : 2, 'c' : 3 },
+        got,
       ],
     ]
     test.identical( ops, exp );
@@ -840,18 +843,21 @@ function filterRightBasic( test )
         'c',
         2,
         ( env.dst === 'self' || env.dst === 'src' ) ? { 'a' : 11, 'b' : 12, 'c' : 13 } : { 'a' : 1, 'b' : 2, 'c' : 3 },
+        got,
       ],
       [
         2,
         'b',
         1,
         ( env.dst === 'self' || env.dst === 'src' ) ? { 'a' : 11, 'b' : 12, 'c' : 13 } : { 'a' : 1, 'b' : 2, 'c' : 3 },
+        got,
       ],
       [
         1,
         'a',
         0,
         ( env.dst === 'self' || env.dst === 'src' ) ? { 'a' : 11, 'b' : 12, 'c' : 13 } : { 'a' : 1, 'b' : 2, 'c' : 3 },
+        got,
       ],
     ]
     test.identical( ops, exp );

@@ -793,6 +793,8 @@ let ExtensionMap =
 
   NamespaceName : 'map',
   NamespaceQname : 'wTools/map',
+  MoreGeneralNamespaceName : 'aux',
+  MostGeneralNamespaceName : 'props',
   TypeName : 'Map',
   SecondTypeName : 'Map',
   InstanceConstructor : null,

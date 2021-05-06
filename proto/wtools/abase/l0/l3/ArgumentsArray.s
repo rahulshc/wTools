@@ -13,9 +13,37 @@ _.assert( !!_.long._elementWithKey, 'Expects routine long._elementWithKey' );
 // elementor
 // --
 
+function _elementAppend( dst, val )
+{
+  return -1;
+}
+
+//
+
+function elementAppend( dst, val )
+{
+  _.assert( 0, `${this.TypeName} has fixed length` );
+}
+
+//
+
+function _elementPrepend( dst, val )
+{
+  return -1;
+}
+
+//
+
+function elementPrepend( dst, val )
+{
+  _.assert( 0, `${this.TypeName} has fixed length` );
+}
+
+//
+
 function _elementWithKeyDel( src, key )
 {
-  throw _.err( `${this.TypeName} has fixed length` );
+  _.assert( 0, `${this.TypeName} has fixed length` );
   return false;
 }
 
@@ -23,7 +51,7 @@ function _elementWithKeyDel( src, key )
 
 function _elementWithCardinalDel( src, cardinal )
 {
-  throw _.err( `${this.TypeName} has fixed length` );
+  _.assert( 0, `${this.TypeName} has fixed length` );
   return false;
 }
 
@@ -31,7 +59,7 @@ function _elementWithCardinalDel( src, cardinal )
 
 function _empty( dst )
 {
-  throw _.err( `${this.TypeName} has fixed length` );
+  _.assert( 0, `${this.TypeName} has fixed length` );
   return false;
 }
 
@@ -89,6 +117,11 @@ var ArgumentsArrayExtension =
   _elementWithCardinalSet : _.long._elementWithCardinalSet,
   elementWithCardinalSet : _.long.elementWithCardinalSet,  /* qqq : cover */
 
+  _elementAppend,
+  elementAppend, /* qqq : cover */
+  _elementPrepend,
+  elementPrepend, /* qqq : cover */
+
   _elementDel : _elementWithKeyDel,
   elementDel : _.long.elementDel, /* qqq : cover */
   _elementWithKeyDel,
@@ -119,7 +152,8 @@ var ArgumentsArrayExtension =
   aptRight : _.long.aptRight,
   last : _.long.last, /* qqq : cover */
 
-  _filter : _.long._filter,
+  _filterAct0 : _.long._filterAct0,
+  _filterAct1 : _.long._filterAct1,
   filterWithoutEscapeLeft : _.long.filterWithoutEscapeLeft,
   filterWithoutEscapeRight : _.long.filterWithoutEscapeRight,
   filterWithoutEscape : _.long.filterWithoutEscape,
@@ -128,7 +162,8 @@ var ArgumentsArrayExtension =
   filterWithEscape : _.long.filterWithEscape,
   filter : _.long.filter,
 
-  _map : _.long._map,
+  _mapAct0 : _.props._mapAct0,
+  _mapAct1 : _.long._mapAct1,
   mapWithoutEscapeLeft : _.long.mapWithoutEscapeLeft,
   mapWithoutEscapeRight : _.long.mapWithoutEscapeRight,
   mapWithoutEscape : _.long.mapWithoutEscape,

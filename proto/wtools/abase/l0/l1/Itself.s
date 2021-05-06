@@ -50,6 +50,8 @@ let ItselfExtension =
 
   NamespaceName : 'itself',
   NamespaceQname : 'wTools/itself',
+  MoreGeneralNamespaceName : 'itself',
+  MostGeneralNamespaceName : 'itself',
   TypeName : 'Itself',
   SecondTypeName : 'Itself',
   InstanceConstructor : null,

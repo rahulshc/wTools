@@ -1866,6 +1866,8 @@ let PropsExtension =
 
   NamespaceName : 'props',
   NamespaceQname : 'wTools/props',
+  MoreGeneralNamespaceName : 'props',
+  MostGeneralNamespaceName : 'props',
   TypeName : 'Props',
   SecondTypeName : 'Properties',
   InstanceConstructor : null,

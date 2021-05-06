@@ -194,38 +194,38 @@ function _elementWithCardinal( src, cardinal )
 
 //
 
-function _elementWithKeySet( src, key, val )
+function _elementWithKeySet( dst, key, val )
 {
-  if( !_.number.is( cardinal ) || cardinal < 0 )
-  return [ undefined, cardinal, false ];
-  const src2 = [ ... src ];
-  if( src2.length <= cardinal )
-  return [ undefined, cardinal, false ];
+  if( !_.number.is( key ) || key < 0 )
+  return [ undefined, key, false ];
+  const dst2 = [ ... dst ];
+  if( dst2.length <= key )
+  return [ undefined, key, false ];
 
-  let elementWithKeySet = _.class.methodElementWithKeySetOf( src );
+  let elementWithKeySet = _.class.methodElementWithKeySetOf( dst );
   if( elementWithKeySet )
-  return elementWithKeySet.call( src, key, val );
+  return elementWithKeySet.call( dst, key, val );
 
-  let elementSet = _.class.methodElementSetOf( src );
+  let elementSet = _.class.methodElementSetOf( dst );
   if( elementSet )
-  return [ elementSet.call( src, key, val ), key, true ];
+  return [ elementSet.call( dst, key, val ), key, true ];
 
   _.assert( 0, 'Countable does not have implemented neither method "elementWithKeySet" nor method "eSet"' );
 }
 
 //
 
-function _elementWithCardinalSet( src, cardinal, val )
+function _elementWithCardinalSet( dst, cardinal, val )
 {
   if( !_.number.is( cardinal ) || cardinal < 0 )
   return [ undefined, cardinal, false ];
-  const src2 = [ ... src ];
-  if( src2.length <= cardinal )
+  const dst2 = [ ... dst ];
+  if( dst2.length <= cardinal )
   return [ undefined, cardinal, false ];
 
-  let was = this._elementWithCardinal( src, cardinal );
+  let was = this._elementWithCardinal( dst, cardinal );
   if( was[ 2 ] )
-  this._elementWithKeySet( src, was[ 1 ], val );
+  this._elementWithKeySet( dst, was[ 1 ], val );
   return [ undefined, cardinal, false ];
 }
 
@@ -257,7 +257,7 @@ function _eachLeft( src, onEach )
   let k = 0;
   for( let val of src )
   {
-    onEach( src[ s ], k, k, src );
+    onEach( val, k, k, src );
     k += 1;
   }
 }
@@ -312,6 +312,32 @@ function _whileRight( src, onEach )
   return [ src2[ 0 ], 0, 0, true ];
   else
   return [ undefined, -1, -1, true ];
+}
+
+//
+
+function _filterAct1()
+{
+  let self = this;
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+
+  if( _.longIs( src ) )
+  return _.long._filterAct1( ... arguments );
+  return _.props._filterAct1.call( self, ... arguments );
+}
+
+//
+
+function _mapAct1()
+{
+  let self = this;
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+
+  if( _.longIs( src ) )
+  return _.long._mapAct1( ... arguments );
+  return _.props._mapAct1.call( self, ... arguments );
 }
 
 // --
@@ -409,7 +435,8 @@ var CountableExtension =
   aptRight : _.props.aptRight,
   last : _.props.last, /* qqq : cover */
 
-  _filter : _.props._filter,
+  _filterAct0 : _.props._filterAct0,
+  _filterAct1,
   filterWithoutEscapeLeft : _.props.filterWithoutEscapeLeft,
   filterWithoutEscapeRight : _.props.filterWithoutEscapeRight,
   filterWithoutEscape : _.props.filterWithoutEscape,
@@ -418,7 +445,8 @@ var CountableExtension =
   filterWithEscape : _.props.filterWithEscape,
   filter : _.props.filter,
 
-  _map : _.props._map,
+  _mapAct0 : _.props._mapAct0,
+  _mapAct1,
   mapWithoutEscapeLeft : _.props.mapWithoutEscapeLeft,
   mapWithoutEscapeRight : _.props.mapWithoutEscapeRight,
   mapWithoutEscape : _.props.mapWithoutEscape,
