@@ -153,6 +153,14 @@ function isPopulated( src )
   return this.keys( src ).length > 0;
 }
 
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return true;
+}
+
 // --
 // maker
 // --
@@ -232,6 +240,20 @@ function _cloneShallow( src )
 }
 
 // --
+// meta
+// --
+
+/* qqq : optimize */
+function namespaceOf( src )
+{
+
+  if( _.object.is( src ) )
+  return _.object;
+
+  return null;
+}
+
+// --
 // extension
 // --
 
@@ -267,11 +289,13 @@ let ObjectExtension =
   //
 
   NamespaceName : 'object',
+  NamespaceNames : [ 'object' ],
   NamespaceQname : 'wTools/object',
   MoreGeneralNamespaceName : 'props',
   MostGeneralNamespaceName : 'props',
   TypeName : 'Object',
-  SecondTypeName : 'Object',
+  TypeNames : [ 'Object' ],
+  // SecondTypeName : 'Object',
   InstanceConstructor : null,
   tools : _,
 
@@ -284,6 +308,7 @@ let ObjectExtension =
 
   isEmpty, /* qqq : cover */
   isPopulated, /* qqq : cover */
+  IsResizable,
 
   // maker
 
@@ -334,6 +359,12 @@ let ObjectExtension =
   _supplementUniversal : _.props._supplementUniversal,
   supplementUniversal : _.props.supplementUniversal,
   supplement : _.props.supplement,
+
+  // meta
+
+  namespaceOf,
+  namespaceWithDefaultOf : _.props.namespaceWithDefaultOf,
+  _functor_functor : _.props._functor_functor,
 
 }
 

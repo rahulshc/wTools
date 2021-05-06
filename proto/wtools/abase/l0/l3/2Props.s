@@ -331,7 +331,7 @@ function elementWithCardinal( src, cardinal )
 function _elementWithKeySet( dst, key, val )
 {
   dst[ key ] = val;
-  return [ val, key, true ];
+  return [ key, true ];
 }
 
 //
@@ -351,11 +351,11 @@ function _elementWithCardinalSet( dst, cardinal, val )
   if( was[ 2 ] === true )
   {
     dst[ was[ 1 ] ] = val;
-    return [ val, was[ 1 ], true ];
+    return [ was[ 1 ], true ];
   }
   else
   {
-    return [ undefined, cardinal, false ];
+    return [ cardinal, false ];
   }
 }
 
@@ -674,6 +674,7 @@ function _filterAct1()
     _.assert( arguments.length === 6, `Expects 3 arguments` );
     _.assert( this.is( dst ), () => `dst is not ${this.TypeName}` );
     _.assert( general.is( src ), () => `src is not ${general.TypeName}` );
+    _.assert( _.routineIs( onEach ), () => 'onEach is not a routine' )
   }
 
   this._filterAct0( dst, src, onEach, general[ eachRoutineName ].bind( general ), escape );
@@ -766,6 +767,7 @@ function _mapAct1()
     _.assert( arguments.length === 6, `Expects 3 arguments` );
     _.assert( this.is( dst ), () => `dst is not ${this.TypeName}` );
     _.assert( general.is( src ), () => `src is not ${general.TypeName}` );
+    _.assert( _.routineIs( onEach ), () => `onEach is not a routine` );
   }
 
   this._mapAct0( dst, src, onEach, general[ eachRoutineName ].bind( general ), escape );

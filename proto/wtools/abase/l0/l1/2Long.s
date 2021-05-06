@@ -109,11 +109,19 @@ function like( src ) /* qqq : cover */
 
 //
 
-function isFixedLength( src )
+function isResizable( src )
 {
   if( _.array.is( src ) )
+  return true;
   return false;
-  return this.is( src );
+  // return this.is( src );
+}
+
+//
+
+function IsResizable()
+{
+  return this.default.IsResizable();
 }
 
 // --
@@ -138,7 +146,7 @@ function _makeEmpty( src )
   }
   else
   {
-    return this.tools.defaultLong.make();
+    return this.tools.long.default.make();
   }
 }
 
@@ -184,7 +192,7 @@ function _makeUndefined( src, length )
       return result;
     }
     if( src === null )
-    return this.tools.defaultLong.make( length );
+    return this.tools.long.default.make( length );
     return new src.constructor( length );
   }
   else if( arguments.length === 1 )
@@ -201,13 +209,13 @@ function _makeUndefined( src, length )
     }
     else
     {
-      return this.tools.defaultLong.make( src );
+      return this.tools.long.default.make( src );
     }
     return new constructor( length );
   }
   else
   {
-    return this.tools.defaultLong.make();
+    return this.tools.long.default.make();
   }
 }
 
@@ -254,7 +262,7 @@ function _makeZeroed( src, length )
       return result;
     }
     if( src === null )
-    return this.tools.defaultLong.makeZeroed( length );
+    return this.tools.long.default.makeZeroed( length );
     return fill( new src.constructor( length ) );
   }
   else if( arguments.length === 1 )
@@ -271,12 +279,12 @@ function _makeZeroed( src, length )
     }
     else
     {
-      return this.tools.defaultLong.makeZeroed( src );
+      return this.tools.long.default.makeZeroed( src );
     }
     return fill( new constructor( length ) );
   }
 
-  return this.tools.defaultLong.make();
+  return this.tools.long.default.make();
 
   /* */
 
@@ -387,7 +395,7 @@ function _make( src, length )
     if( _.unroll.is( src ) )
     return fill( _.unroll.make( length ), data );
     if( src === null )
-    return fill( this.tools.defaultLong.make( length ), data );
+    return fill( this.tools.long.default.make( length ), data );
     let result;
     if( _.routineIs( src ) )
     result = fill( new src( length ), data )
@@ -403,7 +411,7 @@ function _make( src, length )
     if( _.unroll.is( src ) )
     return _.unroll.make( src );
     if( _.number.is( src ) )
-    return this.tools.defaultLong.make( src );
+    return this.tools.long.default.make( src );
     if( _.routineIs( src ) )
     return new src();
     if( src.constructor === Array )
@@ -411,7 +419,7 @@ function _make( src, length )
     return new src.constructor( src );
   }
 
-  return this.tools.defaultLong.make();
+  return this.tools.long.default.make();
 
   /* */
 
@@ -454,8 +462,8 @@ function _cloneShallow( src )
   return _.argumentsArray.make( src );
   if( _.unroll.is( src ) )
   return _.unroll.make( src );
-  // if( _.number.is( src ) ) /* Dmytro : wrong branch, public interface forbids numbers as argument */
-  // return this.tools.defaultLong.make( src );
+  // if( _.numberIs( src ) ) /* Dmytro : wrong branch, public interface forbids numbers as argument */
+  // return this.tools.long.default.make( src );
   if( src.constructor === Array )
   return [ ... src ];
   else
@@ -849,27 +857,117 @@ function rightDefined( arr )
 // meta
 // --
 
-function _namespaceRegister( namespace, defaultNamespaceName )
+// function _namespaceRegister( namespace )
+// {
+//   let aggregatorNamespace = this;
+//   if( !aggregatorNamespace )
+//   aggregatorNamespace = _.long;
+//
+//   if( Config.debug )
+//   verify();
+//
+//   aggregatorNamespace.namespaces[ namespace.NamespaceName ] = namespace;
+//
+//   _.assert( !!namespace.IsResizable );
+//   _.assert( namespace.IsLong === undefined || namespace.IsLong === true );
+//   namespace.IsLong = true;
+//
+//   namespace.asDefault = aggregatorNamespace._asDefaultGenerate( namespace );
+//
+//   /* */
+//
+//   function verify()
+//   {
+//     _.assert( !!namespace.NamespaceName );
+//     _.assert( aggregatorNamespace.namespaces[ namespace.Name ] === undefined );
+//     _.assert( _[ namespace.NamespaceName ] === namespace );
+//     _.assert( _select( _global_, namespace.NamespaceQname ) === namespace );
+//   }
+//
+//   /* */
+//
+//   function _select( src, selector )
+//   {
+//     selector = selector.split( '/' );
+//     while( selector.length && !!src )
+//     {
+//       src = src[ selector[ 0 ] ];
+//       selector.splice( 0, 1 )
+//     }
+//     return src;
+//   }
+//
+//   /* */
+//
+// }
+//
+// //
+//
+// function _asDefaultGenerate( namespace )
+// {
+//   let aggregatorNamespace = this;
+//
+//   _.assert( !!namespace );
+//   _.assert( !!namespace.TypeName );
+//
+//   let result = aggregatorNamespace.toolsNamespacesByType[ namespace.TypeName ];
+//   if( result )
+//   return result;
+//
+//   result = aggregatorNamespace.toolsNamespacesByType[ namespace.TypeName ] = Object.create( _ );
+//
+//   aggregatorNamespace.toolsNamespacesByName[ namespace.NamespaceName ] = result;
+//
+//   /* xxx : introduce map _.namespaces */
+//   for( let name in aggregatorNamespace.namespaces )
+//   {
+//     let namespace = aggregatorNamespace.namespaces[ name ];
+//     result[ namespace.TypeName ] = Object.create( namespace );
+//     result[ namespace.TypeName ].tools = result;
+//   }
+//
+//   result[ aggregatorNamespace.NamespaceName ] = Object.create( aggregatorNamespace );
+//   result[ aggregatorNamespace.NamespaceName ].tools = result;
+//   result[ aggregatorNamespace.NamespaceName ].default = namespace;
+//
+//   return result;
+// }
+
+function _namespaceRegister( namespace )
 {
+  let aggregatorNamespace = this;
+  if( !aggregatorNamespace )
+  aggregatorNamespace = _.long;
 
   if( Config.debug )
   verify();
 
-  _.long.namespaces[ namespace.NamespaceName ] = namespace;
+  // if( namespace.NamespaceName === 'u32x' )
+  // debugger;
 
-  _.assert( namespace.IsFixedLength === null || namespace.IsFixedLength === false || namespace.IsFixedLength === true );
+  namespace.NamespaceNames.forEach( ( name ) =>
+  {
+    _.assert( aggregatorNamespace.namespaces[ name ] === undefined );
+    aggregatorNamespace.namespaces[ name ] = namespace;
+  });
+
+  _.assert( !!namespace.IsResizable );
   _.assert( namespace.IsLong === undefined || namespace.IsLong === true );
   namespace.IsLong = true;
 
-  namespace.AsDefault = _.long._asDefaultGenerate( namespace, defaultNamespaceName );
+  namespace.asDefault = aggregatorNamespace._asDefaultGenerate( namespace );
+
+  /* */
 
   function verify()
   {
     _.assert( !!namespace.NamespaceName );
-    _.assert( _.long.namespaces[ namespace.Name ] === undefined );
+    _.assert( aggregatorNamespace.namespaces[ namespace.Name ] === undefined );
     _.assert( _[ namespace.NamespaceName ] === namespace );
     _.assert( _select( _global_, namespace.NamespaceQname ) === namespace );
   }
+
+  /* */
 
   function _select( src, selector )
   {
@@ -882,45 +980,205 @@ function _namespaceRegister( namespace, defaultNamespaceName )
     return src;
   }
 
+  /* */
+
 }
 
 //
 
-function _asDefaultGenerate( namespace, defaultNamespaceName )
+function _asDefaultGenerate( namespace )
 {
+  let aggregatorNamespace = this;
 
   _.assert( !!namespace );
   _.assert( !!namespace.TypeName );
 
-  if( defaultNamespaceName === undefined )
-  defaultNamespaceName = 'defaultLong';
-
-  let result = _.long.toolsNamespacesByType[ namespace.TypeName ];
+  let result = aggregatorNamespace.toolsNamespacesByType[ namespace.TypeName ];
   if( result )
   return result;
 
-  result = _.long.toolsNamespacesByType[ namespace.TypeName ] = Object.create( _ );
-  result[ defaultNamespaceName ] = namespace;
-
-  _.long.toolsNamespacesByName[ namespace.NamespaceName ] = result;
+  result = aggregatorNamespace.toolsNamespacesByType[ namespace.TypeName ] = Object.create( _ );
+  namespace.TypeNames.forEach( ( name ) =>
+  {
+    _.assert
+    (
+         aggregatorNamespace.toolsNamespacesByType[ name ] === undefined
+      || aggregatorNamespace.toolsNamespacesByType[ name ] === result
+    );
+    aggregatorNamespace.toolsNamespacesByType[ name ] = result;
+  });
 
   /* xxx : introduce map _.namespaces */
-  for( let name in _.long.namespaces )
+  for( let name in aggregatorNamespace.namespaces )
   {
-    let namespace = _.long.namespaces[ name ];
-    result[ namespace.TypeName ] = Object.create( namespace );
-    result[ namespace.TypeName ].tools = result;
+    let namespace2 = aggregatorNamespace.namespaces[ name ];
+    let namespace3 = result[ namespace2.TypeName ] = Object.create( namespace2 );
+    namespace3.tools = result;
+    namespace3.TypeNames.forEach( ( name ) =>
+    {
+      result[ name ] = namespace3;
+    });
   }
 
-  result.long = Object.create( _.long );
-  result.long.tools = result;
-  // _.withLong[ namespace.TypeName ] = result;
+  let namespace2 = result[ aggregatorNamespace.NamespaceName ] = Object.create( aggregatorNamespace );
+  namespace2.tools = result;
+  namespace2.default = namespace;
+  aggregatorNamespace.NamespaceNames.forEach( ( name ) =>
+  {
+    result[ name ] = namespace2;
+  });
 
   return result;
 }
 
+//
+
+/* qqq : optimize */
+function namespaceOf( src )
+{
+
+  if( _.unroll.is( src ) )
+  return _.unroll;
+  if( _.array.is( src ) )
+  return _.array;
+  if( _.argumentsArray.is( src ) )
+  return _.argumentsArray;
+  if( _.bufferTyped.is( src ) )
+  return _.bufferTyped;
+  if( _.vector.is( src ) )
+  return _.vector;
+  if( _.countable.is( src ) )
+  return _.countable;
+
+  return null;
+}
+
+//
+
+function namespaceWithDefaultOf( src )
+{
+  if( src === null )
+  debugger;
+  if( src === null )
+  return this.default;
+  return this.namespaceOf( src );
+}
+
+//
+
+function _functor_functor( methodName, typer, which )
+{
+  _.assert( !!( methodName ) );
+  if( !typer )
+  typer = 'namespaceOf';
+  if( !which )
+  which = 0;
+  if( which === 0 )
+  return _functor0;
+  if( which === 1 )
+  return _functor1;
+  _.assert( 0 );
+
+  function _functor0( container )
+  {
+    _.assert( arguments.length === 1 );
+    _.assert( _.routine.is( this[ typer ] ), () => `No routine::${typer} in the namesapce::${this.NamespaceName}` );
+    const namespace = this[ typer ]( container );
+    _.assert( _.routine.is( namespace[ methodName ] ), `No routine::${methodName} in the namesapce::${namespace.NamespaceName}` );
+    return namespace[ methodName ].bind( namespace, container );
+  }
+
+  function _functor1( container )
+  {
+    _.assert( arguments.length === 1 );
+    _.assert( _.routine.is( this[ typer ] ), () => `No routine::${typer} in the namesapce::${this.NamespaceName}` );
+    const namespace = this[ typer ]( container );
+    _.assert( _.routine.is( namespace[ methodName ] ), `No routine::${methodName} in the namesapce::${namespace.NamespaceName}` );
+    const routine0 = namespace[ methodName ];
+    return routine1.bind( namespace );
+    function routine1( arg1, ... args )
+    {
+      return routine0.call( this, arg1, container, ... args );
+    }
+  }
+
+}
+
 // --
-// declare
+// long extension
+// --
+
+let LongExtension =
+{
+
+  //
+
+  NamespaceName : 'long',
+  NamespaceNames : [ 'long' ],
+  NamespaceQname : 'wTools/long',
+  MoreGeneralNamespaceName : 'long',
+  MostGeneralNamespaceName : 'countable',
+  TypeName : 'Long',
+  TypeNames : [ 'Long' ],
+  InstanceConstructor : null,
+  IsLong : true,
+  tools : _,
+
+  // dichotomy
+
+  is,
+  isEmpty,
+  isPopulated,
+  like,
+  isResizable,
+  IsResizable,
+
+  // maker
+
+  _makeEmpty,
+  makeEmpty, /* qqq : for junior : cover */
+  _makeUndefined,
+  makeUndefined, /* qqq : for junior : cover */
+  _makeZeroed,
+  makeZeroed, /* qqq : for junior : cover */
+  _makeFilling,
+  makeFilling,
+  _make,
+  make, /* qqq : for junior : cover */
+  _cloneShallow,
+  cloneShallow, /* qqq : for junior : cover */
+  from, /* qqq : for junior : cover */
+
+  // long sequential search
+
+  leftIndex,
+  rightIndex,
+
+  left,
+  right,
+
+  leftDefined,
+  rightDefined,
+
+  // meta
+
+  _namespaceRegister,
+  _asDefaultGenerate,
+
+  // meta
+
+  namespaceOf,
+  namespaceWithDefaultOf,
+  _functor_functor,
+
+}
+
+//
+
+Object.assign( _.long, LongExtension );
+
+// --
+// tools extension
 // --
 
 let ToolsExtension =
@@ -959,67 +1217,5 @@ let ToolsExtension =
 Object.assign( _, ToolsExtension );
 
 //
-
-let LongExtension =
-{
-
-  //
-
-  NamespaceName : 'long',
-  NamespaceQname : 'wTools/long',
-  MoreGeneralNamespaceName : 'long',
-  MostGeneralNamespaceName : 'countable',
-  TypeName : 'Long',
-  SecondTypeName : 'Long',
-  InstanceConstructor : null,
-  IsFixedLength : null,
-  IsLong : true,
-  tools : _,
-
-  // dichotomy
-
-  is,
-  isEmpty,
-  isPopulated,
-  like,
-  isFixedLength,
-
-  // maker
-
-  _makeEmpty,
-  makeEmpty, /* qqq : for junior : cover */
-  _makeUndefined,
-  makeUndefined, /* qqq : for junior : cover */
-  _makeZeroed,
-  makeZeroed, /* qqq : for junior : cover */
-  _makeFilling,
-  makeFilling,
-  _make,
-  make, /* qqq : for junior : cover */
-  _cloneShallow,
-  cloneShallow, /* qqq : for junior : cover */
-  from, /* qqq : for junior : cover */
-
-  // long sequential search
-
-  leftIndex,
-  rightIndex,
-
-  left,
-  right,
-
-  leftDefined,
-  rightDefined,
-
-  // meta
-
-  _namespaceRegister,
-  _asDefaultGenerate,
-
-}
-
-//
-
-Object.assign( _.long, LongExtension );
 
 })();

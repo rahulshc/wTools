@@ -90,6 +90,14 @@ function like( src )
   return _.unroll.is( src );
 }
 
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return true;
+}
+
 // --
 // maker
 // --
@@ -832,14 +840,16 @@ let UnrollExtension =
   //
 
   NamespaceName : 'unroll',
+  NamespaceNames : [ 'unroll' ],
   NamespaceQname : 'wTools/unroll',
   MoreGeneralNamespaceName : 'long',
   MostGeneralNamespaceName : 'countable',
   TypeName : 'Unroll',
-  SecondTypeName : 'Unroll',
+  TypeNames : [ 'Unroll' ],
+  // SecondTypeName : 'Unroll',
   InstanceConstructor : null,
-  IsFixedLength : false,
   tools : _,
+  symbol : unrollSymbol,
 
   // dichotomy
 
@@ -847,6 +857,7 @@ let UnrollExtension =
   isEmpty,
   isPopulated,
   like,
+  IsResizable,
 
   // maker
 
@@ -875,9 +886,11 @@ let UnrollExtension =
   append,
   remove,
 
-  // field
+  // meta
 
-  symbol : unrollSymbol,
+  namespaceOf : _.blank.namespaceOf,
+  namespaceWithDefaultOf : _.blank.namespaceWithDefaultOf,
+  _functor_functor : _.blank._functor_functor,
 
 }
 

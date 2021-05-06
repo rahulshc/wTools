@@ -36,6 +36,31 @@ function like( src )
   return _.vector.is( src );
 }
 
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return this.default.IsResizable();
+}
+
+// --
+// meta
+// --
+
+/* qqq : optimize */
+function namespaceOf( src )
+{
+  if( !this.is( src ) )
+  return null;
+
+  let result = _.long.namespaceOf( src );
+  if( result )
+  return result;
+
+  return this;
+}
+
 // --
 // extension
 // --
@@ -58,11 +83,13 @@ var VectorExtension =
   //
 
   NamespaceName : 'vector',
+  NamespaceNames : [ 'vector' ],
   NamespaceQname : 'wTools/vector',
   MoreGeneralNamespaceName : 'countable',
   MostGeneralNamespaceName : 'countable',
   TypeName : 'Vector',
-  SecondTypeName : 'Vector',
+  TypeNames : [ 'Vector' ],
+  // SecondTypeName : 'Vector',
   InstanceConstructor : null,
   tools : _,
 
@@ -70,6 +97,7 @@ var VectorExtension =
 
   is, /* qqq : cover here and in the module::MathVector */
   like, /* qqq : cover here and in the module::MathVector */
+  IsResizable,
 
   // maker
 
@@ -82,6 +110,12 @@ var VectorExtension =
   _cloneShallow : _.long._cloneShallow,
   cloneShallow : _.long.cloneShallow, /* qqq : for junior : cover */
   from : _.long.from, /* qqq : for junior : cover */
+
+  // meta
+
+  namespaceOf,
+  namespaceWithDefaultOf : _.props.namespaceWithDefaultOf,
+  _functor_functor : _.props._functor_functor,
 
 }
 

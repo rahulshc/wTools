@@ -661,7 +661,7 @@ function makeCommon( test )
     test.open( `${__.entity.exportStringSolo( env )}` );
 
     const long = namespaceGet( env );
-    const Constructor = _.defaultBufferTyped.InstanceConstructor;
+    const Constructor = _.bufferTyped.default.InstanceConstructor;
 
     /* */
 
@@ -1050,7 +1050,7 @@ function makeCommonWithLongDescriptor( test )
     test.open( `${__.entity.exportStringSolo( env )}` );
 
     const long = namespaceGet( env );
-    const Constructor = _.defaultBufferTyped.InstanceConstructor;
+    const Constructor = _.bufferTyped.default.InstanceConstructor;
 
     /* */
 
@@ -2436,7 +2436,7 @@ function makeUndefined( test )
     test.open( `${__.entity.exportStringSolo( env )}` );
 
     const long = namespaceGet( env );
-    const Constructor = _.defaultBufferTyped.InstanceConstructor;
+    const Constructor = _.bufferTyped.default.InstanceConstructor;
 
     /* */
 
@@ -2796,7 +2796,7 @@ function makeUndefinedWithLongDescriptor( test )
     test.open( `${__.entity.exportStringSolo( env )}` );
 
     const long = namespaceGet( env );
-    const Constructor = _.defaultBufferTyped.InstanceConstructor;
+    const Constructor = _.bufferTyped.default.InstanceConstructor;
 
     /* */
 
@@ -4176,14 +4176,14 @@ function makeEmpty( test )
   act({ tools : 'Array', type : 'Array' });
   act({ tools : 'F32x', type : 'F32x' });
 
-  /* - */
+  /* */
 
   function act( env )
   {
     test.open( `${__.entity.exportStringSolo( env )}` );
 
     const long = namespaceGet( env );
-    const Constructor = _.defaultBufferTyped.InstanceConstructor;
+    const Constructor = _.bufferTyped.default.InstanceConstructor;
 
     /* */
 
@@ -4363,7 +4363,7 @@ function makeEmptyWithLongDescriptor( test )
     test.open( `${__.entity.exportStringSolo( env )}` );
 
     const long = namespaceGet( env );
-    const Constructor = _.defaultBufferTyped.InstanceConstructor;
+    const Constructor = _.bufferTyped.default.InstanceConstructor;
 
     /* */
 

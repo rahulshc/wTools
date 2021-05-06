@@ -10,8 +10,11 @@ function _functor( fo )
 {
 
   _.assert( !!_.bufferTyped );
-  _.assert( _[ fo.name ] === undefined );
   _[ fo.name ] = _[ fo.name ] || Object.create( null );
+  fo.names.forEach( ( name ) =>
+  {
+    _[ name ] = _[ fo.name ];
+  });
 
   // --
   // dichotomy
@@ -34,6 +37,14 @@ function _functor( fo )
     if( _.bufferNodeIs( src ) )
     return false;
     return true;
+  }
+
+  //
+
+  function IsResizable()
+  {
+    _.assert( arguments.length === 0 );
+    return false;
   }
 
   // --
@@ -300,7 +311,7 @@ function _functor( fo )
 
   }
 
-  Object.assign( _, ToolsExtension );
+  _.props.supplement( _, ToolsExtension );
 
   //
 
@@ -310,13 +321,15 @@ function _functor( fo )
     //
 
     NamespaceName : fo.name,
+    NamespaceNames : fo.names,
     NamespaceQname : `wTools/${fo.name}`,
     MoreGeneralNamespaceName : 'bufferTyped',
     MostGeneralNamespaceName : 'countable',
     TypeName : fo.typeName,
-    SecondTypeName : fo.secondTypeName,
+    TypeNames : fo.typeNames,
+    // TypeNames : [ fo.typeName, fo.secondTypeName ],
+    // SecondTypeName : fo.secondTypeName,
     InstanceConstructor : fo.instanceConstructor,
-    IsFixedLength : true,
     IsTyped : true,
     tools : _,
 
@@ -324,6 +337,7 @@ function _functor( fo )
 
     is,
     like,
+    IsResizable,
 
     // maker
 
@@ -343,32 +357,35 @@ function _functor( fo )
     cloneShallow, /* qqq : for junior : cover */
     from, /* qqq : for junior : cover */
 
+    // meta
+
+    namespaceOf : _.blank.namespaceOf,
+    namespaceWithDefaultOf : _.blank.namespaceWithDefaultOf,
+    _functor_functor : _.blank._functor_functor,
+
   }
 
   //
 
-  Object.assign( _[ fo.name ], BufferTypedExtension );
+  _.props.supplement( _[ fo.name ], BufferTypedExtension );
   _.bufferTyped._namespaceRegister( _[ fo.name ] );
 
 }
 
-_functor({ name : 'u32x', typeName : 'U32x', secondTypeName : 'Uint32Array', instanceConstructor : U32x });
-_functor({ name : 'u16x', typeName : 'U16x', secondTypeName : 'Uint16Array', instanceConstructor : U16x });
-_functor({ name : 'u8x', typeName : 'U8x', secondTypeName : 'Uint8Array', instanceConstructor : U8x });
-_functor({ name : 'u8xClamped', typeName : 'U8xClamped', secondTypeName : 'Uint8ClampedArray', instanceConstructor : U8xClamped });
-_functor({ name : 'ux', typeName : 'Ux', secondTypeName : 'Uint32Array', instanceConstructor : Ux });
+_functor({ name : 'u32x', names : [ 'u32x', 'ux' ], typeName : 'U32x', typeNames : [ 'U32x', 'Uint32Array', 'Ux' ], instanceConstructor : U32x });
+_functor({ name : 'u16x', names : [ 'u16x' ], typeName : 'U16x', typeNames : [ 'U16x', 'Uint16Array' ], instanceConstructor : U16x });
+_functor({ name : 'u8x', names : [ 'u8x' ], typeName : 'U8x', typeNames : [ 'U8x', 'Uint8Array' ], instanceConstructor : U8x });
+_functor({ name : 'u8xClamped', names : [ 'u8xClamped' ], typeName : 'U8xClamped', typeNames : [ 'U8xClamped', 'Uint8ClampedArray' ], instanceConstructor : U8xClamped });
 
-_functor({ name : 'i32x', typeName : 'I32x', secondTypeName : 'Int32Array', instanceConstructor : I32x });
-_functor({ name : 'i16x', typeName : 'I16x', secondTypeName : 'Int16Array', instanceConstructor : I16x });
-_functor({ name : 'i8x', typeName : 'I8x', secondTypeName : 'Int8Array', instanceConstructor : I8x });
-_functor({ name : 'ix', typeName : 'Ix', secondTypeName : 'Int32Array', instanceConstructor : Ix });
+_functor({ name : 'i32x', names : [ 'i32x', 'ix' ], typeName : 'I32x', typeNames : [ 'I32x', 'Int32Array', 'Ix' ], instanceConstructor : I32x });
+_functor({ name : 'i16x', names : [ 'i16x' ], typeName : 'I16x', typeNames : [ 'I16x', 'Int16Array' ], instanceConstructor : I16x });
+_functor({ name : 'i8x', names : [ 'i8x' ], typeName : 'I8x', typeNames : [ 'I8x', 'Int8Array' ], instanceConstructor : I8x });
 
-_functor({ name : 'f64x', typeName : 'F64x', secondTypeName : 'Float64Array', instanceConstructor : F64x });
-_functor({ name : 'f32x', typeName : 'F32x', secondTypeName : 'Float32Array', instanceConstructor : F32x });
-_functor({ name : 'fx', typeName : 'Fx', secondTypeName : 'Float32Array', instanceConstructor : Fx });
+_functor({ name : 'f64x', names : [ 'f64x' ], typeName : 'F64x', typeNames : [ 'F64x', 'Float64Array' ], instanceConstructor : F64x });
+_functor({ name : 'f32x', names : [ 'f32x', 'fx' ], typeName : 'F32x', typeNames : [ 'F32x', 'Float32Array', 'Fx' ], instanceConstructor : F32x });
 
-_.assert( !_.defaultBufferTyped );
 _.assert( !!_.fx );
-_.defaultBufferTyped = _.fx;
+_.assert( _.bufferTyped.default === undefined );
+_.bufferTyped.default = _.fx;
 
 })();

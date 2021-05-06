@@ -2511,9 +2511,11 @@ let RoutineExtension =
   // fields
 
   NamespaceName : 'routine',
+  NamespaceNames : [ 'routine' ],
   NamespaceQname : 'wTools/routine',
   TypeName : 'Routine',
-  SecondTypeName : 'Function',
+  TypeNames : [ 'Routine', 'Function' ],
+  // SecondTypeName : 'Function',
   InstanceConstructor : null,
   tools : _,
 

@@ -27,6 +27,14 @@ function like( src )
   return false;
 }
 
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return false;
+}
+
 // --
 // maker
 // --
@@ -266,19 +274,21 @@ var ArgumentsArrayExtension =
   //
 
   NamespaceName : 'argumentsArray',
+  NamespaceNames : [ 'argumentsArray' ],
   NamespaceQname : 'wTools/argumentsArray',
   MoreGeneralNamespaceName : 'long',
   MostGeneralNamespaceName : 'countable',
   TypeName : 'ArgumentsArray',
-  SecondTypeName : 'Arguments',
+  TypeNames : [ 'ArgumentsArray', 'Arguments' ],
+  // SecondTypeName : 'Arguments',
   InstanceConstructor : null,
-  IsFixedLength : true,
   tools : _,
 
   // dichotomy
 
   is, /* qqq : cover */
   like, /* qqq : cover */
+  IsResizable,
 
   // maker
 
@@ -296,6 +306,12 @@ var ArgumentsArrayExtension =
   _cloneShallow,
   cloneShallow, /* qqq : for junior : cover */
   from, /* qqq : for junior : cover */
+
+  // meta
+
+  namespaceOf : _.blank.namespaceOf,
+  namespaceWithDefaultOf : _.blank.namespaceWithDefaultOf,
+  _functor_functor : _.blank._functor_functor,
 
 }
 
