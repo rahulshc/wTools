@@ -258,7 +258,7 @@ function _make( src, length )
   if( arguments.length === 2 )
   {
     if( src === null )
-    return fill( this.tools.defaultBufferTyped.make( length ), data );
+    return fill( this.tools.bufferTyped.make( length ), data );
     if( _.buffer.rawIs( src ) )
     return fill( new BufferRaw( length ), data );
     if( _.buffer.viewIs( src ) )
@@ -268,7 +268,7 @@ function _make( src, length )
     if( _.buffer.nodeIs( src ) )
     return fill( BufferNode.alloc( length ), data );
     if( _.long.is( src ) )
-    return fill( this.tools.defaultBufferTyped.make( length ), data );
+    return fill( this.tools.bufferTyped.make( length ), data );
 
     let result;
     if( _.routineIs( src ) )
@@ -279,7 +279,7 @@ function _make( src, length )
   else if( arguments.length === 1 )
   {
     if( src === null || _.number.is( src ) )
-    return this.tools.defaultBufferTyped.make( src );
+    return this.tools.bufferTyped.make( src );
     if( _.buffer.rawIs( src ) )
     return fill( new BufferRaw( length ), data );
     if( _.buffer.viewIs( src ) )
@@ -289,10 +289,10 @@ function _make( src, length )
     if( _.buffer.nodeIs( src ) )
     return fill( BufferNode.from( src ) );
     if( _.long.is( src ) )
-    return this.tools.defaultBufferTyped.make( src );
+    return this.tools.bufferTyped.make( src );
   }
 
-  return this.tools.defaultBufferTyped.make();
+  return this.tools.bufferTyped.make();
 
   /* */
 
@@ -498,7 +498,7 @@ function _makeUndefined( src, length )
   }
 
   if( src === null || _.number.is( src ) )
-  return this.tools.defaultBufferTyped.make( length );
+  return this.tools.bufferTyped.make( length );
   if( _.buffer.rawIs( src ) )
   return new BufferRaw( length );
   if( _.buffer.viewIs( src ) )
@@ -508,7 +508,7 @@ function _makeUndefined( src, length )
   if( _.buffer.nodeIs( src ) )
   return BufferNode.alloc( length );
   if( _.long.is( src ) )
-  return this.tools.defaultBufferTyped.make( length );
+  return this.tools.bufferTyped.make( length );
 
   if( _.routineIs( src ) )
   {
@@ -518,7 +518,7 @@ function _makeUndefined( src, length )
     return result;
   }
 
-  return this.tools.defaultBufferTyped.make();
+  return this.tools.bufferTyped.make();
 }
 
 //
