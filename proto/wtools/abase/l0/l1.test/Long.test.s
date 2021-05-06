@@ -7291,6 +7291,14 @@ function fromCommon( test )
     test.true( _.f64x.is( got ) );
     test.true( got === src );
 
+    /* */
+
+    test.case = `countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 2, 3 ]) );
+
     /* - */
 
     if( Config.debug )
@@ -7510,6 +7518,14 @@ function fromCommonWithLongDescriptor( test )
     test.identical( got, new F64x([ 1, 2, 3 ]) );
     test.true( _.f64x.is( got ) );
     test.true( got === src );
+
+    /* */
+
+    test.case = `countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 2, 3 ]) );
 
     test.close( `${ __.entity.exportStringSolo( env ) }` );
   }
