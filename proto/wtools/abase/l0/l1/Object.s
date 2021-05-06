@@ -167,6 +167,12 @@ function IsResizable()
 
 function _makeEmpty( src )
 {
+  if( src )
+  {
+    let method = _.class.methodMakeEmptyOf( src );
+    if( method )
+    return method.call( src );
+  }
   return new src.constructor();
 }
 
@@ -184,6 +190,12 @@ function makeEmpty( src )
 
 function _makeUndefined( src )
 {
+  if( src )
+  {
+    let method = _.class.methodMakeUndefinedOf( src );
+    if( method )
+    return method.call( src );
+  }
   return new src.constructor();
 }
 

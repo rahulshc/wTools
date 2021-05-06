@@ -144,6 +144,9 @@ function __arrayFlatten( src )
   let result = [];
   if( src === null )
   return result;
+  if( !_.argumentsArray.like( src ) )
+  result.push( src );
+  else
   for( let i = 0 ; i < src.length ; i++ )
   {
     let e = src[ i ];
@@ -2300,6 +2303,11 @@ function _compose_head( routine, args )
   // debugger;
   // o.bodies = _.arrayAppendArrays( [], [ o.bodies ] );
   // o.bodies = merge( o.bodies );
+
+  // let bodies2 = __arrayFlatten( o.bodies );
+  // if( bodies2.length && bodies2[ 0 ] === undefined )
+  // debugger;
+
   o.bodies = __arrayFlatten( o.bodies );
   o.bodies = o.bodies.filter( ( e ) => e !== null );
 

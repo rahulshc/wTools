@@ -74,21 +74,21 @@ function filterMapCommonPass( test )
   let ops = [];
   let env;
 
-  namespaceEach({ method : 'filterWithoutEscapeLeft', left : 1 });
-  namespaceEach({ method : 'filterWithoutEscapeRight', left : 0 });
-  namespaceEach({ method : 'filterWithoutEscape', left : 1 });
-  namespaceEach({ method : 'filterWithEscapeLeft', left : 1 });
-  namespaceEach({ method : 'filterWithEscapeRight', left : 0 });
-  namespaceEach({ method : 'filterWithEscape', left : 1 });
-  namespaceEach({ method : 'filter', left : 1 });
+  // namespaceEach({ method : 'filterWithoutEscapeLeft', left : 1 });
+  // namespaceEach({ method : 'filterWithoutEscapeRight', left : 0 });
+  // namespaceEach({ method : 'filterWithoutEscape', left : 1 });
+  // namespaceEach({ method : 'filterWithEscapeLeft', left : 1 });
+  // namespaceEach({ method : 'filterWithEscapeRight', left : 0 });
+  // namespaceEach({ method : 'filterWithEscape', left : 1 });
+  // namespaceEach({ method : 'filter', left : 1 });
 
   namespaceEach({ method : 'mapWithoutEscapeLeft', left : 1 });
-  namespaceEach({ method : 'mapWithoutEscapeRight', left : 0 });
-  namespaceEach({ method : 'mapWithoutEscape', left : 1 });
-  namespaceEach({ method : 'mapWithEscapeLeft', left : 1 });
-  namespaceEach({ method : 'mapWithEscapeRight', left : 0 });
-  namespaceEach({ method : 'mapWithEscape', left : 1 });
-  namespaceEach({ method : 'map', left : 1 });
+  // namespaceEach({ method : 'mapWithoutEscapeRight', left : 0 });
+  // namespaceEach({ method : 'mapWithoutEscape', left : 1 });
+  // namespaceEach({ method : 'mapWithEscapeLeft', left : 1 });
+  // namespaceEach({ method : 'mapWithEscapeRight', left : 0 });
+  // namespaceEach({ method : 'mapWithEscape', left : 1 });
+  // namespaceEach({ method : 'map', left : 1 });
 
   /* - */
 
@@ -100,65 +100,68 @@ function filterMapCommonPass( test )
     env.namespace = 'long';
     env.isResizable = true;
     caseEach( env );
-    env.namespace = 'array';
-    env.isResizable = true;
-    caseEach( env );
-    env.namespace = 'unroll';
-    env.isResizable = true;
-    caseEach( env );
-    env.namespace = 'countable';
-    env.isResizable = true;
-    env.makable = false;
-    caseEach( env );
-    env.namespace = 'vector';
-    env.isResizable = true;
-    env.makable = false;
-    caseEach( env );
+    // env.namespace = 'array';
+    // env.isResizable = true;
+    // caseEach( env );
+    // env.namespace = 'unroll';
+    // env.isResizable = true;
+    // caseEach( env );
+    // env.namespace = 'countable';
+    // env.isResizable = true;
+    // env.makable = false;
+    // caseEach( env );
+    // env.namespace = 'vector';
+    // env.isResizable = true;
+    // env.makable = false;
+    // caseEach( env );
 
     /* fixed */
 
-    env.namespace = 'argumentsArray';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'bufferTyped';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'f32x';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'f64x';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'fx';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'i32x';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'i16x';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'i8x';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'ix';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'u32x';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'u16x';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'u8x';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'u8xClamped';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'ux';
-    env.isResizable = false;
-    caseEach( env );
+    // env.namespace = 'argumentsArray';
+    // env.isResizable = false;
+    // caseEach( env );
+    // env.namespace = 'bufferTyped';
+    // env.isResizable = false;
+    // caseEach( env );
+    // env.namespace = 'bufferBytes';
+    // env.isResizable = false;
+    // caseEach( env );
+    // env.namespace = 'f32x';
+    // env.isResizable = false;
+    // caseEach( env );
+    // env.namespace = 'f64x';
+    // env.isResizable = false;
+    // caseEach( env );
+    // env.namespace = 'fx';
+    // env.isResizable = false;
+    // caseEach( env );
+    // env.namespace = 'i32x';
+    // env.isResizable = false;
+    // caseEach( env );
+    // env.namespace = 'i16x';
+    // env.isResizable = false;
+    // caseEach( env );
+    // env.namespace = 'i8x';
+    // env.isResizable = false;
+    // caseEach( env );
+    // env.namespace = 'ix';
+    // env.isResizable = false;
+    // caseEach( env );
+    // env.namespace = 'u32x';
+    // env.isResizable = false;
+    // caseEach( env );
+    // env.namespace = 'u16x';
+    // env.isResizable = false;
+    // caseEach( env );
+    // env.namespace = 'u8x';
+    // env.isResizable = false;
+    // caseEach( env );
+    // env.namespace = 'u8xClamped';
+    // env.isResizable = false;
+    // caseEach( env );
+    // env.namespace = 'ux';
+    // env.isResizable = false;
+    // caseEach( env );
 
   }
 
@@ -264,6 +267,29 @@ function filterMapCommonPass( test )
 
     /* */
 
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, same length, countable`;
+    clean();
+    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var dst = _[ env.namespace ].make([ 4, 5, 6 ]);
+    var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
+    test.true( got === dst );
+    var exp = _[ env.namespace ].make([ 11, 12, 13 ]);
+    test.identical( got, exp );
+    var exp = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    test.identical( src, exp );
+    var exp = order([ 1, 2, 3 ]);
+    test.identical( __.select( ops, '*/#0' ), exp );
+    var exp = order([ 0, 1, 2 ]);
+    test.identical( __.select( ops, '*/#1' ), exp );
+    var exp = order([ 0, 1, 2 ]);
+    test.identical( __.select( ops, '*/#2' ), exp );
+    var exp = order([ src, src, src ]);
+    test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    test.identical( __.select( ops, '*/#4' ), exp );
+
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, pass, dst === null`;
     clean();
     var src = [ 1, 2, 3 ];
@@ -273,6 +299,36 @@ function filterMapCommonPass( test )
     var exp = _[ env.namespace ].make([ 11, 12, 13 ]);
     test.identical( got, exp );
     var exp = [ 1, 2, 3 ]
+    test.identical( src, exp );
+    var exp = order([ 1, 2, 3 ]);
+    test.identical( __.select( ops, '*/#0' ), exp );
+    var exp = order([ 0, 1, 2 ]);
+    test.identical( __.select( ops, '*/#1' ), exp );
+    var exp = order([ 0, 1, 2 ]);
+    test.identical( __.select( ops, '*/#2' ), exp );
+    var exp = order([ src, src, src ]);
+    test.identical( __.select( ops, '*/#3' ), exp );
+    var exp = order([ got, got, got ]);
+    if( !env.isResizable && _.strBegins( env.method, 'filter' ) )
+    {
+      var dst2 = [ 11, 12, 13 ];
+      exp = order([ dst2, dst2, dst2 ]);
+    }
+    test.identical( __.select( ops, '*/#4' ), exp );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst === null, countable`;
+    clean();
+    var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = _[ env.namespace ][ env.method ]( null, src, f1 );
+    test.true( _[ env.namespace ].is( got ) );
+    test.true( got !== src );
+    var exp = _[ env.namespace ].make([ 11, 12, 13 ]);
+    if( env.namespace === 'countable' )
+    exp = __.diagnostic.objectMake({ elements : [ 11, 12, 13 ] });
+    test.identical( got, exp );
+    var exp = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
     test.identical( src, exp );
     var exp = order([ 1, 2, 3 ]);
     test.identical( __.select( ops, '*/#0' ), exp );
@@ -406,10 +462,14 @@ function filterCommonDropping( test )
 
     /* fixed */
 
+
     env.namespace = 'argumentsArray';
     env.isResizable = false;
     caseEach( env );
     env.namespace = 'bufferTyped';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'bufferBytes';
     env.isResizable = false;
     caseEach( env );
     env.namespace = 'f32x';
@@ -592,10 +652,14 @@ function mapCommonReturningUndefined( test )
 
     /* fixed */
 
+
     env.namespace = 'argumentsArray';
     env.isResizable = false;
     caseEach( env );
     env.namespace = 'bufferTyped';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'bufferBytes';
     env.isResizable = false;
     caseEach( env );
     env.namespace = 'f32x';
@@ -754,10 +818,14 @@ function filterMapCommonEscaping( test )
 
     /* fixed */
 
+
     env.namespace = 'argumentsArray';
     env.isResizable = false;
     caseEach( env );
     env.namespace = 'bufferTyped';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'bufferBytes';
     env.isResizable = false;
     caseEach( env );
     env.namespace = 'f32x';
@@ -894,7 +962,7 @@ const Proto =
 
     identical,
 
-    filterMapCommonPass,
+    // filterMapCommonPass,
     filterCommonDropping,
     // mapCommonReturningUndefined,
     // filterMapCommonEscaping,

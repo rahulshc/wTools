@@ -129,8 +129,7 @@ var VectorExtension =
   aptRight : _.countable.aptRight,
   last : _.countable.last, /* qqq : cover */
 
-  _filterAct0 : _.countable._filterAct0,
-  _filterAct1 : _.countable._filterAct1,
+  _filterAct : _.countable._filterAct,
   filterWithoutEscapeLeft : _.countable.filterWithoutEscapeLeft,
   filterWithoutEscapeRight : _.countable.filterWithoutEscapeRight,
   filterWithoutEscape : _.countable.filterWithoutEscape,
@@ -139,8 +138,7 @@ var VectorExtension =
   filterWithEscape : _.countable.filterWithEscape,
   filter : _.countable.filter,
 
-  _mapAct0 : _.countable._mapAct0,
-  _mapAct1 : _.countable._mapAct1,
+  _mapAct : _.countable._mapAct,
   mapWithoutEscapeLeft : _.countable.mapWithoutEscapeLeft,
   mapWithoutEscapeRight : _.countable.mapWithoutEscapeRight,
   mapWithoutEscape : _.countable.mapWithoutEscape,
@@ -148,6 +146,26 @@ var VectorExtension =
   mapWithEscapeRight : _.countable.mapWithEscapeRight,
   mapWithEscape : _.countable.mapWithEscape,
   map : _.countable.map,
+
+  // _filterAct0 : _.countable._filterAct0,
+  // _filterAct : _.countable._filterAct,
+  // filterWithoutEscapeLeft : _.countable.filterWithoutEscapeLeft,
+  // filterWithoutEscapeRight : _.countable.filterWithoutEscapeRight,
+  // filterWithoutEscape : _.countable.filterWithoutEscape,
+  // filterWithEscapeLeft : _.countable.filterWithEscapeLeft,
+  // filterWithEscapeRight : _.countable.filterWithEscapeRight,
+  // filterWithEscape : _.countable.filterWithEscape,
+  // filter : _.countable.filter,
+  //
+  // _mapAct0 : _.countable._mapAct0,
+  // _mapAct : _.countable._mapAct,
+  // mapWithoutEscapeLeft : _.countable.mapWithoutEscapeLeft,
+  // mapWithoutEscapeRight : _.countable.mapWithoutEscapeRight,
+  // mapWithoutEscape : _.countable.mapWithoutEscape,
+  // mapWithEscapeLeft : _.countable.mapWithEscapeLeft,
+  // mapWithEscapeRight : _.countable.mapWithEscapeRight,
+  // mapWithEscape : _.countable.mapWithEscape,
+  // map : _.countable.map,
 
 }
 

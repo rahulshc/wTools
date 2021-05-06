@@ -33,7 +33,7 @@ let BufferBytesExtension =
   NamespaceNames : [ 'u8x', 'bufferBytes' ],
   NamespaceQname : 'wTools/u8x',
   TypeName : 'U8x',
-  TypeNames : [ 'U8x', 'BufferBytes' ],
+  TypeNames : [ 'U8x', 'Uint8Array', 'BufferBytes',  ],
   InstanceConstructor : U8x,
   tools : _,
 

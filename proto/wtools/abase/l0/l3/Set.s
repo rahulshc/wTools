@@ -336,7 +336,7 @@ let SetExtension =
   last : _.props.last, /* qqq : cover */
 
   _filterAct0 : _.props._filterAct0,
-  _filterAct1 : _.props._filterAct1,
+  _filterAct : _.props._filterAct,
   filterWithoutEscapeLeft : _.props.filterWithoutEscapeLeft,
   filterWithoutEscapeRight : _.props.filterWithoutEscapeRight,
   filterWithoutEscape : _.props.filterWithoutEscape,
@@ -346,7 +346,7 @@ let SetExtension =
   filter : _.props.filter,
 
   _mapAct0 : _.props._mapAct0,
-  _mapAct1 : _.props._mapAct1,
+  _mapAct : _.props._mapAct,
   mapWithoutEscapeLeft : _.props.mapWithoutEscapeLeft,
   mapWithoutEscapeRight : _.props.mapWithoutEscapeRight,
   mapWithoutEscape : _.props.mapWithoutEscape,

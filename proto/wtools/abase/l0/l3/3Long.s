@@ -548,7 +548,7 @@ function whileRight( src, onEach )
 
 //
 
-function _filterAct1( ... args )
+function _filterAct( ... args )
 {
   const self = this;
   let dst = arguments[ 0 ];
@@ -557,17 +557,20 @@ function _filterAct1( ... args )
   const isLeft = arguments[ 3 ];
   const eachRoutineName = arguments[ 4 ];
   const escape = arguments[ 5 ];
-  const general = this.tools[ this.MostGeneralNamespaceName ];
-  const each = general[ eachRoutineName ];
+  const srcNamesapce = this.tools[ this.MostGeneralNamespaceName ].namespaceOf( src );
+  let dstNamespace;
+  const each = srcNamesapce[ eachRoutineName ];
   let isSelf;
   let dstIsResizable;
 
   if( dst === null )
   {
+    dstNamespace = self.default || self;
     isSelf = false;
     if( self.IsResizable() )
     {
-      dst = self.makeEmpty( src );
+      // dst = self.makeEmpty( src );
+      dst = dstNamespace.makeEmpty();
       dstIsResizable = true;
     }
     else
@@ -579,18 +582,20 @@ function _filterAct1( ... args )
   {
     isSelf = true;
     dst = src;
+    dstNamespace = self.namespaceWithDefaultOf( dst );
     dstIsResizable = _.countable.isResizable( dst );
   }
   else
   {
+    dstNamespace = self.namespaceWithDefaultOf( dst );
     dstIsResizable = _.countable.isResizable( dst );
     isSelf = dst === src;
     if( dstIsResizable )
     if( !isSelf )
-    self._empty( dst );
+    dstNamespace._empty( dst );
   }
 
-  const dstNamespace = self.namespaceWithDefaultOf( dst );
+  // const dstNamespace = self.namespaceWithDefaultOf( dst );
 
   if( Config.debug )
   verify();
@@ -646,7 +651,7 @@ function _filterAct1( ... args )
 
   function resizableSelfRight()
   {
-    each.call( general, src, function( val, k, c, src2 )
+    each.call( srcNamesapce, src, function( val, k, c, src2 )
     {
       let val2 = onEach( val, k, c, src2, dst );
       let val3 = escape( val2 );
@@ -662,7 +667,7 @@ function _filterAct1( ... args )
   function resizableNonEq()
   {
     const append = isLeft ? dstNamespace._elementAppend : dstNamespace._elementPrepend;
-    each.call( general, src, function( val, k, c, src2 )
+    each.call( srcNamesapce, src, function( val, k, c, src2 )
     {
       let val2 = onEach( val, k, c, src2, dst );
       let val3 = escape( val2 );
@@ -676,7 +681,7 @@ function _filterAct1( ... args )
   {
     let dst2 = [];
     if( isLeft )
-    each.call( general, src, function( val, k, c, src2 )
+    each.call( srcNamesapce, src, function( val, k, c, src2 )
     {
       let val2 = onEach( val, k, c, src2, dst2 );
       let val3 = escape( val2 );
@@ -685,7 +690,7 @@ function _filterAct1( ... args )
       dst2.push( val3 );
     });
     else
-    each.call( general, src, function( val, k, c, src2 )
+    each.call( srcNamesapce, src, function( val, k, c, src2 )
     {
       let val2 = onEach( val, k, c, src2, dst2 );
       let val3 = escape( val2 );
@@ -698,7 +703,7 @@ function _filterAct1( ... args )
 
   function nonResizableNonNull()
   {
-    each.call( general, src, function( val, k, c, src2 )
+    each.call( srcNamesapce, src, function( val, k, c, src2 )
     {
       let val2 = onEach( val, k, c, src2, dst );
       let val3 = escape( val2 );
@@ -712,10 +717,10 @@ function _filterAct1( ... args )
   {
     _.assert( args.length === 6, `Expects 3 arguments` );
     _.assert( dst === null || self.is( dst ), () => `dst is not ${self.TypeName}` );
-    _.assert( general.is( src ), () => `src is not ${general.TypeName}` );
+    _.assert( srcNamesapce.is( src ), () => `src is not ${srcNamesapce.TypeName}` );
     _.assert
     (
-      dst === null || _.countable.isResizable( dst ) || self._lengthOf( dst ) === general._lengthOf( src )
+      dst === null || _.countable.isResizable( dst ) || self._lengthOf( dst ) === srcNamesapce._lengthOf( src )
       , () => `dst is ${self.TypeName} and lengthOf( dst ) is ${self._lengthOf( dst )}, but lengthOf( src ) is ${self._lengthOf( src )}`
     );
   }
@@ -724,75 +729,7 @@ function _filterAct1( ... args )
 
 //
 
-// function _mapAct0()
-// {
-//   const self = this;
-//   const dst = arguments[ 0 ];
-//   const src = arguments[ 1 ];
-//   const onEach = arguments[ 2 ];
-//   const each = arguments[ 3 ];
-//   const escape = arguments[ 4 ];
-//
-//   if( dst === src )
-//   each( src, function( val, k, c, src2 )
-//   {
-//     let val2 = onEach( val, k, c, src2, dst );
-//     let val3 = escape( val2 );
-//     if( val3 === val || val2 === undefined )
-//     return;
-//     self._elementSet( dst, k, val3 );
-//   });
-//   else
-//   each( src, function( val, k, c, src2 )
-//   {
-//     let val2 = onEach( val, k, c, src2, dst );
-//     let val3 = escape( val2 );
-//     if( val2 === undefined )
-//     self._elementSet( dst, k, val );
-//     else
-//     self._elementSet( dst, k, val3 );
-//   });
-//
-//   return dst;
-// }
-//
-// //
-//
-// function _mapAct1()
-// {
-//   let self = this;
-//   let dst = arguments[ 0 ];
-//   let src = arguments[ 1 ];
-//   let onEach = arguments[ 2 ];
-//   let isLeft = arguments[ 3 ];
-//   let eachRoutineName = arguments[ 4 ];
-//   let escape = arguments[ 5 ];
-//   let general = this.tools[ this.MostGeneralNamespaceName ];
-//   let append = isLeft ? this._elementAppend : this._elementPrepend;
-//
-//   if( dst === null )
-//   dst = this.makeUndefined( src );
-//   else if( dst === _.self )
-//   dst = src;
-//
-//   if( Config.debug )
-//   {
-//     _.assert( arguments.length === 6, `Expects 3 arguments` );
-//     _.assert( this.is( dst ), () => `dst is not ${this.TypeName}` );
-//     _.assert( general.is( src ), () => `src is not ${general.TypeName}` );
-//     _.assert
-//     (
-//       _.countable.isResizable( dst ) || this._lengthOf( dst ) === general._lengthOf( src )
-//       , () => `lengthOf( dst ) is ${this._lengthOf( dst )}, but lengthOf( src ) is ${this._lengthOf( src )}`
-//     );
-//   }
-//
-//   this._mapAct0( dst, src, onEach, general[ eachRoutineName ].bind( general ), escape, append );
-//
-//   return dst;
-// }
-
-function _mapAct1( ... args )
+function _mapAct( ... args )
 {
   const self = this;
   let dst = arguments[ 0 ];
@@ -801,15 +738,17 @@ function _mapAct1( ... args )
   const isLeft = arguments[ 3 ];
   const eachRoutineName = arguments[ 4 ];
   const escape = arguments[ 5 ];
-  const general = this.tools[ this.MostGeneralNamespaceName ].namespaceOf( src );
-  const each = general[ eachRoutineName ];
+  const srcNamesapce = this.tools[ this.MostGeneralNamespaceName ].namespaceOf( src );
+  const each = srcNamesapce[ eachRoutineName ];
   let isSelf;
   let dstIsResizable;
 
   if( dst === null )
   {
     isSelf = false;
+    // dst = self.makeUndefined( null, srcNamesapce._lengthOf( src ) );
     dst = self.makeUndefined( src );
+    // _.countab.make( obj )
     dstIsResizable = self.IsResizable();
   }
   else if( dst === _.self )
@@ -824,8 +763,7 @@ function _mapAct1( ... args )
     isSelf = dst === src;
     if( dstIsResizable )
     if( !isSelf )
-    dst.length = general._lengthOf( src );
-    // self._empty( dst );
+    dst.length = srcNamesapce._lengthOf( src );
   }
 
   const dstNamespace = self.namespaceWithDefaultOf( dst );
@@ -834,7 +772,7 @@ function _mapAct1( ... args )
   verify();
 
   if( dst === src )
-  each.call( general, src, function( val, k, c, src2 )
+  each.call( srcNamesapce, src, function( val, k, c, src2 )
   {
     let val2 = onEach( val, k, c, src2, dst );
     let val3 = escape( val2 );
@@ -843,7 +781,7 @@ function _mapAct1( ... args )
     self._elementSet( dst, k, val3 );
   });
   else
-  each.call( general, src, function( val, k, c, src2 )
+  each.call( srcNamesapce, src, function( val, k, c, src2 )
   {
     let val2 = onEach( val, k, c, src2, dst );
     let val3 = escape( val2 );
@@ -859,10 +797,10 @@ function _mapAct1( ... args )
   {
     _.assert( args.length === 6, `Expects 3 arguments` );
     _.assert( dst === null || self.is( dst ), () => `dst is not ${self.TypeName}` );
-    _.assert( general.is( src ), () => `src is not ${general.TypeName}` );
+    _.assert( srcNamesapce.is( src ), () => `src is not ${srcNamesapce.TypeName}` );
     _.assert
     (
-      dst === null || _.countable.isResizable( dst ) || self._lengthOf( dst ) === general._lengthOf( src )
+      dst === null || _.countable.isResizable( dst ) || self._lengthOf( dst ) === srcNamesapce._lengthOf( src )
       , () => `dst is ${self.TypeName} and lengthOf( dst ) is ${self._lengthOf( dst )}, but lengthOf( src ) is ${self._lengthOf( src )}`
     );
   }
@@ -978,8 +916,7 @@ let LongExtension =
   aptRight : _.props.aptRight,
   last : _.props.last, /* qqq : cover */
 
-  // _filterAct0,
-  _filterAct1,
+  _filterAct,
   filterWithoutEscapeLeft : _.props.filterWithoutEscapeLeft,
   filterWithoutEscapeRight : _.props.filterWithoutEscapeRight,
   filterWithoutEscape : _.props.filterWithoutEscape,
@@ -988,8 +925,7 @@ let LongExtension =
   filterWithEscape : _.props.filterWithEscape,
   filter : _.props.filter,
 
-  // _mapAct0,
-  _mapAct1,
+  _mapAct,
   mapWithoutEscapeLeft : _.props.mapWithoutEscapeLeft,
   mapWithoutEscapeRight : _.props.mapWithoutEscapeRight,
   mapWithoutEscape : _.props.mapWithoutEscape,
