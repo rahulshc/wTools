@@ -746,7 +746,8 @@ function _mapAct( ... args )
   {
     isSelf = false;
     dstNamespace = self.namespaceOf( src ) || self.default || self;
-    dst = self.makeUndefined( src );
+    // dst = self.makeUndefined( src );
+    dst = dstNamespace.makeUndefined( src );
     dstIsResizable = self.IsResizable();
   }
   else if( dst === _.self )
