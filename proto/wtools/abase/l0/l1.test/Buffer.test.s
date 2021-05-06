@@ -2429,7 +2429,7 @@ function makeUndefined( test )
   act({ tools : 'Array', type : 'Array' });
   act({ tools : 'F32x', type : 'F32x' });
 
-  /* */
+  /* - */
 
   function act( env )
   {
@@ -2764,6 +2764,368 @@ function makeUndefined( test )
     return _.withLong[ env.tools ].buffer;
   }
 }
+
+//
+
+function makeUndefinedWithLongDescriptor( test )
+{
+  let times = 4;
+  for( let k in _.long.namespaces )
+  {
+    let namespace = _.long.namespaces[ k ];
+    let type = namespace.TypeName;
+
+    if( type === 'ArgumentsArray' )
+    continue;
+
+    test.open( `long - ${ type }` );
+    act({ tools : 'default', type });
+    act({ tools : 'Array', type });
+    act({ tools : 'F32x', type });
+    test.close( `long - ${ type }` );
+
+    if( times < 1 )
+    break;
+    times--;
+  }
+
+  /* - */
+
+  function act( env )
+  {
+    test.open( `${__.entity.exportStringSolo( env )}` );
+
+    const long = namespaceGet( env );
+    const Constructor = _.defaultBufferTyped.InstanceConstructor;
+
+    /* */
+
+    test.case = `no args`;
+    var got = long.makeUndefined();
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+
+    test.case = `length`;
+    var got = long.makeUndefined( 3 );
+    test.true( got instanceof Constructor );
+    test.true( got.length === 3 );
+
+    /* */
+
+    test.case = `empty array`;
+    var src = [];
+    var got = long.makeUndefined( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+
+    test.case = `filled array`;
+    var src = [ 2, 3 ];
+    var got = long.makeUndefined( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+    test.identical( got, Constructor.from([ 0, 0 ]) );
+
+    /* */
+
+    test.case = `empty unroll`;
+    var src = _.unroll.make( [] );
+    var got = long.makeUndefined( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+
+    test.case = `filled unroll`;
+    var src = _.unroll.make([ 2, 3 ]);
+    var got = long.makeUndefined( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+    test.identical( got, Constructor.from([ 0, 0 ]) );
+
+    /* */
+
+    test.case = `empty argumentsArray`;
+    var src = _.argumentsArray.make( [] );
+    var got = long.makeUndefined( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+
+    test.case = `filled argumentsArray`;
+    var src = _.argumentsArray.make([ 2, 3 ]);
+    var got = long.makeUndefined( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0, 0 ]) );
+
+    /* */
+
+    test.case = `empty typed buffer`;
+    var src = _.u8x.make( [] );
+    var got = long.makeUndefined( src );
+    test.true( got instanceof U8x );
+    test.identical( got.length, 0 );
+
+    test.case = `filled typed buffer`;
+    var src = _.f32x.make([ 2, 3 ]);
+    var got = long.makeUndefined( src );
+    test.true( got instanceof F32x );
+    test.identical( got, _.f32x.make([ 0, 0 ]) );
+
+    /* */
+
+    test.case = `empty raw buffer`;
+    var src = new BufferRaw();
+    var got = long.makeUndefined( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got.byteLength, 0 );
+
+    test.case = `filled raw buffer`;
+    var src = _.u8x.make([ 2, 3 ]).buffer;
+    var got = long.makeUndefined( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got, _.u8x.make([ 0, 0 ]).buffer );
+
+    /* */
+
+    test.case = `empty view buffer`;
+    var src = new BufferView( new BufferRaw() );
+    var got = long.makeUndefined( src );
+    test.true( got instanceof BufferView );
+    test.identical( got.byteLength, 0 );
+
+    test.case = `filled view buffer`;
+    var src = new BufferView( _.u8x.make([ 2, 3 ]).buffer );
+    var got = long.makeUndefined( src );
+    test.true( got instanceof BufferView );
+    test.identical( got, new BufferView( _.u8x.make([ 0, 0 ]).buffer ) );
+
+    /* */
+
+    if( Config.interpreter === 'njs' )
+    {
+      test.case = `empty node buffer`;
+      var src = BufferNode.alloc( 0 );
+      var got = long.makeUndefined( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got.length, 0 );
+
+      test.case = `filled node buffer`;
+      var src = BufferNode.from([ 2, 3 ]);
+      var got = long.makeUndefined( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got, BufferNode.from([ 0, 0 ]) );
+    }
+
+    /* */
+
+    test.case = `null and length - number`;
+    var got = long.makeUndefined( null, 2 );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+
+    test.case = `null and length - array`;
+    var got = long.makeUndefined( null, [ 1, 2 ] );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+
+    test.case = `null and length - raw buffer`;
+    var got = long.makeUndefined( null, new BufferRaw( 2 ) );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+
+    test.case = `null and countable`;
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long.makeUndefined( null, length );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 3 );
+
+    /* */
+
+    test.case = `empty array and length`;
+    var src = [];
+    var got = long.makeUndefined( src, 2 );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+
+    test.case = `empty unroll and length`;
+    var src = _.unroll.make( [] );
+    var got = long.makeUndefined( src, 2 );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+
+    test.case = `empty argumentsArray and length`;
+    var src = _.argumentsArray.make( [] );
+    var got = long.makeUndefined( src, 2 );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 2 );
+
+    test.case = `empty typed buffer and length`;
+    var src = _.u8x.make( [] );
+    var got = long.makeUndefined( src, 2 );
+    test.true( got instanceof U8x );
+    test.identical( got.length, 2 );
+
+    test.case = `empty raw buffer and length`;
+    var src = new BufferRaw( 0 );
+    var got = long.makeUndefined( src, 2 );
+    test.true( got instanceof BufferRaw );
+    test.identical( got.byteLength, 2 );
+
+    test.case = `empty view buffer and length`;
+    var src = new BufferView( new BufferRaw( 0 ) );
+    var got = long.makeUndefined( src, 2 );
+    test.true( got instanceof BufferView );
+    test.identical( got.byteLength, 2 );
+
+    if( Config.interpreter === 'njs' )
+    {
+      test.case = `empty node buffer and length`;
+      var src = BufferNode.alloc( 0 );
+      var got = long.makeUndefined( src, 2 );
+      test.true( got instanceof BufferNode );
+      test.identical( got.length, 2 );
+    }
+
+    /* */
+
+    test.case = `non-empty array and length longer`;
+    var src = [ 3, 4 ];
+    var got = long.makeUndefined( src, 3 );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0, 0, 0 ]) );
+
+    test.case = `non-empty array and length shorter`;
+    var src = [ 3, 4 ];
+    var got = long.makeUndefined( src, 1 );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0 ]) );
+
+    /* */
+
+    test.case = `non-empty unroll and length longer`;
+    var src = _.unroll.make([ 3, 4 ]);
+    var got = long.makeUndefined( src, 3 );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0, 0, 0 ]) );
+
+    test.case = `non-empty unroll and length shorter`;
+    var src = _.unroll.make([ 3, 4 ]);
+    var got = long.makeUndefined( src, 1 );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0 ]) );
+
+    /* */
+
+    test.case = `non-empty argumentsArray and length longer`;
+    var src = _.argumentsArray.make([ 3, 4 ]);
+    var got = long.makeUndefined( src, 3 );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0, 0, 0 ]) );
+
+    test.case = `non-empty argumentsArray and length shorter`;
+    var src = _.argumentsArray.make([ 3, 4 ]);
+    var got = long.makeUndefined( src, 1 );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0 ]) );
+
+    /* */
+
+    test.case = `non-empty typed buffer and length longer`;
+    var src = _.u8x.make([ 3, 4 ]);
+    var got = long.makeUndefined( src, 3 );
+    test.true( got instanceof U8x );
+    test.identical( got, _.u8x.make([ 0, 0, 0 ]) );
+
+    test.case = `non-empty typed buffer and length shorter`;
+    var src = _.f32x.make([ 3, 4 ]);
+    var got = long.makeUndefined( src, 1 );
+    test.true( got instanceof F32x );
+    test.identical( got, _.f32x.make([ 0 ]) );
+
+    /* */
+
+    test.case = `non-empty raw buffer and length longer`;
+    var src = _.u8x.make([ 3, 4 ]).buffer;
+    var got = long.makeUndefined( src, 3 );
+    test.true( got instanceof BufferRaw );
+    test.identical( got, _.u8x.make([ 0, 0, 0 ]).buffer );
+
+    test.case = `non-empty typed buffer and length shorter`;
+    var src = _.u8x.make([ 3, 4 ]).buffer;
+    var got = long.makeUndefined( src, 1 );
+    test.true( got instanceof BufferRaw );
+    test.identical( got, _.u8x.make([ 0 ]).buffer );
+
+    /* */
+
+    test.case = `non-empty view buffer and length longer`;
+    var src = new BufferView( _.u8x.make([ 3, 4 ]).buffer );
+    var got = long.makeUndefined( src, 3 );
+    test.true( got instanceof BufferView );
+    test.identical( got, new BufferView( _.u8x.make([ 0, 0, 0 ]).buffer ) );
+
+    test.case = `non-empty view buffer and length shorter`;
+    var src = new BufferView( _.u8x.make([ 3, 4 ]).buffer );
+    var got = long.makeUndefined( src, 1 );
+    test.true( got instanceof BufferView );
+    test.identical( got, new BufferView( _.u8x.make([ 0 ]).buffer ) );
+
+    /* */
+
+    if( Config.interpreter === 'njs' )
+    {
+      test.case = `non-empty view buffer and length longer`;
+      var src = BufferNode.from([ 3, 4 ]);
+      var got = long.makeUndefined( src, 3 );
+      test.true( got instanceof BufferNode );
+      test.identical( got, BufferNode.from([ 0, 0, 0 ]) );
+
+      test.case = `non-empty view buffer and length shorter`;
+      var src = BufferNode.from([ 3, 4 ]);
+      var got = long.makeUndefined( src, 1 );
+      test.true( got instanceof BufferNode );
+      test.identical( got, BufferNode.from([ 0 ]) );
+    }
+
+    /* */
+
+    test.case = `array and countable`;
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long.makeUndefined( [ 0, 0, 0, 0 ], length );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 0, 0, 0 ]) );
+
+    /* */
+
+    if( Config.debug )
+    {
+      test.case = 'extra arguments';
+      test.shouldThrowErrorSync( () => long.makeUndefined( [], 1, 1 ) );
+
+      test.case = 'wrong type of src';
+      test.shouldThrowErrorSync( () => long.makeUndefined( undefined ) );
+      test.shouldThrowErrorSync( () => long.makeUndefined( 'wrong', 3 ) );
+
+      test.case = 'wrong type of length';
+      test.shouldThrowErrorSync( () => long.makeUndefined( [ 1, 2, 3 ], null ) );
+      test.shouldThrowErrorSync( () => long.makeUndefined( 3, null ) );
+      test.shouldThrowErrorSync( () => long.makeUndefined( Array, null ) );
+      test.shouldThrowErrorSync( () => long.makeUndefined( null, null ) );
+      test.shouldThrowErrorSync( () => long.makeUndefined( [ 1, 2, 3 ], undefined ) );
+      test.shouldThrowErrorSync( () => long.makeUndefined( 3, undefined ) );
+      test.shouldThrowErrorSync( () => long.makeUndefined( Array, undefined ) );
+      test.shouldThrowErrorSync( () => long.makeUndefined( null, undefined ) );
+    }
+
+    test.close( `${__.entity.exportStringSolo( env )}` );
+  }
+
+  function namespaceGet( env )
+  {
+    if( env.tools === 'default' )
+    return _.buffer;
+    return _.withLong[ env.type ].buffer;
+  }
+}
+
+makeUndefinedWithLongDescriptor.timeOut = 10000;
 
 // function bufferMakeUndefinedWithArrayAndUnroll( test )
 // {
@@ -4408,17 +4770,18 @@ const Proto =
     // bufferMakeWithArrayAndUnroll, /* Dmytro : all coverage in routines  makeCommon* */
     // bufferMakeWithArgumentsArray, /* Dmytro : all coverage in routines  makeCommon* */
     // bufferMakeWithBuffers, /* Dmytro : all coverage in routines  makeCommon* */
-    // bufferMakeWithArrayAndUnrollLongDescriptor, /* qqq2 : for Dmytro : fix pelase */ /* Dmytro : fixed, all coverage in routines  makeCommon* */
-    // bufferMakeWithArgumentsArrayLongDescriptor, /* qqq2 : for Dmytro : fix pelase */ /* Dmytro : fixed, all coverage in routines  makeCommon* */
-    // bufferMakeWithBuffersLongDescriptor, /* qqq2 : for Dmytro : fix pelase */ /* Dmytro : fixed, all coverage in routines  makeCommon* */
+    // bufferMakeWithArrayAndUnrollLongDescriptor, /* aaa2 : for Dmytro : fix pelase */ /* Dmytro : fixed, all coverage in routines  makeCommon* */
+    // bufferMakeWithArgumentsArrayLongDescriptor, /* aaa2 : for Dmytro : fix pelase */ /* Dmytro : fixed, all coverage in routines  makeCommon* */
+    // bufferMakeWithBuffersLongDescriptor, /* aaa2 : for Dmytro : fix pelase */ /* Dmytro : fixed, all coverage in routines  makeCommon* */
 
     makeUndefined,
-    // bufferMakeUndefinedWithArrayAndUnroll,
-    // bufferMakeUndefinedWithArgumentsArray,
-    // bufferMakeUndefinedWithBuffers,
-    // bufferMakeUndefinedWithArrayAndUnrollLongDescriptor, /* qqq2 : for Dmytro : fix pelase */
-    // bufferMakeUndefinedWithArgumentsArrayLongDescriptor, /* qqq2 : for Dmytro : fix pelase */
-    // bufferMakeUndefinedWithBuffersLongDescriptor, /* qqq2 : for Dmytro : fix pelase */
+    makeUndefinedWithLongDescriptor,
+    // bufferMakeUndefinedWithArrayAndUnroll, /* Dmytro : all coverage in routines  makeUndefined* */
+    // bufferMakeUndefinedWithArgumentsArray, /* Dmytro : all coverage in routines  makeUndefined* */
+    // bufferMakeUndefinedWithBuffers, /* Dmytro : all coverage in routines  makeUndefined* */
+    // bufferMakeUndefinedWithArrayAndUnrollLongDescriptor, /* aaa2 : for Dmytro : fix pelase */ /* Dmytro : fixed, all coverage in routines  makeUndefined* */
+    // bufferMakeUndefinedWithArgumentsArrayLongDescriptor, /* aaa2 : for Dmytro : fix pelase */ /* Dmytro : fixed, all coverage in routines  makeUndefined* */
+    // bufferMakeUndefinedWithBuffersLongDescriptor, /* aaa2 : for Dmytro : fix pelase */ /* Dmytro : fixed, all coverage in routines  makeUndefined* */
 
     // bufferCoerceFrom,
     bufferRawFromTyped,
