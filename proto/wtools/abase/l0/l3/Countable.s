@@ -197,10 +197,10 @@ function _elementWithCardinal( src, cardinal )
 function _elementWithKeySet( dst, key, val )
 {
   if( !_.number.is( key ) || key < 0 )
-  return [ undefined, key, false ];
+  return [ key, false ];
   const dst2 = [ ... dst ];
   if( dst2.length <= key )
-  return [ undefined, key, false ];
+  return [ key, false ];
 
   let elementWithKeySet = _.class.methodElementWithKeySetOf( dst );
   if( elementWithKeySet )
@@ -218,15 +218,15 @@ function _elementWithKeySet( dst, key, val )
 function _elementWithCardinalSet( dst, cardinal, val )
 {
   if( !_.number.is( cardinal ) || cardinal < 0 )
-  return [ undefined, cardinal, false ];
+  return [ cardinal, false ];
   const dst2 = [ ... dst ];
   if( dst2.length <= cardinal )
-  return [ undefined, cardinal, false ];
+  return [ cardinal, false ];
 
   let was = this._elementWithCardinal( dst, cardinal );
   if( was[ 2 ] )
   this._elementWithKeySet( dst, was[ 1 ], val );
-  return [ undefined, cardinal, false ];
+  return [ cardinal, false ];
 }
 
 //

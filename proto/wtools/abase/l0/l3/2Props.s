@@ -331,7 +331,7 @@ function elementWithCardinal( src, cardinal )
 function _elementWithKeySet( dst, key, val )
 {
   dst[ key ] = val;
-  return [ val, key, true ];
+  return [ key, true ];
 }
 
 //
@@ -351,11 +351,11 @@ function _elementWithCardinalSet( dst, cardinal, val )
   if( was[ 2 ] === true )
   {
     dst[ was[ 1 ] ] = val;
-    return [ val, was[ 1 ], true ];
+    return [ was[ 1 ], true ];
   }
   else
   {
-    return [ undefined, cardinal, false ];
+    return [ cardinal, false ];
   }
 }
 

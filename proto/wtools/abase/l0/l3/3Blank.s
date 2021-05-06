@@ -80,14 +80,14 @@ function _elementWithCardinal( src, cardinal )
 
 function _elementWithKeySet( dst, key, val )
 {
-  return [ undefined, key, false ];
+  return [ key, false ];
 }
 
 //
 
 function _elementWithCardinalSet( dst, cardinal, val )
 {
-  return [ undefined, cardinal, false ];
+  return [ cardinal, false ];
 }
 
 //
@@ -146,10 +146,6 @@ function _whileRight( src, onEach )
 
 let BlankExtension =
 {
-
-  //
-
-  NamespaceName : 'blank',
 
   // equaler
 

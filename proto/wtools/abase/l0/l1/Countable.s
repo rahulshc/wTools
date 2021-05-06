@@ -37,11 +37,20 @@ function like( src )
 
 //
 
-function isFixedLength( src )
+function isResizable( src )
 {
   if( _.array.is( src ) )
+  return true;
   return false;
-  return this.is( src );
+  // return this.is( src );
+}
+
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return this.default.IsResizable();
 }
 
 // --
@@ -187,6 +196,23 @@ function from( src )
 }
 
 // --
+// meta
+// --
+
+/* qqq : optimize */
+function namespaceOf( src )
+{
+  if( !this.is( src ) )
+  return null;
+
+  let result = _.long.namespaceOf( src );
+  if( result )
+  return result;
+
+  return this;
+}
+
+// --
 // extension
 // --
 
@@ -210,11 +236,13 @@ var CountableExtension =
   //
 
   NamespaceName : 'countable',
+  NamespaceNames : [ 'countable' ],
   NamespaceQname : 'wTools/countable',
   MoreGeneralNamespaceName : 'countable',
   MostGeneralNamespaceName : 'countable',
   TypeName : 'Countable',
-  SecondTypeName : 'Countable',
+  TypeNames : [ 'Countable' ],
+  // SecondTypeName : 'Countable',
   InstanceConstructor : null,
   tools : _,
 
@@ -222,7 +250,8 @@ var CountableExtension =
 
   is, /* qqq : cover here and in the module::MathVector */
   like, /* qqq : cover here and in the module::MathVector */
-  isFixedLength,
+  isResizable,
+  IsResizable,
 
   // maker
 
@@ -238,18 +267,11 @@ var CountableExtension =
   cloneShallow, /* qqq : for junior : cover */
   from, /* qqq : for junior : cover */
 
-  /* xxx : implement */
-  // maker
-  //
-  // _makeEmpty,
-  // makeEmpty, /* qqq : for junior : cover */
-  // _makeUndefined,
-  // makeUndefined, /* qqq : for junior : cover */
-  // _make,
-  // make, /* qqq : for junior : cover */
-  // _cloneShallow,
-  // cloneShallow, /* qqq : for junior : cover */
-  // from, /* qqq : for junior : cover */
+  // meta
+
+  namespaceOf,
+  namespaceWithDefaultOf : _.props.namespaceWithDefaultOf,
+  _functor_functor : _.props._functor_functor,
 
 }
 

@@ -24,6 +24,14 @@ function anyIs( src )
   return true;
 }
 
+//
+
+function IsResizable()
+{
+  _.assert( arguments.length === 0 );
+  return false;
+}
+
 // --
 // maker
 // --
@@ -130,12 +138,12 @@ function _make_functor( onMake )
     /* */
 
     if( _.argumentsArray.is( src ) )
-    src = _.routine.join( this.tools.defaultBufferTyped, this.tools.defaultBufferTyped.make );
-    // src = _.routine.join( this.tools.defaultLong, this.tools.defaultLong.make );
+    src = _.routine.join( this.tools.bufferTyped.default, this.tools.bufferTyped.default.make );
+    // src = _.routine.join( this.tools.long.default, this.tools.long.default.make );
 
     if( src === null )
-    src = _.routine.join( this.tools.defaultBufferTyped, this.tools.defaultBufferTyped.make );
-    // src = _.routine.join( this.tools.defaultLong, this.tools.defaultLong.make );
+    src = _.routine.join( this.tools.bufferTyped.default, this.tools.bufferTyped.default.make );
+    // src = _.routine.join( this.tools.long.default, this.tools.long.default.make );
 
     _.assert( 0 <= arguments.length && arguments.length <= 2 );
     // _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -274,7 +282,7 @@ function _makeEmpty( src )
     if( this.like( src ) )
     return new src.constructor();
   }
-  return this.tools.defaultBufferTyped.make();
+  return this.tools.bufferTyped.default.make();
 }
 
 //
@@ -668,6 +676,24 @@ function bufferNodeFrom( buffer )
 }
 
 // --
+// meta
+// --
+
+/* qqq : optimize */
+function namespaceOf( src )
+{
+
+  if( _.bufferRaw.is( src ) )
+  return _.bufferRaw;
+  if( _.bufferView.is( src ) )
+  return _.bufferView;
+  if( _.bufferNode.is( src ) )
+  return _.bufferNode;
+
+  return _.bufferTyped.namespaceOf( src );
+}
+
+// --
 // declaration
 // --
 
@@ -677,18 +703,20 @@ let BufferExtension =
   //
 
   NamespaceName : 'buffer',
+  NamespaceNames : [ 'buffer' ],
   NamespaceQname : 'wTools/buffer',
   TypeName : 'Buffer',
-  SecondTypeName : 'BufferAny',
+  TypeNames : [ 'Buffer', 'BufferAny' ],
+  // SecondTypeName : 'BufferAny',
   InstanceConstructor : null,
   tools : _,
 
   // dichotomy
 
   anyIs,
-
   is : anyIs,
   like : anyIs,
+  IsResizable,
 
   // maker
 
@@ -705,6 +733,12 @@ let BufferExtension =
   _cloneShallow,
   cloneShallow : _.argumentsArray.cloneShallow, /* qqq : for junior : cover */
   // from, /* qqq : for junior : cover */
+
+  // meta
+
+  namespaceOf,
+  namespaceWithDefaultOf : _.props.namespaceWithDefaultOf,
+  _functor_functor : _.props._functor_functor,
 
 }
 

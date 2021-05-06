@@ -76,7 +76,7 @@ function _elementWithCardinal( src, cardinal )
 
 function _elementWithKeySet( dst, key, val )
 {
-  return [ undefined, key, false ];
+  return [ key, false ];
 }
 
 //
@@ -84,9 +84,9 @@ function _elementWithKeySet( dst, key, val )
 function _elementWithCardinalSet( dst, cardinal, val )
 {
   if( cardinal === 0 )
-  return [ dst, cardinal, true ];
+  return [ cardinal, true ];
   else
-  return [ undefined, cardinal, false ];
+  return [ cardinal, false ];
 }
 
 //
@@ -152,10 +152,6 @@ function _whileRight( src, onEach )
 
 let ItselfExtension =
 {
-
-  //
-
-  NamespaceName : 'itself',
 
   // equaler
 

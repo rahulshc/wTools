@@ -5,6 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
+const _functor_functor = _.container._functor_functor;
 
 _.long = _.long || Object.create( null );
 
@@ -312,18 +313,18 @@ function elementWithCardinal( src, cardinal )
 
 function _elementWithKeySet( dst, key, val )
 {
-  if( _.long.isFixedLength( dst ) )
+  if( _.long.isResizable( dst ) )
   {
-    if( key < 0 || dst.length <= key || !_.numberIs( key ) )
-    return [ undefined, key, false ];
+    if( key < 0 || !_.numberIs( key ) )
+    return [ key, false ];
   }
   else
   {
-    if( key < 0 || !_.numberIs( key ) )
-    return [ undefined, key, false ];
+    if( key < 0 || dst.length <= key || !_.numberIs( key ) )
+    return [ key, false ];
   }
   dst[ key ] = val
-  return [ val, key, true ];
+  return [ key, true ];
 }
 
 //
@@ -340,9 +341,9 @@ function elementWithKeySet( dst, key, val )
 function _elementWithCardinalSet( dst, cardinal, val )
 {
   if( cardinal < 0 || dst.length <= cardinal || !_.numberIs( cardinal ) )
-  return [ undefined, cardinal, false ];
+  return [ cardinal, false ];
   dst[ cardinal ] = val;
-  return [ val, cardinal, true ];
+  return [ cardinal, true ];
 }
 
 //
@@ -370,9 +371,11 @@ function elementAppend( dst, val )
 {
   _.assert( arguments.length === 2 );
   _.assert( this.is( dst ) );
-  _.assert( !this.isFixedLength( dst ) );
+  _.assert( this.isResizable( dst ) );
   return this._elementAppend( dst, val );
 }
+
+elementAppend.functor = _.container._functor_functor( 'elementAppend' );
 
 //
 
@@ -388,7 +391,7 @@ function elementPrepend( dst, val )
 {
   _.assert( arguments.length === 2 );
   _.assert( this.is( dst ) );
-  _.assert( !this.isFixedLength( dst ) );
+  _.assert( this.isResizable( dst ) );
   return this._elementAppend( dst, val );
 }
 
@@ -408,7 +411,7 @@ function elementWithKeyDel( dst, key )
 {
   _.assert( arguments.length === 2 );
   _.assert( this.is( dst ) );
-  _.assert( !this.isFixedLength( dst ) );
+  _.assert( this.isResizable( dst ) );
   return this._elementWithKeyDel( dst, key );
 }
 
@@ -428,7 +431,7 @@ function elementWithCardinalDel( dst, cardinal )
 {
   _.assert( arguments.length === 2 );
   _.assert( this.is( dst ) );
-  _.assert( !this.isFixedLength( dst ) );
+  _.assert( this.isResizable( dst ) );
   return this._elementWithCardinalDel( dst, cardinal, val );
 }
 
@@ -446,7 +449,7 @@ function empty( dst )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( this.like( dst ) );
-  _.assert( !this.isFixedLength( dst ) );
+  _.assert( this.isResizable( dst ) );
   return this._empty( dst );
 }
 
@@ -545,131 +548,293 @@ function whileRight( src, onEach )
 
 //
 
-function _filterAct0()
+function _filterAct1( ... args )
 {
   const self = this;
-  const dst = arguments[ 0 ];
+  let dst = arguments[ 0 ];
   const src = arguments[ 1 ];
   const onEach = arguments[ 2 ];
-  const each = arguments[ 3 ];
-  const escape = arguments[ 4 ];
-  const append = arguments[ 5 ];
-  const isLeft = arguments[ 6 ];
-  const isFixedLength = arguments[ 7 ];
-
-  if( dst === src )
-  each( src, function( val, k, c, src2 )
-  {
-    let val2 = onEach( val, k, c, src2, dst );
-    let val3 = escape( val2 );
-    if( val2 === undefined )
-    self._elementDel( dst, k );
-    else if( val3 === val )
-    return
-    else
-    self._elementSet( dst, k, val3 );
-  });
-  else
-  each( src, function( val, k, c, src2 )
-  {
-    let val2 = onEach( val, k, c, src2, dst );
-    let val3 = escape( val2 );
-    if( val2 === undefined )
-    return;
-    self._elementSet( dst, k, val3 );
-  });
-
-  // if( isFixedLength )
-  // {
-  //   _.assert( 0, 'not implemented' )
-  // }
-  // else
-  // {
-  //
-  //   if( dst === src )
-  //   each( src, function( val, k, c, src2 )
-  //   {
-  //     let val2 = onEach( val, k, c, src2, dst );
-  //     let val3 = escape( val2 );
-  //     if( val2 === undefined )
-  //     self._elementDel( dst, k );
-  //     else if( val3 === val )
-  //     return;
-  //     else
-  //     self._elementSet( dst, k, val3 );
-  //   });
-  //   else
-  //   each( src, function( val, k, c, src2 )
-  //   {
-  //     let val2 = onEach( val, k, c, src2, dst );
-  //     let val3 = escape( val2 );
-  //     if( val2 === undefined )
-  //     return;
-  //     append.call( self, dst, val3 );
-  //   });
-  //
-  // }
-
-  return dst;
-}
-
-//
-
-function _filterAct1()
-{
-  let self = this;
-  let dst = arguments[ 0 ];
-  let src = arguments[ 1 ];
-  let onEach = arguments[ 2 ];
-  let isLeft = arguments[ 3 ];
-  let eachRoutineName = arguments[ 4 ];
-  let escape = arguments[ 5 ];
-  let general = this.tools[ this.MostGeneralNamespaceName ];
-  let append = isLeft ? this._elementAppend : this._elementPrepend;
-  let isFixedLength = _.countable.isFixedLength( src );
+  const isLeft = arguments[ 3 ];
+  const eachRoutineName = arguments[ 4 ];
+  const escape = arguments[ 5 ];
+  const general = this.tools[ this.MostGeneralNamespaceName ];
+  const each = general[ eachRoutineName ];
+  let isSelf;
+  let dstIsResizable;
 
   if( dst === null )
   {
-    // if( isFixedLength )
-    dst = this.makeUndefined( src );
-    // else
-    // dst = this.makeEmpty( src );
+    isSelf = false;
+    if( self.IsResizable() )
+    {
+      dst = self.makeEmpty( src );
+      dstIsResizable = true;
+    }
+    else
+    {
+      dstIsResizable = false;
+    }
   }
   else if( dst === _.self )
   {
+    isSelf = true;
     dst = src;
+    dstIsResizable = _.countable.isResizable( dst );
+  }
+  else
+  {
+    dstIsResizable = _.countable.isResizable( dst );
+    isSelf = dst === src;
+    if( dstIsResizable )
+    if( !isSelf )
+    self._empty( dst );
   }
 
+  const dstNamespace = self.namespaceWithDefaultOf( dst );
+
   if( Config.debug )
+  verify();
+
+  if( dstIsResizable )
   {
-    _.assert( arguments.length === 6, `Expects 3 arguments` );
-    _.assert( this.is( dst ), () => `dst is not ${this.TypeName}` );
+
+    if( isSelf )
+    {
+      if( isLeft )
+      resizableSelfLeft();
+      else
+      resizableSelfRight();
+    }
+    else
+    {
+      resizableNonEq();
+    }
+
+  }
+  else
+  {
+
+    if( dst === null )
+    nonResizableNull()
+    else
+    nonResizableNonNull();
+
+  }
+
+  return dst;
+
+  function resizableSelfLeft()
+  {
+    let l = dstNamespace._lengthOf( src );
+    for( let k = 0 ; k < l ; k++ )
+    {
+      let val = src[ k ];
+      let val2 = onEach( val, k, k, src, dst );
+      if( val2 === undefined )
+      {
+        dstNamespace._elementDel( dst, k );
+        k -= 1;
+        l -= 1;
+        continue;
+      }
+      let val3 = escape( val2 );
+      if( val3 === val )
+      continue;
+      dstNamespace._elementSet( dst, k, val3 );
+    }
+  }
+
+  function resizableSelfRight()
+  {
+    each.call( general, src, function( val, k, c, src2 )
+    {
+      let val2 = onEach( val, k, c, src2, dst );
+      let val3 = escape( val2 );
+      if( val2 === undefined )
+      dstNamespace._elementDel( dst, k );
+      else if( val3 === val )
+      return;
+      else
+      dstNamespace._elementSet( dst, k, val3 );
+    });
+  }
+
+  function resizableNonEq()
+  {
+    const append = isLeft ? dstNamespace._elementAppend : dstNamespace._elementPrepend;
+    each.call( general, src, function( val, k, c, src2 )
+    {
+      let val2 = onEach( val, k, c, src2, dst );
+      let val3 = escape( val2 );
+      if( val2 === undefined )
+      return;
+      append.call( dstNamespace, dst, val3 );
+    });
+  }
+
+  function nonResizableNull()
+  {
+    let dst2 = [];
+    if( isLeft )
+    each.call( general, src, function( val, k, c, src2 )
+    {
+      let val2 = onEach( val, k, c, src2, dst2 );
+      let val3 = escape( val2 );
+      if( val2 === undefined )
+      return;
+      dst2.push( val3 );
+    });
+    else
+    each.call( general, src, function( val, k, c, src2 )
+    {
+      let val2 = onEach( val, k, c, src2, dst2 );
+      let val3 = escape( val2 );
+      if( val2 === undefined )
+      return;
+      dst2.unshift( val3 );
+    });
+    dst = dstNamespace.make( dst2 );
+  }
+
+  function nonResizableNonNull()
+  {
+    each.call( general, src, function( val, k, c, src2 )
+    {
+      let val2 = onEach( val, k, c, src2, dst );
+      let val3 = escape( val2 );
+      if( val2 === undefined )
+      return;
+      dstNamespace._elementSet( dst, k, val3 );
+    });
+  }
+
+  function verify()
+  {
+    _.assert( args.length === 6, `Expects 3 arguments` );
+    _.assert( dst === null || self.is( dst ), () => `dst is not ${self.TypeName}` );
     _.assert( general.is( src ), () => `src is not ${general.TypeName}` );
     _.assert
     (
-      !_.countable.isFixedLength( dst ) || this._lengthOf( dst ) === general._lengthOf( src )
-      , () => `dst is ${this.TypeName} and lengthOf( dst ) is ${this._lengthOf( dst )}, but lengthOf( src ) is ${this._lengthOf( src )}`
+      dst === null || _.countable.isResizable( dst ) || self._lengthOf( dst ) === general._lengthOf( src )
+      , () => `dst is ${self.TypeName} and lengthOf( dst ) is ${self._lengthOf( dst )}, but lengthOf( src ) is ${self._lengthOf( src )}`
     );
   }
 
-  this._filterAct0( dst, src, onEach, general[ eachRoutineName ].bind( general ), escape, append, isLeft, isFixedLength );
-
-  return dst;
 }
 
 //
 
-function _mapAct0()
+// function _mapAct0()
+// {
+//   const self = this;
+//   const dst = arguments[ 0 ];
+//   const src = arguments[ 1 ];
+//   const onEach = arguments[ 2 ];
+//   const each = arguments[ 3 ];
+//   const escape = arguments[ 4 ];
+//
+//   if( dst === src )
+//   each( src, function( val, k, c, src2 )
+//   {
+//     let val2 = onEach( val, k, c, src2, dst );
+//     let val3 = escape( val2 );
+//     if( val3 === val || val2 === undefined )
+//     return;
+//     self._elementSet( dst, k, val3 );
+//   });
+//   else
+//   each( src, function( val, k, c, src2 )
+//   {
+//     let val2 = onEach( val, k, c, src2, dst );
+//     let val3 = escape( val2 );
+//     if( val2 === undefined )
+//     self._elementSet( dst, k, val );
+//     else
+//     self._elementSet( dst, k, val3 );
+//   });
+//
+//   return dst;
+// }
+//
+// //
+//
+// function _mapAct1()
+// {
+//   let self = this;
+//   let dst = arguments[ 0 ];
+//   let src = arguments[ 1 ];
+//   let onEach = arguments[ 2 ];
+//   let isLeft = arguments[ 3 ];
+//   let eachRoutineName = arguments[ 4 ];
+//   let escape = arguments[ 5 ];
+//   let general = this.tools[ this.MostGeneralNamespaceName ];
+//   let append = isLeft ? this._elementAppend : this._elementPrepend;
+//
+//   if( dst === null )
+//   dst = this.makeUndefined( src );
+//   else if( dst === _.self )
+//   dst = src;
+//
+//   if( Config.debug )
+//   {
+//     _.assert( arguments.length === 6, `Expects 3 arguments` );
+//     _.assert( this.is( dst ), () => `dst is not ${this.TypeName}` );
+//     _.assert( general.is( src ), () => `src is not ${general.TypeName}` );
+//     _.assert
+//     (
+//       _.countable.isResizable( dst ) || this._lengthOf( dst ) === general._lengthOf( src )
+//       , () => `lengthOf( dst ) is ${this._lengthOf( dst )}, but lengthOf( src ) is ${this._lengthOf( src )}`
+//     );
+//   }
+//
+//   this._mapAct0( dst, src, onEach, general[ eachRoutineName ].bind( general ), escape, append );
+//
+//   return dst;
+// }
+
+function _mapAct1( ... args )
 {
   const self = this;
-  const dst = arguments[ 0 ];
+  let dst = arguments[ 0 ];
   const src = arguments[ 1 ];
   const onEach = arguments[ 2 ];
-  const each = arguments[ 3 ];
-  const escape = arguments[ 4 ];
+  const isLeft = arguments[ 3 ];
+  const eachRoutineName = arguments[ 4 ];
+  const escape = arguments[ 5 ];
+  const general = this.tools[ this.MostGeneralNamespaceName ].namespaceOf( src );
+  const each = general[ eachRoutineName ];
+  let isSelf;
+  let dstIsResizable;
+
+  if( dst === null )
+  {
+    isSelf = false;
+    dst = self.makeUndefined( src );
+    dstIsResizable = self.IsResizable();
+  }
+  else if( dst === _.self )
+  {
+    isSelf = true;
+    dst = src;
+    dstIsResizable = _.countable.isResizable( dst );
+  }
+  else
+  {
+    dstIsResizable = _.countable.isResizable( dst );
+    isSelf = dst === src;
+    if( dstIsResizable )
+    if( !isSelf )
+    dst.length = general._lengthOf( src );
+    // self._empty( dst );
+  }
+
+  const dstNamespace = self.namespaceWithDefaultOf( dst );
+
+  if( Config.debug )
+  verify();
 
   if( dst === src )
-  each( src, function( val, k, c, src2 )
+  each.call( general, src, function( val, k, c, src2 )
   {
     let val2 = onEach( val, k, c, src2, dst );
     let val3 = escape( val2 );
@@ -678,7 +843,7 @@ function _mapAct0()
     self._elementSet( dst, k, val3 );
   });
   else
-  each( src, function( val, k, c, src2 )
+  each.call( general, src, function( val, k, c, src2 )
   {
     let val2 = onEach( val, k, c, src2, dst );
     let val3 = escape( val2 );
@@ -689,42 +854,19 @@ function _mapAct0()
   });
 
   return dst;
-}
 
-//
-
-function _mapAct1()
-{
-  let self = this;
-  let dst = arguments[ 0 ];
-  let src = arguments[ 1 ];
-  let onEach = arguments[ 2 ];
-  let isLeft = arguments[ 3 ];
-  let eachRoutineName = arguments[ 4 ];
-  let escape = arguments[ 5 ];
-  let general = this.tools[ this.MostGeneralNamespaceName ];
-  let append = isLeft ? this._elementAppend : this._elementPrepend;
-
-  if( dst === null )
-  dst = this.makeUndefined( src );
-  else if( dst === _.self )
-  dst = src;
-
-  if( Config.debug )
+  function verify()
   {
-    _.assert( arguments.length === 6, `Expects 3 arguments` );
-    _.assert( this.is( dst ), () => `dst is not ${this.TypeName}` );
+    _.assert( args.length === 6, `Expects 3 arguments` );
+    _.assert( dst === null || self.is( dst ), () => `dst is not ${self.TypeName}` );
     _.assert( general.is( src ), () => `src is not ${general.TypeName}` );
     _.assert
     (
-      !_.countable.isFixedLength( dst ) || this._lengthOf( dst ) === general._lengthOf( src )
-      , () => `lengthOf( dst ) is ${this._lengthOf( dst )}, but lengthOf( src ) is ${this._lengthOf( src )}`
+      dst === null || _.countable.isResizable( dst ) || self._lengthOf( dst ) === general._lengthOf( src )
+      , () => `dst is ${self.TypeName} and lengthOf( dst ) is ${self._lengthOf( dst )}, but lengthOf( src ) is ${self._lengthOf( src )}`
     );
   }
 
-  this._mapAct0( dst, src, onEach, general[ eachRoutineName ].bind( general ), escape, append );
-
-  return dst;
 }
 
 // --
@@ -836,7 +978,7 @@ let LongExtension =
   aptRight : _.props.aptRight,
   last : _.props.last, /* qqq : cover */
 
-  _filterAct0,
+  // _filterAct0,
   _filterAct1,
   filterWithoutEscapeLeft : _.props.filterWithoutEscapeLeft,
   filterWithoutEscapeRight : _.props.filterWithoutEscapeRight,
@@ -846,7 +988,7 @@ let LongExtension =
   filterWithEscape : _.props.filterWithEscape,
   filter : _.props.filter,
 
-  _mapAct0,
+  // _mapAct0,
   _mapAct1,
   mapWithoutEscapeLeft : _.props.mapWithoutEscapeLeft,
   mapWithoutEscapeRight : _.props.mapWithoutEscapeRight,

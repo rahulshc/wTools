@@ -121,7 +121,7 @@ function _elementWithCardinal( src, key )
 function _elementWithKeySet( dst, key, val )
 {
   dst.set( val );
-  return [ val, val, true ];
+  return [ val, true ];
 }
 
 //
@@ -133,11 +133,11 @@ function _elementWithCardinalSet( dst, cardinal, val )
   {
     dst.delete( was[ 0 ] );
     dst.set( val );
-    return [ val, val, true ];
+    return [ val, true ];
   }
   else
   {
-    return [ undefined, cardinal, false ];
+    return [ cardinal, false ];
   }
 }
 
@@ -251,10 +251,6 @@ Object.assign( _, ToolsExtension );
 
 let SetExtension =
 {
-
-  //
-
-  NamespaceName : 'set',
 
   // from,
   toArray,

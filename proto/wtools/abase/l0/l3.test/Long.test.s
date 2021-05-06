@@ -98,66 +98,66 @@ function filterMapCommonPass( test )
     /* variable */
 
     env.namespace = 'long';
-    env.isFixedLength = false;
+    env.isResizable = true;
     caseEach( env );
     env.namespace = 'array';
-    env.isFixedLength = false;
+    env.isResizable = true;
     caseEach( env );
     env.namespace = 'unroll';
-    env.isFixedLength = false;
+    env.isResizable = true;
     caseEach( env );
-
-    /* */
-
     env.namespace = 'countable';
-    env.isFixedLength = false;
+    env.isResizable = true;
     env.makable = false;
     caseEach( env );
     env.namespace = 'vector';
-    env.isFixedLength = false;
+    env.isResizable = true;
     env.makable = false;
     caseEach( env );
 
     /* fixed */
 
     env.namespace = 'argumentsArray';
-    env.isFixedLength = true;
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'bufferTyped';
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'f32x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'f64x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'fx';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'i32x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'i16x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'i8x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'ix';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u32x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u16x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u8x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u8xClamped';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'ux';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
 
   }
@@ -169,11 +169,11 @@ function filterMapCommonPass( test )
     test.case = `${__.entity.exportStringSolo( env )}`;
     env = _env;
     if( env.makable !== false )
-    test.identical( _.countable.isFixedLength( _[ env.namespace ].make( 0 ) ), env.isFixedLength );
+    test.identical( _.countable.isResizable( _[ env.namespace ].make( 0 ) ), env.isResizable );
 
     /* */
 
-    if( !env.isFixedLength )
+    if( env.isResizable )
     {
       test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, shorter`;
       clean();
@@ -207,7 +207,7 @@ function filterMapCommonPass( test )
 
     /* */
 
-    if( !env.isFixedLength )
+    if( env.isResizable )
     {
       test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, longer`;
       clean();
@@ -215,7 +215,7 @@ function filterMapCommonPass( test )
       var dst = _[ env.namespace ].make([ 4, 5, 6, 7 ]);
       var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
       test.true( got === dst );
-      var exp = _[ env.namespace ].make([ 11, 12, 13, 7 ]);
+      var exp = _[ env.namespace ].make([ 11, 12, 13 ]);
       test.identical( got, exp );
       var exp = [ 1, 2, 3 ];
       test.identical( src, exp );
@@ -283,6 +283,11 @@ function filterMapCommonPass( test )
     var exp = order([ src, src, src ]);
     test.identical( __.select( ops, '*/#3' ), exp );
     var exp = order([ got, got, got ]);
+    if( !env.isResizable && _.strBegins( env.method, 'filter' ) )
+    {
+      var dst2 = [ 11, 12, 13 ];
+      exp = order([ dst2, dst2, dst2 ]);
+    }
     test.identical( __.select( ops, '*/#4' ), exp );
 
     /* */
@@ -367,12 +372,12 @@ function filterCommonDropping( test )
   let env;
 
   namespaceEach({ method : 'filterWithoutEscapeLeft', left : 1 });
-  // namespaceEach({ method : 'filterWithoutEscapeRight', left : 0 });
-  // namespaceEach({ method : 'filterWithoutEscape', left : 1 });
-  // namespaceEach({ method : 'filterWithEscapeLeft', left : 1 });
-  // namespaceEach({ method : 'filterWithEscapeRight', left : 0 });
-  // namespaceEach({ method : 'filterWithEscape', left : 1 });
-  // namespaceEach({ method : 'filter', left : 1 });
+  namespaceEach({ method : 'filterWithoutEscapeRight', left : 0 });
+  namespaceEach({ method : 'filterWithoutEscape', left : 1 });
+  namespaceEach({ method : 'filterWithEscapeLeft', left : 1 });
+  namespaceEach({ method : 'filterWithEscapeRight', left : 0 });
+  namespaceEach({ method : 'filterWithEscape', left : 1 });
+  namespaceEach({ method : 'filter', left : 1 });
 
   /* - */
 
@@ -382,56 +387,67 @@ function filterCommonDropping( test )
     /* variable */
 
     env.namespace = 'long';
-    env.isFixedLength = false;
+    env.isResizable = true;
     caseEach( env );
-    // env.namespace = 'array';
-    // env.isFixedLength = false;
-    // caseEach( env );
-    // env.namespace = 'unroll';
-    // env.isFixedLength = false;
-    // caseEach( env );
+    env.namespace = 'array';
+    env.isResizable = true;
+    caseEach( env );
+    env.namespace = 'unroll';
+    env.isResizable = true;
+    caseEach( env );
+    env.namespace = 'countable';
+    env.isResizable = true;
+    env.makable = false;
+    caseEach( env );
+    env.namespace = 'vector';
+    env.isResizable = true;
+    env.makable = false;
+    caseEach( env );
 
-    // /* fixed */
-    //
-    // env.namespace = 'argumentsArray';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'f32x';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'f64x';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'fx';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'i32x';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'i16x';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'i8x';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'ix';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'u32x';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'u16x';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'u8x';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'u8xClamped';
-    // env.isFixedLength = true;
-    // caseEach( env );
-    // env.namespace = 'ux';
-    // env.isFixedLength = true;
-    // caseEach( env );
+    /* fixed */
+
+    env.namespace = 'argumentsArray';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'bufferTyped';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'f32x';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'f64x';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'fx';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'i32x';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'i16x';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'i8x';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'ix';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'u32x';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'u16x';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'u8x';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'u8xClamped';
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'ux';
+    env.isResizable = false;
+    caseEach( env );
 
   }
 
@@ -443,15 +459,43 @@ function filterCommonDropping( test )
 
     /* */
 
-    test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src`;
+    test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, longer`;
     var src = [ 1, 2, 3 ];
     var dst = _[ env.namespace ].make([ 4, 5, 6 ]);
     var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
     test.true( got === dst );
-    var exp = _[ env.namespace ].make([ 4, 5, 6, 11, 13 ]);
+    var exp = _[ env.namespace ].make([ 11, 5, 13 ]);
+    if( env.isResizable )
+    exp = _[ env.namespace ].make([ 11, 13 ]);
     test.identical( got, exp );
     var exp = [ 1, 2, 3 ];
     test.identical( src, exp );
+
+    /* */
+
+    if( env.isResizable )
+    {
+      test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, shorter`;
+      var src = [ 1, 2, 3 ];
+      var dst = _[ env.namespace ].make([ 4 ]);
+      var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
+      test.true( got === dst );
+      var exp = _[ env.namespace ].make([ 11, 13 ]);
+      test.identical( got, exp );
+      var exp = [ 1, 2, 3 ];
+      test.identical( src, exp );
+    }
+    else if( Config.debug )
+    {
+      test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src, shorter`;
+      var src = [ 1, 2, 3 ];
+      var dst = _[ env.namespace ].make([ 4 ]);
+      test.shouldThrowErrorSync( () => _[ env.namespace ][ env.method ]( dst, src, f1 ) );
+      var exp = _[ env.namespace ].make([ 4 ]);
+      test.identical( dst, exp );
+      var exp = [ 1, 2, 3 ];
+      test.identical( src, exp );
+    }
 
     /* */
 
@@ -471,7 +515,9 @@ function filterCommonDropping( test )
     var src = _[ env.namespace ].make([ 1, 2, 3 ]);
     var got = _[ env.namespace ][ env.method ]( src, src, f1 );
     test.true( got === src );
-    var exp = _[ env.namespace ].make([ 11, 13 ]);
+    var exp = _[ env.namespace ].make([ 11, 2, 13 ]);
+    if( env.isResizable )
+    exp = _[ env.namespace ].make([ 11, 13 ]);
     test.identical( got, exp );
 
     /* */
@@ -480,7 +526,9 @@ function filterCommonDropping( test )
     var src = _[ env.namespace ].make([ 1, 2, 3 ]);
     var got = _[ env.namespace ][ env.method ]( _.self, src, f1 );
     test.true( got === src );
-    var exp = _[ env.namespace ].make([ 11, 13 ]);
+    var exp = _[ env.namespace ].make([ 11, 2, 13 ]);
+    if( env.isResizable )
+    exp = _[ env.namespace ].make([ 11, 13 ]);
     test.identical( got, exp );
 
     /* */
@@ -525,55 +573,66 @@ function mapCommonReturningUndefined( test )
     /* variable */
 
     env.namespace = 'long';
-    env.isFixedLength = false;
+    env.isResizable = true;
     caseEach( env );
     env.namespace = 'array';
-    env.isFixedLength = false;
+    env.isResizable = true;
     caseEach( env );
     env.namespace = 'unroll';
-    env.isFixedLength = false;
+    env.isResizable = true;
+    caseEach( env );
+    env.namespace = 'countable';
+    env.isResizable = true;
+    env.makable = false;
+    caseEach( env );
+    env.namespace = 'vector';
+    env.isResizable = true;
+    env.makable = false;
     caseEach( env );
 
     /* fixed */
 
     env.namespace = 'argumentsArray';
-    env.isFixedLength = true;
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'bufferTyped';
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'f32x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'f64x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'fx';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'i32x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'i16x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'i8x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'ix';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u32x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u16x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u8x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u8xClamped';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'ux';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
 
   }
@@ -676,55 +735,66 @@ function filterMapCommonEscaping( test )
     /* variable */
 
     env.namespace = 'long';
-    env.isFixedLength = false;
+    env.isResizable = true;
     caseEach( env );
     env.namespace = 'array';
-    env.isFixedLength = false;
+    env.isResizable = true;
     caseEach( env );
     env.namespace = 'unroll';
-    env.isFixedLength = false;
+    env.isResizable = true;
+    caseEach( env );
+    env.namespace = 'countable';
+    env.isResizable = true;
+    env.makable = false;
+    caseEach( env );
+    env.namespace = 'vector';
+    env.isResizable = true;
+    env.makable = false;
     caseEach( env );
 
     /* fixed */
 
     env.namespace = 'argumentsArray';
-    env.isFixedLength = true;
+    env.isResizable = false;
+    caseEach( env );
+    env.namespace = 'bufferTyped';
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'f32x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'f64x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'fx';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'i32x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'i16x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'i8x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'ix';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u32x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u16x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u8x';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'u8xClamped';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
     env.namespace = 'ux';
-    env.isFixedLength = true;
+    env.isResizable = false;
     caseEach( env );
 
   }
@@ -825,7 +895,7 @@ const Proto =
     identical,
 
     filterMapCommonPass,
-    // filterCommonDropping,
+    filterCommonDropping,
     // mapCommonReturningUndefined,
     // filterMapCommonEscaping,
 
