@@ -564,14 +564,16 @@ function _cloneShallow( src )
   if( _.buffer.typedIs( src ) )
   return src.slice( 0 );
   if( _.buffer.nodeIs( src ) )
-  return src.copy();
+  return BufferNode.from( src );
 
   /* */
 
   function bufferRawCopy( src )
   {
-    var dst = new BufferRaw( src.byteLength );
-    new U8x( dst ).set( new U8x( src ) );
+    const dst = new BufferRaw( src.byteLength );
+    const buffer = src.buffer || src;
+    const offset = src.byteOffset || 0;
+    new U8x( dst ).set( new U8x( buffer, offset, src.byteLength ) );
     return dst;
   }
 }
