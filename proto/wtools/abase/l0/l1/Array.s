@@ -185,9 +185,19 @@ function _make( src, length )
   {
     let data = length;
     if( _.number.is( length ) )
-    data = src;
+    {
+      data = src;
+    }
+    else if( length.length )
+    {
+      length = length.length;
+    }
     if( _.countable.is( length ) )
-    length = length.length;
+    {
+      data = [ ... length ];
+      length = data.length;
+    }
+
     return fill( new Array( length ), data );
   }
   else if( arguments.length === 1 )
