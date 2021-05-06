@@ -4502,6 +4502,212 @@ function makeEmptyWithLongDescriptor( test )
 
 //
 
+function makeFilling( test )
+{
+  act({ tools : 'default', type : 'Array' });
+  act({ tools : 'Array', type : 'Array' });
+  act({ tools : 'F32x', type : 'F32x' });
+
+  /* */
+
+  function act( env )
+  {
+    test.open( `${ __.entity.exportStringSolo( env ) }` );
+
+    const long = namespaceGet( env );
+    const Constructor = _.bufferTyped.default.InstanceConstructor;
+
+    /* */
+
+    test.case = 'value - null, length - number';
+    var got = long.makeFilling( null, 3 );
+    var expected = Constructor.from([ null, null, null ]);
+    test.identical( got, expected );
+
+    test.case = `value - number, length - filled array`;
+    var length = [ 1, 2, 3 ];
+    var got = long.makeFilling( 1, length );
+    var expected = Constructor.from([ 1, 1, 1 ]);
+    test.identical( got, expected );
+
+    test.case = `value - number, length - countable`;
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long.makeFilling( 1, length );
+    var expected = Constructor.from([ 1, 1, 1 ]);
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'type - null, value - number, length - number';
+    var got = long.makeFilling( null, 1, 3 );
+    var expected = Constructor.from([ 1, 1, 1 ]);
+    test.identical( got, expected );
+
+    test.case = 'type - null, value - number, length - long';
+    var got = long.makeFilling( null, 1, new U8x( 3 ) );
+    var expected = Constructor.from([ 1, 1, 1 ]);
+    test.identical( got, expected );
+
+    test.case = 'type - null, value - number, length - countable';
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long.makeFilling( null, 1, length );
+    var expected = Constructor.from([ 1, 1, 1 ]);
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `type - U8x constructor, value - number, length - number`;
+    var got = long.makeFilling( U8x, 10, 3 );
+    var expected = _.u8x.make([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    test.case = `type - BufferRaw constructor, value - number, length - long`;
+    var got = long.makeFilling( BufferRaw, 10, new I16x( 3 ) );
+    var expected = _.u8x.make([ 10, 10, 10 ]).buffer;
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `type - empty array, value - number, length - number`;
+    var got = long.makeFilling( [], 10, 3 );
+    var expected = Constructor.from([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    test.case = `type - filled array, value - number, length - long`;
+    var got = long.makeFilling( [ 1, 2, 3, 4 ], 10, new I16x( 3 ) );
+    var expected = Constructor.from([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `type - empty unroll, value - number, length - number`;
+    var got = long.makeFilling( _.unroll.make( [] ), 10, 3 );
+    var expected = Constructor.from([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    test.case = `type - filled unroll, value - number, length - long`;
+    var got = long.makeFilling( _.unroll.make([ 1, 2, 3, 4 ]), 10, new I16x( 3 ) );
+    var expected = Constructor.from([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `type - empty argumentsArray, value - number, length - number`;
+    var got = long.makeFilling( _.argumentsArray.make( [] ), 10, 3 );
+    var expected = Constructor.from([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    test.case = `type - filled argumentsArray, value - number, length - long`;
+    var got = long.makeFilling( _.argumentsArray.make([ 1, 2, 3, 4 ]), 10, new I16x( 3 ) );
+    var expected = Constructor.from([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `type - empty typed array, value - number, length - number`;
+    var got = long.makeFilling( _.u8x.make( [] ), 10, 3 );
+    var expected = _.u8x.make([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    test.case = `type - filled typed array, value - number, length - long`;
+    var got = long.makeFilling( _.f32x.make([ 1, 2, 3, 4 ]), 10, new I16x( 3 ) );
+    var expected = _.f32x.make([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `type - empty raw buffer, value - number, length - number`;
+    var got = long.makeFilling( new BufferRaw( 0 ), 10, 3 );
+    var expected = _.u8x.make([ 10, 10, 10 ]).buffer;
+    test.identical( got, expected );
+
+    test.case = `type - filled raw buffer, value - number, length - long`;
+    var got = long.makeFilling( _.u8x.make([ 1, 2, 3, 4 ]).buffer, 10, new I16x( 3 ) );
+    var expected = _.u8x.make([ 10, 10, 10 ]).buffer;
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `type - empty view buffer, value - number, length - number`;
+    var got = long.makeFilling( new BufferView( new BufferRaw( 0 ) ), 10, 3 );
+    var expected = new BufferView( _.u8x.make([ 10, 10, 10 ]).buffer );
+    test.identical( got, expected );
+
+    test.case = `type - filled raw buffer, value - number, length - long`;
+    var got = long.makeFilling( new BufferView( _.u8x.make([ 1, 2, 3, 4 ]).buffer ), 10, new I16x( 3 ) );
+    var expected = new BufferView( _.u8x.make([ 10, 10, 10 ]).buffer );
+    test.identical( got, expected );
+
+    /* */
+
+    if( Config.interpreter === 'njs' )
+    {
+      test.case = `type - empty node buffer, value - number, length - number`;
+      var got = long.makeFilling( BufferNode.alloc( 0 ), 10, 3 );
+      var expected = BufferNode.from([ 10, 10, 10 ]);
+      test.identical( got, expected );
+
+      test.case = `type - filled raw buffer, value - number, length - long`;
+      var got = long.makeFilling( BufferNode.from([ 1, 2, 3, 4 ]), 10, new I16x( 3 ) );
+      var expected = BufferNode.from([ 10, 10, 10 ]);
+      test.identical( got, expected );
+    }
+
+    /* */
+
+    test.case = `type - empty typed array, value - number, length - countable`;
+    var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
+    var got = long.makeFilling( _.u8x.make( [] ), 10, length );
+    var expected = _.u8x.make([ 10, 10, 10 ]);
+    test.identical( got, expected );
+
+    /* */
+
+    if( Config.debug )
+    {
+      test.case = 'without arguments';
+      test.shouldThrowErrorSync( () => long.makeFilling() );
+
+      test.case = 'not enough arguments';
+      test.shouldThrowErrorSync( () => long.makeFilling( null ) );
+
+      test.case = 'extra arguments';
+      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2, 3 ], 4, 4, 'extra' ) );
+
+      test.case = 'wrong type of type argument';
+      test.shouldThrowErrorSync( () => long.makeFilling( {}, 2, 2 ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( undefined, 2, 2 ) );
+
+      test.case = 'wrong type of value';
+      test.shouldThrowErrorSync( () => long.makeFilling( undefined, 1 ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( [], undefined, 1 ) );
+
+      test.case = 'wrong type of length';
+      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2 ], 'wrong' ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( 1, 'wrong' ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( Array, 'wrong' ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2 ], null ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( 1, null ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( Array, null ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2 ], undefined ) );
+      test.shouldThrowErrorSync( () => long.makeFilling( [ 1, 2 ], 2, undefined ) );
+    }
+
+    test.close( `${ __.entity.exportStringSolo( env ) }` );
+  }
+
+  /* */
+
+  function namespaceGet( env )
+  {
+    if( env.tools === 'default' )
+    return _.buffer;
+    return _.withLong[ env.tools ].buffer;
+  }
+}
+
+//
+
 function from( test )
 {
   act({ tools : 'default', type : 'Array' });
@@ -5470,6 +5676,8 @@ const Proto =
 
     makeEmpty,
     makeEmptyWithLongDescriptor,
+
+    makeFilling,
 
     from,
     fromWithLongDescriptor,
