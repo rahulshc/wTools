@@ -208,7 +208,7 @@ function makeFilling( type, value, length )
   {
     _.assert( value !== undefined );
     _.assert( _.number.is( length ) || _.countable.is( length ) );
-    _.assert( type === null || _.routine.is( type ) || _.long.is( type ) );
+    _.assert( type === null || _.long.is( type ) || _.routine.is( type ) );
   }
 
   return this._makeFilling( ... arguments );

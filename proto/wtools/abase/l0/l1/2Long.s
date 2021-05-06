@@ -161,10 +161,8 @@ function makeEmpty( src )
     // _.assert( this.like( src ) || _.routine.is( src ) ); /* Dmytro : for compatibility with ContainerAdapters source instance should be a Vector, not simple Long */
     return this._makeEmpty( src );
   }
-  else
-  {
-    return this._makeEmpty();
-  }
+
+  return this._makeEmpty();
 }
 
 //
@@ -349,18 +347,20 @@ function _makeFilling( type, value, length )
 
 function makeFilling( type, value, length )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
   if( arguments.length === 2 )
   {
     _.assert( _.number.is( value ) || _.countable.is( value ) );
     _.assert( type !== undefined );
   }
-  else
+  else if( arguments.length === 3 )
   {
     _.assert( value !== undefined );
     _.assert( _.number.is( length ) || _.countable.is( length ) );
-    _.assert( type === null || _.routine.is( type ) || this.like( type ) );
+    _.assert( type === null || this.like( type ) || _.routine.is( type ) );
+  }
+  else
+  {
+    _.assert( 0, 'Expects 2 or 3 arguments' );
   }
 
   return this._makeFilling( ... arguments );
