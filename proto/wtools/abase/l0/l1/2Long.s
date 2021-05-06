@@ -1106,45 +1106,8 @@ function _functor_functor( methodName, typer, which )
 }
 
 // --
-// declare
+// long extension
 // --
-
-let ToolsExtension =
-{
-
-  // dichotomy
-
-  longIs : is.bind( _.long ),
-  longIsEmpty : isEmpty.bind( _.long ),
-  longIsPopulated : isPopulated.bind( _.long ),
-  longLike : like.bind( _.long ),
-
-  // maker
-
-  longMakeEmpty : makeEmpty.bind( _.long ),
-  longMakeUndefined : makeUndefined.bind( _.long ),
-  longMakeZeroed : makeZeroed.bind( _.long ),
-  longMakeFilling : makeFilling.bind( _.long ),
-  longMake : make.bind( _.long ),
-  longCloneShallow : cloneShallow.bind( _.long ),
-  longFrom : from.bind( _.long ),
-
-  // long sequential search
-
-  longLeftIndex : leftIndex,
-  longRightIndex : rightIndex,
-
-  longLeft : left,
-  longRight : right,
-
-  longLeftDefined : leftDefined,
-  longRightDefined : rightDefined,
-
-}
-
-Object.assign( _, ToolsExtension );
-
-//
 
 let LongExtension =
 {
@@ -1158,7 +1121,6 @@ let LongExtension =
   MostGeneralNamespaceName : 'countable',
   TypeName : 'Long',
   TypeNames : [ 'Long' ],
-  // SecondTypeName : 'Long',
   InstanceConstructor : null,
   IsLong : true,
   tools : _,
@@ -1215,5 +1177,46 @@ let LongExtension =
 //
 
 Object.assign( _.long, LongExtension );
+
+// --
+// tools extension
+// --
+
+let ToolsExtension =
+{
+
+  // dichotomy
+
+  longIs : is.bind( _.long ),
+  longIsEmpty : isEmpty.bind( _.long ),
+  longIsPopulated : isPopulated.bind( _.long ),
+  longLike : like.bind( _.long ),
+
+  // maker
+
+  longMakeEmpty : makeEmpty.bind( _.long ),
+  longMakeUndefined : makeUndefined.bind( _.long ),
+  longMakeZeroed : makeZeroed.bind( _.long ),
+  longMakeFilling : makeFilling.bind( _.long ),
+  longMake : make.bind( _.long ),
+  longCloneShallow : cloneShallow.bind( _.long ),
+  longFrom : from.bind( _.long ),
+
+  // long sequential search
+
+  longLeftIndex : leftIndex,
+  longRightIndex : rightIndex,
+
+  longLeft : left,
+  longRight : right,
+
+  longLeftDefined : leftDefined,
+  longRightDefined : rightDefined,
+
+}
+
+Object.assign( _, ToolsExtension );
+
+//
 
 })();

@@ -376,16 +376,13 @@ _functor({ name : 'u32x', names : [ 'u32x', 'ux' ], typeName : 'U32x', typeNames
 _functor({ name : 'u16x', names : [ 'u16x' ], typeName : 'U16x', typeNames : [ 'U16x', 'Uint16Array' ], instanceConstructor : U16x });
 _functor({ name : 'u8x', names : [ 'u8x' ], typeName : 'U8x', typeNames : [ 'U8x', 'Uint8Array' ], instanceConstructor : U8x });
 _functor({ name : 'u8xClamped', names : [ 'u8xClamped' ], typeName : 'U8xClamped', typeNames : [ 'U8xClamped', 'Uint8ClampedArray' ], instanceConstructor : U8xClamped });
-// _functor({ name : 'ux', typeName : 'Ux', typeNames : 'Uint32Array', instanceConstructor : Ux });
 
 _functor({ name : 'i32x', names : [ 'i32x', 'ix' ], typeName : 'I32x', typeNames : [ 'I32x', 'Int32Array', 'Ix' ], instanceConstructor : I32x });
 _functor({ name : 'i16x', names : [ 'i16x' ], typeName : 'I16x', typeNames : [ 'I16x', 'Int16Array' ], instanceConstructor : I16x });
 _functor({ name : 'i8x', names : [ 'i8x' ], typeName : 'I8x', typeNames : [ 'I8x', 'Int8Array' ], instanceConstructor : I8x });
-// _functor({ name : 'ix', typeName : 'Ix', typeNames : 'Int32Array', instanceConstructor : Ix });
 
 _functor({ name : 'f64x', names : [ 'f64x' ], typeName : 'F64x', typeNames : [ 'F64x', 'Float64Array' ], instanceConstructor : F64x });
 _functor({ name : 'f32x', names : [ 'f32x', 'fx' ], typeName : 'F32x', typeNames : [ 'F32x', 'Float32Array', 'Fx' ], instanceConstructor : F32x });
-// _functor({ name : 'fx', typeName : 'Fx', secondTypeName : 'Float32Array', instanceConstructor : Fx });
 
 _.assert( !!_.fx );
 _.assert( _.bufferTyped.default === undefined );
