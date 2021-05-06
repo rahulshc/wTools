@@ -181,18 +181,19 @@ function _makeUndefined( src, length )
       else
       length = [ ... length ].length;
     }
+
+    if( src === null )
+    return this.tools.long.default._makeUndefined( length );
     if( _.argumentsArray.is( src ) )
     return _.argumentsArray._makeUndefined( src, length );
     if( _.unroll.is( src ) )
     return _.unroll._makeUndefined( src, length );
-    if( _.routineIs( src ) )
+    if( _.routine.is( src ) )
     {
       let result = new src( length );
       _.assert( _.long.is( result ) );
       return result;
     }
-    if( src === null )
-    return this.tools.long.default.make( length );
     return new src.constructor( length );
   }
   else if( arguments.length === 1 )
@@ -209,14 +210,12 @@ function _makeUndefined( src, length )
     }
     else
     {
-      return this.tools.long.default.make( src );
+      return this.tools.long.default._makeUndefined( src );
     }
     return new constructor( length );
   }
-  else
-  {
-    return this.tools.long.default.make();
-  }
+
+  return this.tools.long.default._makeUndefined();
 }
 
 //
@@ -233,7 +232,7 @@ function makeUndefined( src, length )
   }
   else if( arguments.length === 1 )
   {
-    _.assert( src === null || _.number.is( src ) || this.like( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.number.is( src ) || this.like( src ) || _.countable.is( src ) || _.routine.is( src ) );
   }
   return this._makeUndefined( ... arguments );
 }
@@ -251,6 +250,9 @@ function _makeZeroed( src, length )
       else
       length = [ ... length ].length;
     }
+
+    if( src === null )
+    return this.tools.long.default._makeZeroed( length );
     if( _.argumentsArray.is( src ) )
     return _.argumentsArray._makeZeroed( src, length );
     if( _.unroll.is( src ) )
@@ -261,8 +263,6 @@ function _makeZeroed( src, length )
       _.assert( _.long.is( result ) );
       return result;
     }
-    if( src === null )
-    return this.tools.long.default.makeZeroed( length );
     return fill( new src.constructor( length ) );
   }
   else if( arguments.length === 1 )
@@ -279,12 +279,12 @@ function _makeZeroed( src, length )
     }
     else
     {
-      return this.tools.long.default.makeZeroed( src );
+      return this.tools.long.default._makeZeroed( src );
     }
     return fill( new constructor( length ) );
   }
 
-  return this.tools.long.default.make();
+  return this.tools.long.default._make();
 
   /* */
 
@@ -312,7 +312,7 @@ function makeZeroed( src, length )
   }
   else if( arguments.length === 1 )
   {
-    _.assert( src === null || _.number.is( src ) || this.like( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.number.is( src ) || this.like( src ) || _.countable.is( src ) || _.routine.is( src ) );
   }
   return this._makeZeroed( ... arguments );
 }

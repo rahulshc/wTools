@@ -844,6 +844,13 @@ function makeLongFilledCommon( test )
     var _value = _.buffer.typedIs( got ) ? 0 : value;
     test.identical( got, Constructor.from([ _value, _value, _value ]) );
 
+    test.case = `${__.entity.exportStringSolo( env )}, filled countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+    var got = long[ env.method ]( src );
+    test.true( got instanceof Constructor );
+    var _value = _.buffer.typedIs( got ) ? 0 : value;
+    test.identical( got, Constructor.from([ _value, _value ]) );
+
     /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, empty array`;
@@ -1011,6 +1018,13 @@ function makeLongFilledCommonWithLongDescriptor( test )
     test.true( got instanceof Constructor );
     var _value = _.buffer.typedIs( got ) ? 0 : value;
     test.identical( got, Constructor.from([ _value, _value, _value ]) );
+
+    test.case = `${__.entity.exportStringSolo( env )}, filled countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+    var got = long[ env.method ]( src );
+    test.true( got instanceof Constructor );
+    var _value = _.buffer.typedIs( got ) ? 0 : value;
+    test.identical( got, Constructor.from([ _value, _value ]) );
 
     /* */
 

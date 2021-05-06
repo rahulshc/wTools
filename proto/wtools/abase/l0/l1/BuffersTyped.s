@@ -102,8 +102,13 @@ function _functor( fo )
 
     if( length === undefined )
     length = src;
-    if( this.like( length ) )
-    length = length.length;
+    if( length && !_.number.is( length ) )
+    {
+      if( length.length )
+      length = length.length;
+      else
+      length = [ ... length ].length;
+    }
     return new this.InstanceConstructor( length );
   }
 
@@ -144,14 +149,14 @@ function _functor( fo )
 
   //
 
-  function _makeZeroed( src, length )
-  {
-    if( length === undefined )
-    length = src;
-    if( this.like( length ) )
-    length = length.length;
-    return new this.InstanceConstructor( length );
-  }
+  // function _makeZeroed( src, length )
+  // {
+  //   if( length === undefined )
+  //   length = src;
+  //   if( this.like( length ) )
+  //   length = length.length;
+  //   return new this.InstanceConstructor( length );
+  // }
 
   //
 
@@ -354,7 +359,7 @@ function _functor( fo )
     makeEmpty, /* qqq : for junior : cover */
     _makeUndefined,
     makeUndefined : _.argumentsArray.makeUndefined, /* qqq : for junior : cover */
-    _makeZeroed,
+    _makeZeroed : _makeUndefined,
     makeZeroed : _.argumentsArray.makeUndefined,
     // makeZeroed : makeUndefined,
     _makeFilling,

@@ -507,7 +507,7 @@ function _makeUndefined( src, length )
   return new src.constructor( length );
   if( _.buffer.nodeIs( src ) )
   return BufferNode.alloc( length );
-  if( _.long.is( src ) )
+  if( _.countable.is( src ) )
   return this.tools.bufferTyped.make( length );
 
   if( _.routineIs( src ) )

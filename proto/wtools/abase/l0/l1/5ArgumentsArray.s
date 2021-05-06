@@ -140,7 +140,7 @@ function makeUndefined( src, length )
   }
   else if( arguments.length === 1 )
   {
-    _.assert( src === null || _.numberIs( src ) || _.long.is( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.numberIs( src ) || _.long.is( src ) || _.countable.is( src ) || _.routineIs( src ) );
   }
   return this._makeUndefined( ... arguments );
 }
@@ -159,12 +159,12 @@ function makeZeroed( src, length )
   _.assert( 0 <= arguments.length && arguments.length <= 2 );
   if( arguments.length === 2 )
   {
-    _.assert( src === null || _.long.is( src ) || _.routineIs( src ) );
-    _.assert( _.numberIs( length ) || _.countable.is( length ) );
+    _.assert( src === null || _.long.is( src ) || _.routine.is( src ) );
+    _.assert( _.number.is( length ) || _.countable.is( length ) );
   }
   else if( arguments.length === 1 )
   {
-    _.assert( src === null || _.numberIs( src ) || _.long.is( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.numberIs( src ) || _.long.is( src ) || _.countable.is( src ) ||  _.routine.is( src ) );
   }
   return this._makeZeroed( ... arguments );
 }
