@@ -650,8 +650,8 @@ function makeCommon( test )
   {
     env.method = 'make';
     act( env );
-    // env.method = 'cloneShallow';
-    // act( env );
+    env.method = 'cloneShallow';
+    act( env );
   }
 
   /* */
@@ -676,51 +676,51 @@ function makeCommon( test )
       var got = long[ env.method ]( 3 );
       test.true( got instanceof Constructor );
       test.true( got.length === 3 );
+
+      /* */
+
+      test.case = `empty array`;
+      var src = [];
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 0 );
+
+      test.case = `filled array`;
+      var src = [ 2, 3 ];
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+      test.identical( got, Constructor.from([ 2, 3 ]) );
+
+      /* */
+
+      test.case = `empty unroll`;
+      var src = _.unroll.make( [] );
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 0 );
+
+      test.case = `filled unroll`;
+      var src = _.unroll.make([ 2, 3 ]);
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+      test.identical( got, Constructor.from([ 2, 3 ]) );
+
+      /* */
+
+      test.case = `empty argumentsArray`;
+      var src = _.argumentsArray.make( [] );
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 0 );
+
+      test.case = `filled argumentsArray`;
+      var src = _.argumentsArray.make([ 2, 3 ]);
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 2, 3 ]) );
     }
-
-    /* */
-
-    test.case = `empty array`;
-    var src = [];
-    var got = long[ env.method ]( src );
-    test.true( got instanceof Constructor );
-    test.identical( got.length, 0 );
-
-    test.case = `filled array`;
-    var src = [ 2, 3 ];
-    var got = long[ env.method ]( src );
-    test.true( got instanceof Constructor );
-    test.identical( got.length, 2 );
-    test.identical( got, Constructor.from([ 2, 3 ]) );
-
-    /* */
-
-    test.case = `empty unroll`;
-    var src = _.unroll.make( [] );
-    var got = long[ env.method ]( src );
-    test.true( got instanceof Constructor );
-    test.identical( got.length, 0 );
-
-    test.case = `filled unroll`;
-    var src = _.unroll.make([ 2, 3 ]);
-    var got = long[ env.method ]( src );
-    test.true( got instanceof Constructor );
-    test.identical( got.length, 2 );
-    test.identical( got, Constructor.from([ 2, 3 ]) );
-
-    /* */
-
-    test.case = `empty argumentsArray`;
-    var src = _.argumentsArray.make( [] );
-    var got = long[ env.method ]( src );
-    test.true( got instanceof Constructor );
-    test.identical( got.length, 0 );
-
-    test.case = `filled argumentsArray`;
-    var src = _.argumentsArray.make([ 2, 3 ]);
-    var got = long[ env.method ]( src );
-    test.true( got instanceof Constructor );
-    test.identical( got, Constructor.from([ 2, 3 ]) );
 
     /* */
 
@@ -1039,8 +1039,8 @@ function makeCommonWithLongDescriptor( test )
   {
     env.method = 'make';
     act( env );
-    // env.method = 'cloneShallow';
-    // act( env );
+    env.method = 'cloneShallow';
+    act( env );
   }
 
   /* */
@@ -1065,51 +1065,51 @@ function makeCommonWithLongDescriptor( test )
       var got = long[ env.method ]( 3 );
       test.true( got instanceof Constructor );
       test.true( got.length === 3 );
+
+      /* */
+
+      test.case = `empty array`;
+      var src = [];
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 0 );
+
+      test.case = `filled array`;
+      var src = [ 2, 3 ];
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+      test.identical( got, Constructor.from([ 2, 3 ]) );
+
+      /* */
+
+      test.case = `empty unroll`;
+      var src = _.unroll.make( [] );
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 0 );
+
+      test.case = `filled unroll`;
+      var src = _.unroll.make([ 2, 3 ]);
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 2 );
+      test.identical( got, Constructor.from([ 2, 3 ]) );
+
+      /* */
+
+      test.case = `empty argumentsArray`;
+      var src = _.argumentsArray.make( [] );
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got.length, 0 );
+
+      test.case = `filled argumentsArray`;
+      var src = _.argumentsArray.make([ 2, 3 ]);
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 2, 3 ]) );
     }
-
-    /* */
-
-    test.case = `empty array`;
-    var src = [];
-    var got = long[ env.method ]( src );
-    test.true( got instanceof Constructor );
-    test.identical( got.length, 0 );
-
-    test.case = `filled array`;
-    var src = [ 2, 3 ];
-    var got = long[ env.method ]( src );
-    test.true( got instanceof Constructor );
-    test.identical( got.length, 2 );
-    test.identical( got, Constructor.from([ 2, 3 ]) );
-
-    /* */
-
-    test.case = `empty unroll`;
-    var src = _.unroll.make( [] );
-    var got = long[ env.method ]( src );
-    test.true( got instanceof Constructor );
-    test.identical( got.length, 0 );
-
-    test.case = `filled unroll`;
-    var src = _.unroll.make([ 2, 3 ]);
-    var got = long[ env.method ]( src );
-    test.true( got instanceof Constructor );
-    test.identical( got.length, 2 );
-    test.identical( got, Constructor.from([ 2, 3 ]) );
-
-    /* */
-
-    test.case = `empty argumentsArray`;
-    var src = _.argumentsArray.make( [] );
-    var got = long[ env.method ]( src );
-    test.true( got instanceof Constructor );
-    test.identical( got.length, 0 );
-
-    test.case = `filled argumentsArray`;
-    var src = _.argumentsArray.make([ 2, 3 ]);
-    var got = long[ env.method ]( src );
-    test.true( got instanceof Constructor );
-    test.identical( got, Constructor.from([ 2, 3 ]) );
 
     /* */
 
@@ -1350,41 +1350,6 @@ function makeCommonWithLongDescriptor( test )
       var got = long[ env.method ]( [ 0, 0, 0, 0 ], length );
       test.true( got instanceof Constructor );
       test.identical( got, Constructor.from([ 1, 2, 3 ]) );
-    }
-
-    /* */
-
-    if( Config.debug )
-    {
-      if( env.method === 'cloneShallow' )
-      {
-        test.case = 'without arguments';
-        test.shouldThrowErrorSync( () => long[ env.method ]() );
-
-        test.case = 'extra arguments';
-        test.shouldThrowErrorSync( () => long[ env.method ]( [], 1 ) );
-      }
-      else
-      {
-        test.case = 'extra arguments';
-        test.shouldThrowErrorSync( () => long[ env.method ]( [], 1, 1 ) );
-
-        test.case = 'wrong type of length';
-        test.shouldThrowErrorSync( () => long[ env.method ]( [ 1, 2, 3 ], null ) );
-        test.shouldThrowErrorSync( () => long[ env.method ]( 3, null ) );
-        test.shouldThrowErrorSync( () => long[ env.method ]( Array, null ) );
-        test.shouldThrowErrorSync( () => long[ env.method ]( null, null ) );
-        test.shouldThrowErrorSync( () => long[ env.method ]( [ 1, 2, 3 ], undefined ) );
-        test.shouldThrowErrorSync( () => long[ env.method ]( 3, undefined ) );
-        test.shouldThrowErrorSync( () => long[ env.method ]( Array, undefined ) );
-        test.shouldThrowErrorSync( () => long[ env.method ]( null, undefined ) );
-
-        test.case = 'wrong type of src';
-        test.shouldThrowErrorSync( () => long[ env.method ]( 'wrong', 3 ) );
-      }
-
-      test.case = 'wrong type of src';
-      test.shouldThrowErrorSync( () => long[ env.method ]( undefined ) );
     }
 
     test.close( `${__.entity.exportStringSolo( env )}` );
