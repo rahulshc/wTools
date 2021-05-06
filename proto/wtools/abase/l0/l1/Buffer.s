@@ -898,7 +898,7 @@ let BufferExtension =
 
   _cloneShallow,
   cloneShallow : _.argumentsArray.cloneShallow, /* qqq : for junior : cover */
-  // from, /* qqq : for junior : cover */
+  from : _.argumentsArray.from, /* qqq : for junior : cover */
 
   // meta
 
