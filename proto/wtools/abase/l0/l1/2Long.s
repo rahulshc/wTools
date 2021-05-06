@@ -133,21 +133,20 @@ function _makeEmpty( src )
   if( arguments.length === 1 )
   {
     if( _.argumentsArray.is( src ) )
-    return _.argumentsArray.make( 0 );
+    return _.argumentsArray._makeEmpty( 0 );
     else if( _.unroll.is( src ) )
-    return _.unroll.make();
-    if( _.routineIs( src ) )
+    return _.unroll._makeEmpty();
+    if( _.routine.is( src ) )
     {
       let result = new src( 0 );
       _.assert( _.long.is( result ) );
       return result;
     }
+    if( this.is( src ) )
     return new src.constructor();
   }
-  else
-  {
-    return this.tools.long.default.make();
-  }
+
+  return this.tools.long.default._makeEmpty();
 }
 
 //
@@ -158,14 +157,12 @@ function makeEmpty( src )
   _.assert( arguments.length === 0 || arguments.length === 1 );
   if( arguments.length === 1 )
   {
-    _.assert( _.vector.is( src ) || _.routineIs( src ) );
-    // _.assert( this.like( src ) || _.routineIs( src ) ); /* Dmytro : for compatibility with ContainerAdapters source instance should be a Vector, not simple Long */
+    _.assert( _.countable.is( src ) || _.routine.is( src ) );
+    // _.assert( this.like( src ) || _.routine.is( src ) ); /* Dmytro : for compatibility with ContainerAdapters source instance should be a Vector, not simple Long */
     return this._makeEmpty( src );
   }
-  else
-  {
-    return this._makeEmpty();
-  }
+
+  return this._makeEmpty();
 }
 
 //
@@ -174,25 +171,26 @@ function _makeUndefined( src, length )
 {
   if( arguments.length === 2 )
   {
-    if( !_.numberIs( length ) )
+    if( !_.number.is( length ) )
     {
-      if( _.numberIs( length.length ) )
+      if( _.number.is( length.length ) )
       length = length.length;
       else
       length = [ ... length ].length;
     }
+
+    if( src === null )
+    return this.tools.long.default._makeUndefined( length );
     if( _.argumentsArray.is( src ) )
     return _.argumentsArray._makeUndefined( src, length );
     if( _.unroll.is( src ) )
     return _.unroll._makeUndefined( src, length );
-    if( _.routineIs( src ) )
+    if( _.routine.is( src ) )
     {
       let result = new src( length );
       _.assert( _.long.is( result ) );
       return result;
     }
-    if( src === null )
-    return this.tools.long.default.make( length );
     return new src.constructor( length );
   }
   else if( arguments.length === 1 )
@@ -209,14 +207,12 @@ function _makeUndefined( src, length )
     }
     else
     {
-      return this.tools.long.default.make( src );
+      return this.tools.long.default._makeUndefined( src );
     }
     return new constructor( length );
   }
-  else
-  {
-    return this.tools.long.default.make();
-  }
+
+  return this.tools.long.default._makeUndefined();
 }
 
 //
@@ -228,12 +224,12 @@ function makeUndefined( src, length )
   _.assert( 0 <= arguments.length && arguments.length <= 2 );
   if( arguments.length === 2 )
   {
-    _.assert( src === null || _.long.is( src ) || _.routineIs( src ) );
-    _.assert( _.numberIs( length ) || _.countable.is( length ) );
+    _.assert( src === null || _.long.is( src ) || _.routine.is( src ) );
+    _.assert( _.number.is( length ) || _.countable.is( length ) );
   }
   else if( arguments.length === 1 )
   {
-    _.assert( src === null || _.numberIs( src ) || this.like( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.number.is( src ) || this.like( src ) || _.countable.is( src ) || _.routine.is( src ) );
   }
   return this._makeUndefined( ... arguments );
 }
@@ -244,25 +240,26 @@ function _makeZeroed( src, length )
 {
   if( arguments.length === 2 )
   {
-    if( !_.numberIs( length ) )
+    if( !_.number.is( length ) )
     {
-      if( _.numberIs( length.length ) )
+      if( _.number.is( length.length ) )
       length = length.length;
       else
       length = [ ... length ].length;
     }
+
+    if( src === null )
+    return this.tools.long.default._makeZeroed( length );
     if( _.argumentsArray.is( src ) )
     return _.argumentsArray._makeZeroed( src, length );
     if( _.unroll.is( src ) )
     return _.unroll._makeZeroed( src, length );
-    if( _.routineIs( src ) )
+    if( _.routine.is( src ) )
     {
       let result = fill( new src( length ) );
       _.assert( _.long.is( result ) );
       return result;
     }
-    if( src === null )
-    return this.tools.long.default.makeZeroed( length );
     return fill( new src.constructor( length ) );
   }
   else if( arguments.length === 1 )
@@ -279,12 +276,12 @@ function _makeZeroed( src, length )
     }
     else
     {
-      return this.tools.long.default.makeZeroed( src );
+      return this.tools.long.default._makeZeroed( src );
     }
     return fill( new constructor( length ) );
   }
 
-  return this.tools.long.default.make();
+  return this.tools.long.default._make();
 
   /* */
 
@@ -307,12 +304,12 @@ function makeZeroed( src, length )
   _.assert( 0 <= arguments.length && arguments.length <= 2 );
   if( arguments.length === 2 )
   {
-    _.assert( src === null || _.long.is( src ) || _.routineIs( src ) );
-    _.assert( _.numberIs( length ) || _.countable.is( length ) );
+    _.assert( src === null || _.long.is( src ) || _.routine.is( src ) );
+    _.assert( _.number.is( length ) || _.countable.is( length ) );
   }
   else if( arguments.length === 1 )
   {
-    _.assert( src === null || _.numberIs( src ) || this.like( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.number.is( src ) || this.like( src ) || _.countable.is( src ) || _.routine.is( src ) );
   }
   return this._makeZeroed( ... arguments );
 }
@@ -333,12 +330,13 @@ function _makeFilling( type, value, length )
   }
 
   if( !_.number.is( length ) )
-  if( _.long.is( length ) )
+  // if( _.long.is( length ) )
+  if(  length.length )
   length = length.length;
   else if( _.countable.is( length ) )
   length = [ ... length ].length;
 
-  let result = this.make( type, length );
+  let result = this._make( type, length );
   for( let i = 0 ; i < length ; i++ )
   result[ i ] = value;
 
@@ -349,18 +347,20 @@ function _makeFilling( type, value, length )
 
 function makeFilling( type, value, length )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
   if( arguments.length === 2 )
   {
     _.assert( _.number.is( value ) || _.countable.is( value ) );
     _.assert( type !== undefined );
   }
-  else
+  else if( arguments.length === 3 )
   {
     _.assert( value !== undefined );
     _.assert( _.number.is( length ) || _.countable.is( length ) );
-    _.assert( type === null || _.routine.is( type ) || this.like( type ) );
+    _.assert( type === null || this.like( type ) || _.routine.is( type ) );
+  }
+  else
+  {
+    _.assert( 0, 'Expects 2 or 3 arguments' );
   }
 
   return this._makeFilling( ... arguments );
@@ -370,17 +370,16 @@ function makeFilling( type, value, length )
 
 function _make( src, length )
 {
-
   if( arguments.length === 2 )
   {
     let data = length;
-    if( _.numberIs( length ) )
+    if( _.number.is( length ) )
     {
       data = src;
     }
     else
     {
-      if( _.numberIs( length.length ) )
+      if( _.number.is( length.length ) )
       {
         length = length.length;
       }
@@ -391,13 +390,13 @@ function _make( src, length )
       }
     }
     if( _.argumentsArray.is( src ) )
-    return fill( _.argumentsArray.make( length ), data );
+    return fill( _.argumentsArray._make( length ), data );
     if( _.unroll.is( src ) )
-    return fill( _.unroll.make( length ), data );
+    return fill( _.unroll._make( length ), data );
     if( src === null )
-    return fill( this.tools.long.default.make( length ), data );
+    return fill( this.tools.long.default._make( length ), data );
     let result;
-    if( _.routineIs( src ) )
+    if( _.routine.is( src ) )
     result = fill( new src( length ), data )
     else if( src.constructor )
     result = fill( new src.constructor( length ), data );
@@ -406,17 +405,24 @@ function _make( src, length )
   }
   else if( src !== undefined && src !== null )
   {
-    if( _.argumentsArray.is( src ) )
-    return _.argumentsArray.make( src );
+    if( _.number.is( src ) )
+    return this.tools.long.default._make( src );
     if( _.unroll.is( src ) )
-    return _.unroll.make( src );
-    if( _.numberIs( src ) )
-    return this.tools.long.default.make( src );
-    if( _.routineIs( src ) )
-    return new src();
+    return _.unroll._make( src );
+    if( _.argumentsArray.is( src ) )
+    return _.argumentsArray._make( src );
     if( src.constructor === Array )
     return [ ... src ];
+    if( _.buffer.typedIs( src ) )
     return new src.constructor( src );
+    if( _.countable.is( src ) )
+    return this.tools.long.default._make( src );
+    if( _.routine.is( src ) )
+    {
+      let result = new src();
+      _.assert( this.is( result ), 'Expects long as returned instance' );
+      return result;
+    }
   }
 
   return this.tools.long.default.make();
@@ -432,7 +438,6 @@ function _make( src, length )
     dst[ i ] = data[ i ];
     return dst;
   }
-
 }
 
 //
@@ -444,12 +449,12 @@ function make( src, length )
   _.assert( arguments.length <= 2 );
   if( arguments.length === 2 )
   {
-    _.assert( src === null || _.long.is( src ) || _.routineIs( src ) );
-    _.assert( _.numberIs( length ) || _.countable.is( length ) );
+    _.assert( src === null || _.long.is( src ) || _.routine.is( src ) );
+    _.assert( _.number.is( length ) || _.countable.is( length ) );
   }
   else if( arguments.length === 1 )
   {
-    _.assert( src === null || _.numberIs( src ) || _.long.is( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.number.is( src ) || _.long.is( src ) || _.countable.is( src ) || _.routine.is( src ) );
   }
   return this._make( ... arguments );
 }
@@ -463,7 +468,7 @@ function _cloneShallow( src )
   return _.argumentsArray.make( src );
   if( _.unroll.is( src ) )
   return _.unroll.make( src );
-  // if( _.numberIs( src ) ) /* Dmytro : wrong branch, public interface forbids numbers as argument */
+  // if( _.number.is( src ) ) /* Dmytro : wrong branch, public interface forbids numbers as argument */
   // return this.tools.long.default.make( src );
   if( src.constructor === Array )
   return [ ... src ];

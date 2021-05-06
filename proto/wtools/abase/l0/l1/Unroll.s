@@ -102,18 +102,18 @@ function IsResizable()
 // maker
 // --
 
-function _makeEmpty( src )
-{
-  return _.unroll._make();
-}
-
+// function _makeEmpty( src )
+// {
+//   return _.unroll._make();
+// }
 //
-
-function makeEmpty( src )
-{
-  _.assert( arguments.length === 0 || arguments.length === 1 );
-  return _.unroll._makeEmpty( ... arguments );
-}
+// //
+//
+// function makeEmpty( src )
+// {
+//   _.assert( arguments.length === 0 || arguments.length === 1 );
+//   return _.unroll._makeEmpty( ... arguments );
+// }
 
 //
 
@@ -808,7 +808,8 @@ let ToolsExtension =
 
   // maker
 
-  unrollMakeEmpty : makeEmpty.bind( _.unroll ),
+  unrollMakeEmpty : _.argumentsArray.makeEmpty.bind( _.unroll ),
+  // unrollMakeEmpty : makeEmpty.bind( _.unroll ),
   unrollMakeUndefined : _.argumentsArray.makeUndefined.bind( _.unroll ),
   // unrollMakeUndefined : makeUndefined.bind( _.unroll ),
   unrollMake : _.argumentsArray.make.bind( _.unroll ),
@@ -861,8 +862,8 @@ let UnrollExtension =
 
   // maker
 
-  _makeEmpty,
-  makeEmpty, /* qqq : for junior : cover */
+  _makeEmpty : _.argumentsArray._makeEmpty,
+  makeEmpty : _.argumentsArray.makeEmpty, /* qqq : for junior : cover */
   _makeUndefined : _.argumentsArray._makeUndefined,
   makeUndefined : _.argumentsArray.makeUndefined, /* qqq : for junior : cover */
   _makeZeroed : _.argumentsArray._makeZeroed,

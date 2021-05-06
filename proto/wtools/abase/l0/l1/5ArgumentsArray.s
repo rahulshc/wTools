@@ -63,7 +63,7 @@ function _make( src, length )
   {
     if( _.numberIs( src ) )
     return _.argumentsArray._makeAct.apply( _, Array( src ) );
-    if( _.long.is( src ) )
+    if( _.countable.is( src ) )
     return _.argumentsArray._makeAct.apply( _, [ ... src ] );
   }
   return _.argumentsArray._makeAct.apply( _, [] );
@@ -97,15 +97,15 @@ function make( src, length )
 
 function _makeEmpty()
 {
-  return this._make([]);
+  return this._make( 0 );
 }
 
 //
 
 function makeEmpty( src )
 {
-  _.assert( arguments.length === 0 || arguments.length === 1 );
-  _.assert( src === undefined || src === null || this.like( src ) );
+  _.assert( arguments.length === 0 || src === null || this.like( src ) || _.countable.is( src ) );
+  _.assert( arguments.length <= 1 );
   return this._makeEmpty( src );
 }
 
@@ -140,7 +140,7 @@ function makeUndefined( src, length )
   }
   else if( arguments.length === 1 )
   {
-    _.assert( src === null || _.numberIs( src ) || _.long.is( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.numberIs( src ) || _.long.is( src ) || _.countable.is( src ) || _.routineIs( src ) );
   }
   return this._makeUndefined( ... arguments );
 }
@@ -159,12 +159,12 @@ function makeZeroed( src, length )
   _.assert( 0 <= arguments.length && arguments.length <= 2 );
   if( arguments.length === 2 )
   {
-    _.assert( src === null || _.long.is( src ) || _.routineIs( src ) );
-    _.assert( _.numberIs( length ) || _.countable.is( length ) );
+    _.assert( src === null || _.long.is( src ) || _.routine.is( src ) );
+    _.assert( _.number.is( length ) || _.countable.is( length ) );
   }
   else if( arguments.length === 1 )
   {
-    _.assert( src === null || _.numberIs( src ) || _.long.is( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.numberIs( src ) || _.long.is( src ) || _.countable.is( src ) ||  _.routine.is( src ) );
   }
   return this._makeZeroed( ... arguments );
 }
@@ -180,7 +180,8 @@ function _makeFilling( type, value, length )
   }
 
   if( !_.number.is( length ) )
-  if( _.long.is( length ) )
+  // if( _.long.is( length ) )
+  if(  length.length )
   length = length.length;
   else if( _.countable.is( length ) )
   length = [ ... length ].length;

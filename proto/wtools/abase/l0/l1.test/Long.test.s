@@ -249,7 +249,6 @@ function makeCommon( test )
     var src = [ 2, 3 ];
     var got = long[ env.method ]( src );
     test.true( got instanceof InstanceConstructor );
-    test.identical( got.length, 2 );
     test.identical( got, InstanceConstructor.from([ 2, 3 ]) );
 
     /* */
@@ -264,7 +263,6 @@ function makeCommon( test )
     var src = _.unroll.make([ 2, 3 ]);
     var got = long[ env.method ]( src );
     test.true( got instanceof InstanceConstructor );
-    test.identical( got.length, 2 );
     test.identical( got, InstanceConstructor.from([ 2, 3 ]) );
 
     /* */
@@ -310,6 +308,14 @@ function makeCommon( test )
 
     if( env.method !== 'cloneShallow' )
     {
+      test.case = `filled countable`;
+      var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 2, 3 ]) );
+
+      /* */
+
       test.case = `null and length - number`;
       var got = long[ env.method ]( null, 2 );
       test.true( got instanceof Constructor );
@@ -322,7 +328,6 @@ function makeCommon( test )
 
       test.case = `null and countable`;
       var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
-      debugger;
       var got = long[ env.method ]( null, length );
       test.true( got instanceof Constructor );
       test.identical( got.length, 3 );
@@ -635,6 +640,14 @@ function makeCommonWithLongDescriptor( test )
 
     if( env.method !== 'cloneShallow' )
     {
+      test.case = `filled countable`;
+      var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+      var got = long[ env.method ]( src );
+      test.true( got instanceof Constructor );
+      test.identical( got, Constructor.from([ 2, 3 ]) );
+
+      /* */
+
       test.case = `null and length - number`;
       var got = long[ env.method ]( null, 2 );
       test.true( got instanceof Constructor );
@@ -647,7 +660,6 @@ function makeCommonWithLongDescriptor( test )
 
       test.case = `null and countable`;
       var length = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1 });
-      debugger;
       var got = long[ env.method ]( null, length );
       test.true( got instanceof Constructor );
       test.identical( got.length, 3 );
@@ -832,6 +844,13 @@ function makeLongFilledCommon( test )
     var _value = _.buffer.typedIs( got ) ? 0 : value;
     test.identical( got, Constructor.from([ _value, _value, _value ]) );
 
+    test.case = `${__.entity.exportStringSolo( env )}, filled countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+    var got = long[ env.method ]( src );
+    test.true( got instanceof Constructor );
+    var _value = _.buffer.typedIs( got ) ? 0 : value;
+    test.identical( got, Constructor.from([ _value, _value ]) );
+
     /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, empty array`;
@@ -999,6 +1018,13 @@ function makeLongFilledCommonWithLongDescriptor( test )
     test.true( got instanceof Constructor );
     var _value = _.buffer.typedIs( got ) ? 0 : value;
     test.identical( got, Constructor.from([ _value, _value, _value ]) );
+
+    test.case = `${__.entity.exportStringSolo( env )}, filled countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+    var got = long[ env.method ]( src );
+    test.true( got instanceof Constructor );
+    var _value = _.buffer.typedIs( got ) ? 0 : value;
+    test.identical( got, Constructor.from([ _value, _value ]) );
 
     /* */
 
@@ -2355,6 +2381,14 @@ function makeEmptyCommon( test )
 
     /* */
 
+    test.case = `filled countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+    var got = long.makeEmpty( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
+
+    /* */
+
     if( Config.debug )
     {
       test.case = 'extra arguments';
@@ -2516,15 +2550,11 @@ function makeEmptyCommonWithLongDescriptor( test )
 
     /* */
 
-    if( Config.debug )
-    {
-      test.case = 'extra arguments';
-      test.shouldThrowErrorSync( () => long.makeEmpty( [], 1 ) );
-
-      test.case = 'wrong type of src';
-      test.shouldThrowErrorSync( () => long.makeEmpty( undefined ) );
-      test.shouldThrowErrorSync( () => long.makeEmpty( null ) );
-    }
+    test.case = `filled countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+    var got = long.makeEmpty( src );
+    test.true( got instanceof Constructor );
+    test.identical( got.length, 0 );
 
     test.close( `${__.entity.exportStringSolo( env )}` );
   }
@@ -7261,6 +7291,14 @@ function fromCommon( test )
     test.true( _.f64x.is( got ) );
     test.true( got === src );
 
+    /* */
+
+    test.case = `countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 2, 3 ]) );
+
     /* - */
 
     if( Config.debug )
@@ -7480,6 +7518,14 @@ function fromCommonWithLongDescriptor( test )
     test.identical( got, new F64x([ 1, 2, 3 ]) );
     test.true( _.f64x.is( got ) );
     test.true( got === src );
+
+    /* */
+
+    test.case = `countable`;
+    var src = __.diagnostic.objectMake({ elements : [ 2, 3 ], countable : 1 });
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 2, 3 ]) );
 
     test.close( `${ __.entity.exportStringSolo( env ) }` );
   }

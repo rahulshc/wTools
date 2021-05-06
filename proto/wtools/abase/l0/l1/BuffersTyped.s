@@ -58,26 +58,26 @@ function _functor( fo )
 
   //
 
-  function makeEmpty( src )
-  {
-    if( arguments.length === 1 )
-    _.assert( this.like( src ) );
-    else
-    _.assert( arguments.length === 0 );
-
-    return this._makeEmpty( ... arguments );
-
-    // _.assert( arguments.length === 0 || arguments.length === 1 );
-    // if( arguments.length === 1 )
-    // {
-    //   _.assert( this.like( src ) );
-    //   return [];
-    // }
-    // else
-    // {
-    //   return [];
-    // }
-  }
+  // function makeEmpty( src )
+  // {
+  //   if( arguments.length === 1 )
+  //   _.assert( this.like( src ) );
+  //   else
+  //   _.assert( arguments.length === 0 );
+  //
+  //   return this._makeEmpty( ... arguments );
+  //
+  //   // _.assert( arguments.length === 0 || arguments.length === 1 );
+  //   // if( arguments.length === 1 )
+  //   // {
+  //   //   _.assert( this.like( src ) );
+  //   //   return [];
+  //   // }
+  //   // else
+  //   // {
+  //   //   return [];
+  //   // }
+  // }
 
   //
 
@@ -102,8 +102,13 @@ function _functor( fo )
 
     if( length === undefined )
     length = src;
-    if( this.like( length ) )
-    length = length.length;
+    if( length && !_.number.is( length ) )
+    {
+      if( length.length )
+      length = length.length;
+      else
+      length = [ ... length ].length;
+    }
     return new this.InstanceConstructor( length );
   }
 
@@ -144,68 +149,68 @@ function _functor( fo )
 
   //
 
-  function _makeZeroed( src, length )
-  {
-    if( length === undefined )
-    length = src;
-    if( this.like( length ) )
-    length = length.length;
-    return new this.InstanceConstructor( length );
-  }
+  // function _makeZeroed( src, length )
+  // {
+  //   if( length === undefined )
+  //   length = src;
+  //   if( this.like( length ) )
+  //   length = length.length;
+  //   return new this.InstanceConstructor( length );
+  // }
 
   //
 
-  function _makeFilling( type, value, length )
-  {
-    if( arguments.length === 2 )
-    {
-      value = arguments[ 0 ];
-      length = arguments[ 1 ];
-      if( _.longIs( length ) )
-      {
-        if( _.argumentsArray.is( length ) )
-        type = length;
-        else if( _.number.is( length ) )
-        type = null;
-        else
-        type = length;
-      }
-      else
-      {
-        type = null;
-      }
-    }
-
-    if( _.longIs( length ) )
-    length = length.length;
-
-    let result = this._make( type, length );
-    for( let i = 0 ; i < length ; i++ )
-    result[ i ] = value;
-
-    return result;
-  }
+  // function _makeFilling( type, value, length )
+  // {
+  //   if( arguments.length === 2 )
+  //   {
+  //     value = arguments[ 0 ];
+  //     length = arguments[ 1 ];
+  //     if( _.longIs( length ) )
+  //     {
+  //       if( _.argumentsArray.is( length ) )
+  //       type = length;
+  //       else if( _.number.is( length ) )
+  //       type = null;
+  //       else
+  //       type = length;
+  //     }
+  //     else
+  //     {
+  //       type = null;
+  //     }
+  //   }
+  //
+  //   if( _.longIs( length ) )
+  //   length = length.length;
+  //
+  //   let result = this._make( type, length );
+  //   for( let i = 0 ; i < length ; i++ )
+  //   result[ i ] = value;
+  //
+  //   return result;
+  // }
 
   //
 
-  function makeFilling( type, value, length )
-  {
-    _.assert( arguments.length === 2 || arguments.length === 3 );
-
-    if( arguments.length === 2 )
-    {
-      _.assert( _.number.is( value ) || _.countable.is( value ) );
-      _.assert( type !== undefined );
-    }
-    else
-    {
-      _.assert( value !== undefined );
-      _.assert( _.number.is( length ) || _.countable.is( length ) );
-      _.assert( type === null || _.routine.is( type ) || _.longIs( type ) );
-    }
-
-    return this._makeFilling( ... arguments );
-  }
+  // function makeFilling( type, value, length )
+  // {
+  //   _.assert( arguments.length === 2 || arguments.length === 3 );
+  //
+  //   if( arguments.length === 2 )
+  //   {
+  //     _.assert( _.number.is( value ) || _.countable.is( value ) );
+  //     _.assert( type !== undefined );
+  //   }
+  //   else
+  //   {
+  //     _.assert( value !== undefined );
+  //     _.assert( _.number.is( length ) || _.countable.is( length ) );
+  //     _.assert( type === null || _.routine.is( type ) || _.longIs( type ) );
+  //   }
+  //
+  //   return this._makeFilling( ... arguments );
+  // }
 
   //
 
@@ -215,9 +220,18 @@ function _functor( fo )
     {
       let data = length;
       if( _.number.is( length ) )
-      data = src;
-      if( _.countable.is( length ) )
-      length = length.length;
+      {
+        data = src;
+      }
+      else if( length.length )
+      {
+        length = length.length;
+      }
+      else if( _.countable.is( length ) )
+      {
+        data = [ ... length ];
+        length = data.length;
+      }
       return fill( new this.InstanceConstructor( length ), data );
     }
     else if( arguments.length === 1 )
@@ -301,7 +315,8 @@ function _functor( fo )
 
     // maker
 
-    [ fo.name + 'MakeEmpty' ] : makeEmpty.bind( _[ fo.name ] ),
+    [ fo.name + 'MakeEmpty' ] : _.argumentsArray.makeEmpty.bind( _[ fo.name ] ),
+    // [ fo.name + 'MakeEmpty' ] : makeEmpty.bind( _[ fo.name ] ),
     [ fo.name + 'MakeUndefined' ] : _.argumentsArray.makeUndefined.bind( _[ fo.name ] ),
     // [ fo.name + 'MakeUndefined' ] : makeUndefined.bind( _[ fo.name ] ),
     [ fo.name + 'Make' ] : _.argumentsArray.make.bind( _[ fo.name ] ),
@@ -342,14 +357,14 @@ function _functor( fo )
     // maker
 
     _makeEmpty,
-    makeEmpty, /* qqq : for junior : cover */
+    makeEmpty : _.argumentsArray.makeEmpty, /* qqq : for junior : cover */
     _makeUndefined,
     makeUndefined : _.argumentsArray.makeUndefined, /* qqq : for junior : cover */
-    _makeZeroed,
+    _makeZeroed : _makeUndefined,
     makeZeroed : _.argumentsArray.makeUndefined,
     // makeZeroed : makeUndefined,
-    _makeFilling,
-    makeFilling,
+    _makeFilling : _.argumentsArray.makeFilling,
+    makeFilling : _.argumentsArray.makeFilling,
     _make,
     make : _.argumentsArray.make, /* qqq : for junior : cover */
     // make, /* qqq : for junior : cover */

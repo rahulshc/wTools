@@ -44,7 +44,8 @@ function _make( src, length )
     {
       data = src;
     }
-    else if( _.long.is( length ) )
+    else if( length.length )
+    // else if( _.long.is( length ) )
     {
       length = length.length;
     }
@@ -86,7 +87,7 @@ function _makeEmpty( src )
 {
   if( arguments.length === 1 )
   {
-    if( _.routineIs( src ) )
+    if( _.routine.is( src ) )
     {
       let result = new src( 0 );
       _.assert( this.like( result ) );
@@ -102,11 +103,12 @@ function _makeEmpty( src )
 
 function makeEmpty( src )
 {
-  _.assert( arguments.length === 0 || arguments.length === 1 );
-  if( arguments.length === 1 )
-  {
-    _.assert( this.like( src ) || _.countable.is( src ) || _.routineIs( src ) );
-  }
+  _.assert( arguments.length === 0 || this.like( src ) || _.countable.is( src ) || _.routine.is( src ) );
+  _.assert( arguments.length <= 1 );
+  // _.assert( arguments.length === 0 || arguments.length === 1 );
+  // if( arguments.length === 1 )
+  // _.assert( this.like( src ) || _.countable.is( src ) || _.routine.is( src ) );
+
   return this._makeEmpty( ... arguments );
 }
 
@@ -146,7 +148,8 @@ function _makeFilling( type, value, length )
   }
 
   if( !_.number.is( length ) )
-  if( _.long.is( length ) )
+  // if( _.long.is( length ) )
+  if(  length.length )
   length = length.length;
   else if( _.countable.is( length ) )
   length = [ ... length ].length;
