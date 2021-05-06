@@ -4508,7 +4508,7 @@ function from( test )
   act({ tools : 'Array', type : 'Array' });
   act({ tools : 'F32x', type : 'F32x' });
 
-  /* */
+  /* - */
 
   function act( env )
   {
@@ -4684,6 +4684,194 @@ function from( test )
     if( env.tools === 'default' )
     return _.buffer;
     return _.withLong[ env.tools ].buffer;
+  }
+}
+
+//
+
+function fromWithLongDescriptor( test )
+{
+  let times = 4;
+  for( let k in _.long.namespaces )
+  {
+    let namespace = _.long.namespaces[ k ];
+    let type = namespace.TypeName;
+
+    if( type === 'ArgumentsArray' )
+    continue;
+
+    test.open( `long - ${ type }` );
+    act({ tools : 'default', type });
+    act({ tools : 'Array', type });
+    act({ tools : 'F32x', type });
+    test.close( `long - ${ type }` );
+
+    if( times < 1 )
+    break;
+    times--;
+  }
+
+  /* - */
+
+  function act( env )
+  {
+    test.open( `${ __.entity.exportStringSolo( env ) }` );
+
+    const long = namespaceGet( env );
+    const Constructor = _.bufferTyped.default.InstanceConstructor;
+
+    /* */
+
+    test.case = 'null';
+    var got = long.from( null );
+    test.identical( got, Constructor.from( [] ) );
+    test.true( got instanceof Constructor );
+
+    test.case = 'number';
+    var src = 2;
+    var got = long.from( src );
+    var value = _.buffer.typedIs( Constructor.from( [] ) ) ? 0 : undefined;
+    test.identical( got, Constructor.from([ value, value ]) );
+    test.true( got instanceof Constructor );
+
+    /* */
+
+    test.case = 'empty array';
+    var src = [];
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from( [] ) );
+    test.true( got !== src );
+
+
+    test.case = 'filled array';
+    var src = [ 1, 2, 3 ];
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 1, 2, 3 ]) );
+    test.true( got !== src );
+
+    /* */
+
+    test.case = 'empty unroll';
+    var src = _.unroll.make( [] );
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from( [] ) );
+    test.true( got !== src );
+
+    test.case = 'filled unroll';
+    var src = _.unroll.make([ 1, 2, 3 ]);
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 1, 2, 3 ]) );
+    test.true( got !== src );
+
+    /* */
+
+    test.case = 'empty argumentsArray';
+    var src = _.argumentsArray.make( [] );
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from( [] ) );
+    test.true( got !== src );
+
+    test.case = 'filled argumentsArray';
+    var src = _.argumentsArray.make([ 1, 2, 3 ]);
+    var got = long.from( src );
+    test.true( got instanceof Constructor );
+    test.identical( got, Constructor.from([ 1, 2, 3 ]) );
+    test.true( got !== src );
+
+    /* */
+
+    test.case = 'empty BufferTyped';
+    var src = new U8x( [] );
+    var got = long.from( src );
+    test.identical( got, new U8x( [] ) );
+    test.true( _.u8x.is( got ) );
+    test.true( got === src );
+
+    var src = new I16x( [] );
+    var got = long.from( src );
+    test.identical( got, new I16x( [] ) );
+    test.true( _.i16x.is( got ) );
+    test.true( got === src );
+
+    test.case = 'filled BufferTyped';
+    var src = new F32x([ 1, 2, 3 ]);
+    var got = long.from( src );
+    test.identical( got, new F32x([ 1, 2, 3 ]) );
+    test.true( _.f32x.is( got ) );
+    test.true( got === src );
+
+    var src = new F64x([ 1, 2, 3 ]);
+    var got = long.from( src );
+    test.identical( got, new F64x([ 1, 2, 3 ]) );
+    test.true( _.f64x.is( got ) );
+    test.true( got === src );
+
+    /* */
+
+    test.case = `empty raw buffer`;
+    var src = new BufferRaw( 0 );
+    var got = long.from( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got, new BufferRaw( 0 ) );
+    test.true( got === src );
+
+    test.case = `raw buffer - filled`;
+    var src = _.u8x.make([ 2, 2 ]).buffer;
+    var got = long.from( src );
+    test.true( got instanceof BufferRaw );
+    test.identical( got, _.u8x.make([ 2, 2 ]).buffer );
+    test.true( got === src );
+
+    /* */
+
+    test.case = `empty view buffer`;
+    var src = new BufferView( new BufferRaw( 0 ) );
+    var got = long.from( src );
+    test.true( got instanceof BufferView );
+    test.identical( got, new BufferView( new BufferRaw( 0 ) ) );
+    test.true( got === src );
+
+    test.case = `view buffer - filled`;
+    var src = new BufferView( _.u8x.make([ 2, 2 ]).buffer );
+    var got = long.from( src );
+    test.true( got instanceof BufferView );
+    test.identical( got, new BufferView( _.u8x.make([ 2, 2 ]).buffer ) );
+    test.true( got === src );
+
+    /* */
+
+    if( Config.interpreter === 'njs' )
+    {
+      test.case = `empty node buffer`;
+      var src = BufferNode.alloc( 0 );
+      var got = long.from( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got, BufferNode.alloc( 0 ) );
+      test.true( got === src );
+
+      test.case = `raw buffer - filled`;
+      var src = BufferNode.from([ 2, 2 ]);
+      var got = long.from( src );
+      test.true( got instanceof BufferNode );
+      test.identical( got, BufferNode.from([ 2, 2 ]) );
+      test.true( got === src );
+    }
+
+    test.close( `${ __.entity.exportStringSolo( env ) }` );
+  }
+
+  /* */
+
+  function namespaceGet( env )
+  {
+    if( env.tools === 'default' )
+    return _.buffer;
+    return _.withLong[ env.type ].buffer;
   }
 }
 
@@ -5284,6 +5472,7 @@ const Proto =
     makeEmptyWithLongDescriptor,
 
     from,
+    fromWithLongDescriptor,
 
     // bufferCoerceFrom,
     bufferRawFromTyped,
