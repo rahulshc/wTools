@@ -565,11 +565,10 @@ function _filterAct( ... args )
 
   if( dst === null )
   {
-    dstNamespace = self.default || self;
+    dstNamespace = self.namespaceOf( src ) || self.default || self;
     isSelf = false;
     if( self.IsResizable() )
     {
-      // dst = self.makeEmpty( src );
       dst = dstNamespace.makeEmpty();
       dstIsResizable = true;
     }
@@ -594,8 +593,6 @@ function _filterAct( ... args )
     if( !isSelf )
     dstNamespace._empty( dst );
   }
-
-  // const dstNamespace = self.namespaceWithDefaultOf( dst );
 
   if( Config.debug )
   verify();
@@ -742,23 +739,25 @@ function _mapAct( ... args )
   const each = srcNamesapce[ eachRoutineName ];
   let isSelf;
   let dstIsResizable;
+  let dstNamespace;
 
   if( dst === null )
   {
     isSelf = false;
-    // dst = self.makeUndefined( null, srcNamesapce._lengthOf( src ) );
+    dstNamespace = self.namespaceOf( src ) || self.default || self;
     dst = self.makeUndefined( src );
-    // _.countab.make( obj )
     dstIsResizable = self.IsResizable();
   }
   else if( dst === _.self )
   {
     isSelf = true;
     dst = src;
+    dstNamespace = self.namespaceWithDefaultOf( dst );
     dstIsResizable = _.countable.isResizable( dst );
   }
   else
   {
+    dstNamespace = self.namespaceWithDefaultOf( dst );
     dstIsResizable = _.countable.isResizable( dst );
     isSelf = dst === src;
     if( dstIsResizable )
@@ -766,7 +765,7 @@ function _mapAct( ... args )
     dst.length = srcNamesapce._lengthOf( src );
   }
 
-  const dstNamespace = self.namespaceWithDefaultOf( dst );
+  // const dstNamespace = self.namespaceWithDefaultOf( dst );
 
   if( Config.debug )
   verify();

@@ -962,7 +962,7 @@ const Proto =
 
     identical,
 
-    // filterMapCommonPass,
+    filterMapCommonPass,
     filterCommonDropping,
     // mapCommonReturningUndefined,
     // filterMapCommonEscaping,
