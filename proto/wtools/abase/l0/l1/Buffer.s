@@ -570,6 +570,61 @@ function makeUndefined( src, length )
 
 //
 
+function _makeFilling( type, value, length )
+{
+  if( arguments.length === 2 )
+  {
+    type = null;
+    value = arguments[ 0 ];
+    length = arguments[ 1 ];
+  }
+
+  if( !_.number.is( length ) )
+  if(  length.length )
+  length = length.length;
+  else if(  length.byteLength )
+  length = length.byteLength;
+  else if( _.countable.is( length ) )
+  length = [ ... length ].length;
+
+  let result = this._make( type, length );
+  let resultTyped = result;
+  if( !resultTyped.length )
+  {
+    if( _.buffer.viewIs( resultTyped ) )
+    resultTyped = new U8x( resultTyped.buffer );
+    else
+    resultTyped = new U8x( resultTyped );
+  }
+  for( let i = 0 ; i < length ; i++ )
+  resultTyped[ i ] = value;
+
+  return result;
+}
+
+//
+
+function makeFilling( type, value, length )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  if( arguments.length === 2 )
+  {
+    _.assert( _.number.is( value ) || _.countable.is( value ) || this.like( length ) );
+    _.assert( type !== undefined );
+  }
+  else
+  {
+    _.assert( value !== undefined );
+    _.assert( _.number.is( length ) || _.countable.is( length ) || this.like( length ) );
+    _.assert( type === null || _.long.is( type ) || this.like( type ) || _.routine.is( type ) );
+  }
+
+  return this._makeFilling( ... arguments );
+}
+
+//
+
 function _cloneShallow( src )
 {
   if( _.buffer.rawIs( src ) )
@@ -895,6 +950,8 @@ let BufferExtension =
   makeUndefined,
   _makeZeroed : _makeUndefined, /* aaa : implement */ /* Dmytro : implemented */
   makeZeroed : makeUndefined,
+  _makeFilling,
+  makeFilling,
 
   _cloneShallow,
   cloneShallow : _.argumentsArray.cloneShallow, /* qqq : for junior : cover */
