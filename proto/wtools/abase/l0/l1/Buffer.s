@@ -311,7 +311,6 @@ function _make( src, length )
 
     return dst;
   }
-
 }
 
 //
@@ -468,43 +467,91 @@ function makeEmpty( src )
  * @namespace Tools
  */
 
-let makeUndefined = _make_functor( function( /* src, ins, length, minLength */ )
+function _makeUndefined( src, length )
 {
-  let src = arguments[ 0 ];
-  let ins = arguments[ 1 ];
-  let length = arguments[ 2 ];
-  let minLength = arguments[ 3 ];
+  if( length === undefined )
+  length = src;
 
-  /* */
-
-  let result;
-  /* qqq : for Dmytro : bad solution! */
-  if( _.routine.is( src ) )
+  if( length && !_.number.is( length ) )
   {
-    if( src.name === 'make' || src.name === 'bound make' )
-    result = src( length );
+    if( _.number.is( length.length ) )
+    length = length.length;
+    else if( _.number.is( length.byteLength ) )
+    length = length.byteLength;
     else
-    result = new src( length );
+    length = [ ... length ].length;
   }
-  else if( _.bufferNodeIs( src ) )
-  result = BufferNode.alloc( length );
-  else if( _.bufferViewIs( src ) )
-  result = new BufferView( new BufferRaw( length ) );
-  else if( _.unrollIs( src ) )
-  result = _.unroll.make( length );
-  else
-  result = new src.constructor( length );
 
-  return result;
-});
+  if( src === null || _.number.is( src ) )
+  return this.tools.defaultBufferTyped.make( length );
+  if( _.buffer.rawIs( src ) )
+  return new BufferRaw( length );
+  if( _.buffer.viewIs( src ) )
+  return new BufferView( new BufferRaw( length ) );
+  if( _.buffer.typedIs( src ) )
+  return new src.constructor( length );
+  if( _.buffer.nodeIs( src ) )
+  return BufferNode.alloc( length );
+  if( _.long.is( src ) )
+  return this.tools.defaultBufferTyped.make( length );
+
+  if( _.routineIs( src ) )
+  {
+    _.assert( arguments.length === 2 );
+    let result = new src( length );
+    _.assert( _.buffer.is( result ), 'Not clear how to make such buffer' );
+    return result;
+  }
+
+  return this.tools.defaultBufferTyped.make();
+}
 
 //
 
-function makeZeroed( src, ins )
+function makeUndefined( src, length )
 {
-  let result = makeUndefined.apply( this, arguments );
-  return result.fill( 0 );
+  _.assert( 0 <= arguments.length && arguments.length <= 2 );
+  if( arguments.length === 2 )
+  {
+    _.assert( src === null || this.like( src ) || _.long.is( src ) || _.routineIs( src ) );
+    _.assert( _.number.is( length ) || this.like( length ) || _.countable.is( length ) );
+  }
+  else if( arguments.length === 1 )
+  {
+    _.assert( src === null || _.number.is( src ) || this.like( src ) || _.long.is( src ) || _.routineIs( src ) );
+  }
+  return this._makeUndefined( ... arguments );
 }
+
+// let makeUndefined = _make_functor( function( /* src, ins, length, minLength */ )
+// {
+//   let src = arguments[ 0 ];
+//   let ins = arguments[ 1 ];
+//   let length = arguments[ 2 ];
+//   let minLength = arguments[ 3 ];
+//
+//   /* */
+//
+//   let result;
+//   /* qqq : for Dmytro : bad solution! */
+//   if( _.routine.is( src ) )
+//   {
+//     if( src.name === 'make' || src.name === 'bound make' )
+//     result = src( length );
+//     else
+//     result = new src( length );
+//   }
+//   else if( _.bufferNodeIs( src ) )
+//   result = BufferNode.alloc( length );
+//   else if( _.bufferViewIs( src ) )
+//   result = new BufferView( new BufferRaw( length ) );
+//   else if( _.unrollIs( src ) )
+//   result = _.unroll.make( length );
+//   else
+//   result = new src.constructor( length );
+//
+//   return result;
+// });
 
 //
 
@@ -802,15 +849,15 @@ let BufferExtension =
 
   // maker
 
-  _make_functor, /* qqq : remove maybe */
-  _make, /* qqq : implement */
+  _make_functor, /* aaa : remove maybe */ /* Dmytro : implemented */
+  _make, /* aaa : implement */ /* Dmytro : implemented */
   make,
   _makeEmpty,
   makeEmpty,
-  // _makeUndefined, /* qqq : implement */
+  _makeUndefined, /* aaa : implement */ /* Dmytro : implemented */
   makeUndefined,
-  // _makeZeroed, /* qqq : implement */
-  makeZeroed,
+  _makeZeroed : _makeUndefined, /* aaa : implement */ /* Dmytro : implemented */
+  makeZeroed : makeUndefined,
 
   _cloneShallow,
   cloneShallow : _.argumentsArray.cloneShallow, /* qqq : for junior : cover */
@@ -836,7 +883,7 @@ let ToolsExtension =
   bufferMake : make.bind( _.buffer ),
   bufferMakeEmpty : makeEmpty.bind( _.buffer ),
   bufferMakeUndefined : makeUndefined.bind( _.buffer ),
-  bufferMakeZeroed : makeZeroed.bind( _.buffer ),
+  bufferMakeZeroed : _.buffer.makeZeroed.bind( _.buffer ),
 
   bufferFromArrayOfArray,
   bufferRawFromTyped,
