@@ -4241,11 +4241,7 @@ function uniteWithNumberInsteadOfHead( test )
 
 function composeBasic( test )
 {
-
-  /* - */
-
   test.case = 'empty';
-
   var counter = 0;
   var routines = [];
   var composition = _.routine.s.compose( routines );
@@ -4254,14 +4250,22 @@ function composeBasic( test )
   test.identical( got, expected );
   test.identical( counter, 0 );
 
+  /* */
+
+  test.case = 'single routine';
+  var counter = 0;
+  var routines = routineUnrolling;
+  var composition = _.routine.s.compose( routines );
+  var got = composition( 1, 2, 3 );
+  var expected = [ 1, 2, 3, 16 ];
+  test.identical( got, expected );
+  test.identical( counter, 16 );
+
   /* - */
 
   test.open( 'unrolling:1' )
 
-  /* */
-
   test.case = 'without chainer';
-
   var counter = 0;
   var routines = [ null, routineUnrolling, null, r2, null ];
   var composition = _.routine.s.compose( routines );
@@ -4273,7 +4277,6 @@ function composeBasic( test )
   /* */
 
   test.case = 'with chainer';
-
   var counter = 0;
   var routines = [ null, routineUnrolling, null, r2, null ];
   var composition = _.routine.s.compose( routines, chainer1 );
@@ -4285,7 +4288,6 @@ function composeBasic( test )
   /* */
 
   test.case = 'with chainer and break';
-
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _break, null, r2, null ];
   var composition = _.routine.s.compose( routines, chainer1 );
@@ -4294,18 +4296,13 @@ function composeBasic( test )
   test.identical( got, expected );
   test.identical( counter, 16 );
 
-  /* */
-
   test.close( 'unrolling:1' )
 
   /* - */
 
   test.open( 'unrolling:0' )
 
-  /* */
-
   test.case = 'without chainer';
-
   var counter = 0;
   var routines = [ null, routineNotUnrolling, null, r2, null ];
   var composition = _.routine.s.compose( routines );
@@ -4317,7 +4314,6 @@ function composeBasic( test )
   /* */
 
   test.case = 'with chainer';
-
   var counter = 0;
   var routines = [ null, routineNotUnrolling, null, r2, null ];
   var composition = _.routine.s.compose( routines, chainer1 );
@@ -4329,7 +4325,6 @@ function composeBasic( test )
   /* */
 
   test.case = 'with chainer and break';
-
   var counter = 0;
   var routines = [ null, routineNotUnrolling, null, _break, null, r2, null ];
   var composition = _.routine.s.compose( routines, chainer1 );
@@ -4337,8 +4332,6 @@ function composeBasic( test )
   var expected = [ [ 1, 2, 3, 16 ], _.dont ];
   test.identical( got, expected );
   test.identical( counter, 16 );
-
-  /* */
 
   test.close( 'unrolling:0' )
 
@@ -4374,7 +4367,6 @@ function composeBasic( test )
   function r2()
   {
     counter += 100;
-    debugger;
     for( var a = 0 ; a < arguments.length ; a++ )
     counter += 2*arguments[ a ];
     return counter;
@@ -4391,12 +4383,10 @@ function composeBasic( test )
     let result = arguments[ 1 ];
     let o = arguments[ 2 ];
     let k = arguments[ 3 ];
-    debugger;
     if( result !== _.dont )
     return _.unroll.as( result );
     return result;
   }
-
 }
 
 // --
