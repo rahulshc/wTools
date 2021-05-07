@@ -8836,10 +8836,11 @@ function performance( test )
   test.case = 'raw array buffer';
   var took = 0;
   var times = 50000000;
+  var arr = new BufferRaw( 10 );
   for( let i = times; i > 0; i-- )
   {
     var time = _.time.now();
-    var got = _.long.is( new BufferRaw( 10 ) );
+    var got = _.long.is( arr );
     took += _.time.now() - time;
     //test.identical( got, false );
   }
@@ -8850,10 +8851,11 @@ function performance( test )
   test.case = 'typed array buffer';
   var took = 0;
   var times = 50000000;
+  var arr1 = new F32x( 10 );
   for( let i = times; i > 0; i-- )
   {
     var time = _.time.now();
-    var got = _.long.is( new F32x( 10 ) );
+    var got = _.long.is( arr1 );
     took += _.time.now() - time;
     //test.identical( got, true );
   }
