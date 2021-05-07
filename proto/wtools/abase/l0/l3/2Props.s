@@ -758,9 +758,15 @@ function _mapAct()
   let general = this.tools[ this.MostGeneralNamespaceName ];
 
   if( dst === null )
-  dst = this.makeUndefined( src );
+  {
+    // dst = this.makeUndefined( src );
+    let dstNamespace = self.namespaceOf( src ) || self.default || self;
+    dst = dstNamespace.makeUndefined( src );
+  }
   else if( dst === _.self )
-  dst = src;
+  {
+    dst = src;
+  }
 
   if( Config.debug )
   {
