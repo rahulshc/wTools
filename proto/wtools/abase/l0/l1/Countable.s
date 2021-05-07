@@ -59,9 +59,9 @@ function IsResizable()
 
 function _makeEmpty( src )
 {
-  if( _.long.is( src ) )
-  return _.long._makeEmpty( src );
-  return _.object.makeEmpty( src );
+  if( arguments.length === 0 || src === null || _.long.is( src ) )
+  return _.long._makeEmpty( ... arguments );
+  return _.object.makeEmpty( ... arguments );
 }
 
 //
@@ -86,8 +86,8 @@ function makeEmpty( src )
 function _makeUndefined( src, length )
 {
   if( _.long.is( src ) )
-  return _.long._makeUndefined( src );
-  return _.object.makeUndefined( src );
+  return _.long._makeUndefined( ... arguments );
+  return _.object.makeUndefined( ... arguments );
 }
 
 //
@@ -113,8 +113,8 @@ function makeUndefined( src, length )
 function _makeZeroed( src, length )
 {
   if( _.long.is( src ) )
-  return _.long._makeZeroed( src );
-  return _.object.make( src );
+  return _.long._makeZeroed( ... arguments );
+  return _.object.make( ... arguments );
 }
 
 //
@@ -141,8 +141,8 @@ function makeZeroed( src, length )
 function _make( src, length )
 {
   if( _.long.is( src ) )
-  return _.long._make( src );
-  return _.object.make( src );
+  return _.long._make( ... arguments );
+  return _.object.make( ... arguments );
 }
 
 //
@@ -154,7 +154,7 @@ function make( src, length )
   _.assert( arguments.length <= 2 );
   if( arguments.length === 2 )
   {
-    _.assert( src === null || _.long.is( src ) || _.routineIs( src ) );
+    _.assert( src === null || _.countable.is( src ) || _.routineIs( src ) );
     _.assert( _.numberIs( length ) || _.countable.is( length ) );
   }
   else if( arguments.length === 1 )

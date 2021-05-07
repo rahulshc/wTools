@@ -226,7 +226,10 @@ function _make( src, length )
   return this._cloneShallow( src );
   if( _.aux.is( src ) )
   return _.aux._cloneShallow( src );
-  return new src.constructor( ... arguments );
+  if( arguments.length === 2 )
+  return new src.constructor( length );
+  else
+  return new src.constructor( src );
 }
 
 //

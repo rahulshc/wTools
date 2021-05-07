@@ -93,7 +93,8 @@ function objectMake( o )
 
   function optionsMake( o )
   {
-    return { countable : originalOptions.countable, vector : originalOptions.vector };
+    o = o || Object.create( null );
+    return _.props.extend( o, { countable : originalOptions.countable, vector : originalOptions.vector } );
   }
 
   /* */
@@ -131,7 +132,9 @@ function objectMake( o )
 
   function countableConstructorPure( o )
   {
-    if( !o )
+    if( _.long.is( o ) )
+    o = optionsAdjust( optionsMake({ elements : o }) );
+    else if( !o )
     o = optionsAdjust( optionsMake() );
     return _objectMake( this, o );
   }
@@ -140,9 +143,9 @@ function objectMake( o )
 
   function countableConstructorPolluted( o )
   {
-    if( !o )
-    debugger;
-    if( !o )
+    if( _.long.is( o ) )
+    o = optionsAdjust( optionsMake({ elements : o }) );
+    else if( !o )
     o = optionsAdjust( optionsMake() );
     let result = _objectMake( this, o );
     if( !o.withConstructor )
