@@ -2131,7 +2131,7 @@ function _compose_old_head( routine, args )
   let o = args[ 0 ];
 
   if( !_.mapIs( o ) )
-  o = { bodies : args[ 0 ] }
+  o = { bodies : args[ 0 ] };
   if( args[ 1 ] !== undefined )
   o.chainer = args[ 1 ];
 
@@ -2139,8 +2139,14 @@ function _compose_old_head( routine, args )
   // debugger;
   // o.bodies = _.arrayAppendArrays( [], [ o.bodies ] );
   // o.bodies = merge( o.bodies );
+
+  if( _.long.is( o.bodies ) ) /* qqq : for Dmytro : cover */
   o.bodies = __arrayFlatten( o.bodies );
+  else
+  o.bodies = [ o.bodies ];
   o.bodies = o.bodies.filter( ( e ) => e !== null );
+  // o.bodies = __arrayFlatten( o.bodies ); /* Dmytro : case does not expect non array arguments, but such call used in Files */
+  // o.bodies = o.bodies.filter( ( e ) => e !== null );
 
   _.routine.options( routine, o );
   _.assert( _.routine.s.are( o.bodies ) );
@@ -2295,7 +2301,7 @@ function _compose_head( routine, args )
   let o = args[ 0 ];
 
   if( !_.mapIs( o ) )
-  o = { bodies : args[ 0 ] }
+  o = { bodies : args[ 0 ] };
   if( args[ 1 ] !== undefined )
   o.chainer = args[ 1 ];
 
@@ -2308,8 +2314,13 @@ function _compose_head( routine, args )
   // if( bodies2.length && bodies2[ 0 ] === undefined )
   // debugger;
 
+  if( _.long.is( o.bodies ) ) /* qqq : for Dmytro : cover */
   o.bodies = __arrayFlatten( o.bodies );
+  else
+  o.bodies = [ o.bodies ];
   o.bodies = o.bodies.filter( ( e ) => e !== null );
+  // o.bodies = __arrayFlatten( o.bodies ); /* Dmytro : case does not expect non array arguments, but such call used in Files */
+  // o.bodies = o.bodies.filter( ( e ) => e !== null );
 
   _.routine.options( routine, o );
   _.assert( _.routine.s.are( o.bodies ) );
