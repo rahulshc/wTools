@@ -8758,37 +8758,39 @@ function longRight( test )
 
 function performance( test )
 {
-   /* For 50 Million Iterations and average of 10 runs
+   /*
+    Average of 10 runs of 50 million iteration of each test case
+    Values below are in seconds
 
-    |      **Routine**       | **Njs : v12.18.1** | **Njs : v16.1.0** |
-    | :--------------------: | :----------------: | :---------------: |
-    |     empty array        |      11.7025s      |                   |
-    |------------------------|--------------------|-------------------|
-    |        array           |      12.720375s    |                   |
-    |------------------------|--------------------|-------------------|
-    |     pseudo array       |     16.245125s     |                   |
-    |------------------------|--------------------|-------------------|
-    |     array buffer       |     51.551125s     |                   |
-    |------------------------|--------------------|-------------------|
-    |   typed array buffer   |      54.30175s     |                   |
-    |------------------------|--------------------|-------------------|
-    |       no argument      |      7.187s        |                   |
-    |------------------------|--------------------|-------------------|
-    |         null           |     7.409125s      |                   |
-    |------------------------|--------------------|-------------------|
-    |      function          |     12.7195s       |                   |
-    |------------------------|--------------------|-------------------|
-    |       string           |      9.3935s       |                   |
-    |------------------------|--------------------|-------------------|
-    |        number          |      10.9415s      |                   |
-    |------------------------|--------------------|-------------------|
-    |       boolean          |     9.054s         |                   |
-    |------------------------|--------------------|-------------------|
-    |        object          |     14.145s        |                   |
-    |------------------------|--------------------|-------------------|
-    | object with fields     |        18.792625s  |                   |
-    |  and iteraor method    |                    |                   |
-    |------------------------|--------------------|-------------------|
+    |      **Routine**       | **Njs : v16.1.0** |
+    | :--------------------: | :---------------: |
+    |     empty array        | 7.24928584089279  |
+    |------------------------|-------------------|
+    |        array           | 7.41966968278884  |
+    |------------------------|-------------------|
+    |     pseudo array       | 9.68417898941039  |
+    |------------------------|-------------------|
+    |     array buffer       | 18.4060506050109  |
+    |------------------------|-------------------|
+    |   typed array buffer   | 51.4401188859462  |
+    |------------------------|-------------------|
+    |       no argument      | 4.58013227939605  |
+    |------------------------|-------------------|
+    |         null           | 4.64679072303772  |
+    |------------------------|-------------------|
+    |      function          | 9.52876719393729  |
+    |------------------------|-------------------|
+    |       string           | 6.31245897340773  |
+    |------------------------|-------------------|
+    |        number          | 5.42183492751121  |
+    |------------------------|-------------------|
+    |       boolean          | 3.60875617518424  |
+    |------------------------|-------------------|
+    |        object          | 7.45050595288276  |
+    |------------------------|-------------------|
+    | object with fields     | 11.4926758486271  |
+    |  and iteraor method    |                   |
+    |------------------------|-------------------|
   */
 
   test.case = 'an empty array';
@@ -8829,7 +8831,7 @@ function performance( test )
     took += _.time.now() - time;
     //test.identical( got, true );
   }
-  console.log( `${times} iterations of an pseudo array took : ${took / 1000 }s` );
+  console.log( `${times} iterations of an pseudo array took : ${took / 1000}s` );
 
   /* - */
 
@@ -8844,18 +8846,18 @@ function performance( test )
     took += _.time.now() - time;
     //test.identical( got, false );
   }
-  console.log( `${times} iterations of raw array buffer took : ${took / 1000 }s` );
+  console.log( `${times} iterations of raw array buffer took : ${took / 1000}s` );
 
   /* - */
 
   test.case = 'typed array buffer';
   var took = 0;
   var times = 50000000;
-  var arr1 = new F32x( 10 );
+  var arr = new F32x( 10 );
   for( let i = times; i > 0; i-- )
   {
     var time = _.time.now();
-    var got = _.long.is( arr1 );
+    var got = _.long.is( arr );
     took += _.time.now() - time;
     //test.identical( got, true );
   }
@@ -8873,7 +8875,7 @@ function performance( test )
     took += _.time.now() - time;
     //test.identical( got, false );
   }
-  console.log( `${times} iterations of no argument took : ${took / 1000 }s` );
+  console.log( `${times} iterations of no argument took : ${took / 1000}s` );
 
   /* - */
 
@@ -8887,7 +8889,7 @@ function performance( test )
     took += _.time.now() - time;
     //test.identical( got, false );
   }
-  console.log( `${times} iterations of null took : ${took / 1000 }s` );
+  console.log( `${times} iterations of null took : ${took / 1000}s` );
 
   /* - */
 
@@ -8901,7 +8903,7 @@ function performance( test )
     took += _.time.now() - time;
     //test.identical( got, false );
   }
-  console.log( `${times} iterations of function took : ${took / 1000 }s` );
+  console.log( `${times} iterations of function took : ${took / 1000}s` );
 
   /* - */
 
@@ -8915,7 +8917,7 @@ function performance( test )
     took += _.time.now() - time;
     //test.identical( got, false );
   }
-  console.log( `${times} iterations of string took : ${took / 1000 }s` );
+  console.log( `${times} iterations of string took : ${took / 1000}s` );
 
   /* - */
 
@@ -8929,7 +8931,7 @@ function performance( test )
     took += _.time.now() - time;
     //test.identical( got, false );
   }
-  console.log( `${times} iterations of number took : ${took / 1000 }s` );
+  console.log( `${times} iterations of number took : ${took / 1000}s` );
 
   /* - */
 
@@ -8943,7 +8945,7 @@ function performance( test )
     took += _.time.now() - time;
     //test.identical( got, false );
   }
-  console.log( `${times} iterations of boolean took : ${took / 1000 }s` );
+  console.log( `${times} iterations of boolean took : ${took / 1000}s` );
 
   /* - */
 
@@ -8957,7 +8959,7 @@ function performance( test )
     took += _.time.now() - time;
     //test.identical( got, false );
   }
-  console.log( `${times} iterations of object took : ${took / 1000 }s` );
+  console.log( `${times} iterations of object took : ${took / 1000}s` );
 
   /* - */
 
@@ -8978,8 +8980,11 @@ function performance( test )
     took += _.time.now() - time;
     //test.identical( got, false );
   }
-  console.log( `${times} iterations of object with fields and iteraor method took : ${took / 1000 }s` );
+  console.log( `${times} iterations of object with fields and iteraor method took : ${took / 1000}s` );
 }
+
+//performance.timeOut = 1e7;
+//performance.experimental = true;
 
 // --
 //
