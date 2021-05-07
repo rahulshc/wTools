@@ -128,6 +128,27 @@ function exportStringDiagnosticShallow( test )
   test.shouldThrowErrorSync( () => _.vector.exportStringDiagnosticShallow( {} ) );
 }
 
+//
+
+function filterItself( test )
+{
+  /* */
+
+  test.case = 'resizable'
+  var src = [ 1 ];
+  var got = _.vector.filter( _.self, src, () => undefined );
+  var exp = [ 1 ];
+  test.identical( got, exp )
+
+  /* */
+
+  test.case = 'non resizable'
+  var src = new F32x([ 1 ]);
+  var got = _.vector.filter( _.self, src, () => undefined );
+  var exp = new F32x([ 1 ]);
+  test.identical( got, exp )
+}
+
 // --
 // declaration
 // --
@@ -142,7 +163,9 @@ const Proto =
   {
     checks,
     hasLength,
-    exportStringDiagnosticShallow
+    exportStringDiagnosticShallow,
+
+    filterItself,
   }
 
 }
