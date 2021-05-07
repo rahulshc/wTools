@@ -48,7 +48,7 @@ _.withLong = _.long.toolsNamespacesByType;
  */
 
 /* xxx : optimize! */
-/* qqq : for junior : optimize. ask how to */
+/* qqq2 : for junior : optimize. ask how to */
 /* qqq : check coverage */
 
 function is( src )
@@ -1049,12 +1049,18 @@ function namespaceOf( src )
   return _.array;
   if( _.argumentsArray.is( src ) )
   return _.argumentsArray;
-  if( _.bufferTyped.is( src ) )
-  return _.bufferTyped;
-  if( _.vector.is( src ) )
-  return _.vector;
-  if( _.countable.is( src ) )
-  return _.countable;
+
+  let result = _.bufferTyped.namespaceOf( src );
+  if( result )
+  return result;
+
+  if( _.long.is( src ) )
+  return _.long;
+
+  // if( _.vector.is( src ) )
+  // return _.vector;
+  // if( _.countable.is( src ) )
+  // return _.countable;
 
   return null;
 }

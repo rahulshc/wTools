@@ -101,15 +101,17 @@ var VectorExtension =
 
   // maker
 
-  _makeEmpty : _.long._makeEmpty,
-  makeEmpty : _.long.makeEmpty, /* qqq : for junior : cover */
-  _makeUndefined : _.long._makeUndefined,
-  makeUndefined : _.long.makeUndefined, /* qqq : for junior : cover */
-  _make : _.long._make,
-  make : _.long.make, /* qqq : for junior : cover */
-  _cloneShallow : _.long._cloneShallow,
-  cloneShallow : _.long.cloneShallow, /* qqq : for junior : cover */
-  from : _.long.from, /* qqq : for junior : cover */
+  _makeEmpty : _.countable._makeEmpty,
+  makeEmpty : _.countable.makeEmpty, /* qqq : for junior : cover */
+  _makeUndefined : _.countable._makeUndefined,
+  makeUndefined : _.countable.makeUndefined, /* qqq : for junior : cover */
+  _makeZeroed : _.countable._makeZeroed,
+  makeZeroed : _.countable.makeZeroed, /* qqq : for junior : cover */
+  _make : _.countable._make,
+  make : _.countable.make, /* qqq : for junior : cover */
+  _cloneShallow : _.countable._cloneShallow,
+  cloneShallow : _.countable.cloneShallow, /* qqq : for junior : cover */
+  from : _.countable.from, /* qqq : for junior : cover */
 
   // meta
 

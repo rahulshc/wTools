@@ -2238,13 +2238,11 @@ function _compose_old_body( o )
     let args = _.unroll.from( arguments );
     for( let k = 0 ; k < bodies.length ; k++ )
     {
-      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.entity.strType( args ) );
+      // _.assert( _.unrollIs( args ), () => `Expects unroll, but got ${_.entity.strType( args )}` );
       let routine = bodies[ k ];
       let r = routine.apply( this, args );
-      _.assert( r !== false /* && r !== undefined */, 'Temporally forbidden type of result', r );
       _.assert( !_.argumentsArray.is( r ) );
       if( r !== undefined )
-      // result.push( r );
       _.unrollAppend( result, r );
       args = chainer( args, r, o, k );
       _.assert( args !== undefined && args !== false );
@@ -2427,12 +2425,11 @@ function _compose_body( o )
   {
     let result = [];
     let args = _.unroll.from( arguments );
-    _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.entity.strType( args ) );
+    // _.assert( _.unrollIs( args ), () => `Expects unroll, but got ${_.entity.strType( args )}` );
     let routine = bodies[ 0 ];
     let r = routine.apply( this, args );
     _.assert( !_.argumentsArray.is( r ) );
     if( r !== undefined )
-    // result.push( r )
     _.unrollAppend( result, r );
     return result;
   }
@@ -2443,12 +2440,11 @@ function _compose_body( o )
     let args = _.unroll.from( arguments );
     for( let k = 0 ; k < bodies.length ; k++ )
     {
-      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.entity.strType( args ) );
+      // _.assert( _.unrollIs( args ), () => `Expects unroll, but got ${_.entity.strType( args )}` );
       let routine = bodies[ k ];
       let r = routine.apply( this, args );
       _.assert( !_.argumentsArray.is( r ) );
       if( r !== undefined )
-      // result.push( r );
       _.unrollAppend( result, r );
       args = chainer( args, r, o, k );
       if( args === _.dont )

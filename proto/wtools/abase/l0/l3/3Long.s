@@ -375,8 +375,6 @@ function elementAppend( dst, val )
   return this._elementAppend( dst, val );
 }
 
-elementAppend.functor = _.container._functor_functor( 'elementAppend' );
-
 //
 
 function _elementPrepend( dst, val )
@@ -392,7 +390,7 @@ function elementPrepend( dst, val )
   _.assert( arguments.length === 2 );
   _.assert( this.is( dst ) );
   _.assert( this.isResizable( dst ) );
-  return this._elementAppend( dst, val );
+  return this._elementPrepend( dst, val );
 }
 
 //
@@ -562,16 +560,24 @@ function _filterAct( ... args )
   const each = srcNamesapce[ eachRoutineName ];
   let isSelf;
   let dstIsResizable;
+  let srcSample = null;
 
   if( dst === null )
   {
-    dstNamespace = self.default || self;
+    dstNamespace = self.namespaceOf( src ) || self.default || self;
     isSelf = false;
-    if( self.IsResizable() )
+    if( dstNamespace.IsResizable() )
     {
-      // dst = self.makeEmpty( src );
-      dst = dstNamespace.makeEmpty();
-      dstIsResizable = true;
+      if( dstNamespace.is( src ) && !_.countable.isResizable( src ) )
+      {
+        srcSample = src;
+        dstIsResizable = false;
+      }
+      else
+      {
+        dst = dstNamespace.makeEmpty( src );
+        dstIsResizable = true;
+      }
     }
     else
     {
@@ -594,8 +600,6 @@ function _filterAct( ... args )
     if( !isSelf )
     dstNamespace._empty( dst );
   }
-
-  // const dstNamespace = self.namespaceWithDefaultOf( dst );
 
   if( Config.debug )
   verify();
@@ -698,7 +702,7 @@ function _filterAct( ... args )
       return;
       dst2.unshift( val3 );
     });
-    dst = dstNamespace.make( dst2 );
+    dst = dstNamespace.make( srcSample, dst2 );
   }
 
   function nonResizableNonNull()
@@ -742,23 +746,25 @@ function _mapAct( ... args )
   const each = srcNamesapce[ eachRoutineName ];
   let isSelf;
   let dstIsResizable;
+  let dstNamespace;
 
   if( dst === null )
   {
     isSelf = false;
-    // dst = self.makeUndefined( null, srcNamesapce._lengthOf( src ) );
-    dst = self.makeUndefined( src );
-    // _.countab.make( obj )
+    dstNamespace = self.namespaceOf( src ) || self.default || self;
+    dst = dstNamespace.makeUndefined( src );
     dstIsResizable = self.IsResizable();
   }
   else if( dst === _.self )
   {
     isSelf = true;
     dst = src;
+    dstNamespace = self.namespaceWithDefaultOf( dst );
     dstIsResizable = _.countable.isResizable( dst );
   }
   else
   {
+    dstNamespace = self.namespaceWithDefaultOf( dst );
     dstIsResizable = _.countable.isResizable( dst );
     isSelf = dst === src;
     if( dstIsResizable )
@@ -766,7 +772,7 @@ function _mapAct( ... args )
     dst.length = srcNamesapce._lengthOf( src );
   }
 
-  const dstNamespace = self.namespaceWithDefaultOf( dst );
+  // const dstNamespace = self.namespaceWithDefaultOf( dst );
 
   if( Config.debug )
   verify();

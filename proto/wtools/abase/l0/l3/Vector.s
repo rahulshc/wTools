@@ -105,8 +105,13 @@ var VectorExtension =
   elementWithKeyDel : _.countable.elementWithKeyDel, /* qqq : cover */
   _elementWithCardinalDel : _.countable._elementWithCardinalDel,
   elementWithCardinalDel : _.countable.elementWithCardinalDel,  /* qqq : cover */
-  _empty : _.blank._empty,
-  empty : _.blank.empty,  /* qqq : cover */
+  _empty : _.countable._empty,
+  empty : _.countable.empty,  /* qqq : cover */
+
+  _elementAppend : _.countable._elementAppend,
+  elementAppend : _.countable.elementAppend, /* qqq : cover */
+  _elementPrepend : _.countable._elementPrepend,
+  elementPrepend : _.countable.elementPrepend, /* qqq : cover */
 
   _each : _.countable._each,
   each : _.countable.each, /* qqq : cover */
