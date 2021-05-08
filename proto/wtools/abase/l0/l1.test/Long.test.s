@@ -8761,77 +8761,52 @@ function performance( test )
    /*
     Average of 10 runs of 50 million iteration of each test case
     Values below are in seconds
-
-    |      **Routine**       | **Njs : v16.1.0** |**Njs : v14.16.1** |
-    | :--------------------: | :---------------: |:---------------:  |
-    |     empty array        | 7.24928584089279  | 10.958            |
-    |------------------------|-------------------|-------------------|
-    |        array           | 7.41966968278884  |10.048             |
-    |------------------------|-------------------|-------------------|
-    |     pseudo array       | 9.68417898941039  |11.8734            |
-    |------------------------|-------------------|-------------------|
-    |     array buffer       | 18.4060506050109  |22.9302            |
-    |------------------------|-------------------|-------------------|
-    |   typed array buffer   | 51.4401188859462  |53.37              |
-    |------------------------|-------------------|-------------------|
-    |       no argument      | 4.58013227939605  |5.7646             |
-    |------------------------|-------------------|-------------------|
-    |         null           | 4.64679072303772  |5.7232             |
-    |------------------------|-------------------|-------------------|
-    |      function          | 9.52876719393729  | 10.1684           |
-    |------------------------|-------------------|-------------------|
-    |       string           | 6.31245897340773  |7.2458             |
-    |------------------------|-------------------|-------------------|
-    |        number          | 5.42183492751121  |7.4514             |
-    |------------------------|-------------------|-------------------|
-    |       boolean          | 3.60875617518424  |5.785              |
-    |------------------------|-------------------|-------------------|
-    |        object          | 7.45050595288276  |10.0022            |
-    |------------------------|-------------------|-------------------|
-    | object with fields     | 11.4926758486271  |13.3964            |
-    |  and iteraor method    |                   |                   |
-    |------------------------|-------------------|-------------------|
+    |-------------------|-------------------|
+    | **Njs : v16.1.0** |**Njs : v14.16.1** |
+    | :---------------: |:---------------:  |
+    | 11.3262481598487  | 13.4397384615385  |            |
+    |-------------------|-------------------|
   */
 
   test.case = 'an empty array';
   var took = 0;
   var times = 50000000;
+  var time;
   for( let i = times; i > 0; i-- )
   {
-    var time = _.time.now();
-    var got = _.long.is( [] );
+    time = _.time.now();
+    _.long.is( [] );
     took += _.time.now() - time;
-    //test.identical( got, true );
   }
-  console.log( `${times} iterations of an empty array took : ${took / 1000 }s on ${process.version}` );
+  measure( test, _.long.is( [] ), true, times, took );
 
   /* - */
 
   test.case = 'an array';
   var took = 0;
   var times = 50000000;
+  var time;
   for( let i = times; i > 0; i-- )
   {
-    var time = _.time.now();
-    var got = _.long.is( [ 1, 2, 3 ] );
+    time = _.time.now();
+    _.long.is( [ 1, 2, 3 ] );
     took += _.time.now() - time;
-    //test.identical( got, true );
   }
-  console.log( `${times} iterations of an array took : ${took / 1000 }s` );
+  measure( test, _.long.is( [ 1, 2, 3 ] ), true, times, took );
 
   /* - */
 
   test.case = 'a pseudo array';
   var took = 0;
   var times = 50000000;
+  var time;
   for( let i = times; i > 0; i-- )
   {
-    var time = _.time.now();
-    var got = _.long.is( arguments );
+    time = _.time.now();
+    _.long.is( arguments );
     took += _.time.now() - time;
-    //test.identical( got, true );
   }
-  console.log( `${times} iterations of an pseudo array took : ${took / 1000}s` );
+  measure( test, _.long.is( arguments ), true, times, took );
 
   /* - */
 
@@ -8839,14 +8814,14 @@ function performance( test )
   var took = 0;
   var times = 50000000;
   var arr = new BufferRaw( 10 );
+  var time;
   for( let i = times; i > 0; i-- )
   {
-    var time = _.time.now();
-    var got = _.long.is( arr );
+    time = _.time.now();
+    _.long.is( arr );
     took += _.time.now() - time;
-    //test.identical( got, false );
   }
-  console.log( `${times} iterations of raw array buffer took : ${took / 1000}s` );
+  measure( test, _.long.is( arr ), false, times, took );
 
   /* - */
 
@@ -8854,118 +8829,119 @@ function performance( test )
   var took = 0;
   var times = 50000000;
   var arr = new F32x( 10 );
+  var time;
   for( let i = times; i > 0; i-- )
   {
-    var time = _.time.now();
-    var got = _.long.is( arr );
+    time = _.time.now();
+     _.long.is( arr );
     took += _.time.now() - time;
-    //test.identical( got, true );
   }
-  console.log( `${times} iterations of typed array buffer took : ${took / 1000 }s` );
+  measure( test, _.long.is( arr ), true, times, took );
 
   /* - */
 
   test.case = 'no argument';
   var took = 0;
   var times = 50000000;
+  var time;
   for( let i = times; i > 0; i-- )
   {
-    var time = _.time.now();
-    var got = _.long.is();
+    time = _.time.now();
+    _.long.is();
     took += _.time.now() - time;
-    //test.identical( got, false );
   }
-  console.log( `${times} iterations of no argument took : ${took / 1000}s` );
+  measure( test, _.long.is(), false, times, took );
 
   /* - */
 
   test.case = 'null';
   var took = 0;
   var times = 50000000;
+  var time;
   for( let i = times; i > 0; i-- )
   {
-    var time = _.time.now();
-    var got = _.long.is( null );
+    time = _.time.now();
+    _.long.is( null );
     took += _.time.now() - time;
-    //test.identical( got, false );
   }
-  console.log( `${times} iterations of null took : ${took / 1000}s` );
+  measure( test, _.long.is( null ), false, times, took );
 
   /* - */
 
   test.case = 'function';
   var took = 0;
   var times = 50000000;
+  var time;
   for( let i = times; i > 0; i-- )
   {
-    var time = _.time.now();
-    var got = _.long.is( function() {} );
+    time = _.time.now();
+    _.long.is( function() {} );
     took += _.time.now() - time;
-    //test.identical( got, false );
   }
-  console.log( `${times} iterations of function took : ${took / 1000}s` );
+  measure( test, _.long.is( function() {} ), false, times, took );
 
   /* - */
 
   test.case = 'string';
   var took = 0;
   var times = 50000000;
+  var time;
   for( let i = times; i > 0; i-- )
   {
-    var time = _.time.now();
-    var got = _.long.is( 'x' );
+    time = _.time.now();
+    _.long.is( 'x' );
     took += _.time.now() - time;
-    //test.identical( got, false );
   }
-  console.log( `${times} iterations of string took : ${took / 1000}s` );
+  measure( test, _.long.is( 'x' ), false, times, took );
 
   /* - */
 
   test.case = 'number';
   var took = 0;
   var times = 50000000;
+  var time;
   for( let i = times; i > 0; i-- )
   {
-    var time = _.time.now();
-    var got = _.long.is( 1 );
+    time = _.time.now();
+    _.long.is( 1 );
     took += _.time.now() - time;
-    //test.identical( got, false );
   }
-  console.log( `${times} iterations of number took : ${took / 1000}s` );
+  measure( test, _.long.is( 1 ), false, times, took );
 
   /* - */
 
   test.case = 'boolean';
   var took = 0;
   var times = 50000000;
+  var time;
   for( let i = times; i > 0; i-- )
   {
-    var time = _.time.now();
-    var got = _.long.is( false );
+    time = _.time.now();
+    _.long.is( false );
     took += _.time.now() - time;
-    //test.identical( got, false );
   }
-  console.log( `${times} iterations of boolean took : ${took / 1000}s` );
+  measure( test, _.long.is( false ), false, times, took );
 
   /* - */
 
   test.case = 'object';
   var took = 0;
   var times = 50000000;
+  var time;
   for( let i = times; i > 0; i-- )
   {
-    var time = _.time.now();
-    var got = _.long.is( {} );
+    time = _.time.now();
+    _.long.is( {} );
     took += _.time.now() - time;
-    //test.identical( got, false );
   }
-  console.log( `${times} iterations of object took : ${took / 1000}s` );
+  measure( test, _.long.is( {} ), false, times, took );
 
   /* - */
 
   test.case = 'object with fields and iteraor method';
   var took = 0;
   var times = 50000000;
+  var time;
   var src = new function()
   {
     this[ Symbol.iterator ] = function ()
@@ -8975,16 +8951,23 @@ function performance( test )
   }
   for( let i = times; i > 0; i-- )
   {
-    var time = _.time.now();
-    var got = _.long.is( src );
+    time = _.time.now();
+    _.long.is( src );
     took += _.time.now() - time;
-    //test.identical( got, false );
   }
-  console.log( `${times} iterations of object with fields and iteraor method took : ${took / 1000}s` );
+  measure( test, _.long.is( src ), false, times, took );
+
+  /* - */
+
+  function measure( test, got, expected, times, took )
+  {
+    test.identical( got, expected );
+    console.log( `${times} iterations of ${test.case} took : ${took / 1000 }s on ${process.version}` );
+  }
 }
 
-//performance.timeOut = 1e7;
-//performance.experimental = true;
+performance.timeOut = 1e7;
+performance.experimental = true;
 
 // --
 //
