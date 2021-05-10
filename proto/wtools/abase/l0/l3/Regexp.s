@@ -45,7 +45,7 @@ function _equivalentShallow( src1, src2 )
     return src1 === src2;
     // if( src1 === src2 )
     // return true;
-    // return _.strLinesStrip( src1 ) === _.strLinesStrip( src2 );
+    // return _.str.lines.strip( src1 ) === _.str.lines.strip( src2 );
   }
   else if( strIs1 )
   {

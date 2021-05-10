@@ -1454,7 +1454,7 @@ function fromStr( errStr )
   try
   {
 
-    errStr = _.strLinesStrip( errStr );
+    errStr = _.str.lines.strip( errStr );
 
     let sectionBeginRegexp = /[=]\s+(.*?)\s*\n/mg;
     let splits = _.strSplitFast

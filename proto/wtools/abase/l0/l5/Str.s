@@ -1928,6 +1928,7 @@ function strSplitFast_head( routine, args )
 
 //
 
+/* qqq2 : write performance test and optimize */
 function strSplitFast_body( o )
 {
   let result, closests, position, closestPosition, closestIndex, hasEmptyDelimeter, delimeter
@@ -1975,7 +1976,6 @@ function strSplitFast_body( o )
         _.assert( !delimeter.sticky );
         if( delimeter.source === '' || delimeter.source === '()' || delimeter.source === '(?:)' )
         hasEmptyDelimeter = true;
-        // debugger;
       }
       else
       {
@@ -1984,8 +1984,6 @@ function strSplitFast_body( o )
       }
       closests[ d ] = delimeterNext( d, position );
     }
-
-    // let delimeter;
 
     do
     {
@@ -2004,11 +2002,9 @@ function strSplitFast_body( o )
 
       position = closests[ closestIndex ] + ( delimeter.length ? delimeter.length : 1 );
 
-      // debugger;
       for( let d = 0 ; d < o.delimeter.length ; d++ )
       if( closests[ d ] < position )
       closests[ d ] = delimeterNext( d, position );
-      // debugger;
 
     }
     while( position < o.src.length );

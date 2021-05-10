@@ -352,8 +352,6 @@ function strEnds( test )
 //
 // --
 
-//
-
 function strShort_Special( test )
 {
 

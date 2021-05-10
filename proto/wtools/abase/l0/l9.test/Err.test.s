@@ -1669,7 +1669,7 @@ function errErrorWithoutStack( test )
 
   logger.log( err2.throwCallsStack );
 
-  test.identical( _.strCount( _.strLinesStrip( err2.stack ), _.strLinesStrip( err2.combinedStack ) ), 1 );
+  test.identical( _.strCount( _.str.lines.strip( err2.stack ), _.str.lines.strip( err2.combinedStack ) ), 1 );
 
   test.identical( _.strCount( err2.throwCallsStack, 'Err.test.s:' ), 1 );
   test.identical( _.strCount( err2.throwCallsStack.substring( 0, err2.throwCallsStack.indexOf( 'Err.test.s:' ) ), 'at ' ), 1 );
