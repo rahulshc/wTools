@@ -276,8 +276,8 @@ function _errWithArgsIncludedRoutine( test )
   let a = test.assetFor( false );
   a.fileProvider.dirMake( a.abs( '.' ) );
   let locals = { toolsPath : _.module.resolve( 'wTools' ) };
-  let programPath1 = a.program( testRoutineWithStrLinesSelect );
-  let programPath2 = a.program( testRoutineWithoutStrLinesSelect );
+  let programPath1 = a.path.nativize( a.program( testRoutineWithStrLinesSelect ) );
+  let programPath2 = a.path.nativize( a.program( testRoutineWithoutStrLinesSelect ) );
 
   a.shellNonThrowing( `node ${ programPath1 }` );
   a.ready.then( ( op ) =>

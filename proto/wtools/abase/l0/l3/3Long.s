@@ -722,6 +722,7 @@ function _filterAct( ... args )
     _.assert( args.length === 6, `Expects 3 arguments` );
     _.assert( dst === null || self.is( dst ), () => `dst is not ${self.TypeName}` );
     _.assert( srcNamesapce.is( src ), () => `src is not ${srcNamesapce.TypeName}` );
+    _.assert( _.routineIs( onEach ), () => `onEach is not a routine` );
     _.assert
     (
       dst === null || _.countable.isResizable( dst ) || self._lengthOf( dst ) === srcNamesapce._lengthOf( src )
@@ -804,6 +805,7 @@ function _mapAct( ... args )
     _.assert( args.length === 6, `Expects 3 arguments` );
     _.assert( dst === null || self.is( dst ), () => `dst is not ${self.TypeName}` );
     _.assert( srcNamesapce.is( src ), () => `src is not ${srcNamesapce.TypeName}` );
+    _.assert( _.routineIs( onEach ), () => `onEach is not a routine` );
     _.assert
     (
       dst === null || _.countable.isResizable( dst ) || self._lengthOf( dst ) === srcNamesapce._lengthOf( src )

@@ -2131,7 +2131,7 @@ function _compose_old_head( routine, args )
   let o = args[ 0 ];
 
   if( !_.mapIs( o ) )
-  o = { bodies : args[ 0 ] }
+  o = { bodies : args[ 0 ] };
   if( args[ 1 ] !== undefined )
   o.chainer = args[ 1 ];
 
@@ -2139,6 +2139,7 @@ function _compose_old_head( routine, args )
   // debugger;
   // o.bodies = _.arrayAppendArrays( [], [ o.bodies ] );
   // o.bodies = merge( o.bodies );
+
   o.bodies = __arrayFlatten( o.bodies );
   o.bodies = o.bodies.filter( ( e ) => e !== null );
 
@@ -2293,7 +2294,7 @@ function _compose_head( routine, args )
   let o = args[ 0 ];
 
   if( !_.mapIs( o ) )
-  o = { bodies : args[ 0 ] }
+  o = { bodies : args[ 0 ] };
   if( args[ 1 ] !== undefined )
   o.chainer = args[ 1 ];
 
