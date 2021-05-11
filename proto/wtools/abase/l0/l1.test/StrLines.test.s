@@ -1267,7 +1267,7 @@ function atLeftSingle( test )
     'src' : src,
     'lineIndex' : 0,
     'charInterval' : [ 0, -1 ],
-    'val' : '',
+    'line' : '',
     'nl' : '',
   }
   var got = _.str.lines.atLeft( src, 0 );
@@ -1316,7 +1316,7 @@ function atLeftSingle( test )
     'src' : src,
     'lineIndex' : 0,
     'charInterval' : [ 0, 0 ],
-    'val' : '',
+    'line' : '',
     'nl' : '\n',
   }
   var got = _.str.lines.atLeft( src, 0 );
@@ -1326,7 +1326,7 @@ function atLeftSingle( test )
     'src' : src,
     'lineIndex' : 1,
     'charInterval' : [ 1, 0 ],
-    'val' : '',
+    'line' : '',
     'nl' : '',
   }
   var got = _.str.lines.atLeft( src, 1 );
@@ -1374,7 +1374,7 @@ function atLeftSingle( test )
     'src' : src,
     'lineIndex' : 0,
     'charInterval' : [ 0, 1 ],
-    'val' : 'a',
+    'line' : 'a',
     'nl' : '\n',
   }
   var got = _.str.lines.atLeft( src, 0 );
@@ -1384,7 +1384,7 @@ function atLeftSingle( test )
     'src' : src,
     'lineIndex' : 1,
     'charInterval' : [ 2, 2 ],
-    'val' : 'b',
+    'line' : 'b',
     'nl' : '',
   }
   var got = _.str.lines.atLeft( src, 1 );
@@ -1430,7 +1430,7 @@ function atLeftSingle( test )
     'src' : src,
     'lineIndex' : 0,
     'charInterval' : [ 0, 2 ],
-    'val' : 'ab',
+    'line' : 'ab',
     'nl' : '\n',
   }
   var got = _.str.lines.atLeft( src, 0 );
@@ -1440,7 +1440,7 @@ function atLeftSingle( test )
     'src' : src,
     'lineIndex' : 1,
     'charInterval' : [ 3, 6 ],
-    'val' : 'abc',
+    'line' : 'abc',
     'nl' : '\n',
   }
   var got = _.str.lines.atLeft( src, 1 );
@@ -1450,7 +1450,7 @@ function atLeftSingle( test )
     'src' : src,
     'lineIndex' : 2,
     'charInterval' : [ 7, 10 ],
-    'val' : 'abcd',
+    'line' : 'abcd',
     'nl' : '',
   }
   var got = _.str.lines.atLeft( src, 2 );
@@ -1498,7 +1498,7 @@ function atLeftSingle( test )
     'src' : src,
     'lineIndex' : 0,
     'charInterval' : [ 0, 0 ],
-    'val' : '',
+    'line' : '',
     'nl' : '\n',
   }
   var got = _.str.lines.atLeft( src, 0 );
@@ -1508,7 +1508,7 @@ function atLeftSingle( test )
     'src' : src,
     'lineIndex' : 1,
     'charInterval' : [ 1, 3 ],
-    'val' : 'ab',
+    'line' : 'ab',
     'nl' : '\n',
   }
   var got = _.str.lines.atLeft( src, 1 );
@@ -1518,7 +1518,7 @@ function atLeftSingle( test )
     'src' : src,
     'lineIndex' : 2,
     'charInterval' : [ 4, 7 ],
-    'val' : 'abc',
+    'line' : 'abc',
     'nl' : '\n',
   }
   var got = _.str.lines.atLeft( src, 2 );
@@ -1528,7 +1528,7 @@ function atLeftSingle( test )
     'src' : src,
     'lineIndex' : 3,
     'charInterval' : [ 8, 12 ],
-    'val' : 'abcd',
+    'line' : 'abcd',
     'nl' : '\n',
   }
   var got = _.str.lines.atLeft( src, 3 );
@@ -1538,7 +1538,7 @@ function atLeftSingle( test )
     'src' : src,
     'lineIndex' : 4,
     'charInterval' : [ 13, 12 ],
-    'val' : '',
+    'line' : '',
     'nl' : '',
   }
   var got = _.str.lines.atLeft( src, 4 );
@@ -1587,7 +1587,7 @@ function atLeftCustomToken( test )
     'src' : src,
     'lineIndex' : 0,
     'charInterval' : [ 0, 1 ],
-    'val' : 'a',
+    'line' : 'a',
     'nl' : '\n',
   }
   var got = _.str.lines.atLeft( src, 0, '\n' );
@@ -1597,7 +1597,7 @@ function atLeftCustomToken( test )
     'src' : src,
     'lineIndex' : 1,
     'charInterval' : [ 2, 2 ],
-    'val' : 'b',
+    'line' : 'b',
     'nl' : '',
   }
   var got = _.str.lines.atLeft( src, 1, '\n' );
@@ -1643,7 +1643,7 @@ function atLeftCustomToken( test )
     'src' : src,
     'lineIndex' : 0,
     'charInterval' : [ 0, 1 ],
-    'val' : 'a',
+    'line' : 'a',
     'nl' : '\r',
   }
   var got = _.str.lines.atLeft( src, 0, '\r' );
@@ -1653,7 +1653,7 @@ function atLeftCustomToken( test )
     'src' : src,
     'lineIndex' : 1,
     'charInterval' : [ 2, 2 ],
-    'val' : 'b',
+    'line' : 'b',
     'nl' : '',
   }
   var got = _.str.lines.atLeft( src, 1, '\r' );
@@ -1702,7 +1702,7 @@ function atLeftMultiple( test )
     'src' : src,
     'lineIndex' : 0,
     'charInterval' : [ 0, 0 ],
-    'val' : '',
+    'line' : '',
     'nl' : '\n',
   }
   var got = _.str.lines.atLeft( src, 0 );
@@ -1712,7 +1712,7 @@ function atLeftMultiple( test )
     'src' : src,
     'lineIndex' : 1,
     'charInterval' : [ 1, 3 ],
-    'val' : 'ab',
+    'line' : 'ab',
     'nl' : '\n',
   }
   var got = _.str.lines.atLeft( src, 1 );
@@ -1722,7 +1722,7 @@ function atLeftMultiple( test )
     'src' : src,
     'lineIndex' : 2,
     'charInterval' : [ 4, 7 ],
-    'val' : 'abc',
+    'line' : 'abc',
     'nl' : '\n',
   }
   var got = _.str.lines.atLeft( src, 2 );
@@ -1732,7 +1732,7 @@ function atLeftMultiple( test )
     'src' : src,
     'lineIndex' : 3,
     'charInterval' : [ 8, 13 ],
-    'val' : 'abcd',
+    'line' : 'abcd',
     'nl' : '\r\n',
   }
   var got = _.str.lines.atLeft( src, 3 );
@@ -1742,7 +1742,7 @@ function atLeftMultiple( test )
     'src' : src,
     'lineIndex' : 4,
     'charInterval' : [ 14, 13 ],
-    'val' : '',
+    'line' : '',
     'nl' : '',
   }
   var got = _.str.lines.atLeft( src, 4 );
@@ -1774,7 +1774,7 @@ function atLeftMultiple( test )
     'src' : src,
     'lineIndex' : 0,
     'charInterval' : [ 0, 1 ],
-    'val' : '',
+    'line' : '',
     'nl' : '\r\n',
   }
   var got = _.str.lines.atLeft( src, 0 );
@@ -1784,7 +1784,7 @@ function atLeftMultiple( test )
     'src' : src,
     'lineIndex' : 1,
     'charInterval' : [ 2, 4 ],
-    'val' : 'ab',
+    'line' : 'ab',
     'nl' : '\n',
   }
   var got = _.str.lines.atLeft( src, 1 );
@@ -1794,7 +1794,7 @@ function atLeftMultiple( test )
     'src' : src,
     'lineIndex' : 2,
     'charInterval' : [ 5, 8 ],
-    'val' : 'abc',
+    'line' : 'abc',
     'nl' : '\n',
   }
   var got = _.str.lines.atLeft( src, 2 );
@@ -1804,7 +1804,7 @@ function atLeftMultiple( test )
     'src' : src,
     'lineIndex' : 3,
     'charInterval' : [ 9, 13 ],
-    'val' : 'abcd',
+    'line' : 'abcd',
     'nl' : '\n',
   }
   var got = _.str.lines.atLeft( src, 3 );
@@ -1814,7 +1814,7 @@ function atLeftMultiple( test )
     'src' : src,
     'lineIndex' : 4,
     'charInterval' : [ 14, 13 ],
-    'val' : '',
+    'line' : '',
     'nl' : '',
   }
   var got = _.str.lines.atLeft( src, 4 );
@@ -1846,7 +1846,7 @@ function atLeftMultiple( test )
     'src' : src,
     'lineIndex' : 0,
     'charInterval' : [ 0, 1 ],
-    'val' : '',
+    'line' : '',
     'nl' : '\r\n',
   }
   var got = _.str.lines.atLeft( src, 0 );
@@ -1856,7 +1856,7 @@ function atLeftMultiple( test )
     'src' : src,
     'lineIndex' : 1,
     'charInterval' : [ 2, 5 ],
-    'val' : 'ab',
+    'line' : 'ab',
     'nl' : '\n\r',
   }
   var got = _.str.lines.atLeft( src, 1 );
@@ -1866,7 +1866,7 @@ function atLeftMultiple( test )
     'src' : src,
     'lineIndex' : 2,
     'charInterval' : [ 6, 9 ],
-    'val' : 'abc',
+    'line' : 'abc',
     'nl' : '\n',
   }
   var got = _.str.lines.atLeft( src, 2 );
@@ -1876,7 +1876,7 @@ function atLeftMultiple( test )
     'src' : src,
     'lineIndex' : 3,
     'charInterval' : [ 10, 14 ],
-    'val' : 'abcd',
+    'line' : 'abcd',
     'nl' : '\n',
   }
   var got = _.str.lines.atLeft( src, 3 );
@@ -1886,7 +1886,7 @@ function atLeftMultiple( test )
     'src' : src,
     'lineIndex' : 4,
     'charInterval' : [ 15, 14 ],
-    'val' : '',
+    'line' : '',
     'nl' : '',
   }
   var got = _.str.lines.atLeft( src, 4 );
@@ -3207,7 +3207,7 @@ function atRightSingle( test )
     'src' : src,
     'lineIndex' : 0,
     'charInterval' : [ 0, -1 ],
-    'val' : '',
+    'line' : '',
     'nl' : '',
   }
   var got = _.str.lines.atRight( src, 0 );
@@ -3256,7 +3256,7 @@ function atRightSingle( test )
     'src' : src,
     'lineIndex' : 0,
     'charInterval' : [ 1, 0 ],
-    'val' : '',
+    'line' : '',
     'nl' : '',
   }
   var got = _.str.lines.atRight( src, 0 );
@@ -3266,7 +3266,7 @@ function atRightSingle( test )
     'src' : src,
     'lineIndex' : 1,
     'charInterval' : [ 0, 0 ],
-    'val' : '',
+    'line' : '',
     'nl' : '\n',
   }
   var got = _.str.lines.atRight( src, 1 );
@@ -3314,7 +3314,7 @@ function atRightSingle( test )
     'src' : src,
     'lineIndex' : 0,
     'charInterval' : [ 2, 2 ],
-    'val' : 'b',
+    'line' : 'b',
     'nl' : '',
   }
   var got = _.str.lines.atRight( src, 0 );
@@ -3324,7 +3324,7 @@ function atRightSingle( test )
     'src' : src,
     'lineIndex' : 1,
     'charInterval' : [ 0, 1 ],
-    'val' : 'a',
+    'line' : 'a',
     'nl' : '\n',
   }
   var got = _.str.lines.atRight( src, 1 );
@@ -3370,7 +3370,7 @@ function atRightSingle( test )
     'src' : src,
     'lineIndex' : 0,
     'charInterval' : [ 7, 10 ],
-    'val' : 'abcd',
+    'line' : 'abcd',
     'nl' : '',
   }
   var got = _.str.lines.atRight( src, 0 );
@@ -3380,7 +3380,7 @@ function atRightSingle( test )
     'src' : src,
     'lineIndex' : 1,
     'charInterval' : [ 3, 6 ],
-    'val' : 'abc',
+    'line' : 'abc',
     'nl' : '\n',
   }
   var got = _.str.lines.atRight( src, 1 );
@@ -3390,7 +3390,7 @@ function atRightSingle( test )
     'src' : src,
     'lineIndex' : 2,
     'charInterval' : [ 0, 2 ],
-    'val' : 'ab',
+    'line' : 'ab',
     'nl' : '\n',
   }
   var got = _.str.lines.atRight( src, 2 );
@@ -3438,7 +3438,7 @@ function atRightSingle( test )
     'src' : src,
     'lineIndex' : 0,
     'charInterval' : [ 13, 12 ],
-    'val' : '',
+    'line' : '',
     'nl' : '',
   }
   var got = _.str.lines.atRight( src, 0 );
@@ -3448,7 +3448,7 @@ function atRightSingle( test )
     'src' : src,
     'lineIndex' : 1,
     'charInterval' : [ 8, 12 ],
-    'val' : 'abcd',
+    'line' : 'abcd',
     'nl' : '\n',
   }
   var got = _.str.lines.atRight( src, 1 );
@@ -3458,7 +3458,7 @@ function atRightSingle( test )
     'src' : src,
     'lineIndex' : 2,
     'charInterval' : [ 4, 7 ],
-    'val' : 'abc',
+    'line' : 'abc',
     'nl' : '\n',
   }
   var got = _.str.lines.atRight( src, 2 );
@@ -3468,7 +3468,7 @@ function atRightSingle( test )
     'src' : src,
     'lineIndex' : 3,
     'charInterval' : [ 1, 3 ],
-    'val' : 'ab',
+    'line' : 'ab',
     'nl' : '\n',
   }
   var got = _.str.lines.atRight( src, 3 );
@@ -3478,7 +3478,7 @@ function atRightSingle( test )
     'src' : src,
     'lineIndex' : 4,
     'charInterval' : [ 0, 0 ],
-    'val' : '',
+    'line' : '',
     'nl' : '\n',
   }
   var got = _.str.lines.atRight( src, 4 );
@@ -3527,7 +3527,7 @@ function atRightCustomToken( test )
     'src' : src,
     'lineIndex' : 0,
     'charInterval' : [ 2, 2 ],
-    'val' : 'b',
+    'line' : 'b',
     'nl' : '',
   }
   var got = _.str.lines.atRight( src, 0, '\n' );
@@ -3537,7 +3537,7 @@ function atRightCustomToken( test )
     'src' : src,
     'lineIndex' : 1,
     'charInterval' : [ 0, 1 ],
-    'val' : 'a',
+    'line' : 'a',
     'nl' : '\n',
   }
   var got = _.str.lines.atRight( src, 1, '\n' );
@@ -3583,7 +3583,7 @@ function atRightCustomToken( test )
     'src' : src,
     'lineIndex' : 0,
     'charInterval' : [ 2, 2 ],
-    'val' : 'b',
+    'line' : 'b',
     'nl' : '',
   }
   var got = _.str.lines.atRight( src, 0, '\r' );
@@ -3593,7 +3593,7 @@ function atRightCustomToken( test )
     'src' : src,
     'lineIndex' : 1,
     'charInterval' : [ 0, 1 ],
-    'val' : 'a',
+    'line' : 'a',
     'nl' : '\r',
   }
   var got = _.str.lines.atRight( src, 1, '\r' );
@@ -3642,7 +3642,7 @@ function atRightMultiple( test )
     'src' : src,
     'lineIndex' : 0,
     'charInterval' : [ 14, 13 ],
-    'val' : '',
+    'line' : '',
     'nl' : '',
   }
   var got = _.str.lines.atRight( src, 0 );
@@ -3652,7 +3652,7 @@ function atRightMultiple( test )
     'src' : src,
     'lineIndex' : 1,
     'charInterval' : [ 8, 13 ],
-    'val' : 'abcd',
+    'line' : 'abcd',
     'nl' : '\r\n',
   }
   var got = _.str.lines.atRight( src, 1 );
@@ -3662,7 +3662,7 @@ function atRightMultiple( test )
     'src' : src,
     'lineIndex' : 2,
     'charInterval' : [ 4, 7 ],
-    'val' : 'abc',
+    'line' : 'abc',
     'nl' : '\n',
   }
   var got = _.str.lines.atRight( src, 2 );
@@ -3672,7 +3672,7 @@ function atRightMultiple( test )
     'src' : src,
     'lineIndex' : 3,
     'charInterval' : [ 1, 3 ],
-    'val' : 'ab',
+    'line' : 'ab',
     'nl' : '\n',
   }
   var got = _.str.lines.atRight( src, 3 );
@@ -3682,7 +3682,7 @@ function atRightMultiple( test )
     'src' : src,
     'lineIndex' : 4,
     'charInterval' : [ 0, 0 ],
-    'val' : '',
+    'line' : '',
     'nl' : '\n',
   }
   var got = _.str.lines.atRight( src, 4 );
@@ -3714,7 +3714,7 @@ function atRightMultiple( test )
     'src' : src,
     'lineIndex' : 0,
     'charInterval' : [ 14, 13 ],
-    'val' : '',
+    'line' : '',
     'nl' : '',
   }
   var got = _.str.lines.atRight( src, 0 );
@@ -3724,7 +3724,7 @@ function atRightMultiple( test )
     'src' : src,
     'lineIndex' : 1,
     'charInterval' : [ 9, 13 ],
-    'val' : 'abcd',
+    'line' : 'abcd',
     'nl' : '\n',
   }
   var got = _.str.lines.atRight( src, 1 );
@@ -3734,7 +3734,7 @@ function atRightMultiple( test )
     'src' : src,
     'lineIndex' : 2,
     'charInterval' : [ 5, 8 ],
-    'val' : 'abc',
+    'line' : 'abc',
     'nl' : '\n',
   }
   var got = _.str.lines.atRight( src, 2 );
@@ -3744,7 +3744,7 @@ function atRightMultiple( test )
     'src' : src,
     'lineIndex' : 3,
     'charInterval' : [ 2, 4 ],
-    'val' : 'ab',
+    'line' : 'ab',
     'nl' : '\n',
   }
   var got = _.str.lines.atRight( src, 3 );
@@ -3754,7 +3754,7 @@ function atRightMultiple( test )
     'src' : src,
     'lineIndex' : 4,
     'charInterval' : [ 0, 1 ],
-    'val' : '',
+    'line' : '',
     'nl' : '\r\n',
   }
   var got = _.str.lines.atRight( src, 4 );
@@ -3786,7 +3786,7 @@ function atRightMultiple( test )
     'src' : src,
     'lineIndex' : 0,
     'charInterval' : [ 15, 14 ],
-    'val' : '',
+    'line' : '',
     'nl' : '',
   }
   var got = _.str.lines.atRight( src, 0 );
@@ -3796,7 +3796,7 @@ function atRightMultiple( test )
     'src' : src,
     'lineIndex' : 1,
     'charInterval' : [ 10, 14 ],
-    'val' : 'abcd',
+    'line' : 'abcd',
     'nl' : '\n',
   }
   var got = _.str.lines.atRight( src, 1 );
@@ -3806,7 +3806,7 @@ function atRightMultiple( test )
     'src' : src,
     'lineIndex' : 2,
     'charInterval' : [ 6, 9 ],
-    'val' : 'abc',
+    'line' : 'abc',
     'nl' : '\n',
   }
   var got = _.str.lines.atRight( src, 2 );
@@ -3816,7 +3816,7 @@ function atRightMultiple( test )
     'src' : src,
     'lineIndex' : 3,
     'charInterval' : [ 2, 5 ],
-    'val' : 'ab',
+    'line' : 'ab',
     'nl' : '\n\r',
   }
   var got = _.str.lines.atRight( src, 3 );
@@ -3826,7 +3826,7 @@ function atRightMultiple( test )
     'src' : src,
     'lineIndex' : 4,
     'charInterval' : [ 0, 1 ],
-    'val' : '',
+    'line' : '',
     'nl' : '\r\n',
   }
   var got = _.str.lines.atRight( src, 4 );

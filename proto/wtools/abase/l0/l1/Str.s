@@ -1367,7 +1367,7 @@ function atLeft( src, index, nlTokens )
   function onEach( it )
   {
     result = it;
-    result.val = src.slice( it.charInterval[ 0 ], it.charInterval[ 1 ]-it.nl.length+1 );
+    result.line = src.slice( it.charInterval[ 0 ], it.charInterval[ 1 ]-it.nl.length+1 );
   }
 
 }
@@ -1414,7 +1414,7 @@ function atRight( src, index, nlTokens )
   function onEach( it )
   {
     result = it;
-    result.val = src.slice( it.charInterval[ 0 ], it.charInterval[ 1 ]-it.nl.length+1 );
+    result.line = src.slice( it.charInterval[ 0 ], it.charInterval[ 1 ]-it.nl.length+1 );
   }
 
 }
@@ -1621,6 +1621,13 @@ function _eachLeft( o )
 
 }
 
+_eachLeft.defaults =
+{
+  src : null,
+  nlTokens : null,
+  interval : null,
+}
+
 //
 
 function eachLeft( o )
@@ -1628,8 +1635,11 @@ function eachLeft( o )
 
   if( !_.map.is( o ) )
   {
-    _.assert( arguments.length === 2 );
-    o = { src : arguments[ 0 ], onEach : arguments[ 1 ] }
+    _.assert( arguments.length === 2 || arguments.length === 3 );
+    if( arguments.length === 3 )
+    o = { src : arguments[ 0 ], interval : arguments[ 1 ], onEach : arguments[ 2 ] };
+    else
+    o = { src : arguments[ 0 ], onEach : arguments[ 1 ] };
   }
   else
   {
@@ -1681,7 +1691,6 @@ function _eachRight( o )
   function single()
   {
 
-    debugger;
     while( o.lineIndex !== lastIndex )
     {
 
@@ -1857,6 +1866,11 @@ function _eachRight( o )
 
 }
 
+_eachRight.defaults =
+{
+  ... _eachLeft.defaults,
+}
+
 //
 
 function eachRight( o )
@@ -1864,8 +1878,11 @@ function eachRight( o )
 
   if( !_.map.is( o ) )
   {
-    _.assert( arguments.length === 2 );
-    o = { src : arguments[ 0 ], onEach : arguments[ 1 ] }
+    _.assert( arguments.length === 2 || arguments.length === 3 );
+    if( arguments.length === 3 )
+    o = { src : arguments[ 0 ], interval : arguments[ 1 ], onEach : arguments[ 2 ] };
+    else
+    o = { src : arguments[ 0 ], onEach : arguments[ 1 ] };
   }
   else
   {
