@@ -1347,7 +1347,7 @@ function atLeft( src, index, nlTokens )
   o2.nlTokens = nlTokens;
   o2.onEach = onEach;
   o2.interval = [ index, index ];
-
+  o2.withLine = false;
   this.eachLeft( o2 );
 
   if( !result )
@@ -1361,6 +1361,7 @@ function atLeft( src, index, nlTokens )
   delete result.nlTokens;
   delete result.onEach;
   delete result.interval;
+  delete result.withLine;
 
   return result;
 
@@ -1394,6 +1395,7 @@ function atRight( src, index, nlTokens )
   o2.nlTokens = nlTokens;
   o2.onEach = onEach;
   o2.interval = [ index, index ];
+  o2.withLine = false;
 
   this.eachRight( o2 );
 
@@ -1408,6 +1410,7 @@ function atRight( src, index, nlTokens )
   delete result.nlTokens;
   delete result.onEach;
   delete result.interval;
+  delete result.withLine;
 
   return result;
 
@@ -1433,16 +1436,32 @@ function _eachLeft( o )
   const src = o.src;
   let foundTokenIndex;
   let foundOffset;
+  let handleEach;
 
   o.charInterval = [ -1, -1 ];
   o.lineIndex = -1;
-  o.nl = '';
 
   if( o.interval && o.interval[ 1 ] < 0 )
   {
     o.charInterval[ 0 ] = 0;
-    o.charInterval[ 1 ] = -1;
     return o;
+  }
+
+  o.nl = '';
+
+  if( o.interval )
+  {
+    if( o.withLine )
+    handleEach = handleWithIntervalWithLine;
+    else
+    handleEach = handleWithIntervalWithoutLine;
+  }
+  else
+  {
+    if( o.withLine )
+    handleEach = handleWithoutIntervalWithLine;
+    else
+    handleEach = handleWithoutIntervalWithoutLine;
   }
 
   if( _.str.is( o.nlTokens ) )
@@ -1611,9 +1630,35 @@ function _eachLeft( o )
 
   /* */
 
-  function handleEach()
+  function handleWithoutIntervalWithoutLine()
   {
-    if( !o.interval || o.interval[ 0 ] <= o.lineIndex )
+    o.onEach( o );
+  }
+
+  /* */
+
+  function handleWithIntervalWithoutLine()
+  {
+    if( o.interval && o.interval[ 0 ] > o.lineIndex )
+    return;
+    o.onEach( o );
+  }
+
+  /* */
+
+  function handleWithoutIntervalWithLine()
+  {
+    o.line = src.slice( o.charInterval[ 0 ], o.charInterval[ 1 ] - o.nl.length + 1 );
+    o.onEach( o );
+  }
+
+  /* */
+
+  function handleWithIntervalWithLine()
+  {
+    if( o.interval && o.interval[ 0 ] > o.lineIndex )
+    return;
+    o.line = src.slice( o.charInterval[ 0 ], o.charInterval[ 1 ] - o.nl.length + 1 );
     o.onEach( o );
   }
 
@@ -1626,6 +1671,7 @@ _eachLeft.defaults =
   src : null,
   nlTokens : null,
   interval : null,
+  withLine : true,
 }
 
 //
@@ -1645,6 +1691,9 @@ function eachLeft( o )
   {
     _.assert( arguments.length === 1 );
   }
+
+  if( o.withLine === undefined )
+  o.withLine = true;
 
   _.assert( _.routine.is( o.onEach ) );
   _.assert( _.str.is( o.src ) );
@@ -1667,17 +1716,33 @@ function _eachRight( o )
   let foundTokenIndex;
   let foundOffset;
   let nnl = '';
+  let handleEach;
+
+  if( o.interval )
+  {
+    if( o.withLine )
+    handleEach = handleWithIntervalWithLine;
+    else
+    handleEach = handleWithIntervalWithoutLine;
+  }
+  else
+  {
+    if( o.withLine )
+    handleEach = handleWithoutIntervalWithLine;
+    else
+    handleEach = handleWithoutIntervalWithoutLine;
+  }
 
   o.charInterval = [ o.src.length, o.src.length ];
   o.lineIndex = -1;
-  o.nl = '';
 
   if( o.interval && o.interval[ 1 ] < 0 )
   {
-    o.charInterval[ 0 ] = o.src.length;
     o.charInterval[ 1 ] = o.src.length-1;
     return o;
   }
+
+  o.nl = '';
 
   if( _.str.is( o.nlTokens ) )
   single();
@@ -1856,9 +1921,43 @@ function _eachRight( o )
 
   /* */
 
-  function handleEach()
+  // function handleEach()
+  // {
+  //   if( !o.interval || o.interval[ 0 ] <= o.lineIndex )
+  //   o.onEach( o );
+  // }
+
+  /* */
+
+  function handleWithoutIntervalWithoutLine()
   {
-    if( !o.interval || o.interval[ 0 ] <= o.lineIndex )
+    o.onEach( o );
+  }
+
+  /* */
+
+  function handleWithIntervalWithoutLine()
+  {
+    if( o.interval && o.interval[ 0 ] > o.lineIndex )
+    return;
+    o.onEach( o );
+  }
+
+  /* */
+
+  function handleWithoutIntervalWithLine()
+  {
+    o.line = src.slice( o.charInterval[ 0 ], o.charInterval[ 1 ] - o.nl.length + 1 );
+    o.onEach( o );
+  }
+
+  /* */
+
+  function handleWithIntervalWithLine()
+  {
+    if( o.interval && o.interval[ 0 ] > o.lineIndex )
+    return;
+    o.line = src.slice( o.charInterval[ 0 ], o.charInterval[ 1 ] - o.nl.length + 1 );
     o.onEach( o );
   }
 
@@ -1888,6 +1987,9 @@ function eachRight( o )
   {
     _.assert( arguments.length === 1 );
   }
+
+  if( o.withLine === undefined )
+  o.withLine = true;
 
   _.assert( _.routine.is( o.onEach ) );
   _.assert( _.str.is( o.src ) );

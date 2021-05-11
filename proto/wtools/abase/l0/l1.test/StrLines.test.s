@@ -46,11 +46,13 @@ function eachLeftSingle( test )
   [
     {
       'src' : '',
-      'onEach' : onEach,
+      onEach,
+      'withLine' : true,
       'nlTokens' : [],
       'lineIndex' : 0,
       'nl' : '',
-      'charInterval' : [ 0, -1 ]
+      'charInterval' : [ 0, -1 ],
+      'line' : ''
     }
   ]
   test.identical( its, exp );
@@ -66,11 +68,13 @@ function eachLeftSingle( test )
   [
     {
       'src' : 'abc',
-      'onEach' : onEach,
+      onEach,
+      'withLine' : true,
       'nlTokens' : [],
       'lineIndex' : 0,
+      'charInterval' : [ 0, 2 ],
       'nl' : '',
-      'charInterval' : [ 0, 2 ]
+      'line' : 'abc',
     }
   ]
   test.identical( its, exp );
@@ -90,7 +94,9 @@ function eachLeftSingle( test )
       'nlTokens' : '\n',
       'charInterval' : [ 0, 0 ],
       'lineIndex' : 0,
+      'withLine' : true,
       'nl' : '\n',
+      'line' : '',
     },
     {
       src,
@@ -98,7 +104,9 @@ function eachLeftSingle( test )
       'nlTokens' : '\n',
       'charInterval' : [ 1, 0 ],
       'lineIndex' : 1,
+      'withLine' : true,
       'nl' : '',
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -115,26 +123,32 @@ function eachLeftSingle( test )
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 0, 2 ],
       'lineIndex' : 0,
       'nl' : '\n',
+      'line' : 'ab',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 3, 6 ],
       'lineIndex' : 1,
       'nl' : '\n',
+      'line' : 'abc',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 7, 10 ],
       'lineIndex' : 2,
       'nl' : '',
+      'line' : 'abcd',
     }
   ]
   test.identical( its, exp );
@@ -151,42 +165,52 @@ function eachLeftSingle( test )
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 0, 0 ],
       'lineIndex' : 0,
       'nl' : '\n',
+      'line' : '',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 1, 3 ],
       'lineIndex' : 1,
       'nl' : '\n',
+      'line' : 'ab',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 4, 7 ],
       'lineIndex' : 2,
       'nl' : '\n',
+      'line' : 'abc',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 8, 12 ],
       'lineIndex' : 3,
       'nl' : '\n',
+      'line' : 'abcd',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 13, 12 ],
       'lineIndex' : 4,
-      'nl' : ''
+      'nl' : '',
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -231,18 +255,22 @@ function eachLeftCustomToken( test )
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 0, 0 ],
       'lineIndex' : 0,
       'nl' : '\n',
+      'line' : '',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 1, 0 ],
       'lineIndex' : 1,
       'nl' : '',
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -260,26 +288,32 @@ function eachLeftCustomToken( test )
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\r\n',
       'charInterval' : [ 0, 3 ],
       'lineIndex' : 0,
       'nl' : '\r\n',
+      'line' : 'ab',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\r\n',
       'charInterval' : [ 4, 8 ],
       'lineIndex' : 1,
       'nl' : '\r\n',
+      'line' : 'abc',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\r\n',
       'charInterval' : [ 9, 12 ],
       'lineIndex' : 2,
       'nl' : '',
+      'line' : 'abcd',
     }
   ]
   test.identical( its, exp );
@@ -296,42 +330,52 @@ function eachLeftCustomToken( test )
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\r\n',
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 0,
       'nl' : '\r\n',
+      'line' : '',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\r\n',
       'charInterval' : [ 2, 5 ],
       'lineIndex' : 1,
       'nl' : '\r\n',
+      'line' : 'ab',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\r\n',
       'charInterval' : [ 6, 10 ],
       'lineIndex' : 2,
       'nl' : '\r\n',
+      'line' : 'abc',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\r\n',
       'charInterval' : [ 11, 16 ],
       'lineIndex' : 3,
       'nl' : '\r\n',
+      'line' : 'abcd',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\r\n',
       'charInterval' : [ 17, 16 ],
       'lineIndex' : 4,
-      'nl' : ''
+      'nl' : '',
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -375,42 +419,52 @@ function eachLeftMultiple( test )
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n', ],
       'charInterval' : [ 0, 0 ],
       'lineIndex' : 0,
       'nl' : '\n',
+      'line' : '',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n', ],
       'charInterval' : [ 1, 3 ],
       'lineIndex' : 1,
-      'nl' : '\n'
+      'nl' : '\n',
+      'line' : 'ab',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n', ],
       'charInterval' : [ 4, 7 ],
       'lineIndex' : 2,
       'nl' : '\n',
+      'line' : 'abc',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n', ],
       'charInterval' : [ 8, 13 ],
       'lineIndex' : 3,
-      'nl' : '\r\n'
+      'nl' : '\r\n',
+      'line' : 'abcd',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [],
       'charInterval' : [ 14, 13 ],
       'lineIndex' : 4,
-      'nl' : ''
+      'nl' : '',
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -427,42 +481,52 @@ function eachLeftMultiple( test )
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n', ],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 0,
       'nl' : '\r\n',
+      'line' : '',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\n' ],
       'charInterval' : [ 2, 4 ],
       'lineIndex' : 1,
-      'nl' : '\n'
+      'nl' : '\n',
+      'line' : 'ab',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\n' ],
       'charInterval' : [ 5, 8 ],
       'lineIndex' : 2,
       'nl' : '\n',
+      'line' : 'abc',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\n' ],
       'charInterval' : [ 9, 13 ],
       'lineIndex' : 3,
-      'nl' : '\n'
+      'nl' : '\n',
+      'line' : 'abcd',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [],
       'charInterval' : [ 14, 13 ],
       'lineIndex' : 4,
-      'nl' : ''
+      'nl' : '',
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -479,42 +543,52 @@ function eachLeftMultiple( test )
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 0,
       'nl' : '\r\n',
+      'line' : '',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\n\r', '\n' ],
       'charInterval' : [ 2, 5 ],
       'lineIndex' : 1,
-      'nl' : '\n\r'
+      'nl' : '\n\r',
+      'line' : 'ab',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\n' ],
       'charInterval' : [ 6, 9 ],
       'lineIndex' : 2,
       'nl' : '\n',
+      'line' : 'abc',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\n' ],
       'charInterval' : [ 10, 14 ],
       'lineIndex' : 3,
-      'nl' : '\n'
+      'nl' : '\n',
+      'line' : 'abcd',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [],
       'charInterval' : [ 15, 14 ],
       'lineIndex' : 4,
-      'nl' : ''
+      'nl' : '',
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -610,12 +684,14 @@ function eachLeftMultipleInInterval( test )
   [
     {
       'src' : '',
-      'onEach' : onEach,
+      onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [],
       'lineIndex' : 0,
+      'charInterval' : [ 0, -1 ],
       'nl' : '',
-      'charInterval' : [ 0, -1 ]
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -632,12 +708,14 @@ function eachLeftMultipleInInterval( test )
   [
     {
       'src' : '',
-      'onEach' : onEach,
+      onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [],
       'lineIndex' : 0,
+      'charInterval' : [ 0, -1 ],
       'nl' : '',
-      'charInterval' : [ 0, -1 ]
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -654,12 +732,14 @@ function eachLeftMultipleInInterval( test )
   [
     {
       'src' : '',
-      'onEach' : onEach,
+      onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [],
       'lineIndex' : 0,
+      'charInterval' : [ 0, -1 ],
       'nl' : '',
-      'charInterval' : [ 0, -1 ]
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -676,12 +756,14 @@ function eachLeftMultipleInInterval( test )
   [
     {
       'src' : '',
-      'onEach' : onEach,
+      onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [],
       'lineIndex' : 0,
+      'charInterval' : [ 0, -1 ],
       'nl' : '',
-      'charInterval' : [ 0, -1 ]
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -713,19 +795,23 @@ function eachLeftMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 0, 2 ],
       'lineIndex' : 0,
-      'nl' : '\n'
+      'nl' : '\n',
+      'line' : 'aa',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 3, 4 ],
       'lineIndex' : 1,
-      'nl' : ''
+      'nl' : '',
+      'line' : 'bb',
     }
   ]
   test.identical( its, exp );
@@ -744,19 +830,23 @@ function eachLeftMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 0, 2 ],
       'lineIndex' : 0,
-      'nl' : '\n'
+      'nl' : '\n',
+      'line' : 'aa',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 3, 4 ],
       'lineIndex' : 1,
-      'nl' : ''
+      'nl' : '',
+      'line' : 'bb',
     }
   ]
   test.identical( its, exp );
@@ -775,10 +865,12 @@ function eachLeftMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 0, 2 ],
       'lineIndex' : 0,
-      'nl' : '\n'
+      'nl' : '\n',
+      'line' : 'aa',
     }
   ]
   test.identical( its, exp );
@@ -797,10 +889,12 @@ function eachLeftMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 3, 4 ],
       'lineIndex' : 1,
-      'nl' : ''
+      'nl' : '',
+      'line' : 'bb',
     }
   ]
   test.identical( its, exp );
@@ -884,46 +978,56 @@ function eachLeftMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 0,
       'nl' : '\r\n',
+      'line' : '',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\n\r', '\n' ],
       'charInterval' : [ 2, 5 ],
       'lineIndex' : 1,
-      'nl' : '\n\r'
+      'nl' : '\n\r',
+      'line' : 'ab',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\n' ],
       'charInterval' : [ 6, 9 ],
       'lineIndex' : 2,
       'nl' : '\n',
+      'line' : 'abc',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\n' ],
       'charInterval' : [ 10, 14 ],
       'lineIndex' : 3,
-      'nl' : '\n'
+      'nl' : '\n',
+      'line' : 'abcd',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [],
       'charInterval' : [ 15, 14 ],
       'lineIndex' : 4,
-      'nl' : ''
+      'nl' : '',
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -942,46 +1046,56 @@ function eachLeftMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 0,
       'nl' : '\r\n',
+      'line' : '',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\n\r', '\n' ],
       'charInterval' : [ 2, 5 ],
       'lineIndex' : 1,
-      'nl' : '\n\r'
+      'nl' : '\n\r',
+      'line' : 'ab',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\n' ],
       'charInterval' : [ 6, 9 ],
       'lineIndex' : 2,
       'nl' : '\n',
+      'line' : 'abc',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\n' ],
       'charInterval' : [ 10, 14 ],
       'lineIndex' : 3,
-      'nl' : '\n'
+      'nl' : '\n',
+      'line' : 'abcd',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [],
       'charInterval' : [ 15, 14 ],
       'lineIndex' : 4,
-      'nl' : ''
+      'nl' : '',
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -1000,28 +1114,34 @@ function eachLeftMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\n\r', '\n' ],
       'charInterval' : [ 2, 5 ],
       'lineIndex' : 1,
-      'nl' : '\n\r'
+      'nl' : '\n\r',
+      'line' : 'ab',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\n' ],
       'charInterval' : [ 6, 9 ],
       'lineIndex' : 2,
       'nl' : '\n',
+      'line' : 'abc',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\n' ],
       'charInterval' : [ 10, 14 ],
       'lineIndex' : 3,
-      'nl' : '\n'
+      'nl' : '\n',
+      'line' : 'abcd',
     },
   ]
   test.identical( its, exp );
@@ -1040,10 +1160,12 @@ function eachLeftMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\n' ],
       'charInterval' : [ 6, 9 ],
       'lineIndex' : 2,
       'nl' : '\n',
+      'line' : 'abc',
     },
   ]
   test.identical( its, exp );
@@ -1062,10 +1184,12 @@ function eachLeftMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 0,
       'nl' : '\r\n',
+      'line' : '',
     },
   ]
   test.identical( its, exp );
@@ -1084,10 +1208,12 @@ function eachLeftMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 0,
       'nl' : '\r\n',
+      'line' : '',
     },
   ]
   test.identical( its, exp );
@@ -1106,10 +1232,12 @@ function eachLeftMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [],
       'charInterval' : [ 15, 14 ],
       'lineIndex' : 4,
-      'nl' : ''
+      'nl' : '',
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -1128,10 +1256,12 @@ function eachLeftMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [],
       'charInterval' : [ 15, 14 ],
       'lineIndex' : 4,
-      'nl' : ''
+      'nl' : '',
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -1921,11 +2051,14 @@ function eachRightSingle( test )
   [
     {
       'src' : '',
-      'onEach' : onEach,
+      onEach,
+      'withLine' : true,
+      'withLine' : true,
       'nlTokens' : [],
       'lineIndex' : 0,
+      'charInterval' : [ 0, -1 ],
       'nl' : '',
-      'charInterval' : [ 0, -1 ]
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -1941,11 +2074,14 @@ function eachRightSingle( test )
   [
     {
       'src' : 'abc',
-      'onEach' : onEach,
+      onEach,
+      'withLine' : true,
+      'withLine' : true,
       'nlTokens' : [],
       'lineIndex' : 0,
+      'charInterval' : [ 0, 2 ],
       'nl' : '',
-      'charInterval' : [ 0, 2 ]
+      'line' : 'abc',
     }
   ]
   test.identical( its, exp );
@@ -1962,18 +2098,22 @@ function eachRightSingle( test )
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 1, 0 ],
       'lineIndex' : 0,
       'nl' : '',
+      'line' : '',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 0, 0 ],
       'lineIndex' : 1,
       'nl' : '\n',
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -1990,18 +2130,22 @@ function eachRightSingle( test )
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 3, 4 ],
       'lineIndex' : 0,
       'nl' : '',
+      'line' : 'bb',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 0, 2 ],
       'lineIndex' : 1,
       'nl' : '\n',
+      'line' : 'aa',
     },
   ]
   test.identical( its, exp );
@@ -2018,26 +2162,32 @@ function eachRightSingle( test )
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 7, 10 ],
       'lineIndex' : 0,
       'nl' : '',
+      'line' : 'abcd',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 3, 6 ],
       'lineIndex' : 1,
       'nl' : '\n',
+      'line' : 'abc',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 0, 2 ],
       'lineIndex' : 2,
       'nl' : '\n',
+      'line' : 'ab',
     },
   ]
   test.identical( its, exp );
@@ -2054,42 +2204,52 @@ function eachRightSingle( test )
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 13, 12 ],
       'lineIndex' : 0,
-      'nl' : ''
+      'nl' : '',
+      'line' : '',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 8, 12 ],
       'lineIndex' : 1,
       'nl' : '\n',
+      'line' : 'abcd',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 4, 7 ],
       'lineIndex' : 2,
       'nl' : '\n',
+      'line' : 'abc',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 1, 3 ],
       'lineIndex' : 3,
       'nl' : '\n',
+      'line' : 'ab',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 0, 0 ],
       'lineIndex' : 4,
       'nl' : '\n',
+      'line' : '',
     },
   ]
   test.identical( its, exp );
@@ -2134,18 +2294,22 @@ function eachRightCustomToken( test )
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 1, 0 ],
       'lineIndex' : 0,
       'nl' : '',
+      'line' : '',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 0, 0 ],
       'lineIndex' : 1,
       'nl' : '\n',
+      'line' : '',
     },
   ]
   test.identical( its, exp );
@@ -2163,26 +2327,32 @@ function eachRightCustomToken( test )
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\r\n',
       'charInterval' : [ 9, 12 ],
       'lineIndex' : 0,
       'nl' : '',
+      'line' : 'abcd',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\r\n',
       'charInterval' : [ 4, 8 ],
       'lineIndex' : 1,
       'nl' : '\r\n',
+      'line' : 'abc',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\r\n',
       'charInterval' : [ 0, 3 ],
       'lineIndex' : 2,
       'nl' : '\r\n',
+      'line' : 'ab',
     },
   ]
   test.identical( its, exp );
@@ -2199,42 +2369,52 @@ function eachRightCustomToken( test )
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\r\n',
       'charInterval' : [ 17, 16 ],
       'lineIndex' : 0,
-      'nl' : ''
+      'nl' : '',
+      'line' : '',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\r\n',
       'charInterval' : [ 11, 16 ],
       'lineIndex' : 1,
       'nl' : '\r\n',
+      'line' : 'abcd',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\r\n',
       'charInterval' : [ 6, 10 ],
       'lineIndex' : 2,
       'nl' : '\r\n',
+      'line' : 'abc',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\r\n',
       'charInterval' : [ 2, 5 ],
       'lineIndex' : 3,
       'nl' : '\r\n',
+      'line' : 'ab',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : '\r\n',
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 4,
       'nl' : '\r\n',
+      'line' : '',
     },
   ]
   test.identical( its, exp );
@@ -2278,26 +2458,32 @@ function eachRightMultiple( test )
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n' ],
       'charInterval' : [ 7, 8 ],
       'lineIndex' : 0,
       'nl' : '',
+      'line' : 'cc',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\n' ],
       'charInterval' : [ 3, 6 ],
       'lineIndex' : 1,
-      'nl' : '\r\n'
+      'nl' : '\r\n',
+      'line' : 'bb',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [],
       'charInterval' : [ 0, 2 ],
       'lineIndex' : 2,
       'nl' : '\n',
+      'line' : 'aa',
     },
   ]
   test.identical( its, exp );
@@ -2314,42 +2500,52 @@ function eachRightMultiple( test )
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n', ],
       'charInterval' : [ 14, 13 ],
       'lineIndex' : 0,
       'nl' : '',
+      'line' : '',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\n', ],
       'charInterval' : [ 8, 13 ],
       'lineIndex' : 1,
-      'nl' : '\r\n'
+      'nl' : '\r\n',
+      'line' : 'abcd',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\n', ],
       'charInterval' : [ 4, 7 ],
       'lineIndex' : 2,
       'nl' : '\n',
+      'line' : 'abc',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\n', ],
       'charInterval' : [ 1, 3 ],
       'lineIndex' : 3,
-      'nl' : '\n'
+      'nl' : '\n',
+      'line' : 'ab',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [],
       'charInterval' : [ 0, 0 ],
       'lineIndex' : 4,
-      'nl' : '\n'
+      'nl' : '\n',
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -2366,42 +2562,52 @@ function eachRightMultiple( test )
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n', ],
       'charInterval' : [ 14, 13 ],
       'lineIndex' : 0,
       'nl' : '',
+      'line' : '',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n', ],
       'charInterval' : [ 9, 13 ],
       'lineIndex' : 1,
-      'nl' : '\n'
+      'nl' : '\n',
+      'line' : 'abcd',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n', ],
       'charInterval' : [ 5, 8 ],
       'lineIndex' : 2,
       'nl' : '\n',
+      'line' : 'abc',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n', ],
       'charInterval' : [ 2, 4 ],
       'lineIndex' : 3,
-      'nl' : '\n'
+      'nl' : '\n',
+      'line' : 'ab',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 4,
-      'nl' : '\r\n'
+      'nl' : '\r\n',
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -2418,42 +2624,52 @@ function eachRightMultiple( test )
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 15, 14 ],
       'lineIndex' : 0,
       'nl' : '',
+      'line' : '',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 10, 14 ],
       'lineIndex' : 1,
-      'nl' : '\n'
+      'nl' : '\n',
+      'line' : 'abcd',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 6, 9 ],
       'lineIndex' : 2,
       'nl' : '\n',
+      'line' : 'abc',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n' ],
       'charInterval' : [ 2, 5 ],
       'lineIndex' : 3,
       'nl' : '\n\r',
+      'line' : 'ab',
     },
     {
       src,
       onEach,
+      'withLine' : true,
       'nlTokens' : [],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 4,
       'nl' : '\r\n',
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -2550,12 +2766,14 @@ function eachRightMultipleInInterval( test )
   [
     {
       'src' : '',
-      'onEach' : onEach,
+      onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [],
       'lineIndex' : 0,
       'nl' : '',
-      'charInterval' : [ 0, -1 ]
+      'charInterval' : [ 0, -1 ],
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -2572,12 +2790,14 @@ function eachRightMultipleInInterval( test )
   [
     {
       'src' : '',
-      'onEach' : onEach,
+      onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [],
       'lineIndex' : 0,
       'nl' : '',
-      'charInterval' : [ 0, -1 ]
+      'charInterval' : [ 0, -1 ],
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -2594,12 +2814,14 @@ function eachRightMultipleInInterval( test )
   [
     {
       'src' : '',
-      'onEach' : onEach,
+      onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [],
       'lineIndex' : 0,
       'nl' : '',
-      'charInterval' : [ 0, -1 ]
+      'charInterval' : [ 0, -1 ],
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -2616,12 +2838,14 @@ function eachRightMultipleInInterval( test )
   [
     {
       'src' : '',
-      'onEach' : onEach,
+      onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [],
       'lineIndex' : 0,
       'nl' : '',
-      'charInterval' : [ 0, -1 ]
+      'charInterval' : [ 0, -1 ],
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -2653,19 +2877,23 @@ function eachRightMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 3, 4 ],
       'lineIndex' : 0,
-      'nl' : ''
+      'nl' : '',
+      'line' : 'bb',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 0, 2 ],
       'lineIndex' : 1,
-      'nl' : '\n'
+      'nl' : '\n',
+      'line' : 'aa',
     }
   ]
   test.identical( its, exp );
@@ -2684,19 +2912,23 @@ function eachRightMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 3, 4 ],
       'lineIndex' : 0,
-      'nl' : ''
+      'nl' : '',
+      'line' : 'bb',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 0, 2 ],
       'lineIndex' : 1,
-      'nl' : '\n'
+      'nl' : '\n',
+      'line' : 'aa',
     },
   ]
   test.identical( its, exp );
@@ -2715,10 +2947,12 @@ function eachRightMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 3, 4 ],
       'lineIndex' : 0,
-      'nl' : ''
+      'nl' : '',
+      'line' : 'bb',
     }
   ]
   test.identical( its, exp );
@@ -2737,10 +2971,12 @@ function eachRightMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : '\n',
       'charInterval' : [ 0, 2 ],
       'lineIndex' : 1,
-      'nl' : '\n'
+      'nl' : '\n',
+      'line' : 'aa',
     },
   ]
   test.identical( its, exp );
@@ -2824,46 +3060,56 @@ function eachRightMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 15, 14 ],
       'lineIndex' : 0,
-      'nl' : ''
+      'nl' : '',
+      'line' : '',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 10, 14 ],
       'lineIndex' : 1,
-      'nl' : '\n'
+      'nl' : '\n',
+      'line' : 'abcd',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 6, 9 ],
       'lineIndex' : 2,
       'nl' : '\n',
+      'line' : 'abc',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n' ],
       'charInterval' : [ 2, 5 ],
       'lineIndex' : 3,
-      'nl' : '\n\r'
+      'nl' : '\n\r',
+      'line' : 'ab',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 4,
       'nl' : '\r\n',
+      'line' : '',
     },
   ]
   test.identical( its, exp );
@@ -2882,46 +3128,56 @@ function eachRightMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 15, 14 ],
       'lineIndex' : 0,
-      'nl' : ''
+      'nl' : '',
+      'line' : '',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 10, 14 ],
       'lineIndex' : 1,
-      'nl' : '\n'
+      'nl' : '\n',
+      'line' : 'abcd',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 6, 9 ],
       'lineIndex' : 2,
       'nl' : '\n',
+      'line' : 'abc',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n' ],
       'charInterval' : [ 2, 5 ],
       'lineIndex' : 3,
-      'nl' : '\n\r'
+      'nl' : '\n\r',
+      'line' : 'ab',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 4,
       'nl' : '\r\n',
+      'line' : '',
     },
   ]
   test.identical( its, exp );
@@ -2940,28 +3196,34 @@ function eachRightMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 10, 14 ],
       'lineIndex' : 1,
-      'nl' : '\n'
+      'nl' : '\n',
+      'line' : 'abcd',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 6, 9 ],
       'lineIndex' : 2,
       'nl' : '\n',
+      'line' : 'abc',
     },
     {
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n' ],
       'charInterval' : [ 2, 5 ],
       'lineIndex' : 3,
-      'nl' : '\n\r'
+      'nl' : '\n\r',
+      'line' : 'ab',
     },
   ]
   test.identical( its, exp );
@@ -2980,10 +3242,12 @@ function eachRightMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 6, 9 ],
       'lineIndex' : 2,
       'nl' : '\n',
+      'line' : 'abc',
     },
   ]
   test.identical( its, exp );
@@ -3002,10 +3266,12 @@ function eachRightMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 15, 14 ],
       'lineIndex' : 0,
       'nl' : '',
+      'line' : '',
     },
   ]
   test.identical( its, exp );
@@ -3024,10 +3290,12 @@ function eachRightMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 15, 14 ],
       'lineIndex' : 0,
       'nl' : '',
+      'line' : '',
     },
   ]
   test.identical( its, exp );
@@ -3046,10 +3314,12 @@ function eachRightMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 4,
-      'nl' : '\r\n'
+      'nl' : '\r\n',
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -3068,10 +3338,12 @@ function eachRightMultipleInInterval( test )
       src,
       onEach,
       interval,
+      'withLine' : true,
       'nlTokens' : [],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 4,
-      'nl' : '\r\n'
+      'nl' : '\r\n',
+      'line' : '',
     }
   ]
   test.identical( its, exp );
@@ -3172,6 +3444,57 @@ function eachRightMultipleInInterval( test )
   {
     its = [];
   }
+
+  /* */
+
+}
+
+//
+
+function eachRightCallbacks()
+{
+
+  /* */
+
+  test.case = 'interval:0 withLine:0';
+  clean();
+  var src = `aa\nbb\r\ncc`;
+  _.str.lines.eachRight({ src, onEach });
+  var exp =
+  [
+    {
+      src,
+      onEach,
+      'withLine' : false,
+      'nlTokens' : [ '\r\n', '\n' ],
+      'charInterval' : [ 7, 8 ],
+      'lineIndex' : 0,
+      'nl' : '',
+      'line' : 'cc',
+    },
+    {
+      src,
+      onEach,
+      'withLine' : false,
+      'nlTokens' : [ '\n' ],
+      'charInterval' : [ 3, 6 ],
+      'lineIndex' : 1,
+      'nl' : '\r\n',
+      'line' : 'bb',
+    },
+    {
+      src,
+      onEach,
+      'withLine' : false,
+      'nlTokens' : [],
+      'charInterval' : [ 0, 2 ],
+      'lineIndex' : 2,
+      'nl' : '\n',
+      'line' : 'aa',
+    },
+  ]
+  test.identical( its, exp );
+  test.identical( src.length, 9 );
 
   /* */
 
@@ -3864,6 +4187,7 @@ const Proto =
     eachLeftCustomToken,
     eachLeftMultiple,
     eachLeftMultipleInInterval,
+    // eachLeftCallbacks,
     atLeftSingle,
     atLeftCustomToken,
     atLeftMultiple,
@@ -3872,6 +4196,7 @@ const Proto =
     eachRightCustomToken,
     eachRightMultiple,
     eachRightMultipleInInterval,
+    eachRightCallbacks,
     atRightSingle,
     atRightCustomToken,
     atRightMultiple,
