@@ -3458,8 +3458,9 @@ function eachRightCallbacks()
 
   test.case = 'interval:0 withLine:0';
   clean();
+  var withLine = false;
   var src = `aa\nbb\r\ncc`;
-  _.str.lines.eachRight({ src, onEach });
+  _.str.lines.eachRight({ src, withLine, onEach });
   var exp =
   [
     {
