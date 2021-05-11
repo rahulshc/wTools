@@ -1369,6 +1369,99 @@ function eachLeftMultipleInInterval( test )
 
 //
 
+function eachLeftCallbacks( test )
+{
+  let its;
+
+  act({ interval : 0, withLine : 0 });
+  act({ interval : 0, withLine : 1 });
+  act({ interval : 1, withLine : 0 });
+  act({ interval : 1, withLine : 1 });
+
+  /* */
+
+  function act( env )
+  {
+    test.case = `${__.entity.exportStringSolo( env )}`;
+
+    clean();
+    var src = `aa\nbb\r\ncc`;
+    var o = { src, onEach, withLine : env.withLine };
+    if( env.interval )
+    o.interval = [ 0, 2 ];
+    _.str.lines.eachLeft( o );
+    var exp =
+    [
+      {
+        src,
+        onEach,
+        'withLine' : env.withLine,
+        'nlTokens' : [ '\r\n', '\n' ],
+        'charInterval' : [ 0, 2 ],
+        'lineIndex' : 0,
+        'nl' : '\n',
+      },
+      {
+        src,
+        onEach,
+        'withLine' : env.withLine,
+        'nlTokens' : [ '\r\n', '\n' ],
+        'charInterval' : [ 3, 6 ],
+        'lineIndex' : 1,
+        'nl' : '\r\n',
+      },
+      {
+        src,
+        onEach,
+        'withLine' : env.withLine,
+        'nlTokens' : [],
+        'charInterval' : [ 7, 8 ],
+        'lineIndex' : 2,
+        'nl' : '',
+      },
+    ]
+    if( env.withLine )
+    {
+      exp[ 0 ].line = 'aa';
+      exp[ 1 ].line = 'bb';
+      exp[ 2 ].line = 'cc';
+    }
+    if( env.interval )
+    {
+      exp[ 0 ].interval = [ 0, 2 ];
+      exp[ 1 ].interval = [ 0, 2 ];
+      exp[ 2 ].interval = [ 0, 2 ];
+    }
+    test.identical( its, exp );
+    test.identical( src.length, 9 );
+
+  }
+
+  /* */
+
+  function onEach( it )
+  {
+    it = _.props.extend( null, it );
+    it.charInterval = it.charInterval.slice();
+    it.nlTokens = it.nlTokens.slice();
+    if( it.interval )
+    it.interval = it.interval.slice();
+    its.push( it );
+  }
+
+  /* */
+
+  function clean()
+  {
+    its = [];
+  }
+
+  /* */
+
+}
+
+//
+
 function atLeftSingle( test )
 {
 
@@ -3451,51 +3544,92 @@ function eachRightMultipleInInterval( test )
 
 //
 
-function eachRightCallbacks()
+function eachRightCallbacks( test )
 {
+  let its;
+
+  act({ interval : 0, withLine : 0 });
+  act({ interval : 0, withLine : 1 });
+  act({ interval : 1, withLine : 0 });
+  act({ interval : 1, withLine : 1 });
 
   /* */
 
-  test.case = 'interval:0 withLine:0';
-  clean();
-  var withLine = false;
-  var src = `aa\nbb\r\ncc`;
-  _.str.lines.eachRight({ src, withLine, onEach });
-  var exp =
-  [
+  function act( env )
+  {
+    test.case = `${__.entity.exportStringSolo( env )}`;
+
+    clean();
+    var src = `aa\nbb\r\ncc`;
+    var o = { src, onEach, withLine : env.withLine };
+    if( env.interval )
+    o.interval = [ 0, 2 ];
+    _.str.lines.eachRight( o );
+    var exp =
+    [
+      {
+        src,
+        onEach,
+        'withLine' : env.withLine,
+        'nlTokens' : [ '\r\n', '\n' ],
+        'charInterval' : [ 7, 8 ],
+        'lineIndex' : 0,
+        'nl' : '',
+      },
+      {
+        src,
+        onEach,
+        'withLine' : env.withLine,
+        'nlTokens' : [ '\n' ],
+        'charInterval' : [ 3, 6 ],
+        'lineIndex' : 1,
+        'nl' : '\r\n',
+      },
+      {
+        src,
+        onEach,
+        'withLine' : env.withLine,
+        'nlTokens' : [],
+        'charInterval' : [ 0, 2 ],
+        'lineIndex' : 2,
+        'nl' : '\n',
+      },
+    ]
+    if( env.withLine )
     {
-      src,
-      onEach,
-      'withLine' : false,
-      'nlTokens' : [ '\r\n', '\n' ],
-      'charInterval' : [ 7, 8 ],
-      'lineIndex' : 0,
-      'nl' : '',
-      'line' : 'cc',
-    },
+      exp[ 0 ].line = 'cc';
+      exp[ 1 ].line = 'bb';
+      exp[ 2 ].line = 'aa';
+    }
+    if( env.interval )
     {
-      src,
-      onEach,
-      'withLine' : false,
-      'nlTokens' : [ '\n' ],
-      'charInterval' : [ 3, 6 ],
-      'lineIndex' : 1,
-      'nl' : '\r\n',
-      'line' : 'bb',
-    },
-    {
-      src,
-      onEach,
-      'withLine' : false,
-      'nlTokens' : [],
-      'charInterval' : [ 0, 2 ],
-      'lineIndex' : 2,
-      'nl' : '\n',
-      'line' : 'aa',
-    },
-  ]
-  test.identical( its, exp );
-  test.identical( src.length, 9 );
+      exp[ 0 ].interval = [ 0, 2 ];
+      exp[ 1 ].interval = [ 0, 2 ];
+      exp[ 2 ].interval = [ 0, 2 ];
+    }
+    test.identical( its, exp );
+    test.identical( src.length, 9 );
+
+  }
+
+  /* */
+
+  function onEach( it )
+  {
+    it = _.props.extend( null, it );
+    it.charInterval = it.charInterval.slice();
+    it.nlTokens = it.nlTokens.slice();
+    if( it.interval )
+    it.interval = it.interval.slice();
+    its.push( it );
+  }
+
+  /* */
+
+  function clean()
+  {
+    its = [];
+  }
 
   /* */
 
@@ -4188,7 +4322,7 @@ const Proto =
     eachLeftCustomToken,
     eachLeftMultiple,
     eachLeftMultipleInInterval,
-    // eachLeftCallbacks,
+    eachLeftCallbacks,
     atLeftSingle,
     atLeftCustomToken,
     atLeftMultiple,
