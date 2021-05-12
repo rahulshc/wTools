@@ -1389,7 +1389,30 @@ function eachLeftCallbacks( test )
     var o = { src, onEach, withLine : env.withLine };
     if( env.interval )
     o.interval = [ 0, 2 ];
-    _.str.lines.eachLeft( o );
+    var got = _.str.lines.eachLeft( o );
+    test.true( o === got );
+    var exp =
+    {
+      src,
+      onEach,
+      'withLine' : env.withLine,
+      'nlTokens' : [],
+      'charInterval' : [ 9, 8 ],
+      'lineIndex' : 3,
+      'nl' : '',
+    }
+    if( env.withLine )
+    exp.line = '';
+    if( env.interval )
+    {
+      exp.interval = [ 0, 2 ];
+      exp.charInterval = [ 7, 8 ];
+      exp.lineIndex = 2;
+      if( env.withLine )
+      exp.line = 'cc';
+    }
+    test.identical( o, exp );
+
     var exp =
     [
       {
@@ -3564,7 +3587,31 @@ function eachRightCallbacks( test )
     var o = { src, onEach, withLine : env.withLine };
     if( env.interval )
     o.interval = [ 0, 2 ];
-    _.str.lines.eachRight( o );
+
+    var got = _.str.lines.eachRight( o );
+    test.true( o === got );
+    var exp =
+    {
+      src,
+      onEach,
+      'withLine' : env.withLine,
+      'nlTokens' : [],
+      'charInterval' : [ 0, -1 ],
+      'lineIndex' : 3,
+      'nl' : '\n',
+    }
+    if( env.withLine )
+    exp.line = '';
+    if( env.interval )
+    {
+      exp.interval = [ 0, 2 ];
+      exp.charInterval = [ 0, 2 ];
+      exp.lineIndex = 2;
+      if( env.withLine )
+      exp.line = 'aa';
+    }
+    test.identical( o, exp );
+
     var exp =
     [
       {

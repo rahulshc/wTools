@@ -1469,6 +1469,15 @@ function _eachLeft( o )
   else
   multiple();
 
+  if( !o.interval || o.lineIndex < o.interval[ 1 ] )
+  {
+    o.lineIndex += 1;
+    o.charInterval[ 0 ] = src.length;
+    _.assert( o.charInterval[ 1 ] === src.length - 1 );
+    if( o.withLine )
+    o.line = '';
+  }
+
   return o;
 
   /* */
@@ -1748,6 +1757,15 @@ function _eachRight( o )
   single();
   else
   multiple();
+
+  if( !o.interval || o.lineIndex < o.interval[ 1 ] )
+  {
+    o.lineIndex += 1;
+    o.charInterval[ 1 ] = -1;
+    _.assert( o.charInterval[ 0 ] === 0 );
+    if( o.withLine )
+    o.line = '';
+  }
 
   return o;
 

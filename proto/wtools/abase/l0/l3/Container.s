@@ -90,66 +90,13 @@ cardinalWithKey.functor = _functor_functor( 'cardinalWithKey' );
 // editor
 // --
 
-/**
- * The routine empty() clears provided src {-dstContainer-}.
- *
- * @param { Long|Set|HashMap|Aux } dstContainer - Container to be cleared. {-dstContainer-} should be resizable.
- *
- * @example
- * let dst = [];
- * let got = _.src.empty( dst );
- * console.log( got );
- * // log []
- * console.log( got === dst );
- * log true
- *
- * @example
- * let dst = [ 1, 'str', { a : 2 } ];
- * let got = _.src.empty( dst );
- * console.log( got );
- * // log []
- * console.log( got === dst );
- * // log true
- *
- * @example
- * let dst = _.unroll.make( [ 1, 'str', { a : 2 } ] );
- * let got = _.src.empty( dst );
- * console.log( got );
- * // log []
- * console.log( got === dst );
- * // log true
- *
- * @example
- * let dst = new Set( [ 1, 'str', { a : 2 } ] );
- * let got = _.src.empty( dst );
- * console.log( got );
- * // log Set {}
- * console.log( got === dst );
- * // log true
- *
- * @example
- * let dst = new HashMap( [ [ 1, 'str' ], [ 'a', null ] ] );
- * let got = _.src.empty( dst );
- * console.log( got );
- * // log Map {}
- * console.log( got === dst );
- * // log true
- *
- * @returns { Long|Set|HashMap|Aux } - Returns a empty {-dstContainer-}.
- * @function empty
- * @throws { Error } If arguments.length is less than one.
- * @throws { Error } If {-dstContainer-} is not a Long, not a Set, not a HashMap, not a Aux.
- * @throws { Error } If {-dstContainer-} is not a resizable Long, or if it is a WeakSet or WeakMap.
- * @namespace Tools
- */
-
-function empty( src ) /* qqq for junior : cover please */
-{
-  _.assert( arguments.length === 1 );
-  return empty.functor.call( this, src )();
-}
-
-empty.functor = _functor_functor( 'empty' );
+// function empty( src ) /* qqq for junior : cover please */
+// {
+//   _.assert( arguments.length === 1 );
+//   return empty.functor.call( this, src )();
+// }
+//
+// empty.functor = _functor_functor( 'empty' );
 
 //
 
@@ -275,13 +222,114 @@ elementWithCardinalSet.functor = _functor_functor( 'elementWithCardinalSet' );
 function elementSet( src, key, val )
 {
   _.assert( arguments.length === 3 );
-  _.assert( _.numberIs( key ) );
   return elementSet.functor.call( this, src )( key, val );
 }
 
 elementSet.functor = _functor_functor( 'elementSet' );
 
+// --
 //
+// --
+
+function elementDel( src, key )
+{
+  _.assert( arguments.length === 2 );
+  return elementDel.functor.call( this, src )( key, val );
+}
+
+elementDel.functor = _functor_functor( 'elementDel' );
+
+//
+
+function elementWithKeyDel( src, key )
+{
+  _.assert( arguments.length === 2 );
+  return elementWithKeyDel.functor.call( this, src )( key, val );
+}
+
+elementWithKeyDel.functor = _functor_functor( 'elementWithKeyDel' );
+
+//
+
+function elementWithCardinalDel( src, key )
+{
+  _.assert( arguments.length === 2 );
+  return elementWithCardinalDel.functor.call( this, src )( key, val );
+}
+
+elementWithCardinalDel.functor = _functor_functor( 'elementWithCardinalDel' );
+
+//
+
+/**
+ * The routine empty() clears provided src {-dstContainer-}.
+ *
+ * @param { Long|Set|HashMap|Aux } dstContainer - Container to be cleared. {-dstContainer-} should be resizable.
+ *
+ * @example
+ * let dst = [];
+ * let got = _.src.empty( dst );
+ * console.log( got );
+ * // log []
+ * console.log( got === dst );
+ * log true
+ *
+ * @example
+ * let dst = [ 1, 'str', { a : 2 } ];
+ * let got = _.src.empty( dst );
+ * console.log( got );
+ * // log []
+ * console.log( got === dst );
+ * // log true
+ *
+ * @example
+ * let dst = _.unroll.make( [ 1, 'str', { a : 2 } ] );
+ * let got = _.src.empty( dst );
+ * console.log( got );
+ * // log []
+ * console.log( got === dst );
+ * // log true
+ *
+ * @example
+ * let dst = new Set( [ 1, 'str', { a : 2 } ] );
+ * let got = _.src.empty( dst );
+ * console.log( got );
+ * // log Set {}
+ * console.log( got === dst );
+ * // log true
+ *
+ * @example
+ * let dst = new HashMap( [ [ 1, 'str' ], [ 'a', null ] ] );
+ * let got = _.src.empty( dst );
+ * console.log( got );
+ * // log Map {}
+ * console.log( got === dst );
+ * // log true
+ *
+ * @returns { Long|Set|HashMap|Aux } - Returns a empty {-dstContainer-}.
+ * @function empty
+ * @throws { Error } If arguments.length is less than one.
+ * @throws { Error } If {-dstContainer-} is not a Long, not a Set, not a HashMap, not a Aux.
+ * @throws { Error } If {-dstContainer-} is not a resizable Long, or if it is a WeakSet or WeakMap.
+ * @namespace Tools
+ */
+
+function empty( src )
+{
+  _.assert( arguments.length === 1 );
+  return empty.functor.call( this, src )();
+}
+
+empty.functor = _functor_functor( 'empty' );
+
+  // elementDel, /* qqq : cover */
+  // elementWithKeyDel, /* qqq : cover */
+  // elementWithCardinalDel,  /* qqq : cover */
+  // empty, /* qqq : for junior : cover */
+
+// --
+// iterator
+// --
 
 function eachLeft( src, onEach )
 {
@@ -446,7 +494,7 @@ let ContainerExtension =
 
   // editor
 
-  empty, /* qqq : cover */
+  // empty, /* qqq : cover */
 
   // elementor
 
@@ -455,6 +503,11 @@ let ContainerExtension =
   elementWithImplicit, /* qqq : cover */
   elementWithCardinalSet, /* qqq : cover */
   elementSet, /* qqq : cover */
+
+  elementDel, /* qqq : cover */
+  elementWithKeyDel, /* qqq : cover */
+  elementWithCardinalDel,  /* qqq : cover */
+  empty, /* qqq : for junior : cover */
 
   // iterator
 

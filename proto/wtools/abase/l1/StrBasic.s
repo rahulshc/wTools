@@ -1104,6 +1104,11 @@ function strEscape( o )
         result += '\\t';
         break;
 
+      /* qqq : cover the case, please */
+      case 0x0b /* '\v' */ :
+        result += '\\v';
+        break;
+
       default :
         if( code < 32 )
         {

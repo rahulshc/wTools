@@ -486,6 +486,13 @@ let EntityExtension =
   elementWithCardinalSet : _.container.elementWithCardinalSet, /* qqq : cover */
   elementSet : _.container.elementSet, /* qqq : cover */
 
+  elementDel : _.container.elementDel, /* qqq : cover */
+  elementWithKeyDel : _.container.elementWithKeyDel, /* qqq : cover */
+  elementWithCardinalDel : _.container.elementWithCardinalDel,  /* qqq : cover */
+  empty : _.container.empty, /* qqq : for junior : cover */
+
+  // iterator
+
   each : _.container.each, /* qqq : cover */
   eachLeft : _.container.eachLeft, /* qqq : cover */
   eachRight : _.container.eachRight, /* qqq : cover */

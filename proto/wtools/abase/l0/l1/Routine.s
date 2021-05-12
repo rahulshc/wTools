@@ -1979,7 +1979,7 @@ function unite_body( o )
   {
     let o = args[ 0 ];
     _.assert( arguments.length === 2 );
-    _.assert( args.length === 0 || args.length === 1 );
+    _.assert( args.length === 0 || args.length === 1, () => `Expects optional argument, but got ${args.length} arguments` );
     _.assert( args.length === 0 || o === undefined || o === null || _.auxIs( o ) );
     return o || null;
   }
@@ -1990,7 +1990,7 @@ function unite_body( o )
   {
     let o = args[ 0 ];
     _.assert( arguments.length === 2 );
-    _.assert( args.length === 0 || args.length === 1 );
+    _.assert( args.length === 0 || args.length === 1, () => `Expects optional argument, but got ${args.length} arguments` );
     _.assert( args.length === 0 || o === undefined || o === null || _.auxIs( o ) );
     return _.routine.options( routine, o || Object.create( null ) );
   }
