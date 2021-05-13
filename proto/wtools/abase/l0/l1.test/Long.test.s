@@ -8759,210 +8759,75 @@ function longRight( test )
 function performance( test )
 {
    /*
-    Average of 10 runs of 50 million iteration of each test case
+    Average of 10 runs of 50 million iteration of 13 _.long.is variations
     Values below are in seconds
-    |-------------------|-------------------|
-    | **Njs : v16.1.0** |**Njs : v14.16.1** |
-    | :---------------: |:---------------:  |
-    | 11.3262481598487  | 13.4397384615385  |            |
-    |-------------------|-------------------|
+    |-------------------|-------------------|-------------------|
+    |                   |   debug: false    |   debug: true     |
+    | :---------------: |:---------------:  |:---------------:  |
+    | **Njs : v10.24.1**|  7.03573076923077 | 7.28983846153846  |
+    |-------------------|-------------------|-------------------|
+    | **Njs : v12.22.1**|                   |                   |
+    |-------------------|-------------------|-------------------|
+    | **Njs : v14.17.0**|                   |                   |
+    |-------------------|-------------------|-------------------|
+    | **Njs : v15.14.0**|                   |                   |
+    |-------------------|-------------------|-------------------|
   */
+  var debugFlag = Config.debug;
+  Config.debug = false;
 
-  test.case = 'an empty array';
-  var took = 0;
+  test.case = '50 million iterations';
   var times = 50000000;
-  var time;
-  for( let i = times; i > 0; i-- )
-  {
-    time = _.time.now();
-    _.long.is( [] );
-    took += _.time.now() - time;
-  }
-  measure( test, _.long.is( [] ), true, times, took );
+
+  var result = runIterations( times );
+  measure( test, times, result );
+  test.identical( true, true );
+
+  Config.debug = debugFlag;
 
   /* - */
 
-  test.case = 'an array';
-  var took = 0;
-  var times = 50000000;
-  var time;
-  for( let i = times; i > 0; i-- )
+  function measure( test, times, result )
   {
-    time = _.time.now();
-    _.long.is( [ 1, 2, 3 ] );
-    took += _.time.now() - time;
+    console.log( `${times} iterations of ${test.case} took : ${result / ( 13 * 1000 ) }s on ${process.version}` );
   }
-  measure( test, _.long.is( [ 1, 2, 3 ] ), true, times, took );
 
-  /* - */
-
-  test.case = 'a pseudo array';
-  var took = 0;
-  var times = 50000000;
-  var time;
-  for( let i = times; i > 0; i-- )
+  function runIterations( times )
   {
-    time = _.time.now();
-    _.long.is( arguments );
-    took += _.time.now() - time;
-  }
-  measure( test, _.long.is( arguments ), true, times, took );
-
-  /* - */
-
-  test.case = 'raw array buffer';
-  var took = 0;
-  var times = 50000000;
-  var arr = new BufferRaw( 10 );
-  var time;
-  for( let i = times; i > 0; i-- )
-  {
-    time = _.time.now();
-    _.long.is( arr );
-    took += _.time.now() - time;
-  }
-  measure( test, _.long.is( arr ), false, times, took );
-
-  /* - */
-
-  test.case = 'typed array buffer';
-  var took = 0;
-  var times = 50000000;
-  var arr = new F32x( 10 );
-  var time;
-  for( let i = times; i > 0; i-- )
-  {
-    time = _.time.now();
-     _.long.is( arr );
-    took += _.time.now() - time;
-  }
-  measure( test, _.long.is( arr ), true, times, took );
-
-  /* - */
-
-  test.case = 'no argument';
-  var took = 0;
-  var times = 50000000;
-  var time;
-  for( let i = times; i > 0; i-- )
-  {
-    time = _.time.now();
-    _.long.is();
-    took += _.time.now() - time;
-  }
-  measure( test, _.long.is(), false, times, took );
-
-  /* - */
-
-  test.case = 'null';
-  var took = 0;
-  var times = 50000000;
-  var time;
-  for( let i = times; i > 0; i-- )
-  {
-    time = _.time.now();
-    _.long.is( null );
-    took += _.time.now() - time;
-  }
-  measure( test, _.long.is( null ), false, times, took );
-
-  /* - */
-
-  test.case = 'function';
-  var took = 0;
-  var times = 50000000;
-  var time;
-  for( let i = times; i > 0; i-- )
-  {
-    time = _.time.now();
-    _.long.is( function() {} );
-    took += _.time.now() - time;
-  }
-  measure( test, _.long.is( function() {} ), false, times, took );
-
-  /* - */
-
-  test.case = 'string';
-  var took = 0;
-  var times = 50000000;
-  var time;
-  for( let i = times; i > 0; i-- )
-  {
-    time = _.time.now();
-    _.long.is( 'x' );
-    took += _.time.now() - time;
-  }
-  measure( test, _.long.is( 'x' ), false, times, took );
-
-  /* - */
-
-  test.case = 'number';
-  var took = 0;
-  var times = 50000000;
-  var time;
-  for( let i = times; i > 0; i-- )
-  {
-    time = _.time.now();
-    _.long.is( 1 );
-    took += _.time.now() - time;
-  }
-  measure( test, _.long.is( 1 ), false, times, took );
-
-  /* - */
-
-  test.case = 'boolean';
-  var took = 0;
-  var times = 50000000;
-  var time;
-  for( let i = times; i > 0; i-- )
-  {
-    time = _.time.now();
-    _.long.is( false );
-    took += _.time.now() - time;
-  }
-  measure( test, _.long.is( false ), false, times, took );
-
-  /* - */
-
-  test.case = 'object';
-  var took = 0;
-  var times = 50000000;
-  var time;
-  for( let i = times; i > 0; i-- )
-  {
-    time = _.time.now();
-    _.long.is( {} );
-    took += _.time.now() - time;
-  }
-  measure( test, _.long.is( {} ), false, times, took );
-
-  /* - */
-
-  test.case = 'object with fields and iteraor method';
-  var took = 0;
-  var times = 50000000;
-  var time;
-  var src = new function()
-  {
-    this[ Symbol.iterator ] = function ()
+    var took = 0;
+    var time;
+    var arr = new BufferRaw( 10 );
+    var arr1 = new F32x( 10 );
+    var src = new function()
     {
-      return { next() { return { done : true } } }
+      this[ Symbol.iterator ] = function ()
+      {
+        return { next() { return { done : true } } }
+      }
     }
-  }
-  for( let i = times; i > 0; i-- )
-  {
-    time = _.time.now();
-    _.long.is( src );
-    took += _.time.now() - time;
-  }
-  measure( test, _.long.is( src ), false, times, took );
 
-  /* - */
+    for( let i = times; i > 0; i-- )
+    {
+      time = _.time.now();
 
-  function measure( test, got, expected, times, took )
-  {
-    test.identical( got, expected );
-    console.log( `${times} iterations of ${test.case} took : ${took / 1000 }s on ${process.version}` );
+      _.long.is( [] );
+      _.long.is( [ 1, 2, 3 ] );
+      _.long.is( arguments );
+      _.long.is( arr );
+      _.long.is( arr1 );
+      _.long.is();
+      _.long.is( null );
+      _.long.is( function() {} );
+      _.long.is( 'x' );
+      _.long.is( 1 );
+      _.long.is( false );
+      _.long.is( {} );
+      _.long.is( src );
+
+      took += _.time.now() - time;
+    }
+
+    return took;
   }
 }
 
