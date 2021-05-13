@@ -8787,17 +8787,12 @@ function performance( test )
   }
   took = __.time.spent( time );
 
-  measure();
+  console.log( `${env.times} iterations of ${test.case} took : ${took}s on ${process.version}` );
   test.identical( true, true );
 
   Config.debug = debugFlag;
 
   /* - */
-
-  function measure()
-  {
-    console.log( `${env.times} iterations of ${test.case} took : ${took}s on ${process.version}` );
-  }
 
   function initializeVariables()
   {
