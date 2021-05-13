@@ -8777,45 +8777,52 @@ function performance( test )
   Config.debug = false;
 
   test.case = '50 million iterations';
-  var times = 50000000;
-  var took = 0;
-  var time;
-  var arr = new BufferRaw( 10 );
-  var arr1 = new F32x( 10 );
-  var src = new function()
-  {
-    this[ Symbol.iterator ] = function ()
-    {
-      return { next() { return { done : true } } }
-    }
-  }
+  var took, time;
+  var env = initializeVariables();
 
   time = _.time.now();
-  for( let i = times; i > 0; i-- )
+  for( let i = env.times; i > 0; i-- )
   {
-    runVariations();
+    runVariations( env );
   }
   took = _.time.now() - time;
 
-  measure( test, times, took );
+  measure();
   test.identical( true, true );
 
   Config.debug = debugFlag;
 
   /* - */
 
-  function measure( test, times, result )
+  function measure()
   {
-    console.log( `${times} iterations of ${test.case} took : ${took / ( 13 * 1000 ) }s on ${process.version}` );
+    console.log( `${env.times} iterations of ${test.case} took : ${took / ( 13 * 1000 ) }s on ${process.version}` );
   }
 
-  function runVariations( times )
+  function initializeVariables()
+  {
+    var env = {};
+    env.times = 50000000;
+    env.arr = new BufferRaw( 10 );
+    env.arr1 = new F32x( 10 );
+    env.src = new function()
+    {
+      this[ Symbol.iterator ] = function ()
+      {
+        return { next() { return { done : true } } }
+      }
+    }
+
+    return env;
+  }
+
+  function runVariations( env )
   {
     _.long.is( [] );
     _.long.is( [ 1, 2, 3 ] );
     _.long.is( arguments );
-    _.long.is( arr );
-    _.long.is( arr1 );
+    _.long.is( env.arr );
+    _.long.is( env.arr1 );
     _.long.is();
     _.long.is( null );
     _.long.is( function() {} );
@@ -8823,7 +8830,7 @@ function performance( test )
     _.long.is( 1 );
     _.long.is( false );
     _.long.is( {} );
-    _.long.is( src );
+    _.long.is( env.src );
   }
 }
 
