@@ -8764,13 +8764,13 @@ function performance( test )
     |-------------------|-------------------|-------------------|
     |                   |   debug: false    |   debug: true     |
     | :---------------: |:---------------:  |:---------------:  |
-    | **Njs : v10.24.1**|                   |                   |
+    | **Njs : v10.24.1**|    8.3735         |    8.4341         |
     |-------------------|-------------------|-------------------|
-    | **Njs : v12.22.1**|                   |                   |
+    | **Njs : v12.22.1**|    9.6773         |    9.3832         |
     |-------------------|-------------------|-------------------|
-    | **Njs : v14.17.0**|                   |                   |
+    | **Njs : v14.17.0**|    12.3397        |    13.1611        |
     |-------------------|-------------------|-------------------|
-    | **Njs : v15.14.0**|                   |                   |
+    | **Njs : v15.14.0**|   10.3089         |    10.0833        |
     |-------------------|-------------------|-------------------|
   */
   var debugFlag = Config.debug;
@@ -8787,7 +8787,7 @@ function performance( test )
   }
   took = __.time.spent( time );
 
-  console.log( `${env.times} iterations of ${test.case} took : ${took}s on ${process.version}` );
+  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
   test.identical( true, true );
 
   Config.debug = debugFlag;
