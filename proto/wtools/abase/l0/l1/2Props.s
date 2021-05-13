@@ -451,8 +451,8 @@ function supplement( dstMap, srcMap )
   if( dstMap === null )
   dstMap = Object.create( null );
 
-  // _.assert( arguments.length >= 2, 'Expects at least two arguments' );
-  // _.assert( this.like( dstMap ), () => `Expects dstMap::${this.NamespaceName} as the first argument` );
+  _.assert( arguments.length >= 2, 'Expects at least two arguments' );
+  _.assert( this.like( dstMap ), () => `Expects dstMap::${this.NamespaceName} as the first argument` );
 
   for( let a = 1 ; a < arguments.length ; a++ )
   {

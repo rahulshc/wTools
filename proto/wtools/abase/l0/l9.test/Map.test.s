@@ -69,253 +69,253 @@ function mapCloneAssigning( test )
   });
 
 }
-
 //
-
-function mapExtend( test )
-{
-  test.open( 'first argument is null' );
-
-  test.case = 'trivial';
-  var src1 = { a : 1, b : 2 };
-  var src1Copy = { a : 1, b : 2 };
-  var src2 = { c : 3, d : 4 };
-  var src2Copy = { c : 3, d : 4 };
-  var got = _.props.extend( null, src1, src2 );
-  var expected = { a : 1, b : 2, c : 3, d : 4 };
-  test.will = 'return';
-  test.identical( got, expected );
-  test.will = 'preserve src1';
-  test.identical( src1, src1Copy );
-  test.will = 'preserve src2';
-  test.identical( src2, src2Copy );
-  test.will = 'return not src1';
-  test.true( got !== src1 );
-  test.will = 'return not src2';
-  test.true( got !== src2 );
-
-  /* */
-
-  test.case = 'rewriting';
-  var src1 = { a : 1, b : 2 };
-  var src1Copy = { a : 1, b : 2 };
-  var src2 = { b : 22, c : 3, d : 4 };
-  var src2Copy = { b : 22, c : 3, d : 4 };
-  var got = _.props.extend( null, src1, src2 );
-  var expected = { a : 1, b : 22, c : 3, d : 4 };
-  test.will = 'return';
-  test.identical( got, expected );
-  test.will = 'preserve src1';
-  test.identical( src1, src1Copy );
-  test.will = 'preserve src2';
-  test.identical( src2, src2Copy );
-  test.will = 'return not src1';
-  test.true( got !== src1 );
-  test.will = 'return not src2';
-  test.true( got !== src2 );
-
-  test.close( 'first argument is null' );
-
-  /* - */
-
-  test.open( 'first argument is dst' );
-
-  test.case = 'trivial';
-  var dst = { a : 1, b : 2 };
-  var src2 = { c : 3, d : 4 };
-  var src2Copy = { c : 3, d : 4 };
-  var got = _.props.extend( dst, src2 );
-  var expected = { a : 1, b : 2, c : 3, d : 4 };
-  test.will = 'return';
-  test.identical( got, expected );
-  test.will = 'preserve src2';
-  test.identical( src2, src2Copy );
-  test.will = 'return dst';
-  test.true( got === dst );
-  test.will = 'return not src2';
-  test.true( got !== src2 );
-
-  /* */
-
-  test.case = 'rewriting';
-  var dst = { a : 1, b : 2 };
-  var src2 = { b : 22, c : 3, d : 4 };
-  var src2Copy = { b : 22, c : 3, d : 4 };
-  var got = _.props.extend( dst, src2 );
-  var expected = { a : 1, b : 22, c : 3, d : 4 };
-  test.will = 'return';
-  test.identical( got, expected );
-  test.will = 'preserve src2';
-  test.identical( src2, src2Copy );
-  test.will = 'return not dst';
-  test.true( got === dst );
-  test.will = 'return not src2';
-  test.true( got !== src2 );
-
-  test.close( 'first argument is dst' );
-
-  /* - */
-
-  test.case = 'trivial, first argument';
-  var src1 = { a : 7, b : 13 };
-  var src1Copy = { a : 7, b : 13 };
-  var src2 = { c : 3, d : 33 };
-  var src2Copy = { c : 3, d : 33 };
-  var got = _.props.extend( src1, src2 );
-  var expected = { a : 7, b : 13, c : 3, d : 33 };
-  test.identical( got, expected );
-  test.identical( src2, src2Copy );
-  test.true( got === src1 );
-  test.true( got !== src2 );
-
-  test.case = 'complex, first argument is null';
-  var src1 = { a : 1, b : 1, c : 1, z : 1 };
-  var src1Copy = { a : 1, b : 1, c : 1, z : 1 };
-  var src2 = { a : 2, c : 2, d : 2 };
-  var src2Copy = { a : 2, c : 2, d : 2 };
-  var src3 = { a : 3, b : 3, e : 3 };
-  var src3Copy = { a : 3, b : 3, e : 3 };
-  var got = _.props.extend( null, src1, src2, src3 );
-  var expected = { a : 3, b : 3, c : 2, d : 2, e : 3, z : 1 };
-  test.identical( got, expected );
-  test.identical( src1, src1Copy );
-  test.identical( src2, src2Copy );
-  test.identical( src3, src3Copy );
-  test.true( got !== src1 );
-  test.true( got !== src2 );
-  test.true( got !== src3 );
-
-  test.case = 'complex, first argument is not null';
-  var src1 = { a : 1, b : 1, c : 1, z : 1 };
-  var src1Copy = { a : 1, b : 1, c : 1, z : 1 };
-  var src2 = { a : 2, c : 2, d : 2 };
-  var src2Copy = { a : 2, c : 2, d : 2 };
-  var src3 = { a : 3, b : 3, e : 3 };
-  var src3Copy = { a : 3, b : 3, e : 3 };
-  var got = _.props.extend( src1, src2, src3 );
-  var expected = { a : 3, b : 3, c : 2, d : 2, e : 3, z : 1 };
-  test.identical( got, expected );
-  test.identical( src2, src2Copy );
-  test.identical( src3, src3Copy );
-  test.true( got === src1 );
-  test.true( got !== src2 );
-  test.true( got !== src3 );
-
-  test.case = 'extend pure map by empty strings, first argument is null';
-  var src1 = Object.create( null );
-  src1.a = '1';
-  src1.b = '1';
-  src1.c = '1';
-  src1.z = '1';
-  var src1Copy = Object.create( null );
-  src1Copy.a = '1';
-  src1Copy.b = '1';
-  src1Copy.c = '1';
-  src1Copy.z = '1';
-  var src2 = Object.create( null );
-  src2.a = '';
-  src2.c = '';
-  src2.d = '';
-  src2.e = '2';
-  var src2Copy = Object.create( null );
-  src2Copy.a = '';
-  src2Copy.c = '';
-  src2Copy.d = '';
-  src2Copy.e = '2';
-  var got = _.props.extend( null, src1, src2 );
-  var expected = { a : '', b : '1', c : '', d : '', e : '2', z : '1' };
-  test.identical( got, expected );
-  test.identical( src1, src1Copy );
-  test.identical( src2, src2Copy );
-  test.true( got !== src1 );
-  test.true( got !== src2 );
-
-  test.case = 'extend pure map by empty strings, first argument is not null';
-  var src1 = Object.create( null );
-  src1.a = '1';
-  src1.b = '1';
-  src1.c = '1';
-  src1.z = '1';
-  var src1Copy = Object.create( null );
-  src1Copy.a = '1';
-  src1Copy.b = '1';
-  src1Copy.c = '1';
-  src1Copy.z = '1';
-  var src2 = Object.create( null );
-  src2.a = '';
-  src2.c = '';
-  src2.d = '';
-  src2.e = '2';
-  var src2Copy = Object.create( null );
-  src2Copy.a = '';
-  src2Copy.c = '';
-  src2Copy.d = '';
-  src2Copy.e = '2';
-  var got = _.props.extend( src1, src2 );
-  var expected = { a : '', b : '1', c : '', d : '', e : '2', z : '1' };
-  test.identical( got, expected );
-  test.identical( src2, src2Copy );
-  test.true( got === src1 );
-  test.true( got !== src2 );
-
-  test.case = 'object like array';
-  var got = _.props.extend( null, [ 3, 7, 13, 73 ] );
-  var expected = { 0 : 3, 1 : 7, 2 : 13, 3 : 73 };
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'extend complex map by complex map';
-
-  var dst = Object.create( null );
-  dst.x1 = '1';
-  dst.x2 = 2;
-  dst = Object.create( dst );
-  dst.x3 = 3;
-  dst.x4 = 4;
-
-  var src = Object.create( null );
-  src.x1 = '11';
-  src.y2 = 12;
-  src = Object.create( src );
-  src.x3 = 13;
-  src.y4 = 14;
-
-  var expected = Object.create( null );
-  expected.x1 = '1';
-  expected.x2 = 2;
-  expected = Object.create( expected );
-  expected.x4 = 4;
-  expected.x1 = '11';
-  expected.y2 = 12;
-  expected.x3 = 13;
-  expected.y4 = 14;
-
-  var got = _.props.extend( dst, src );
-  test.identical( got.x1, '11' );
-  test.identical( got.x2, 2 );
-  test.identical( got.x3, 13 );
-  test.identical( got.x4, 4 );
-  test.identical( got.y2, 12 );
-  test.identical( got.y4, 14 );
-  test.identical( Object.getPrototypeOf( got ), { x1 : '1', x2 : 2 } );
-  test.true( got === dst );
-
-  /* - */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no argument';
-  test.shouldThrowErrorSync( () => _.props.extend() );
-
-  test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( () => _.props.extend( {} ) );
-
-  test.case = 'wrong type of array';
-  test.shouldThrowErrorSync( () => _.props.extend( [], 'wrong' ) );
-  test.shouldThrowErrorSync( () => _.props.extend( undefined, {} ) );
-}
+// //
+//
+// function mapExtend( test )
+// {
+//   test.open( 'first argument is null' );
+//
+//   test.case = 'trivial';
+//   var src1 = { a : 1, b : 2 };
+//   var src1Copy = { a : 1, b : 2 };
+//   var src2 = { c : 3, d : 4 };
+//   var src2Copy = { c : 3, d : 4 };
+//   var got = _.props.extend( null, src1, src2 );
+//   var expected = { a : 1, b : 2, c : 3, d : 4 };
+//   test.will = 'return';
+//   test.identical( got, expected );
+//   test.will = 'preserve src1';
+//   test.identical( src1, src1Copy );
+//   test.will = 'preserve src2';
+//   test.identical( src2, src2Copy );
+//   test.will = 'return not src1';
+//   test.true( got !== src1 );
+//   test.will = 'return not src2';
+//   test.true( got !== src2 );
+//
+//   /* */
+//
+//   test.case = 'rewriting';
+//   var src1 = { a : 1, b : 2 };
+//   var src1Copy = { a : 1, b : 2 };
+//   var src2 = { b : 22, c : 3, d : 4 };
+//   var src2Copy = { b : 22, c : 3, d : 4 };
+//   var got = _.props.extend( null, src1, src2 );
+//   var expected = { a : 1, b : 22, c : 3, d : 4 };
+//   test.will = 'return';
+//   test.identical( got, expected );
+//   test.will = 'preserve src1';
+//   test.identical( src1, src1Copy );
+//   test.will = 'preserve src2';
+//   test.identical( src2, src2Copy );
+//   test.will = 'return not src1';
+//   test.true( got !== src1 );
+//   test.will = 'return not src2';
+//   test.true( got !== src2 );
+//
+//   test.close( 'first argument is null' );
+//
+//   /* - */
+//
+//   test.open( 'first argument is dst' );
+//
+//   test.case = 'trivial';
+//   var dst = { a : 1, b : 2 };
+//   var src2 = { c : 3, d : 4 };
+//   var src2Copy = { c : 3, d : 4 };
+//   var got = _.props.extend( dst, src2 );
+//   var expected = { a : 1, b : 2, c : 3, d : 4 };
+//   test.will = 'return';
+//   test.identical( got, expected );
+//   test.will = 'preserve src2';
+//   test.identical( src2, src2Copy );
+//   test.will = 'return dst';
+//   test.true( got === dst );
+//   test.will = 'return not src2';
+//   test.true( got !== src2 );
+//
+//   /* */
+//
+//   test.case = 'rewriting';
+//   var dst = { a : 1, b : 2 };
+//   var src2 = { b : 22, c : 3, d : 4 };
+//   var src2Copy = { b : 22, c : 3, d : 4 };
+//   var got = _.props.extend( dst, src2 );
+//   var expected = { a : 1, b : 22, c : 3, d : 4 };
+//   test.will = 'return';
+//   test.identical( got, expected );
+//   test.will = 'preserve src2';
+//   test.identical( src2, src2Copy );
+//   test.will = 'return not dst';
+//   test.true( got === dst );
+//   test.will = 'return not src2';
+//   test.true( got !== src2 );
+//
+//   test.close( 'first argument is dst' );
+//
+//   /* - */
+//
+//   test.case = 'trivial, first argument';
+//   var src1 = { a : 7, b : 13 };
+//   var src1Copy = { a : 7, b : 13 };
+//   var src2 = { c : 3, d : 33 };
+//   var src2Copy = { c : 3, d : 33 };
+//   var got = _.props.extend( src1, src2 );
+//   var expected = { a : 7, b : 13, c : 3, d : 33 };
+//   test.identical( got, expected );
+//   test.identical( src2, src2Copy );
+//   test.true( got === src1 );
+//   test.true( got !== src2 );
+//
+//   test.case = 'complex, first argument is null';
+//   var src1 = { a : 1, b : 1, c : 1, z : 1 };
+//   var src1Copy = { a : 1, b : 1, c : 1, z : 1 };
+//   var src2 = { a : 2, c : 2, d : 2 };
+//   var src2Copy = { a : 2, c : 2, d : 2 };
+//   var src3 = { a : 3, b : 3, e : 3 };
+//   var src3Copy = { a : 3, b : 3, e : 3 };
+//   var got = _.props.extend( null, src1, src2, src3 );
+//   var expected = { a : 3, b : 3, c : 2, d : 2, e : 3, z : 1 };
+//   test.identical( got, expected );
+//   test.identical( src1, src1Copy );
+//   test.identical( src2, src2Copy );
+//   test.identical( src3, src3Copy );
+//   test.true( got !== src1 );
+//   test.true( got !== src2 );
+//   test.true( got !== src3 );
+//
+//   test.case = 'complex, first argument is not null';
+//   var src1 = { a : 1, b : 1, c : 1, z : 1 };
+//   var src1Copy = { a : 1, b : 1, c : 1, z : 1 };
+//   var src2 = { a : 2, c : 2, d : 2 };
+//   var src2Copy = { a : 2, c : 2, d : 2 };
+//   var src3 = { a : 3, b : 3, e : 3 };
+//   var src3Copy = { a : 3, b : 3, e : 3 };
+//   var got = _.props.extend( src1, src2, src3 );
+//   var expected = { a : 3, b : 3, c : 2, d : 2, e : 3, z : 1 };
+//   test.identical( got, expected );
+//   test.identical( src2, src2Copy );
+//   test.identical( src3, src3Copy );
+//   test.true( got === src1 );
+//   test.true( got !== src2 );
+//   test.true( got !== src3 );
+//
+//   test.case = 'extend pure map by empty strings, first argument is null';
+//   var src1 = Object.create( null );
+//   src1.a = '1';
+//   src1.b = '1';
+//   src1.c = '1';
+//   src1.z = '1';
+//   var src1Copy = Object.create( null );
+//   src1Copy.a = '1';
+//   src1Copy.b = '1';
+//   src1Copy.c = '1';
+//   src1Copy.z = '1';
+//   var src2 = Object.create( null );
+//   src2.a = '';
+//   src2.c = '';
+//   src2.d = '';
+//   src2.e = '2';
+//   var src2Copy = Object.create( null );
+//   src2Copy.a = '';
+//   src2Copy.c = '';
+//   src2Copy.d = '';
+//   src2Copy.e = '2';
+//   var got = _.props.extend( null, src1, src2 );
+//   var expected = { a : '', b : '1', c : '', d : '', e : '2', z : '1' };
+//   test.identical( got, expected );
+//   test.identical( src1, src1Copy );
+//   test.identical( src2, src2Copy );
+//   test.true( got !== src1 );
+//   test.true( got !== src2 );
+//
+//   test.case = 'extend pure map by empty strings, first argument is not null';
+//   var src1 = Object.create( null );
+//   src1.a = '1';
+//   src1.b = '1';
+//   src1.c = '1';
+//   src1.z = '1';
+//   var src1Copy = Object.create( null );
+//   src1Copy.a = '1';
+//   src1Copy.b = '1';
+//   src1Copy.c = '1';
+//   src1Copy.z = '1';
+//   var src2 = Object.create( null );
+//   src2.a = '';
+//   src2.c = '';
+//   src2.d = '';
+//   src2.e = '2';
+//   var src2Copy = Object.create( null );
+//   src2Copy.a = '';
+//   src2Copy.c = '';
+//   src2Copy.d = '';
+//   src2Copy.e = '2';
+//   var got = _.props.extend( src1, src2 );
+//   var expected = { a : '', b : '1', c : '', d : '', e : '2', z : '1' };
+//   test.identical( got, expected );
+//   test.identical( src2, src2Copy );
+//   test.true( got === src1 );
+//   test.true( got !== src2 );
+//
+//   test.case = 'object like array';
+//   var got = _.props.extend( null, [ 3, 7, 13, 73 ] );
+//   var expected = { 0 : 3, 1 : 7, 2 : 13, 3 : 73 };
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   test.case = 'extend complex map by complex map';
+//
+//   var dst = Object.create( null );
+//   dst.x1 = '1';
+//   dst.x2 = 2;
+//   dst = Object.create( dst );
+//   dst.x3 = 3;
+//   dst.x4 = 4;
+//
+//   var src = Object.create( null );
+//   src.x1 = '11';
+//   src.y2 = 12;
+//   src = Object.create( src );
+//   src.x3 = 13;
+//   src.y4 = 14;
+//
+//   var expected = Object.create( null );
+//   expected.x1 = '1';
+//   expected.x2 = 2;
+//   expected = Object.create( expected );
+//   expected.x4 = 4;
+//   expected.x1 = '11';
+//   expected.y2 = 12;
+//   expected.x3 = 13;
+//   expected.y4 = 14;
+//
+//   var got = _.props.extend( dst, src );
+//   test.identical( got.x1, '11' );
+//   test.identical( got.x2, 2 );
+//   test.identical( got.x3, 13 );
+//   test.identical( got.x4, 4 );
+//   test.identical( got.y2, 12 );
+//   test.identical( got.y4, 14 );
+//   test.identical( Object.getPrototypeOf( got ), { x1 : '1', x2 : 2 } );
+//   test.true( got === dst );
+//
+//   /* - */
+//
+//   if( !Config.debug )
+//   return;
+//
+//   test.case = 'no argument';
+//   test.shouldThrowErrorSync( () => _.props.extend() );
+//
+//   test.case = 'not enough arguments';
+//   test.shouldThrowErrorSync( () => _.props.extend( {} ) );
+//
+//   test.case = 'wrong type of array';
+//   test.shouldThrowErrorSync( () => _.props.extend( [], 'wrong' ) );
+//   test.shouldThrowErrorSync( () => _.props.extend( undefined, {} ) );
+// }
 
 //
 
@@ -874,35 +874,35 @@ function mapsExtendWithVectorsInSrcMaps( test )
   test.true( got !== src1 );
   test.true( got !== src2 );
 }
-
 //
-
-function mapSupplement( test )
-{
-
-  test.case = 'an object';
-  var got = _.props.supplement( { a : 1, b : 2 }, { a : 1, c : 3 } );
-  var expected = { a : 1, b : 2, c : 3 };
-  test.identical( got, expected );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.props.supplement();
-  });
-
-  test.case = 'wrong type of arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.props.supplement( 'wrong arguments' );
-  });
-
-}
+// //
+//
+// function mapSupplement( test )
+// {
+//
+//   test.case = 'an object';
+//   var got = _.props.supplement( { a : 1, b : 2 }, { a : 1, c : 3 } );
+//   var expected = { a : 1, b : 2, c : 3 };
+//   test.identical( got, expected );
+//
+//   /* */
+//
+//   if( !Config.debug )
+//   return;
+//
+//   test.case = 'no argument';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.props.supplement();
+//   });
+//
+//   test.case = 'wrong type of arguments';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.props.supplement( 'wrong arguments' );
+//   });
+//
+// }
 
 //
 
@@ -20839,13 +20839,13 @@ const Proto =
 
     mapCloneAssigning,
 
-    mapExtend,
+    // mapExtend,
     mapExtendConditional,
     mapsExtendConditional,
     mapExtendNotIdentical,
     mapsExtend,
     mapsExtendWithVectorsInSrcMaps,
-    mapSupplement,
+    // mapSupplement,
     mapComplement,
 
     //
