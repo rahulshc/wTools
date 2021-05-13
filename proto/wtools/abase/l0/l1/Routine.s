@@ -80,7 +80,7 @@ function __mapSupplementWithoutUndefined( dstMap, srcMap )
     _.assert
     (
       __primitiveLike( srcMap[ k ] ),
-      `Defaults map should have only primitive elements, but option::${ k } is ${ __strType( srcMap[ k ] ) }`
+      () => `Defaults map should have only primitive elements, but option::${ k } is ${ __strType( srcMap[ k ] ) }`
     );
     if( dstMap[ k ] !== undefined )
     continue;
@@ -105,7 +105,7 @@ function __mapSupplementWithUndefined( dstMap, srcMap )
     _.assert
     (
       __primitiveLike( srcMap[ k ] ),
-      `Defaults map should have only primitive elements, but option::${ k } is ${ __strType( srcMap[ k ] ) }`
+      () => `Defaults map should have only primitive elements, but option::${ k } is ${ __strType( srcMap[ k ] ) }`
     );
     if( Object.hasOwnProperty.call( dstMap, k ) )
     continue;
@@ -733,7 +733,7 @@ function assertOptionsWithoutUndefined( routine, options )
       _.assert
       (
         __primitiveLike( defaults[ k ] ),
-        `Defaults map should have only primitive elements, but option::${ k } is ${ __strType( defaults[ k ] ) }`
+        () => `Defaults map should have only primitive elements, but option::${ k } is ${ __strType( defaults[ k ] ) }`
       );
       _.assert
       (
@@ -930,7 +930,7 @@ function _verifyDefaults( defaults )
     _.assert
     (
       __primitiveLike( defaults[ k ] ),
-      `Defaults map should have only primitive elements, but option::${ k } is ${ __strType( defaults[ k ] ) }`
+      () => `Defaults map should have only primitive elements, but option::${ k } is ${ __strType( defaults[ k ] ) }`
     );
   }
 

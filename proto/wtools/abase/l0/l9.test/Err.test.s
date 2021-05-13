@@ -20,10 +20,10 @@ const path = fileProvider.path;
 
 function onSuiteBegin()
 {
-  let self = this;
+  let context = this;
 
-  self.suiteTempPath = path.tempOpen( path.join( __dirname, '../..' ), 'err' );
-  self.assetsOriginalPath = path.join( __dirname, '_asset' );
+  context.suiteTempPath = path.tempOpen( path.join( __dirname, '../..' ), 'err' );
+  context.assetsOriginalPath = path.join( __dirname, '_asset' );
 
 }
 
@@ -31,9 +31,9 @@ function onSuiteBegin()
 
 function onSuiteEnd()
 {
-  let self = this;
-  _.assert( _.strHas( self.suiteTempPath, '/err-' ) )
-  path.tempClose( self.suiteTempPath );
+  let context = this;
+  _.assert( _.strHas( context.suiteTempPath, '/err-' ) )
+  path.tempClose( context.suiteTempPath );
 }
 
 // --
@@ -272,7 +272,7 @@ thrown at Object._sourceIncludeAct @ http://127.0.0.1:15000/.starter:6538:15
 
 function _errWithArgsIncludedRoutine( test )
 {
-  let self = this;
+  let context = this;
   let a = test.assetFor( false );
   a.fileProvider.dirMake( a.abs( '.' ) );
   let locals = { toolsPath : _.module.resolve( 'wTools' ) };
