@@ -8759,7 +8759,7 @@ function longRight( test )
 function performance( test )
 {
    /*
-    Average of 10 runs of 50 million iteration of 13 _.long.is variations
+    Average of 10 runs of 5 million iteration of 13 _.long.is variations
     Values below are in seconds
     |-------------------|-------------------|-------------------|
     |                   |   debug: false    |   debug: true     |
@@ -8776,7 +8776,7 @@ function performance( test )
   var debugFlag = Config.debug;
   Config.debug = false;
 
-  test.case = '50 million iterations';
+  test.case = '5 million iterations';
   var took, time;
   var env = initializeVariables();
 
@@ -8785,7 +8785,7 @@ function performance( test )
   {
     runVariations( env );
   }
-  took = _.time.now() - time;
+  took = __.time.spent( time );
 
   measure();
   test.identical( true, true );
@@ -8796,16 +8796,23 @@ function performance( test )
 
   function measure()
   {
-    console.log( `${env.times} iterations of ${test.case} took : ${took / ( 13 * 1000 ) }s on ${process.version}` );
+    console.log( `${env.times} iterations of ${test.case} took : ${took}s on ${process.version}` );
   }
 
   function initializeVariables()
   {
     var env = {};
-    env.times = 50000000;
-    env.arr = new BufferRaw( 10 );
-    env.arr1 = new F32x( 10 );
-    env.src = new function()
+    env.times = 5000000;
+    env.emptyArray = _.long.is( [] );
+    env.nonEmptyArray = [ 1, 2, 3 ];
+    env.rawBuffer = new BufferRaw( 10 );
+    env.float32Array = new F32x( 10 );
+    env.anEmptyRoutine = new function() {};
+    env.aString = 'x';
+    env.aNumber = 1;
+    env.aBoolean = false;
+    env.anEmptyObject = {};
+    env.routine = new function()
     {
       this[ Symbol.iterator ] = function ()
       {
@@ -8818,19 +8825,19 @@ function performance( test )
 
   function runVariations( env )
   {
-    _.long.is( [] );
-    _.long.is( [ 1, 2, 3 ] );
+    _.long.is( env.emptyArray );
+    _.long.is( env.nonEmptyArray );
     _.long.is( arguments );
-    _.long.is( env.arr );
-    _.long.is( env.arr1 );
+    _.long.is( env.rawBuffer );
+    _.long.is( env.float32Array );
     _.long.is();
     _.long.is( null );
-    _.long.is( function() {} );
-    _.long.is( 'x' );
-    _.long.is( 1 );
-    _.long.is( false );
-    _.long.is( {} );
-    _.long.is( env.src );
+    _.long.is( env.anEmptyRoutine );
+    _.long.is( env.aString );
+    _.long.is( env.aNumber );
+    _.long.is( env.aBoolean );
+    _.long.is( env.anEmptyObject );
+    _.long.is( env.routine );
   }
 }
 
