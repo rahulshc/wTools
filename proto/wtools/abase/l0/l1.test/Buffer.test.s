@@ -1363,6 +1363,8 @@ function makeCommonWithLongDescriptor( test )
   }
 }
 
+makeCommonWithLongDescriptor.timeOut = 30000;
+
 // function bufferMakeWithArrayAndUnroll( test )
 // {
 //   var array = ( src ) => _.array.make( src );
@@ -5830,6 +5832,7 @@ const Proto =
   name : 'Tools.Buffer.l0.l1',
   silencing : 1,
   enabled : 1,
+  routineTimeOut : 10000,
 
   tests :
   {
