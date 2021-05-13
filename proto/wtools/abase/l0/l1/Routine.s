@@ -898,7 +898,7 @@ function assertOptionsWithUndefined( routine, options )
       _.assert
       (
         __primitiveLike( defaults[ k ] ),
-        `Defaults map should have only primitive elements, but option::${ k } is ${ __strType( defaults[ k ] ) }`
+        () => `Defaults map should have only primitive elements, but option::${ k } is ${ __strType( defaults[ k ] ) }`
       );
       _.assert
       (
