@@ -8754,6 +8754,91 @@ function longRight( test )
   test.shouldThrowErrorSync( () => _.longRight( [ 1, 2 ], 1, 0, ( e ) => e, () => 1 ) );
 }
 
+//
+
+function performance( test )
+{
+   /*
+    Average of 10 runs of 5 million iteration of 13 _.long.is variations
+    Values below are in seconds
+    |-------------------|-------------------|-------------------|
+    |                   |   debug: false    |   debug: true     |
+    | :---------------: |:---------------:  |:---------------:  |
+    | **Njs : v10.24.1**|                   |                   |
+    |-------------------|-------------------|-------------------|
+    | **Njs : v12.22.1**|                   |                   |
+    |-------------------|-------------------|-------------------|
+    | **Njs : v14.17.0**|                   |                   |
+    |-------------------|-------------------|-------------------|
+    | **Njs : v15.14.0**|                   |                   |
+    |-------------------|-------------------|-------------------|
+  */
+  var debugFlag = Config.debug;
+  Config.debug = false;
+
+  test.case = '5 million iterations';
+  var took, time;
+  var env = initializeVariables();
+
+  time = _.time.now();
+  for( let i = env.times; i > 0; i-- )
+  {
+    runVariations( env );
+  }
+  took = __.time.spent( time );
+
+  console.log( `${env.times} iterations of ${test.case} took : ${took}s on ${process.version}` );
+  test.identical( true, true );
+
+  Config.debug = debugFlag;
+
+  /* - */
+
+  function initializeVariables()
+  {
+    var env = {};
+    env.times = 5000000;
+    env.emptyArray = _.long.is( [] );
+    env.nonEmptyArray = [ 1, 2, 3 ];
+    env.rawBuffer = new BufferRaw( 10 );
+    env.float32Array = new F32x( 10 );
+    env.anEmptyRoutine = new function() {};
+    env.aString = 'x';
+    env.aNumber = 1;
+    env.aBoolean = false;
+    env.anEmptyObject = {};
+    env.routine = new function()
+    {
+      this[ Symbol.iterator ] = function ()
+      {
+        return { next() { return { done : true } } }
+      }
+    }
+
+    return env;
+  }
+
+  function runVariations( env )
+  {
+    _.long.is( env.emptyArray );
+    _.long.is( env.nonEmptyArray );
+    _.long.is( arguments );
+    _.long.is( env.rawBuffer );
+    _.long.is( env.float32Array );
+    _.long.is();
+    _.long.is( null );
+    _.long.is( env.anEmptyRoutine );
+    _.long.is( env.aString );
+    _.long.is( env.aNumber );
+    _.long.is( env.aBoolean );
+    _.long.is( env.anEmptyObject );
+    _.long.is( env.routine );
+  }
+}
+
+performance.timeOut = 1e7;
+performance.experimental = true;
+
 // --
 //
 // --
@@ -8849,6 +8934,7 @@ const Proto =
 
     longLeft,
     longRight,
+    performance
 
   }
 
