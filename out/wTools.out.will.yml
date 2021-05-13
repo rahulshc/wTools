@@ -450,6 +450,7 @@ module:
           - ../proto/wtools/abase/l0/l8
           - ../proto/wtools/abase/l0/l8/Setup.s
           - ../proto/wtools/abase/l0/l9.test
+          - ../proto/wtools/abase/l0/l9.test/App.test.s
           - ../proto/wtools/abase/l0/l9.test/ArgumentsArray.test.s
           - ../proto/wtools/abase/l0/l9.test/Array.test.s
           - ../proto/wtools/abase/l0/l9.test/ArraySet.test.s
