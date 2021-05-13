@@ -8764,7 +8764,7 @@ function performance( test )
     |-------------------|-------------------|-------------------|
     |                   |   debug: false    |   debug: true     |
     | :---------------: |:---------------:  |:---------------:  |
-    | **Njs : v10.24.1**|  7.03573076923077 | 7.28983846153846  |
+    | **Njs : v10.24.1**|                   |                   |
     |-------------------|-------------------|-------------------|
     | **Njs : v12.22.1**|                   |                   |
     |-------------------|-------------------|-------------------|
@@ -8778,9 +8778,26 @@ function performance( test )
 
   test.case = '50 million iterations';
   var times = 50000000;
+  var took = 0;
+  var time;
+  var arr = new BufferRaw( 10 );
+  var arr1 = new F32x( 10 );
+  var src = new function()
+  {
+    this[ Symbol.iterator ] = function ()
+    {
+      return { next() { return { done : true } } }
+    }
+  }
 
-  var result = runIterations( times );
-  measure( test, times, result );
+  time = _.time.now();
+  for( let i = times; i > 0; i-- )
+  {
+    runVariations();
+  }
+  took = _.time.now() - time;
+
+  measure( test, times, took );
   test.identical( true, true );
 
   Config.debug = debugFlag;
@@ -8789,45 +8806,24 @@ function performance( test )
 
   function measure( test, times, result )
   {
-    console.log( `${times} iterations of ${test.case} took : ${result / ( 13 * 1000 ) }s on ${process.version}` );
+    console.log( `${times} iterations of ${test.case} took : ${took / ( 13 * 1000 ) }s on ${process.version}` );
   }
 
-  function runIterations( times )
+  function runVariations( times )
   {
-    var took = 0;
-    var time;
-    var arr = new BufferRaw( 10 );
-    var arr1 = new F32x( 10 );
-    var src = new function()
-    {
-      this[ Symbol.iterator ] = function ()
-      {
-        return { next() { return { done : true } } }
-      }
-    }
-
-    for( let i = times; i > 0; i-- )
-    {
-      time = _.time.now();
-
-      _.long.is( [] );
-      _.long.is( [ 1, 2, 3 ] );
-      _.long.is( arguments );
-      _.long.is( arr );
-      _.long.is( arr1 );
-      _.long.is();
-      _.long.is( null );
-      _.long.is( function() {} );
-      _.long.is( 'x' );
-      _.long.is( 1 );
-      _.long.is( false );
-      _.long.is( {} );
-      _.long.is( src );
-
-      took += _.time.now() - time;
-    }
-
-    return took;
+    _.long.is( [] );
+    _.long.is( [ 1, 2, 3 ] );
+    _.long.is( arguments );
+    _.long.is( arr );
+    _.long.is( arr1 );
+    _.long.is();
+    _.long.is( null );
+    _.long.is( function() {} );
+    _.long.is( 'x' );
+    _.long.is( 1 );
+    _.long.is( false );
+    _.long.is( {} );
+    _.long.is( src );
   }
 }
 
