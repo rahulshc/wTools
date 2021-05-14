@@ -19236,6 +19236,7 @@ const Proto =
 
   name : 'Tools.Str.l0.l9',
   silencing : 1,
+  routineTimeOut : 10000,
 
   tests :
   {

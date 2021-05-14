@@ -6,6 +6,7 @@
 const _global = _global_;
 const _ = _global_.wTools;
 _.str = _.str || Object.create( null );
+_.str.lines = _.str.lines || Object.create( null );
 
 // --
 // str
@@ -129,156 +130,6 @@ function strHas( src, ins )
   return ins.test( src );
 
 }
-
-//
-// //
-//
-// function _identicalShallow( src1, src2 )
-// {
-//   return src1 === src2;
-// }
-//
-// //
-//
-// function identicalShallow( src1, src2, accuracy )
-// {
-//   _.assert( arguments.length === 2 || arguments.length === 3 );
-//   if( !this.is( src1 ) )
-//   return false;
-//   if( !this.is( src2 ) )
-//   return false;
-//   return this._identicalShallow( ... arguments );
-// }
-//
-// //
-//
-// function _equivalentShallow( src1, src2 )
-// {
-//   let strIs1 = _.strIs( src1 );
-//   let strIs2 = _.strIs( src2 );
-//
-//   // _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   //
-//   // if( !strIs1 && strIs2 )
-//   // return this._equivalentShallow( src2, src1 );
-//
-//   // _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
-//   // _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
-//
-//   if( strIs1 && strIs2 )
-//   {
-//     if( src1 === src2 )
-//     return true;
-//     return _.strLinesStrip( src1 ) === _.strLinesStrip( src2 );
-//   }
-//   else
-//   {
-//     return false;
-//     // return _.regexpIdentical( src1, src2 );
-//   }
-//
-//   return false;
-// }
-//
-// //
-// //
-// // function _equivalentShallow( src1, src2 )
-// // {
-// //   let strIs1 = _.strIs( src1 );
-// //   let strIs2 = _.strIs( src2 );
-// //
-// //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-// //
-// //   if( !strIs1 && strIs2 )
-// //   return this._equivalentShallow( src2, src1 );
-// //
-// //   _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
-// //   _.assert( _.regexpLike( src1 ), 'Expects string-like ( string or regexp )' );
-// //
-// //   if( strIs1 && strIs2 )
-// //   {
-// //     if( src1 === src2 )
-// //     return true;
-// //
-// //     return _.strLinesStrip( src1 ) === _.strLinesStrip( src2 );
-// //
-// //   }
-// //   else if( strIs1 )
-// //   {
-// //     _.assert( !!src2.exec );
-// //     let matched = src2.exec( src1 );
-// //     if( !matched )
-// //     return false;
-// //     if( matched[ 0 ].length !== src1.length )
-// //     return false;
-// //     return true;
-// //   }
-// //   else
-// //   {
-// //     return _.regexpIdentical( src1, src2 );
-// //   }
-// //
-// //   return false;
-// // }
-//
-// //
-//
-// function equivalentShallow( src1, src2, accuracy )
-// {
-//   _.assert( arguments.length === 2 || arguments.length === 3 );
-//   if( !_.str.is( src1 ) )
-//   return false;
-//   if( !_.str.is( src2 ) )
-//   return false;
-//   return _.str._equivalentShallow( ... arguments );
-// }
-//
-// //
-//
-// function strsEquivalent( src1, src2 )
-// {
-//
-//   _.assert( _.strIs( src1 ) || _.regexpIs( src1 ) || _.longIs( src1 ), 'Expects string/regexp or array of strings/regexps {-src1-}' );
-//   _.assert( _.strIs( src2 ) || _.regexpIs( src2 ) || _.longIs( src2 ), 'Expects string/regexp or array of strings/regexps {-src2-}' );
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//
-//   let isLong1 = _.longIs( src1 );
-//   let isLong2 = _.longIs( src2 );
-//
-//   if( isLong1 && isLong2 )
-//   {
-//     let result = [];
-//     _.assert( src1.length === src2.length );
-//     for( let i = 0, len = src1.length ; i < len; i++ )
-//     {
-//       result[ i ] = _.str.equivalent( src1[ i ], src2[ i ] );
-//     }
-//     return result;
-//   }
-//   else if( !isLong1 && isLong2 )
-//   {
-//     let result = [];
-//     for( let i = 0, len = src2.length ; i < len; i++ )
-//     {
-//       result[ i ] = _.str.equivalent( src1, src2[ i ] );
-//     }
-//     return result;
-//   }
-//   else if( isLong1 && !isLong2 )
-//   {
-//     let result = [];
-//     for( let i = 0, len = src1.length ; i < len; i++ )
-//     {
-//       result[ i ] = _.str.equivalent( src1[ i ], src2 );
-//     }
-//     return result;
-//   }
-//   else
-//   {
-//     return _.str.equivalent( src1, src2 );
-//   }
-//
-// }
 
 // --
 // converter
@@ -1397,7 +1248,7 @@ function strRemove( srcStr, insStr )
 // lines
 // --
 
-function strLinesSplit( src )
+function split( src )
 {
   _.assert( _.strIs( src ) || _.arrayIs( src ) );
   _.assert( arguments.length === 1 );
@@ -1408,7 +1259,7 @@ function strLinesSplit( src )
 
 //
 
-function strLinesJoin( src )
+function join( src )
 {
   _.assert( _.strIs( src ) || _.arrayIs( src ) );
   _.assert( arguments.length === 1 );
@@ -1431,35 +1282,35 @@ function strLinesJoin( src )
  * @returns { String/Array } Returns string/array with empty lines and spaces removed.
  *
  * @example input string
- * _.strLinesStrip( '  Hello \r\n\t World \n\n ' );
+ * _.str.lines.strip( '  Hello \r\n\t World \n\n ' );
  * // returns 'Hello\nWorld'
  *
  * @example input array
- * _.strLinesStrip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ] );
+ * _.str.lines.strip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ] );
  * // returns  [ 'Hello \r\n\t world', '!' ]
  *
  * @example input strings
- * _.strLinesStrip( '  Hello \r\n\t', ' World \n\n  ! \n\n', '\n\n' );
+ * _.str.lines.strip( '  Hello \r\n\t', ' World \n\n  ! \n\n', '\n\n' );
  * // returns [ 'Hello', 'World\n!', '' ]
  *
  * @example input arrays
- * _.strLinesStrip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ], [ '\n\nHow\n\nAre  ', '  \r\nyou ? \n'], [ '\t\r\n  ' ] );
+ * _.str.lines.strip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ], [ '\n\nHow\n\nAre  ', '  \r\nyou ? \n'], [ '\t\r\n  ' ] );
  * // returns [ [ 'Hello \r\n\t world', '!' ], [ 'How\n\nAre', 'you ?' ], [] ]
  *
- * @method strLinesStrip
+ * @method strip
  * @throws { Exception } Throw an exception if( src ) is not a String or Array.
- * @namespace Tools
+ * @namespace Tools/str/lines/strip
  */
 
 /* qqq : for Dmytro : measure time and optimize. ask */
-function strLinesStrip( src )
+function strip( src )
 {
 
   if( arguments.length > 1 )
   {
     let result = _.unroll.make( null );
     for( let a = 0 ; a < arguments.length ; a++ )
-    result[ a ] = _.strLinesStrip( arguments[ a ] );
+    result[ a ] = _.str.lines.strip( arguments[ a ] );
     return result;
   }
 
@@ -1470,12 +1321,744 @@ function strLinesStrip( src )
   lines = lines.map( ( line ) => line.trim() ).filter( ( line ) => line );
 
   if( _.strIs( src ) )
-  lines = _.strLinesJoin( lines );
+  lines = _.str.lines.join( lines );
   return lines;
 }
 
+//
+
+function atLeft( src, index, nlTokens )
+{
+  let result;
+
+  _.assert( _.number.is( index ) );
+
+  if( index < 0 )
+  {
+    result = Object.create( null );
+    result.src = src;
+    result.lineIndex = index;
+    result.charInterval = [ 0, -1 ];
+    return result;
+  }
+
+  let o2 = Object.create( null );
+  o2.src = src;
+  o2.nlTokens = nlTokens;
+  o2.onEach = onEach;
+  o2.interval = [ index, index ];
+  o2.withLine = false;
+  this.eachLeft( o2 );
+
+  if( !result )
+  {
+    result = Object.create( null );
+    result.src = src;
+    result.lineIndex = index;
+    result.charInterval = [ src.length, src.length-1 ];
+  }
+
+  delete result.nlTokens;
+  delete result.onEach;
+  delete result.interval;
+  delete result.withLine;
+
+  return result;
+
+  function onEach( it )
+  {
+    result = it;
+    result.line = src.slice( it.charInterval[ 0 ], it.charInterval[ 1 ]-it.nl.length+1 );
+  }
+
+}
+
+//
+
+function atRight( src, index, nlTokens )
+{
+  let result;
+
+  _.assert( _.number.is( index ) );
+
+  if( index < 0 )
+  {
+    result = Object.create( null );
+    result.src = src;
+    result.lineIndex = index;
+    result.charInterval = [ src.length, src.length-1 ];
+    return result;
+  }
+
+  let o2 = Object.create( null );
+  o2.src = src;
+  o2.nlTokens = nlTokens;
+  o2.onEach = onEach;
+  o2.interval = [ index, index ];
+  o2.withLine = false;
+
+  this.eachRight( o2 );
+
+  if( !result )
+  {
+    result = Object.create( null );
+    result.src = src;
+    result.lineIndex = index;
+    result.charInterval = [ 0, -1 ];
+  }
+
+  delete result.nlTokens;
+  delete result.onEach;
+  delete result.interval;
+  delete result.withLine;
+
+  return result;
+
+  function onEach( it )
+  {
+    result = it;
+    result.line = src.slice( it.charInterval[ 0 ], it.charInterval[ 1 ]-it.nl.length+1 );
+  }
+
+}
+
+//
+
+function _eachLeft( o )
+{
+
+  if( o.nlTokens === undefined )
+  o.nlTokens = [ '\r\n', '\n\r', '\n' ];
+  else if( !_.str.is( o.nlTokens ) )
+  o.nlTokens = [ ... o.nlTokens ];
+
+  const lastIndex = o.interval ? o.interval[ 1 ] : Infinity;
+  const src = o.src;
+  let foundTokenIndex;
+  let foundOffset;
+  let handleEach;
+
+  o.charInterval = [ -1, -1 ];
+  o.lineIndex = -1;
+
+  if( o.interval && o.interval[ 1 ] < 0 )
+  {
+    o.charInterval[ 0 ] = 0;
+    return o;
+  }
+
+  o.nl = '';
+
+  if( o.interval )
+  {
+    if( o.withLine )
+    handleEach = handleWithIntervalWithLine;
+    else
+    handleEach = handleWithIntervalWithoutLine;
+  }
+  else
+  {
+    if( o.withLine )
+    handleEach = handleWithoutIntervalWithLine;
+    else
+    handleEach = handleWithoutIntervalWithoutLine;
+  }
+
+  if( _.str.is( o.nlTokens ) )
+  single();
+  else
+  multiple();
+
+  if( !o.interval || o.lineIndex < o.interval[ 1 ] )
+  {
+    o.lineIndex += 1;
+    o.charInterval[ 0 ] = src.length;
+    _.assert( o.charInterval[ 1 ] === src.length - 1 );
+    if( o.withLine )
+    o.line = '';
+  }
+
+  return o;
+
+  /* */
+
+  function single()
+  {
+
+    o.nl = o.nlTokens;
+    while( o.lineIndex !== lastIndex )
+    {
+      o.charInterval[ 0 ] = Math.max( o.charInterval[ 0 ], o.charInterval[ 1 ] ) + 1;
+      o.charInterval[ 1 ] = src.indexOf( o.nlTokens, o.charInterval[ 0 ] );
+      o.lineIndex += 1;
+
+      if( o.charInterval[ 1 ] === -1 )
+      {
+        o.charInterval[ 1 ] = src.length - 1;
+        o.nl = '';
+        handleEach();
+        break;
+      }
+      else
+      {
+        o.charInterval[ 1 ] += o.nl.length - 1;
+        handleEach();
+      }
+
+    }
+
+  }
+
+  /* */
+
+  function multiple()
+  {
+
+    foundTokenIndex = -1;
+    foundOffset = src.length;
+
+    let first = indexInit();
+
+    if( first.length === 1 )
+    {
+      o.nlTokens = o.nlTokens[ foundTokenIndex ];
+      return single();
+    }
+
+    if( first.length === 0 )
+    {
+
+      o.lineIndex = 0;
+      o.charInterval[ 0 ] = 0;
+      o.charInterval[ 1 ] = src.length-1;
+      handleEach();
+
+      return;
+    }
+
+    while( o.lineIndex !== lastIndex )
+    {
+      o.charInterval[ 0 ] = Math.max( o.charInterval[ 0 ], o.charInterval[ 1 ] ) + 1;
+      o.charInterval[ 1 ] = indexOf( first );
+      o.lineIndex += 1;
+
+      if( o.charInterval[ 1 ] === o.src.length )
+      {
+        o.charInterval[ 1 ] = src.length - 1;
+        o.nl = '';
+        handleEach();
+        break;
+      }
+      else
+      {
+        o.nl = o.nlTokens[ foundTokenIndex ];
+        o.charInterval[ 1 ] += o.nl.length - 1;
+        handleEach();
+      }
+
+    }
+
+  }
+
+  /* */
+
+  function indexInit()
+  {
+    let first = [];
+    for( let i = o.nlTokens.length - 1 ; i >= 0 ; i-- )
+    {
+      let offset = src.indexOf( o.nlTokens[ i ] );
+      if( offset !== -1 )
+      {
+        first.unshift( offset );
+        if( foundOffset >= offset )
+        {
+          foundOffset = offset;
+          foundTokenIndex = i;
+        }
+      }
+      else
+      {
+        o.nlTokens.splice( i, 1 );
+        foundTokenIndex -= 1;
+      }
+    }
+    return first;
+  }
+
+  /* */
+
+  function indexOf( first )
+  {
+    if( first[ foundTokenIndex ] >= o.charInterval[ 0 ] )
+    return first[ foundTokenIndex ];
+    foundOffset = src.length;
+    for( let i = first.length - 1; i >= 0 ; i-- )
+    {
+      let offset = first[ i ];
+      if( offset < o.charInterval[ 0 ] )
+      {
+        offset = src.indexOf( o.nlTokens[ i ], first[ i ]+1 );
+        if( offset === -1 )
+        {
+          tokenDelete( first, i );
+          if( first.length === 0 )
+          return src.length;
+        }
+        else
+        {
+          first[ i ] = offset;
+          if( foundOffset >= offset )
+          {
+            foundOffset = offset;
+            foundTokenIndex = i;
+          }
+        }
+      }
+      else
+      {
+        if( foundOffset >= offset )
+        {
+          foundOffset = offset;
+          foundTokenIndex = i;
+        }
+      }
+    }
+    return first[ foundTokenIndex ];
+  }
+
+  /* */
+
+  function tokenDelete( first, i )
+  {
+    o.nlTokens.splice( i, 1 );
+    first.splice( i, 1 );
+    if( foundTokenIndex > i )
+    foundTokenIndex -= 1;
+  }
+
+  /* */
+
+  function handleWithoutIntervalWithoutLine()
+  {
+    o.onEach( o );
+  }
+
+  /* */
+
+  function handleWithIntervalWithoutLine()
+  {
+    if( o.interval && o.interval[ 0 ] > o.lineIndex )
+    return;
+    o.onEach( o );
+  }
+
+  /* */
+
+  function handleWithoutIntervalWithLine()
+  {
+    o.line = src.slice( o.charInterval[ 0 ], o.charInterval[ 1 ] - o.nl.length + 1 );
+    o.onEach( o );
+  }
+
+  /* */
+
+  function handleWithIntervalWithLine()
+  {
+    if( o.interval && o.interval[ 0 ] > o.lineIndex )
+    return;
+    o.line = src.slice( o.charInterval[ 0 ], o.charInterval[ 1 ] - o.nl.length + 1 );
+    o.onEach( o );
+  }
+
+  /* */
+
+}
+
+_eachLeft.defaults =
+{
+  src : null,
+  nlTokens : null,
+  interval : null,
+  withLine : true,
+}
+
+//
+
+function eachLeft( o )
+{
+
+  if( !_.map.is( o ) )
+  {
+    _.assert( arguments.length === 2 || arguments.length === 3 );
+    if( arguments.length === 3 )
+    o = { src : arguments[ 0 ], interval : arguments[ 1 ], onEach : arguments[ 2 ] };
+    else
+    o = { src : arguments[ 0 ], onEach : arguments[ 1 ] };
+  }
+  else
+  {
+    _.assert( arguments.length === 1 );
+  }
+
+  if( o.withLine === undefined )
+  o.withLine = true;
+
+  _.assert( _.routine.is( o.onEach ) );
+  _.assert( _.str.is( o.src ) );
+
+  return this._eachLeft( o );
+}
+
+//
+
+function _eachRight( o )
+{
+
+  if( o.nlTokens === undefined )
+  o.nlTokens = [ '\r\n', '\n\r', '\n' ];
+  else if( !_.str.is( o.nlTokens ) )
+  o.nlTokens = [ ... o.nlTokens ];
+
+  const lastIndex = o.interval ? o.interval[ 1 ] : Infinity;
+  const src = o.src;
+  let foundTokenIndex;
+  let foundOffset;
+  let nnl = '';
+  let handleEach;
+
+  if( o.interval )
+  {
+    if( o.withLine )
+    handleEach = handleWithIntervalWithLine;
+    else
+    handleEach = handleWithIntervalWithoutLine;
+  }
+  else
+  {
+    if( o.withLine )
+    handleEach = handleWithoutIntervalWithLine;
+    else
+    handleEach = handleWithoutIntervalWithoutLine;
+  }
+
+  o.charInterval = [ o.src.length, o.src.length ];
+  o.lineIndex = -1;
+
+  if( o.interval && o.interval[ 1 ] < 0 )
+  {
+    o.charInterval[ 1 ] = o.src.length-1;
+    return o;
+  }
+
+  o.nl = '';
+
+  if( _.str.is( o.nlTokens ) )
+  single();
+  else
+  multiple();
+
+  if( !o.interval || o.lineIndex < o.interval[ 1 ] )
+  {
+    o.lineIndex += 1;
+    o.charInterval[ 1 ] = -1;
+    _.assert( o.charInterval[ 0 ] === 0 );
+    if( o.withLine )
+    o.line = '';
+  }
+
+  return o;
+
+  /* */
+
+  function single()
+  {
+
+    while( o.lineIndex !== lastIndex )
+    {
+
+      o.lineIndex += 1;
+      o.nl = nnl;
+
+      o.charInterval[ 1 ] = o.charInterval[ 0 ] - 1;
+      let right = o.charInterval[ 1 ] - o.nl.length;
+      if( right >= 0 || o.lineIndex === 0 )
+      o.charInterval[ 0 ] = src.lastIndexOf( o.nlTokens, right );
+      else
+      o.charInterval[ 0 ] = -1;
+
+      if( o.charInterval[ 0 ] === -1 )
+      {
+        o.charInterval[ 0 ] = 0;
+        handleEach();
+        break;
+      }
+      else
+      {
+        nnl = o.nlTokens;
+        o.charInterval[ 0 ] += nnl.length;
+        handleEach();
+      }
+
+    }
+
+  }
+
+  /* */
+
+  function multiple()
+  {
+
+    foundTokenIndex = -1;
+    foundOffset = 0;
+
+    let first = indexInit();
+
+    if( first.length === 1 )
+    {
+      o.nlTokens = o.nlTokens[ foundTokenIndex ];
+      return single();
+    }
+
+    if( first.length === 0 )
+    {
+      o.lineIndex = 0;
+      o.charInterval[ 0 ] = 0;
+      o.charInterval[ 1 ] = src.length-1;
+      handleEach();
+      return;
+    }
+
+    while( o.lineIndex !== lastIndex )
+    {
+
+      o.lineIndex += 1;
+      o.nl = nnl;
+
+      o.charInterval[ 1 ] = o.charInterval[ 0 ] - 1;
+      o.charInterval[ 0 ] = indexOf( first );
+
+      if( o.charInterval[ 0 ] === -1 )
+      {
+        o.charInterval[ 0 ] = 0;
+        handleEach();
+        break;
+      }
+      else
+      {
+        nnl = o.nlTokens[ foundTokenIndex ];
+        handleEach();
+      }
+
+    }
+
+  }
+
+  /* */
+
+  function indexInit()
+  {
+    let first = [];
+    for( let i = o.nlTokens.length - 1 ; i >= 0 ; i-- )
+    {
+      let offset = src.lastIndexOf( o.nlTokens[ i ] );
+      if( offset !== -1 )
+      {
+        offset += o.nlTokens[ i ].length;
+        first.unshift( offset );
+        if( foundOffset <= offset )
+        {
+          foundOffset = offset;
+          foundTokenIndex = i;
+        }
+      }
+      else
+      {
+        o.nlTokens.splice( i, 1 );
+        foundTokenIndex -= 1;
+      }
+    }
+    return first;
+  }
+
+  /* */
+
+  function indexOf( first )
+  {
+    let left = o.charInterval[ 0 ] - nnl.length - 1;
+    if( first[ foundTokenIndex ] <= left )
+    return first[ foundTokenIndex ];
+    foundOffset = -1;
+    for( let i = first.length - 1; i >= 0 ; i-- )
+    {
+      let offset = first[ i ];
+      if( offset > left )
+      {
+        if( left >= 0 )
+        offset = src.lastIndexOf( o.nlTokens[ i ], left );
+        else
+        offset = -1;
+        if( offset === -1 )
+        {
+          tokenDelete( first, i );
+          if( first.length === 0 )
+          return -1;
+        }
+        else
+        {
+          offset += o.nlTokens[ i ].length;
+          first[ i ] = offset;
+          if( foundOffset <= offset )
+          {
+            foundOffset = offset;
+            foundTokenIndex = i;
+          }
+        }
+      }
+      else
+      {
+        if( foundOffset <= offset )
+        {
+          foundOffset = offset;
+          foundTokenIndex = i;
+        }
+      }
+    }
+    return first[ foundTokenIndex ];
+  }
+
+  /* */
+
+  function tokenDelete( first, i )
+  {
+    o.nlTokens.splice( i, 1 );
+    first.splice( i, 1 );
+    if( foundTokenIndex > i )
+    foundTokenIndex -= 1;
+  }
+
+  /* */
+
+  // function handleEach()
+  // {
+  //   if( !o.interval || o.interval[ 0 ] <= o.lineIndex )
+  //   o.onEach( o );
+  // }
+
+  /* */
+
+  function handleWithoutIntervalWithoutLine()
+  {
+    o.onEach( o );
+  }
+
+  /* */
+
+  function handleWithIntervalWithoutLine()
+  {
+    if( o.interval && o.interval[ 0 ] > o.lineIndex )
+    return;
+    o.onEach( o );
+  }
+
+  /* */
+
+  function handleWithoutIntervalWithLine()
+  {
+    o.line = src.slice( o.charInterval[ 0 ], o.charInterval[ 1 ] - o.nl.length + 1 );
+    o.onEach( o );
+  }
+
+  /* */
+
+  function handleWithIntervalWithLine()
+  {
+    if( o.interval && o.interval[ 0 ] > o.lineIndex )
+    return;
+    o.line = src.slice( o.charInterval[ 0 ], o.charInterval[ 1 ] - o.nl.length + 1 );
+    o.onEach( o );
+  }
+
+  /* */
+
+}
+
+_eachRight.defaults =
+{
+  ... _eachLeft.defaults,
+}
+
+//
+
+function eachRight( o )
+{
+
+  if( !_.map.is( o ) )
+  {
+    _.assert( arguments.length === 2 || arguments.length === 3 );
+    if( arguments.length === 3 )
+    o = { src : arguments[ 0 ], interval : arguments[ 1 ], onEach : arguments[ 2 ] };
+    else
+    o = { src : arguments[ 0 ], onEach : arguments[ 1 ] };
+  }
+  else
+  {
+    _.assert( arguments.length === 1 );
+  }
+
+  if( o.withLine === undefined )
+  o.withLine = true;
+
+  _.assert( _.routine.is( o.onEach ) );
+  _.assert( _.str.is( o.src ) );
+
+  return this._eachRight( o );
+}
+
+
 // --
-// declaration
+// str extension
+// --
+
+let StrExtension =
+{
+
+  // dichotomy
+
+  is,
+  like,
+
+}
+
+Object.assign( _.str, StrExtension );
+
+// --
+// str extension
+// --
+
+let StrLinesExtension =
+{
+
+  split,
+  join,
+  strip,
+
+  atLeft,
+  atRight,
+  at : atLeft,
+
+  _eachLeft,
+  eachLeft,
+  _eachRight,
+  eachRight,
+  each : eachLeft,
+
+}
+
+Object.assign( _.str.lines, StrLinesExtension );
+
+// --
+// tools extension
 // --
 
 let ToolsExtension =
@@ -1490,17 +2073,12 @@ let ToolsExtension =
   strDefined,
   strsDefined,
 
-  // strType : strTypeWithTraits,
   strHas,
-
-  // strEquivalent,
-  // areEquivalentShallow : strEquivalent, xxx
-  // strsEquivalent,
 
   // converter
 
   strstrShort_ : strShort_, /* xxx : remove */
-  strShort_, 
+  strShort_,
   strShortWidth,
   _strShortWidth,
   strShortHeight,
@@ -1526,27 +2104,13 @@ let ToolsExtension =
 
   // lines
 
-  strLinesSplit,
-  strLinesJoin,
-  strLinesStrip,
+  strLinesSplit : split,
+  strLinesJoin : join,
+  strLinesStrip : strip,
 
 }
 
 Object.assign( _, ToolsExtension );
-
-//
-
-let StrExtension =
-{
-
-  // dichotomy
-
-  is,
-  like,
-
-}
-
-Object.assign( _.str, StrExtension );
 
 //
 

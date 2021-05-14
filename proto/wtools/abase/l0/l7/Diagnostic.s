@@ -312,7 +312,7 @@ eachElementComparator.defaults =
 
 function diagnosticStructureGenerate_head( routine, args )
 {
-  _.assert( args.length === 0 || args.length === 1 );
+  _.assert( args.length === 0 || args.length === 1, () => `Expects optional argument, but got ${args.length} arguments` );
 
   let o;
   if( args.length === 1 )

@@ -375,8 +375,6 @@ function elementAppend( dst, val )
   return this._elementAppend( dst, val );
 }
 
-elementAppend.functor = _.container._functor_functor( 'elementAppend' );
-
 //
 
 function _elementPrepend( dst, val )
@@ -392,7 +390,7 @@ function elementPrepend( dst, val )
   _.assert( arguments.length === 2 );
   _.assert( this.is( dst ) );
   _.assert( this.isResizable( dst ) );
-  return this._elementAppend( dst, val );
+  return this._elementPrepend( dst, val );
 }
 
 //
@@ -562,15 +560,24 @@ function _filterAct( ... args )
   const each = srcNamesapce[ eachRoutineName ];
   let isSelf;
   let dstIsResizable;
+  let srcSample = null;
 
   if( dst === null )
   {
     dstNamespace = self.namespaceOf( src ) || self.default || self;
     isSelf = false;
-    if( self.IsResizable() )
+    if( dstNamespace.IsResizable() )
     {
-      dst = dstNamespace.makeEmpty();
-      dstIsResizable = true;
+      if( dstNamespace.is( src ) && !_.countable.isResizable( src ) )
+      {
+        srcSample = src;
+        dstIsResizable = false;
+      }
+      else
+      {
+        dst = dstNamespace.makeEmpty( src );
+        dstIsResizable = true;
+      }
     }
     else
     {
@@ -695,7 +702,7 @@ function _filterAct( ... args )
       return;
       dst2.unshift( val3 );
     });
-    dst = dstNamespace.make( dst2 );
+    dst = dstNamespace.make( srcSample, dst2 );
   }
 
   function nonResizableNonNull()
@@ -715,6 +722,7 @@ function _filterAct( ... args )
     _.assert( args.length === 6, `Expects 3 arguments` );
     _.assert( dst === null || self.is( dst ), () => `dst is not ${self.TypeName}` );
     _.assert( srcNamesapce.is( src ), () => `src is not ${srcNamesapce.TypeName}` );
+    _.assert( _.routineIs( onEach ), () => `onEach is not a routine` );
     _.assert
     (
       dst === null || _.countable.isResizable( dst ) || self._lengthOf( dst ) === srcNamesapce._lengthOf( src )
@@ -745,7 +753,7 @@ function _mapAct( ... args )
   {
     isSelf = false;
     dstNamespace = self.namespaceOf( src ) || self.default || self;
-    dst = self.makeUndefined( src );
+    dst = dstNamespace.makeUndefined( src );
     dstIsResizable = self.IsResizable();
   }
   else if( dst === _.self )
@@ -797,6 +805,7 @@ function _mapAct( ... args )
     _.assert( args.length === 6, `Expects 3 arguments` );
     _.assert( dst === null || self.is( dst ), () => `dst is not ${self.TypeName}` );
     _.assert( srcNamesapce.is( src ), () => `src is not ${srcNamesapce.TypeName}` );
+    _.assert( _.routineIs( onEach ), () => `onEach is not a routine` );
     _.assert
     (
       dst === null || _.countable.isResizable( dst ) || self._lengthOf( dst ) === srcNamesapce._lengthOf( src )

@@ -271,6 +271,30 @@ function _empty( dst )
 
 //
 
+function _elementAppend( dst, val )
+{
+  if( _.array.is( dst ) )
+  {
+    dst.push( val );
+    return dst.length-1;
+  }
+  _.assert( 0, 'Countable does not have implemented method "_elementAppend"' );
+}
+
+//
+
+function _elementPrepend( dst, val )
+{
+  if( _.array.is( dst ) )
+  {
+    dst.unshift( val );
+    return 0;
+  }
+  _.assert( 0, 'Countable does not have implemented method "_elementPrepend"' );
+}
+
+//
+
 function _eachLeft( src, onEach )
 {
   let k = 0;
@@ -430,6 +454,11 @@ var CountableExtension =
   elementWithCardinalDel : _.props.elementWithCardinalDel,  /* qqq : cover */
   _empty,
   empty : _.props.empty, /* qqq : for junior : cover */
+
+  _elementAppend,
+  elementAppend : _.long.elementAppend, /* qqq : cover */
+  _elementPrepend,
+  elementPrepend : _.long.elementPrepend, /* qqq : cover */
 
   // iterator
 

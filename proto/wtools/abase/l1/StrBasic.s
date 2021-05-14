@@ -216,7 +216,7 @@ function strCount( src, ins )
 
 function strStripCount( src, ins )
 {
-  return _.strCount( _.strLinesStrip( src ), _.strLinesStrip( ins ) );
+  return _.strCount( _.str.lines.strip( src ), _.str.lines.strip( ins ) );
 }
 
 //
@@ -1102,6 +1102,11 @@ function strEscape( o )
 
       case 0x09 /* '\t' */ :
         result += '\\t';
+        break;
+
+      /* qqq : cover the case, please */
+      case 0x0b /* '\v' */ :
+        result += '\\v';
         break;
 
       default :
@@ -2612,19 +2617,19 @@ function strLinesOnly( src, range )
 //  * @returns { String/Array } Returns string/array with empty lines and spaces removed.
 //  *
 //  * @example input string
-//  * _.strLinesStrip( '  Hello \r\n\t World \n\n ' );
+//  * _.str.lines.strip( '  Hello \r\n\t World \n\n ' );
 //  * // returns 'Hello\nWorld'
 //  *
 //  * @example input array
-//  * _.strLinesStrip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ] );
+//  * _.str.lines.strip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ] );
 //  * // returns  [ 'Hello \r\n\t world', '!' ]
 //  *
 //  * @example input strings
-//  * _.strLinesStrip( '  Hello \r\n\t', ' World \n\n  ! \n\n', '\n\n' );
+//  * _.str.lines.strip( '  Hello \r\n\t', ' World \n\n  ! \n\n', '\n\n' );
 //  * // returns [ 'Hello', 'World\n!', '' ]
 //  *
 //  * @example input arrays
-//  * _.strLinesStrip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ], [ '\n\nHow\n\nAre  ', '  \r\nyou ? \n'], [ '\t\r\n  ' ] );
+//  * _.str.lines.strip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ], [ '\n\nHow\n\nAre  ', '  \r\nyou ? \n'], [ '\t\r\n  ' ] );
 //  * // returns [ [ 'Hello \r\n\t world', '!' ], [ 'How\n\nAre', 'you ?' ], [] ]
 //  *
 //  * @method strLinesStrip
@@ -2640,7 +2645,7 @@ function strLinesOnly( src, range )
 //   {
 //     let result = _.unroll.make( null );
 //     for( let a = 0 ; a < arguments.length ; a++ )
-//     result[ a ] = _.strLinesStrip( arguments[ a ] );
+//     result[ a ] = _.str.lines.strip( arguments[ a ] );
 //     return result;
 //   }
 //

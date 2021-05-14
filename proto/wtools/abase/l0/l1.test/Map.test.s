@@ -1434,6 +1434,253 @@ function allPairs( test )
 
 }
 
+//
+
+/* qqq : extend */
+function extend( test )
+{
+  test.open( 'first argument is null' );
+
+  test.case = 'trivial';
+  var src1 = { a : 1, b : 2 };
+  var src1Copy = { a : 1, b : 2 };
+  var src2 = { c : 3, d : 4 };
+  var src2Copy = { c : 3, d : 4 };
+  var got = _.map.extend( null, src1, src2 );
+  var expected = { a : 1, b : 2, c : 3, d : 4 };
+  test.will = 'return';
+  test.identical( got, expected );
+  test.will = 'preserve src1';
+  test.identical( src1, src1Copy );
+  test.will = 'preserve src2';
+  test.identical( src2, src2Copy );
+  test.will = 'return not src1';
+  test.true( got !== src1 );
+  test.will = 'return not src2';
+  test.true( got !== src2 );
+
+  /* */
+
+  test.case = 'rewriting';
+  var src1 = { a : 1, b : 2 };
+  var src1Copy = { a : 1, b : 2 };
+  var src2 = { b : 22, c : 3, d : 4 };
+  var src2Copy = { b : 22, c : 3, d : 4 };
+  var got = _.map.extend( null, src1, src2 );
+  var expected = { a : 1, b : 22, c : 3, d : 4 };
+  test.will = 'return';
+  test.identical( got, expected );
+  test.will = 'preserve src1';
+  test.identical( src1, src1Copy );
+  test.will = 'preserve src2';
+  test.identical( src2, src2Copy );
+  test.will = 'return not src1';
+  test.true( got !== src1 );
+  test.will = 'return not src2';
+  test.true( got !== src2 );
+
+  test.close( 'first argument is null' );
+
+  /* - */
+
+  test.open( 'first argument is dst' );
+
+  test.case = 'trivial';
+  var dst = { a : 1, b : 2 };
+  var src2 = { c : 3, d : 4 };
+  var src2Copy = { c : 3, d : 4 };
+  var got = _.map.extend( dst, src2 );
+  var expected = { a : 1, b : 2, c : 3, d : 4 };
+  test.will = 'return';
+  test.identical( got, expected );
+  test.will = 'preserve src2';
+  test.identical( src2, src2Copy );
+  test.will = 'return dst';
+  test.true( got === dst );
+  test.will = 'return not src2';
+  test.true( got !== src2 );
+
+  /* */
+
+  test.case = 'rewriting';
+  var dst = { a : 1, b : 2 };
+  var src2 = { b : 22, c : 3, d : 4 };
+  var src2Copy = { b : 22, c : 3, d : 4 };
+  var got = _.map.extend( dst, src2 );
+  var expected = { a : 1, b : 22, c : 3, d : 4 };
+  test.will = 'return';
+  test.identical( got, expected );
+  test.will = 'preserve src2';
+  test.identical( src2, src2Copy );
+  test.will = 'return not dst';
+  test.true( got === dst );
+  test.will = 'return not src2';
+  test.true( got !== src2 );
+
+  test.close( 'first argument is dst' );
+
+  /* - */
+
+  test.case = 'trivial, first argument';
+  var src1 = { a : 7, b : 13 };
+  var src1Copy = { a : 7, b : 13 };
+  var src2 = { c : 3, d : 33 };
+  var src2Copy = { c : 3, d : 33 };
+  var got = _.map.extend( src1, src2 );
+  var expected = { a : 7, b : 13, c : 3, d : 33 };
+  test.identical( got, expected );
+  test.identical( src2, src2Copy );
+  test.true( got === src1 );
+  test.true( got !== src2 );
+
+  test.case = 'complex, first argument is null';
+  var src1 = { a : 1, b : 1, c : 1, z : 1 };
+  var src1Copy = { a : 1, b : 1, c : 1, z : 1 };
+  var src2 = { a : 2, c : 2, d : 2 };
+  var src2Copy = { a : 2, c : 2, d : 2 };
+  var src3 = { a : 3, b : 3, e : 3 };
+  var src3Copy = { a : 3, b : 3, e : 3 };
+  var got = _.map.extend( null, src1, src2, src3 );
+  var expected = { a : 3, b : 3, c : 2, d : 2, e : 3, z : 1 };
+  test.identical( got, expected );
+  test.identical( src1, src1Copy );
+  test.identical( src2, src2Copy );
+  test.identical( src3, src3Copy );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+  test.true( got !== src3 );
+
+  test.case = 'complex, first argument is not null';
+  var src1 = { a : 1, b : 1, c : 1, z : 1 };
+  var src1Copy = { a : 1, b : 1, c : 1, z : 1 };
+  var src2 = { a : 2, c : 2, d : 2 };
+  var src2Copy = { a : 2, c : 2, d : 2 };
+  var src3 = { a : 3, b : 3, e : 3 };
+  var src3Copy = { a : 3, b : 3, e : 3 };
+  var got = _.map.extend( src1, src2, src3 );
+  var expected = { a : 3, b : 3, c : 2, d : 2, e : 3, z : 1 };
+  test.identical( got, expected );
+  test.identical( src2, src2Copy );
+  test.identical( src3, src3Copy );
+  test.true( got === src1 );
+  test.true( got !== src2 );
+  test.true( got !== src3 );
+
+  test.case = 'extend pure map by empty strings, first argument is null';
+  var src1 = Object.create( null );
+  src1.a = '1';
+  src1.b = '1';
+  src1.c = '1';
+  src1.z = '1';
+  var src1Copy = Object.create( null );
+  src1Copy.a = '1';
+  src1Copy.b = '1';
+  src1Copy.c = '1';
+  src1Copy.z = '1';
+  var src2 = Object.create( null );
+  src2.a = '';
+  src2.c = '';
+  src2.d = '';
+  src2.e = '2';
+  var src2Copy = Object.create( null );
+  src2Copy.a = '';
+  src2Copy.c = '';
+  src2Copy.d = '';
+  src2Copy.e = '2';
+  var got = _.map.extend( null, src1, src2 );
+  var expected = { a : '', b : '1', c : '', d : '', e : '2', z : '1' };
+  test.identical( got, expected );
+  test.identical( src1, src1Copy );
+  test.identical( src2, src2Copy );
+  test.true( got !== src1 );
+  test.true( got !== src2 );
+
+  test.case = 'extend pure map by empty strings, first argument is not null';
+  var src1 = Object.create( null );
+  src1.a = '1';
+  src1.b = '1';
+  src1.c = '1';
+  src1.z = '1';
+  var src1Copy = Object.create( null );
+  src1Copy.a = '1';
+  src1Copy.b = '1';
+  src1Copy.c = '1';
+  src1Copy.z = '1';
+  var src2 = Object.create( null );
+  src2.a = '';
+  src2.c = '';
+  src2.d = '';
+  src2.e = '2';
+  var src2Copy = Object.create( null );
+  src2Copy.a = '';
+  src2Copy.c = '';
+  src2Copy.d = '';
+  src2Copy.e = '2';
+  var got = _.map.extend( src1, src2 );
+  var expected = { a : '', b : '1', c : '', d : '', e : '2', z : '1' };
+  test.identical( got, expected );
+  test.identical( src2, src2Copy );
+  test.true( got === src1 );
+  test.true( got !== src2 );
+
+  test.case = 'object like array';
+  var got = _.map.extend( null, [ 3, 7, 13, 73 ] );
+  var expected = { 0 : 3, 1 : 7, 2 : 13, 3 : 73 };
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no argument';
+  test.shouldThrowErrorSync( () => _.map.extend() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.map.extend( {} ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.map.extend( [], 'wrong' ) );
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.map.extend( undefined, {} ) );
+  // test.shouldThrowErrorSync( () => _.map.extend( Object.create( Object.create( null ) ), {} ) );
+
+}
+
+//
+
+/* qqq : extend */
+function supplement( test )
+{
+
+  test.case = 'an object';
+  var got = _.map.supplement( { a : 1, b : 2 }, { a : 1, c : 3 } );
+  var expected = { a : 1, b : 2, c : 3 };
+  test.identical( got, expected );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no argument';
+  test.shouldThrowErrorSync( function()
+  {
+    _.map.supplement();
+  });
+
+  test.case = 'wrong type of arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.map.supplement( 'wrong arguments' );
+  });
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.map.supplement( Object.create( Object.create( null ) ), {} ) );
+
+}
+
 // --
 // define test suite
 // --
@@ -1469,6 +1716,9 @@ const Proto =
     pairs, /* qqq : for junior : rewrite tests, please */
     // onlyOwnPairs, /* qqq : for junior : rewrite tests, please */
     allPairs, /* qqq : for junior : rewrite tests, please */
+
+    extend,
+    supplement,
 
   }
 

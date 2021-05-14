@@ -329,7 +329,7 @@ if( Config.debug )
 Object.defineProperty( _, 'debugger',
 {
   enumerable : false,
-  configurable : false,
+  configurable : true,
   set : function( val )
   {
     let debuggerSymbol = Symbol.for( 'debugger' );

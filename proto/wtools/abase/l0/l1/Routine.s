@@ -80,7 +80,7 @@ function __mapSupplementWithoutUndefined( dstMap, srcMap )
     _.assert
     (
       __primitiveLike( srcMap[ k ] ),
-      `Defaults map should have only primitive elements, but option::${ k } is ${ __strType( srcMap[ k ] ) }`
+      () => `Defaults map should have only primitive elements, but option::${ k } is ${ __strType( srcMap[ k ] ) }`
     );
     if( dstMap[ k ] !== undefined )
     continue;
@@ -105,7 +105,7 @@ function __mapSupplementWithUndefined( dstMap, srcMap )
     _.assert
     (
       __primitiveLike( srcMap[ k ] ),
-      `Defaults map should have only primitive elements, but option::${ k } is ${ __strType( srcMap[ k ] ) }`
+      () => `Defaults map should have only primitive elements, but option::${ k } is ${ __strType( srcMap[ k ] ) }`
     );
     if( Object.hasOwnProperty.call( dstMap, k ) )
     continue;
@@ -733,7 +733,7 @@ function assertOptionsWithoutUndefined( routine, options )
       _.assert
       (
         __primitiveLike( defaults[ k ] ),
-        `Defaults map should have only primitive elements, but option::${ k } is ${ __strType( defaults[ k ] ) }`
+        () => `Defaults map should have only primitive elements, but option::${ k } is ${ __strType( defaults[ k ] ) }`
       );
       _.assert
       (
@@ -898,7 +898,7 @@ function assertOptionsWithUndefined( routine, options )
       _.assert
       (
         __primitiveLike( defaults[ k ] ),
-        `Defaults map should have only primitive elements, but option::${ k } is ${ __strType( defaults[ k ] ) }`
+        () => `Defaults map should have only primitive elements, but option::${ k } is ${ __strType( defaults[ k ] ) }`
       );
       _.assert
       (
@@ -930,7 +930,7 @@ function _verifyDefaults( defaults )
     _.assert
     (
       __primitiveLike( defaults[ k ] ),
-      `Defaults map should have only primitive elements, but option::${ k } is ${ __strType( defaults[ k ] ) }`
+      () => `Defaults map should have only primitive elements, but option::${ k } is ${ __strType( defaults[ k ] ) }`
     );
   }
 
@@ -1979,7 +1979,7 @@ function unite_body( o )
   {
     let o = args[ 0 ];
     _.assert( arguments.length === 2 );
-    _.assert( args.length === 0 || args.length === 1 );
+    _.assert( args.length === 0 || args.length === 1, () => `Expects optional argument, but got ${args.length} arguments` );
     _.assert( args.length === 0 || o === undefined || o === null || _.auxIs( o ) );
     return o || null;
   }
@@ -1990,7 +1990,7 @@ function unite_body( o )
   {
     let o = args[ 0 ];
     _.assert( arguments.length === 2 );
-    _.assert( args.length === 0 || args.length === 1 );
+    _.assert( args.length === 0 || args.length === 1, () => `Expects optional argument, but got ${args.length} arguments` );
     _.assert( args.length === 0 || o === undefined || o === null || _.auxIs( o ) );
     return _.routine.options( routine, o || Object.create( null ) );
   }
@@ -2131,7 +2131,7 @@ function _compose_old_head( routine, args )
   let o = args[ 0 ];
 
   if( !_.mapIs( o ) )
-  o = { bodies : args[ 0 ] }
+  o = { bodies : args[ 0 ] };
   if( args[ 1 ] !== undefined )
   o.chainer = args[ 1 ];
 
@@ -2139,6 +2139,7 @@ function _compose_old_head( routine, args )
   // debugger;
   // o.bodies = _.arrayAppendArrays( [], [ o.bodies ] );
   // o.bodies = merge( o.bodies );
+
   o.bodies = __arrayFlatten( o.bodies );
   o.bodies = o.bodies.filter( ( e ) => e !== null );
 
@@ -2232,13 +2233,11 @@ function _compose_old_body( o )
     let args = _.unroll.from( arguments );
     for( let k = 0 ; k < bodies.length ; k++ )
     {
-      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.entity.strType( args ) );
+      // _.assert( _.unrollIs( args ), () => `Expects unroll, but got ${_.entity.strType( args )}` );
       let routine = bodies[ k ];
       let r = routine.apply( this, args );
-      _.assert( r !== false /* && r !== undefined */, 'Temporally forbidden type of result', r );
       _.assert( !_.argumentsArray.is( r ) );
       if( r !== undefined )
-      // result.push( r );
       _.unrollAppend( result, r );
       args = chainer( args, r, o, k );
       _.assert( args !== undefined && args !== false );
@@ -2295,7 +2294,7 @@ function _compose_head( routine, args )
   let o = args[ 0 ];
 
   if( !_.mapIs( o ) )
-  o = { bodies : args[ 0 ] }
+  o = { bodies : args[ 0 ] };
   if( args[ 1 ] !== undefined )
   o.chainer = args[ 1 ];
 
@@ -2416,12 +2415,11 @@ function _compose_body( o )
   {
     let result = [];
     let args = _.unroll.from( arguments );
-    _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.entity.strType( args ) );
+    // _.assert( _.unrollIs( args ), () => `Expects unroll, but got ${_.entity.strType( args )}` );
     let routine = bodies[ 0 ];
     let r = routine.apply( this, args );
     _.assert( !_.argumentsArray.is( r ) );
     if( r !== undefined )
-    // result.push( r )
     _.unrollAppend( result, r );
     return result;
   }
@@ -2432,12 +2430,11 @@ function _compose_body( o )
     let args = _.unroll.from( arguments );
     for( let k = 0 ; k < bodies.length ; k++ )
     {
-      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.entity.strType( args ) );
+      // _.assert( _.unrollIs( args ), () => `Expects unroll, but got ${_.entity.strType( args )}` );
       let routine = bodies[ k ];
       let r = routine.apply( this, args );
       _.assert( !_.argumentsArray.is( r ) );
       if( r !== undefined )
-      // result.push( r );
       _.unrollAppend( result, r );
       args = chainer( args, r, o, k );
       if( args === _.dont )
