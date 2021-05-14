@@ -8762,7 +8762,7 @@ function isPerformance( test )
     Average of 10 runs of 5 million iteration of 13 _.long.is variations
     Values below are in seconds
     |-------------------|-------------------|
-    |                   |   debug: false    |
+    |                   |                   |
     | :---------------: |:---------------:  |
     | **Njs : v10.24.1**|    8.3735         |
     |-------------------|-------------------|
