@@ -140,7 +140,7 @@ function is( test )
 function isPerformance( test )
 {
   /*
-    Average of 10 runs of 5 million iteration of 13 _.long.is variations
+    Average of 10 runs of 5 million iteration of 23 _.bufferTyped.is variations
     Values below are in seconds
     |-------------------|-------------------|-------------------|
     |                   |   debug: false    |   debug: true     |

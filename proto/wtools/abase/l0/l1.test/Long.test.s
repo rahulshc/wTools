@@ -8776,7 +8776,7 @@ function performance( test )
   var debugFlag = Config.debug;
   Config.debug = false;
 
-  test.case = '5 million iterations';
+  test.case = '_.long.is performance test';
   var took, time;
   var env = initializeVariables();
 
