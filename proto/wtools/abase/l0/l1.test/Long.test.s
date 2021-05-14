@@ -8756,23 +8756,26 @@ function longRight( test )
 
 //
 
-function performance( test )
+function isPerformance( test )
 {
    /*
     Average of 10 runs of 5 million iteration of 13 _.long.is variations
     Values below are in seconds
-    |-------------------|-------------------|-------------------|
-    |                   |   debug: false    |   debug: true     |
-    | :---------------: |:---------------:  |:---------------:  |
-    | **Njs : v10.24.1**|    8.3735         |    8.4341         |
-    |-------------------|-------------------|-------------------|
-    | **Njs : v12.22.1**|    9.6773         |    9.3832         |
-    |-------------------|-------------------|-------------------|
-    | **Njs : v14.17.0**|    12.3397        |    13.1611        |
-    |-------------------|-------------------|-------------------|
-    | **Njs : v15.14.0**|   10.3089         |    10.0833        |
-    |-------------------|-------------------|-------------------|
+    |-------------------|-------------------|
+    |                   |                   |
+    | :---------------: |:---------------:  |
+    | **Njs : v10.24.1**|    8.3735         |
+    |-------------------|-------------------|
+    | **Njs : v12.22.1**|    9.6773         |
+    |-------------------|-------------------|
+    | **Njs : v14.17.0**|    12.3397        |
+    |-------------------|-------------------|
+    | **Njs : v15.14.0**|    10.3089        |
+    |-------------------|-------------------|
+    | Kos . Njs:v12.9.1 |    11.046s        |
+    |-------------------|-------------------|
   */
+
   var debugFlag = Config.debug;
   Config.debug = false;
 
@@ -8817,6 +8820,7 @@ function performance( test )
     return env;
   }
 
+  /* qqq : for Rahul : lets add more typed buffers and non-longs */
   function runVariations( env )
   {
     _.long.is( [] );
@@ -8835,8 +8839,8 @@ function performance( test )
   }
 }
 
-performance.timeOut = 1e7;
-performance.experimental = true;
+isPerformance.timeOut = 1e7;
+isPerformance.experimental = true;
 
 // --
 //
@@ -8933,7 +8937,7 @@ const Proto =
 
     longLeft,
     longRight,
-    performance
+    isPerformance
 
   }
 

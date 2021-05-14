@@ -140,20 +140,24 @@ function is( test )
 function isPerformance( test )
 {
   /*
-    Average of 10 runs of 5 million iteration of 23 _.bufferTyped.is variations
+    Average of 10 runs of 1 million iteration of 23 _.bufferTyped.is variations
     Values below are in seconds
-    |-------------------|-------------------|-------------------|
-    |                   |   debug: false    |   debug: true     |
-    | :---------------: |:---------------:  |:---------------:  |
-    | **Njs : v10.24.1**|    29.8696        |    29.2584        |
-    |-------------------|-------------------|-------------------|
-    | **Njs : v12.22.1**|    22.2561        |   22.3017         |
-    |-------------------|-------------------|-------------------|
-    | **Njs : v14.17.0**|    31.7989        |   31.1138         |
-    |-------------------|-------------------|-------------------|
-    | **Njs : v15.14.0**|     33.9093       |   31.7449         |
-    |-------------------|-------------------|-------------------|
+    |-------------------|-------------------|
+    |                   |                   |
+    | :---------------: |:---------------:  |
+    | **Njs : v10.24.1**|                   |
+    |-------------------|-------------------|
+    | **Njs : v12.22.1**|                   |
+    |-------------------|-------------------|
+    | **Njs : v14.17.0**|                   |
+    |-------------------|-------------------|
+    | **Njs : v15.14.0**|                   |
+    |-------------------|-------------------|
+    |Kos : Njs : v12.9.1|       5.664s      |
+    |-------------------|-------------------|
   */
+
+  debugger;
   var debugFlag = Config.debug;
   Config.debug = false;
 
@@ -172,13 +176,14 @@ function isPerformance( test )
   test.identical( true, true );
 
   Config.debug = debugFlag;
+  debugger;
 
   /* - */
 
   function initializeVariables()
   {
     var env = {};
-    env.times = 5000000;
+    env.times = 1000000;
     env.bigUint64Array = new U64x( 10 );
     env.uint32Array = new U32x( 10 );
     env.uint16Array = new U16x( 10 );
@@ -250,7 +255,8 @@ const Proto =
 
     // bufferTyped, l0/l1
     is,
-    isPerformance
+    isPerformance,
+
   }
 
 }
