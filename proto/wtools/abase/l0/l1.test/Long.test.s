@@ -8776,7 +8776,7 @@ function performance( test )
   var debugFlag = Config.debug;
   Config.debug = false;
 
-  test.case = '5 million iterations';
+  test.case = '_.long.is performance test';
   var took, time;
   var env = initializeVariables();
 
@@ -8798,7 +8798,6 @@ function performance( test )
   {
     var env = {};
     env.times = 5000000;
-    env.emptyArray = _.long.is( [] );
     env.nonEmptyArray = [ 1, 2, 3 ];
     env.rawBuffer = new BufferRaw( 10 );
     env.float32Array = new F32x( 10 );
@@ -8820,7 +8819,7 @@ function performance( test )
 
   function runVariations( env )
   {
-    _.long.is( env.emptyArray );
+    _.long.is( [] );
     _.long.is( env.nonEmptyArray );
     _.long.is( arguments );
     _.long.is( env.rawBuffer );
