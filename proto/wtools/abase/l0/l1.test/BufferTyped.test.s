@@ -1,4 +1,4 @@
-( function _l0_l1_Buffer_test_s_()
+( function _l0_l1_BufferTyped_test_s_()
 {
 
 'use strict';
