@@ -15,10 +15,7 @@ _.bufferTyped.namespaces = _.bufferTyped.namespaces || Object.create( null );
 
 function is( src )
 {
-  let type = Object.prototype.toString.call( src );
-  if( !/\wArray/.test( type ) )
-  return false;
-  if( type === '[object SharedArrayBuffer]' )
+  if( !src || src.buffer === undefined )
   return false;
   if( _.buffer.nodeIs( src ) )
   return false;
