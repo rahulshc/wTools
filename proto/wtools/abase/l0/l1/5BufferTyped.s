@@ -15,7 +15,7 @@ _.bufferTyped.namespaces = _.bufferTyped.namespaces || Object.create( null );
 
 function is( src )
 {
-  if( !src || src.buffer === undefined )
+  if( !( src && src.buffer ) )
   return false;
   if( _.buffer.nodeIs( src ) )
   return false;
