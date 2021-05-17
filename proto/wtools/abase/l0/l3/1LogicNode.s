@@ -126,6 +126,13 @@ function exportString()
 
 //
 
+function exportStructure()
+{
+
+}
+
+//
+
 function lengthGet()
 {
   return this.elements.length;
@@ -315,6 +322,7 @@ function DeclareAbstract( fo )
   prop( 'constructor', constructor );
   prop( 'type', 'abstract' );
   prop( 'exec', exec );
+  prop( 'exportStructure', exportStructure );
 
   Object.defineProperty( fo.class, 'length',
   {
