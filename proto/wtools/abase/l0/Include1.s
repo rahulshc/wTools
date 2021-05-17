@@ -50,6 +50,8 @@ if( typeof module !== 'undefined' )
   require( './l1/Introspector.s' );
   require( './l1/Itself.s' );
   require( './l1/Logger.s' );
+  require( './l1/Logic.s' );
+  require( './l1/LogicNode.s' );
   require( './l1/Map.s' );
   require( './l1/Module.s' );
   require( './l1/Number.s' );

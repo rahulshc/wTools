@@ -1,4 +1,4 @@
-( function _l3_Wrap_s_()
+( function _l3_1Wrap_s_()
 {
 
 'use strict';
@@ -71,9 +71,9 @@ function equalAre_functor( fo )
     if( !it.src2 )
     return it.stop( false );
 
-    if( !it.src instanceof cls )
+    if( !( it.src instanceof cls ) )
     return it.stop( false );
-    if( !it.src2 instanceof cls )
+    if( !( it.src2 instanceof cls ) )
     return it.stop( false );
 
     if( it.src.val === it.src2.val )
@@ -119,10 +119,6 @@ function exportString()
   return `{- ${this.constructor.name} {- Symbol ${Symbol.keyFor( this.val )} -} -}`;
   else
   return `{- ${this.constructor.name} ${String( this.val )} -}`;
-  // if( _.symbol.is( this.val ) )
-  // return `${this.constructor.name}( Symbol( ${Symbol.keyFor( this.val )} ) )`;
-  // else
-  // return `${this.constructor.name}( ${String( this.val )} )`;
 }
 
 //

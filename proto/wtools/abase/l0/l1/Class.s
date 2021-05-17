@@ -150,7 +150,8 @@ function declareBasic( o )
   o.cloneDeep = o.cloneDeep || o.cloneShallow;
   o.equalAre = o.equalAre || equalAre;
 
-  Object.setPrototypeOf( o.constructor.prototype, null );
+  // debugger;
+  // Object.setPrototypeOf( o.constructor.prototype, null );
   o.constructor.prototype = Object.create( o.prototype );
   if( o.iterate )
   o.constructor.prototype[ iteratorSymbol ] = o.iterate;
@@ -235,6 +236,7 @@ declareBasic.defaults =
 {
   constructor : null,
   prototype : null,
+  parent : null,
   exportString : null,
   cloneShallow : null,
   cloneDeep : null,

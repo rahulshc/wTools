@@ -5,10 +5,8 @@
 
 if( typeof module !== 'undefined' )
 {
-
   const _ = require( 'Tools' );
   _.include( 'wTesting' );
-
 }
 
 const _global = _global_;

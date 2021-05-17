@@ -42,6 +42,7 @@ if( typeof module !== 'undefined' )
   require( './l7/Intervall.s' );
   require( './l7/Intervalo.s' );
   require( './l7/Introspector.s' );
+  require( './l7/Logic.s' );
   require( './l7/Long.s' );
   require( './l7/Map.s' );
   require( './l7/Module.s' );

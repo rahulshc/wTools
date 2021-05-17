@@ -9,6 +9,7 @@ if( typeof module !== 'undefined' )
   module[ 'exports' ] = require( './Include1.s' );
 
   require( './l3/1Wrap.s' );
+  require( './l3/1LogicNode.s' );
   require( './l3/2Props.s' );
   require( './l3/3Blank.s' );
   require( './l3/3Long.s' );
@@ -27,6 +28,7 @@ if( typeof module !== 'undefined' )
   require( './l3/Escape.s' );
   require( './l3/HashMap.s' );
   require( './l3/Itself.s' );
+  require( './l3/Logic.s' );
   require( './l3/Map.s' );
   require( './l3/Module.s' );
   require( './l3/Number.s' );

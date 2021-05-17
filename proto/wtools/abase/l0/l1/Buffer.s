@@ -986,11 +986,11 @@ let ToolsExtension =
   bufferMakeZeroed : _.buffer.makeZeroed.bind( _.buffer ),
 
   bufferFromArrayOfArray,
-  bufferRawFromTyped,
-  bufferRawFrom,
-  bufferBytesFrom,
-  bufferBytesFromNode,
-  bufferNodeFrom,
+  bufferRawFromTyped, /* xxx : qqq : for Dmytro : move corresponding namespace and tests */
+  bufferRawFrom, /* xxx : qqq : for Dmytro : move corresponding namespace and tests */
+  bufferBytesFrom, /* xxx : qqq : for Dmytro : move corresponding namespace and tests */
+  bufferBytesFromNode, /* xxx : qqq : for Dmytro : move corresponding namespace and tests */
+  bufferNodeFrom, /* xxx : qqq : for Dmytro : move corresponding namespace and tests */
 
 }
 
