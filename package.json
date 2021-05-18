@@ -1,6 +1,6 @@
 {
   "name" : "wTools",
-  "version" : "0.8.1115",
+  "version" : "0.8.1116",
   "engine" : "node >= 10.0.0",
   "enabled" : 1,
   "description" : "Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without spoiling namespace, so may be used solely or in conjunction with another module of such kind",
@@ -45,7 +45,7 @@
     "url" : "https://github.com/Wandalen/wTools/issues"
   },
   "dependencies" : {},
-  "devDependencies" : { "eslint" : "7.1.0", "wTesting" : "delta" },
+  "devDependencies" : { "eslint" : "7.1.0", "wTesting" : "gamma" },
   "keywords" :
   [
     "base",
