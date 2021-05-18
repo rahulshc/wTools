@@ -15,7 +15,7 @@ _.bufferTyped.namespaces = _.bufferTyped.namespaces || Object.create( null );
 
 function is( src )
 {
-  if( !( src && Object.getPrototypeOf( Object.getPrototypeOf( src ).constructor ).name === 'TypedArray' ) )
+  if( !( src && Object.getPrototypeOf( src.constructor ).name === 'TypedArray' ) )
   return false;
   if( _.buffer.nodeIs( src ) )
   return false;
