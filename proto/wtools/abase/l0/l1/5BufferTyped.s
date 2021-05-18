@@ -16,7 +16,6 @@ _.bufferTyped.namespaces = _.bufferTyped.namespaces || Object.create( null );
 function is( src )
 {
   let TypedArray = Object.getPrototypeOf( Int8Array );
-
   if( !( src && src instanceof TypedArray ) )
   return false;
   if( _.buffer.nodeIs( src ) )
