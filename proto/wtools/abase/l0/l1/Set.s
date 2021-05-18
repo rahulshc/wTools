@@ -136,8 +136,13 @@ function cloneShallow( src )
 function from( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
+
   if( this.is( src ) )
   return src;
+
+  if( _.containerAdapter.is( src ) )
+  src = src.toArray().original;
+
   return this.make( src );
 }
 
@@ -155,7 +160,16 @@ function from( src )
 //   _.assert( _.longIs( src ) );
 //   return new Set([ ... src ]);
 // }
+
 //
+
+function as( src )
+{
+
+
+
+}
+
 // //
 //
 // function setsFrom( srcs )
@@ -236,6 +250,7 @@ let ToolsExtension =
   setMake : make.bind( _.set ),
   setCloneShallow : cloneShallow.bind( _.set ),
   setFrom : from.bind( _.set ),
+  setAs : as.bind( _.set ),
 
 }
 
@@ -255,7 +270,6 @@ let SetExtension =
   MostGeneralNamespaceName : 'countable',
   TypeName : 'Set',
   TypeNames : [ 'Set' ],
-  // SecondTypeName : 'Set',
   InstanceConstructor : Set,
   tools : _,
 
@@ -279,6 +293,7 @@ let SetExtension =
   _cloneShallow,
   cloneShallow, /* qqq : for junior : cover */
   from,
+  as,
 
   // properties
 

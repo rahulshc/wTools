@@ -22,6 +22,7 @@ if( typeof module !== 'undefined' )
   require( './l3/BuffersTyped.s' );
   require( './l3/BufferTyped.s' );
   require( './l3/Container.s' );
+  require( './l3/ContainerAdapter.s' );
   require( './l3/Countable.s' );
   require( './l3/Diagnostic.s' );
   require( './l3/Entity.s' );

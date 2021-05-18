@@ -10,18 +10,18 @@ const _ = _global_.wTools;
 // implementation
 // --
 
-function adapterLike( src )
-{
-  if( !src )
-  return false;
-  if( _.set.like( src ) )
-  return true;
-  if( !_.containerAdapter || _.containerAdapter.Set )
-  return false;
-  if( src instanceof _.containerAdapter.Set )
-  return true;
-  return false;
-}
+// function adapterLike( src )
+// {
+//   if( !src )
+//   return false;
+//   if( _.set.like( src ) )
+//   return true;
+//   if( !_.containerAdapter || _.containerAdapter.Set )
+//   return false;
+//   if( src instanceof _.containerAdapter.Set )
+//   return true;
+//   return false;
+// }
 
 // --
 // extension
@@ -30,7 +30,7 @@ function adapterLike( src )
 let ToolsExtension =
 {
 
-  setAdapterLike : adapterLike,
+  // setAdapterLike : adapterLike,
 
 }
 
@@ -41,7 +41,7 @@ Object.assign( _, ToolsExtension );
 let SetExtension =
 {
 
-  adapterLike,
+  // adapterLike, /* xxx : move out */
 
 }
 

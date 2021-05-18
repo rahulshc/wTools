@@ -476,7 +476,7 @@ let EntityExtension =
 
   // inspector
 
-  lengthOf : _.container.lengthOf, /* qqq : cover */
+  lengthOf, /* qqq : cover */
 
   // elementor
 

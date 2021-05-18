@@ -328,7 +328,7 @@ function strRemove( srcStr, insStr )
   if( _.strIs( srcStr ) && !_.longIs( srcStr ) )
   return _._strRemoved( srcStr, insStr );
 
-  srcStr = _.arrayAs( srcStr );
+  srcStr = _.array.as( srcStr );
 
   for( let s = 0; s < srcStr.length; s++ )
   {

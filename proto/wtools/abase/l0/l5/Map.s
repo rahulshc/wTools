@@ -3363,7 +3363,7 @@ function mapOnlyOwn_( dstMap, srcMaps, screenMaps )
 {
 
   if( arguments.length === 1 )
-  return _.mapsExtendConditional( _.props.mapper.srcOwn(), null, _.arrayAs( dstMap ) );
+  return _.mapsExtendConditional( _.props.mapper.srcOwn(), null, _.array.as( dstMap ) );
 
   _.assert( arguments.length === 3, 'Not clear how to construct {-dstMap-}. Please, specify exactly 3 arguments' );
 

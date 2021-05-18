@@ -86,99 +86,6 @@ function IsResizable()
 // maker
 // --
 
-// function _makeEmpty( src )
-// {
-//   return [];
-// }
-//
-// //
-//
-// function makeEmpty( src )
-// {
-//   _.assert( arguments.length === 0 || arguments.length === 1 );
-//   if( arguments.length === 1 )
-//   {
-//     _.assert( this.like( src ) );
-//     return [];
-//   }
-//   else
-//   {
-//     return [];
-//   }
-// }
-
-//
-
-// function _makeUndefined( src, length )
-// {
-//   if( arguments.length === 2 )
-//   {
-//     if( _.long.is( length ) )
-//     length = length.length;
-//     return new Array( length );
-//   }
-//   else if( arguments.length === 1 )
-//   {
-//     length = src;
-//     if( _.long.is( length ) )
-//     length = length.length;
-//     if( length === null )
-//     return new Array();
-//     else
-//     return new Array( length );
-//   }
-//   else
-//   {
-//     return [];
-//   }
-// }
-//
-// //
-//
-// function makeUndefined( src, length )
-// {
-//   _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
-//   if( arguments.length === 2 )
-//   {
-//     _.assert( src === null || _.long.is( src ) );
-//     _.assert( _.number.is( length ) || _.long.is( length ) );
-//     return this._makeUndefined( src, length );
-//   }
-//   else if( arguments.length === 1 )
-//   {
-//     _.assert( _.number.is( src ) || _.long.is( src ) || src === null );
-//     return this._makeUndefined( src );
-//   }
-//   else
-//   {
-//     return [];
-//   }
-// }
-
-//
-
-// function _makeFilling( type, value, length )
-// {
-//   if( arguments.length === 2 )
-//   {
-//     value = arguments[ 0 ];
-//     length = arguments[ 1 ];
-//   }
-//
-//   if( _.long.is( length ) )
-//   length = length.length;
-//   else if( _.countable.is( length ) )
-//   length = [ ... length ].length;
-//
-//   let result = this._make( type, length );
-//   for( let i = 0 ; i < length ; i++ )
-//   result[ i ] = value;
-//
-//   return result;
-// }
-
-//
-
 function _make( src, length )
 {
   if( arguments.length === 2 )
@@ -221,26 +128,7 @@ function _make( src, length )
     return dst;
   }
 
-  // if( _.numberIs( length ) )
-  // return new Array( length );
-  // if( _.numberIs( src ) )
-  // return new Array( src );
-  // if( src )
-  // return [ ... src ];
-  // return [];
 }
-
-//
-
-// function make( src, length )
-// {
-//   _.assert( arguments.length === 0 || src === null || _.countable.is( src ) || _.numberIs( src ) );
-//   _.assert( length === undefined || !_.number.is( src ) || !_.number.is( length ) );
-//   // _.assert( arguments.length < 2 || _.number.is( length ) );
-//   _.assert( arguments.length < 2 || _.number.is( length ) || _.countable.is( length ) );
-//   _.assert( arguments.length <= 2 );
-//   return this._make( ... arguments );
-// }
 
 //
 
@@ -251,25 +139,57 @@ function _cloneShallow( srcArray )
 
 //
 
-// function cloneShallow( srcArray )
-// {
-//   _.assert( this.like( srcArray ) );
-//   _.assert( arguments.length === 1 );
-//   return this._cloneShallow( srcArray );
-// }
+/**
+ * The as() routine copies passed argument to the array.
+ *
+ * @param { * } src - The source value.
+ *
+ * @example
+ * _.array.as( false );
+ * // returns [ false ]
+ *
+ * @example
+ * _.array.as( { a : 1, b : 2 } );
+ * // returns [ { a : 1, b : 2 } ]
+ *
+ * @returns { Array } - If passed null or undefined than return the empty array. If passed an array then return it.
+ * Otherwise return an array which contains the element from argument.
+ * @function as
+ * @namespace Tools/array
+ */
+
+function as( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( src !== undefined );
+
+  if( src === null )
+  return [];
+  else if( _.longLike( src ) )
+  return src;
+  else
+  return [ src ];
+
+}
 
 //
 
-// function from( src )
-// {
-//   _.assert( arguments.length === 1, 'Expects single argument' );
-//   if( this.is( src ) )
-//   return src;
-//   return this.make( src );
-// }
+function asShallow( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( src !== undefined );
+
+  if( src === null )
+  return [];
+  else if( _.longLike( src ) )
+  return _.array.slice( src );
+  else
+  return [ src ];
+
+}
 
 // --
-// declaration
+// array extension
 // --
 
 let ArrayExtension =
@@ -312,6 +232,8 @@ let ArrayExtension =
   _cloneShallow,
   cloneShallow : _.argumentsArray.cloneShallow, /* qqq : for junior : cover */
   from : _.argumentsArray.from, /* qqq : for junior : cover */
+  as,
+  asShallow,
 
   // meta
 
@@ -335,7 +257,9 @@ _.countable.default = _.array;
 _.assert( _.vector.default === undefined );
 _.vector.default = _.array;
 
-//
+// --
+// tools extension
+// --
 
 /* qqq : for junior : duplicate routines on all levels */
 let ToolsExtension =

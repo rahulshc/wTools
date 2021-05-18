@@ -32,6 +32,7 @@ if( typeof module !== 'undefined' )
   require( './l1/Class.s' );
   require( './l1/Constructible.s' );
   require( './l1/Container.s' );
+  require( './l1/ContainerAdapter.s' );
   require( './l1/Countable.s' );
   require( './l1/Ct.s' );
   require( './l1/Date.s' );

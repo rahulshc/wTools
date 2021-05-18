@@ -1457,42 +1457,6 @@ arrayFromCoercingLongDescriptor.timeOut = 15000;
 
 //
 
-function arrayAs( test )
-{
-  test.case = 'an empty array';
-  var got = _.arrayAs( [] );
-  var expected = [];
-  test.identical( got, expected );
-
-  test.case = 'null';
-  var got = _.arrayAs( null );
-  var expected = [];
-  test.identical( got, expected );
-
-  test.case = 'array contains an object';
-  var got = _.arrayAs( { a : 1, b : 2 } );
-  var expected = [ { a : 1, b : 2 } ];
-  test.identical( got, expected );
-
-  test.case = 'array contains boolean';
-  var got = _.arrayAs( true );
-  var expected = [ true ];
-  test.identical( got, expected );
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'nothing';
-  test.shouldThrowErrorSync( () => _.arrayAs() );
-
-  test.case = 'undefined';
-  test.shouldThrowErrorSync( () => _.arrayAs( undefined ) );
-};
-
-//
-
 function arraySlice( test )
 {
   var array = ( src ) => _.array.make( src );
@@ -25343,7 +25307,7 @@ const Proto =
     arrayFromCoercing,
     // arrayFromCoercingLongDescriptor, /* Dmytro : long long does not exists */
 
-    arrayAs,
+    // arrayAs,
 
     // array transformer
 

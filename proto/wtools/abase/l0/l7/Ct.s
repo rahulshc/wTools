@@ -168,7 +168,7 @@ function _formatAffixes( styles )
   result.head = '';
   result.post = '';
 
-  styles = _.arrayAs( styles );
+  styles = _.array.as( styles );
 
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.arrayIs( styles ), 'Expects string or array of strings {- styles -}' );

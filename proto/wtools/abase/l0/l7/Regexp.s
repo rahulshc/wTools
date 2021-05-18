@@ -467,7 +467,7 @@ function arrayMake( src )
 
   _.assert( _.regexpLike( src ) || _.argumentsArray.like( src ), 'Expects array/regexp/string, got ' + _.entity.strType( src ) );
 
-  src = _.arrayFlatten( [], _.arrayAs( src ) );
+  src = _.arrayFlatten( [], _.array.as( src ) );
 
   for( let k = src.length-1 ; k >= 0 ; k-- )
   {
@@ -558,7 +558,7 @@ function arrayAny( arr, ins, ifEmpty )
   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
-  arr = _.arrayAs( arr );
+  arr = _.array.as( arr );
   for( let m = 0 ; m < arr.length ; m++ )
   {
     _.assert( _.routine.is( arr[ m ].test ) );
@@ -602,7 +602,7 @@ function arrayAll( arr, ins, ifEmpty )
   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
-  arr = _.arrayAs( arr );
+  arr = _.array.as( arr );
   for( let m = 0 ; m < arr.length ; m++ )
   {
     if( !arr[ m ].test( ins ) )
@@ -620,7 +620,7 @@ function arrayNone( arr, ins, ifEmpty )
   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
-  arr = _.arrayAs( arr );
+  arr = _.array.as( arr );
   for( let m = 0 ; m < arr.length ; m++ )
   {
     _.assert( _.routine.is( arr[ m ].test ) );

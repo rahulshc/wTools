@@ -434,7 +434,7 @@ function aptRight( test )
 // maker
 // --
 
-function arrayMake( test )
+function make( test )
 {
   test.case = 'without arguments';
   var got = _.array.make();
@@ -694,8 +694,8 @@ function arrayMake( test )
 
 //
 
-/* qqq : for junior : rewrite test routines arrayMake* with subroutine typeEach(). ask */
-function arrayMakeUndefined( test )
+/* qqq : for junior : rewrite test routines make* with subroutine typeEach(). ask */
+function makeUndefined( test )
 {
   test.case = 'without arguments';
   var got = _.array.makeUndefined();
@@ -1430,11 +1430,11 @@ function arrayMakeUndefined( test )
 
 }
 
-arrayMakeUndefined.timeOut = 15000;
+makeUndefined.timeOut = 15000;
 
 //
 
-function arrayFrom( test )
+function from( test )
 {
   test.case = 'src = null';
   var src = null;
@@ -1661,6 +1661,42 @@ function arrayFrom( test )
 
 }
 
+//
+
+function as( test )
+{
+  test.case = 'an empty array';
+  var got = _.array.as( [] );
+  var expected = [];
+  test.identical( got, expected );
+
+  test.case = 'null';
+  var got = _.array.as( null );
+  var expected = [];
+  test.identical( got, expected );
+
+  test.case = 'array contains an object';
+  var got = _.array.as( { a : 1, b : 2 } );
+  var expected = [ { a : 1, b : 2 } ];
+  test.identical( got, expected );
+
+  test.case = 'array contains boolean';
+  var got = _.array.as( true );
+  var expected = [ true ];
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'nothing';
+  test.shouldThrowErrorSync( () => _.array.as() );
+
+  test.case = 'undefined';
+  test.shouldThrowErrorSync( () => _.array.as( undefined ) );
+};
+
 // --
 //
 // --
@@ -1679,9 +1715,10 @@ const Proto =
 
     // maker
 
-    arrayMake,
-    arrayMakeUndefined,
-    arrayFrom,
+    make,
+    makeUndefined,
+    from,
+    as,
 
   }
 

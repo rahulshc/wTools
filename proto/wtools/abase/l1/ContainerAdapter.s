@@ -15,25 +15,25 @@ _.assert( _.routine.is( _.longLeft ) );
 // type test
 // --
 
-function is( src )
-{
-  if( !src )
-  return false;
-  return src instanceof ContainerAdapterAbstract;
-}
-
+// function is( src )
+// {
+//   if( !src )
+//   return false;
+//   return src instanceof ContainerAdapterAbstract;
+// }
 //
-
-function isContainer( src )
-{
-  if( _.set.like( src ) )
-  return true;
-  if( _.longLike( src ) )
-  return true;
-  if( _.containerAdapter.is( src ) )
-  return true;
-  return false;
-}
+// //
+//
+// function isContainer( src )
+// {
+//   if( _.set.like( src ) )
+//   return true;
+//   if( _.longLike( src ) )
+//   return true;
+//   if( _.containerAdapter.is( src ) )
+//   return true;
+//   return false;
+// }
 
 //
 
@@ -471,32 +471,32 @@ function ExportTo( dstGlobal, srcGlobal )
 // declare
 // --
 
-class ContainerAdapterNamespace
-{
-  static[ Symbol.hasInstance ]( instance )
-  {
-    return is( instance );
-  }
-}
-
-let Handler =
-{
-  construct( original, args )
-  {
-    return ContainerAdapterNamespace.make( ... args );
-  }
-};
-
-const Self = new Proxy( ContainerAdapterNamespace, Handler );
-Self.original = ContainerAdapterNamespace;
+// class ContainerAdapterNamespace
+// {
+//   static[ Symbol.hasInstance ]( instance )
+//   {
+//     return is( instance );
+//   }
+// }
+//
+// let Handler =
+// {
+//   construct( original, args )
+//   {
+//     return ContainerAdapterNamespace.make( ... args );
+//   }
+// };
+//
+// const Self = new Proxy( ContainerAdapterNamespace, Handler );
+// Self.original = ContainerAdapterNamespace;
 
 //
 
 var Extension =
 {
 
-  is,
-  isContainer,
+  // is,
+  // isContainer,
   make,
   from,
 
@@ -509,9 +509,10 @@ var Extension =
 
 //
 
-Object.assign( Self, Extension );
-_.assert( _.containerAdapter === undefined );
-_.containerAdapter = Self;
+Object.assign( _.containerAdapter, Extension );
+// Object.assign( Self, Extension );
+// _.assert( _.containerAdapter === undefined );
+// _.containerAdapter = Self;
 
 // --
 // export

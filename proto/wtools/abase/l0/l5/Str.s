@@ -192,7 +192,7 @@ function strQuotePairsNormalize( quote )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( quote ) || _.arrayIs( quote ) );
 
-  quote = _.arrayAs( quote );
+  quote = _.array.as( quote );
   for( let q = 0 ; q < quote.length ; q++ )
   {
     let quotingPair = quote[ q ];
@@ -373,7 +373,7 @@ function _strLeftSingle_( src, ins, cinterval )
 
   let src1 = src.substring( cinterval[ 0 ], cinterval[ 1 ] + 1 );
 
-  ins = _.arrayAs( ins );
+  ins = _.array.as( ins );
 
   for( let k = 0 ; k < ins.length ; k++ )
   {
@@ -462,7 +462,7 @@ function _strRightSingle_( src, ins, cinterval )
 
   let src1 = src.substring( cinterval[ 0 ], cinterval[ 1 ] + 1 );
 
-  ins = _.arrayAs( ins );
+  ins = _.array.as( ins );
 
   for( let k = 0, len = ins.length ; k < len ; k++ )
   {
@@ -638,8 +638,8 @@ function strInsideOf_head( routine, args )
   // o.end = o.end[ 0 ];
   if( _.longIs( o.begin || _.longIs( o.end )) )
   {
-    o.begin = _.arrayAs( o.begin );
-    o.end = _.arrayAs( o.end );
+    o.begin = _.array.as( o.begin );
+    o.end = _.array.as( o.end );
   }
 
   _.assert
@@ -763,8 +763,8 @@ function strInsideOf__head( routine, args )
   _.assert( _.strIs( o.src ), 'Expects string {-o.src-}' );
   _.routine.options( routine, o );
 
-  o.begin = _.arrayAs( o.begin );
-  o.end = _.arrayAs( o.end );
+  o.begin = _.array.as( o.begin );
+  o.end = _.array.as( o.end );
 
   _.assert
   (
@@ -888,8 +888,8 @@ function strRemoveBegin( src, begin )
   if( _.strIs( src ) && !_.longIs( begin ) )
   return _._strRemovedBegin( src, begin );
 
-  src = _.arrayAs( src );
-  begin = _.arrayAs( begin );
+  src = _.array.as( src );
+  begin = _.array.as( begin );
   for( let s = 0, slen = src.length ; s < slen ; s++ )
   {
     let beginOf = undefined;
@@ -963,8 +963,8 @@ function strRemoveEnd( src, end )
   if( _.strIs( src ) && !_.longIs( end ) )
   return _._strRemovedEnd( src, end );
 
-  src = _.arrayAs( src );
-  end = _.arrayAs( end );
+  src = _.array.as( src );
+  end = _.array.as( end );
 
   for( let s = 0, slen = src.length ; s < slen ; s++ )
   {
@@ -996,8 +996,8 @@ function strReplaceBegin( src, begin, ins )
   if( _.longIs( begin ) && _.longIs( ins ) )
   _.assert( begin.length === ins.length );
 
-  begin = _.arrayAs( begin );
-  let result = _.arrayAs( src ).slice();
+  begin = _.array.as( begin );
+  let result = _.array.as( src ).slice();
 
   for( let k = 0, srcLength = result.length; k < srcLength; k++ )
   for( let j = 0, beginLength = begin.length; j < beginLength; j++ )
@@ -1024,8 +1024,8 @@ function strReplaceEnd( src, end, ins )
   if( _.longIs( end ) && _.longIs( ins ) )
   _.assert( end.length === ins.length );
 
-  end = _.arrayAs( end );
-  let result = _.arrayAs( src ).slice();
+  end = _.array.as( end );
+  let result = _.array.as( src ).slice();
 
   for( let k = 0, srcLength = result.length; k < srcLength; k++ )
   for( let j = 0, endLength = end.length; j < endLength; j++ )
@@ -1080,13 +1080,13 @@ function strReplace( src, ins, sub )
   if( _.longIs( ins ) && _.longIs( sub ) )
   _.assert( ins.length === sub.length );
 
-  ins = _.arrayAs( ins );
+  ins = _.array.as( ins );
   for( let i = 0 ; i < ins.length ; i++ )
   _.assert( ins[ i ] !== '', '{-ins-} should be a string with length' );
 
   /* */
 
-  let result = _.arrayAs( src ).slice();
+  let result = _.array.as( src ).slice();
 
   for( let i = 0 ; i < result.length ; i++ )
   {
@@ -1479,8 +1479,8 @@ function strSplitsCoupledGroup( o )
 
   o = _.routine.options( strSplitsCoupledGroup, o );
 
-  o.prefix = _.arrayAs( o.prefix );
-  o.postfix = _.arrayAs( o.postfix );
+  o.prefix = _.array.as( o.prefix );
+  o.postfix = _.array.as( o.postfix );
 
   _.assert( arguments.length === 1 );
   _.assert( _.regexpsLikeAll( o.prefix ) );
@@ -1613,7 +1613,7 @@ function strSplitsQuotedRejoin_head( routine, args )
     {
       _.assert( !o.quotingPrefixes );
       _.assert( !o.quotingPostfixes );
-      o.quoting = _.arrayAs( o.quoting );
+      o.quoting = _.array.as( o.quoting );
       o.quotingPrefixes = o.quoting.map( ( q ) => _.arrayIs( q ) ? q[ 0 ] : q );
       o.quotingPostfixes = o.quoting.map( ( q ) => _.arrayIs( q ) ? q[ 0 ] : q );
       o.quoting = true;
@@ -1933,7 +1933,7 @@ function strSplitFast_body( o )
 {
   let result, closests, position, closestPosition, closestIndex, hasEmptyDelimeter, delimeter
 
-  o.delimeter = _.arrayAs( o.delimeter );
+  o.delimeter = _.array.as( o.delimeter );
 
   let foundDelimeters = o.delimeter.slice();
 
@@ -2163,7 +2163,7 @@ _.assert( _.object.isBasic( strSplitFast.defaults ) );
 function strSplit_body( o )
 {
 
-  o.delimeter = _.arrayAs( o.delimeter );
+  o.delimeter = _.array.as( o.delimeter );
 
   if( !o.stripping && !o.quoting && !o.onDelimeter )
   {

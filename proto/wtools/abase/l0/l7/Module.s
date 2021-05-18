@@ -137,7 +137,7 @@ function predeclare_head( routine, args )
   if( !o.name )
   o.name = o.alias[ 0 ];
 
-  o.entryPath = _.arrayAs( o.entryPath );
+  o.entryPath = _.array.as( o.entryPath );
   // o.entryPath = o.entryPath.map( ( path ) => _.path.canonize( path ) );
 
   _.assert( _.arrayIs( o.alias ) );
@@ -154,7 +154,7 @@ function predeclare_body( o )
 {
 
   _.arrayPrependOnce( o.alias, o.name );
-  // o.entryPath = _.arrayAs( o.entryPath );
+  // o.entryPath = _.array.as( o.entryPath );
   _.assert( _.arrayIs( o.entryPath ) );
 
   o.entryPath.forEach( ( entryPath, i ) =>
@@ -583,7 +583,7 @@ function _filesUniversalFrom( o )
   let stack = [];
 
   _.routine.options( _filesUniversalFrom, o );
-  o.files = _.arrayAs( o.files );
+  o.files = _.array.as( o.files );
   stack.push( ... o.files );
 
   for( let i = 0 ; i < stack.length ; i++ )

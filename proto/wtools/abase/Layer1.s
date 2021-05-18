@@ -15,7 +15,8 @@ if( typeof module !== 'undefined' )
   require( './l1/ModulesRegistry.s' );
   require( './l1/NameTools.s' );
   require( './l1/StrBasic.s' );
-  require( './l1/Trie.s' );
+  // require( './l1/TreeMap.s' );
+  // require( './l1/Trie.s' );
 }
 
 })();

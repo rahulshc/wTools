@@ -317,7 +317,6 @@ function DeclareAbstract( fo )
     cloneDeep, /* xxx : implement */
   });
 
-
   const prototype = fo.class.prototype;
   prop( 'constructor', constructor );
   prop( 'type', 'abstract' );
