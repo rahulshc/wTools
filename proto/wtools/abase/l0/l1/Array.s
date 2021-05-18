@@ -158,15 +158,18 @@ function _cloneShallow( srcArray )
  * @namespace Tools/array
  */
 
+/* xxx : review */
 function as( src )
 {
   _.assert( arguments.length === 1 );
   _.assert( src !== undefined );
 
-  if( src === null )
+  if( src === null || src === undefined )
   return [];
-  else if( _.longLike( src ) )
+  else if( _.array.like( src ) )
   return src;
+  else if( _.countable.like( src ) )
+  return [ ... src ];
   else
   return [ src ];
 

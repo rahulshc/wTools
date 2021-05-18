@@ -165,9 +165,14 @@ function from( src )
 
 function as( src )
 {
-
-
-
+  if( src === null || src === undefined )
+  return new Set;
+  else if( _.set.is( src ) )
+  return src;
+  else if( _.countable.like( src ) )
+  return new Set([ ... src ]);
+  else
+  return new Set([ src ]);
 }
 
 // //
