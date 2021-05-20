@@ -15,8 +15,59 @@ _.bufferTyped.namespaces = _.bufferTyped.namespaces || Object.create( null );
 
 function is( src )
 {
+  let type = Object.prototype.toString.call( src );
+  if( !/\wArray/.test( type ) )
+  return false;
+  if( type === '[object SharedArrayBuffer]' )
+  return false;
+  if( _.buffer.nodeIs( src ) )
+  return false;
+  return true;
+}
+
+//
+
+function isAlternate1( src )
+{
   let TypedArray = Object.getPrototypeOf( Int8Array );
   if( !( src instanceof TypedArray ) )
+  return false;
+  if( _.buffer.nodeIs( src ) )
+  return false;
+  return true;
+}
+
+//
+
+function isAlternate2( src )
+{
+  if( !( src && Object.getPrototypeOf( src.constructor ).name === 'TypedArray' ) )
+  return false;
+  if( _.buffer.nodeIs( src ) )
+  return false;
+  return true;
+}
+
+//
+
+function isAlternate3( src )
+{
+  let type = Object.prototype.toString.call( src );
+
+  let typedArrays = new Set();
+  typedArrays.add( '[object BigUint64Array]' );
+  typedArrays.add( '[object Uint32Array]' );
+  typedArrays.add( '[object Uint16Array]' );
+  typedArrays.add( '[object Uint8Array]' );
+  typedArrays.add( '[object Uint8ClampedArray]' );
+  typedArrays.add( '[object BigInt64Array]' );
+  typedArrays.add( '[object Int32Array]' );
+  typedArrays.add( '[object Int16Array]' );
+  typedArrays.add( '[object Int8Array]' );
+  typedArrays.add( '[object Float64Array]' );
+  typedArrays.add( '[object Float32Array]' );
+
+  if( !( typedArrays.has( type ) ) )
   return false;
   if( _.buffer.nodeIs( src ) )
   return false;
@@ -258,6 +309,9 @@ let BufferTypedExtension =
   is : is,
   like : is,
   IsResizable,
+  isAlternate1,
+  isAlternate2,
+  isAlternate3,
 
   // maker
 
