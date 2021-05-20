@@ -92,7 +92,7 @@ function union( dst, src1, src2 )
 
   if( _.unrollIs( src1 ) )
   {
-    xxx
+    _.assert( 0, 'not implemented' );
     for( let set of src1 )
     {
       _.assert( _.set.is( set ) );
@@ -153,6 +153,27 @@ function diff( dst, src1, src2 )
   return dst;
 }
 
+//
+
+function appendContainer( dst, src )
+{
+  if( dst === null )
+  dst = new Set;
+
+  _.assert( arguments.length === 2 );
+
+  if( _.countable.is( src ) )
+  {
+    dst.add( ... src );
+  }
+  else
+  {
+    dst.add( src );
+  }
+
+  return dst;
+}
+
 // --
 // extension
 // --
@@ -173,6 +194,8 @@ let SetExtension =
   only,
   union,
   diff,
+
+  appendContainer,
 
 }
 

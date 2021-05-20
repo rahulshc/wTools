@@ -163,6 +163,7 @@ function from( src )
 
 //
 
+/* qqq2 : for junior : cover please */
 function as( src )
 {
   if( src === null || src === undefined )
