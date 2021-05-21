@@ -737,22 +737,260 @@ function isAlternate5( test )
 
 //
 
+function isAlternate6( test )
+{
+  test.case = 'BigUint64Array';
+  var got = _.bufferTyped.isAlternate6( new U64x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Uint32Array';
+  var got = _.bufferTyped.isAlternate6( new U32x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Uint16Array';
+  var got = _.bufferTyped.isAlternate6( new U16x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Uint8Array';
+  var got = _.bufferTyped.isAlternate6( new U8x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Uint8ClampedArray';
+  var got = _.bufferTyped.isAlternate6( new U8xClamped( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Big int 64 array';
+  var got = _.bufferTyped.isAlternate6( new I64x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Int32Array';
+  var got = _.bufferTyped.isAlternate6( new I32x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Int16Array';
+  var got = _.bufferTyped.isAlternate6( new I16x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Int8Array';
+  var got = _.bufferTyped.isAlternate6( new I8x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Float64Array';
+  var got = _.bufferTyped.isAlternate6( new F64x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Float32Array';
+  var got = _.bufferTyped.isAlternate6( new F32x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Buffer Node';
+  var got = _.bufferTyped.isAlternate6( BufferNode.alloc( 5 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'raw array buffer';
+  var got = _.bufferTyped.isAlternate6( new BufferRaw( 10 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'shared array buffer';
+  var got = _.bufferTyped.isAlternate6( new BufferRawShared( 1024 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'an array';
+  var got = _.bufferTyped.isAlternate6( [ 1, 2, 3 ] );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'arguments array';
+  var got = _.bufferTyped.isAlternate6( arguments );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a number';
+  var got = _.bufferTyped.isAlternate6( 1 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'an object';
+  var got = _.bufferTyped.isAlternate6( {} );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'no argument';
+  var got = _.bufferTyped.isAlternate6();
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'null';
+  var got = _.bufferTyped.isAlternate6( null );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'function';
+  var got = _.bufferTyped.isAlternate6( function() {} );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'string';
+  var got = _.bufferTyped.isAlternate6( 'x' );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'boolean';
+  var got = _.bufferTyped.isAlternate6( false );
+  var expected  = false;
+  test.identical( got, expected );
+}
+
+//
+
+function isAlternate7( test )
+{
+  test.case = 'BigUint64Array';
+  var got = _.bufferTyped.isAlternate7( new U64x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Uint32Array';
+  var got = _.bufferTyped.isAlternate7( new U32x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Uint16Array';
+  var got = _.bufferTyped.isAlternate7( new U16x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Uint8Array';
+  var got = _.bufferTyped.isAlternate7( new U8x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Uint8ClampedArray';
+  var got = _.bufferTyped.isAlternate7( new U8xClamped( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Big int 64 array';
+  var got = _.bufferTyped.isAlternate7( new I64x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Int32Array';
+  var got = _.bufferTyped.isAlternate7( new I32x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Int16Array';
+  var got = _.bufferTyped.isAlternate7( new I16x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Int8Array';
+  var got = _.bufferTyped.isAlternate7( new I8x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Float64Array';
+  var got = _.bufferTyped.isAlternate7( new F64x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Float32Array';
+  var got = _.bufferTyped.isAlternate7( new F32x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Buffer Node';
+  var got = _.bufferTyped.isAlternate7( BufferNode.alloc( 5 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'raw array buffer';
+  var got = _.bufferTyped.isAlternate7( new BufferRaw( 10 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'shared array buffer';
+  var got = _.bufferTyped.isAlternate7( new BufferRawShared( 1024 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'an array';
+  var got = _.bufferTyped.isAlternate7( [ 1, 2, 3 ] );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'arguments array';
+  var got = _.bufferTyped.isAlternate7( arguments );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a number';
+  var got = _.bufferTyped.isAlternate7( 1 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'an object';
+  var got = _.bufferTyped.isAlternate7( {} );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'no argument';
+  var got = _.bufferTyped.isAlternate7();
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'null';
+  var got = _.bufferTyped.isAlternate7( null );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'function';
+  var got = _.bufferTyped.isAlternate7( function() {} );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'string';
+  var got = _.bufferTyped.isAlternate7( 'x' );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'boolean';
+  var got = _.bufferTyped.isAlternate7( false );
+  var expected  = false;
+  test.identical( got, expected );
+}
+
 function isPerformance( test )
 {
   /*
     Average of 10 runs of 1 million iteration of 23 _.bufferTyped.is variations
     Values below are in seconds
-    |-------------------|--------------|--------------|---------------|----------------|----------------|----------------|
-    |                   |    Original  |   Alternate1 |    Alternate2 |   Alternate3   |  Alternate4    |    Alternate5  |
-    | :---------------: |:-------------|--------------|---------------|----------------|----------------|----------------|
-    | **Njs : v10.24.1**|      5.400   |    0.436     |       1.931   |        4.110   |     4.052      |   1.041        |
-    |-------------------|--------------|--------------|---------------|----------------|----------------|----------------|
-    | **Njs : v14.17.0**|      4.439   |    0.514     |       2.043   |        5.357   |     5.302      |   1.177        |
-    |-------------------|--------------|--------------|---------------|----------------|----------------|----------------|
-    | **Njs : v15.14.0**|      6.288   |    0.496     |       2.009   |        5.654   |     5.328      |   1.020        |
-    |-------------------|--------------|--------------|---------------|----------------|----------------|----------------|
-    |Kos : Njs : v12.9.1|      5.664   |              |               |                |                |                |
-    |-------------------|--------------|--------------|---------------|----------------|----------------|----------------|
+    |-------------------|-----------|-----------|-------------|-------------|-------------|-------------- |-------------- |-------------- |
+    |                   |  Original | Alternate1|  Alternate2 |  Alternate3 |  Alternate4 |   Alternate5  | Alternate6    | Alternate7    |
+    | :---------------: |:----------|-----------|-------------|-------------|-------------|-------------- |-------------- |-------------- |
+    | **Njs : v10.24.1**|   5.400   |  0.442    |    1.931    |    4.110    |     4.052   |      1.167    |   0.602       |   0.441       |
+    |-------------------|-----------|-----------|-------------|-------------|-------------|-------------- |-------------- |-------------- |
+    | **Njs : v14.17.0**|   4.439   |  0.514    |    2.043    |    5.357    |     5.302   |               |               |               |
+    |-------------------|-----------|-----------|-------------|-------------|-------------|-------------- |-------------- |-------------- |
+    | **Njs : v15.14.0**|   6.288   |  0.496    |    2.009    |    5.654    |     5.328   |               |               |               |
+    |-------------------|-----------|-----------|-------------|-------------|-------------|-------------- |-------------- |-------------- |
+    |Kos : Njs : v12.9.1|   5.664   |           |             |             |             |               |               |               |
+    |-------------------|-----------|-----------|-------------|-------------|-------------|-------------- |-------------- |-------------- |
   */
 
   debugger;
@@ -847,6 +1085,38 @@ function isPerformance( test )
   for( let i = env.times; i > 0; i-- )
   {
     runVariationsForAlternate5( env );
+  }
+  took = __.time.spent( time );
+
+  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  test.identical( true, true );
+
+  //
+
+  test.case = 'Typed Buffer Performance Test Alternate 6';
+  var took, time;
+  var env = initializeVariables();
+
+  time = _.time.now();
+  for( let i = env.times; i > 0; i-- )
+  {
+    runVariationsForAlternate6( env );
+  }
+  took = __.time.spent( time );
+
+  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  test.identical( true, true );
+
+  //
+
+  test.case = 'Typed Buffer Performance Test Alternate 7';
+  var took, time;
+  var env = initializeVariables();
+
+  time = _.time.now();
+  for( let i = env.times; i > 0; i-- )
+  {
+    runVariationsForAlternate7( env );
   }
   took = __.time.spent( time );
 
@@ -1047,6 +1317,60 @@ function isPerformance( test )
     _.bufferTyped.isAlternate5( env.aString );
     _.bufferTyped.isAlternate5( env.aBoolean );
   }
+
+  function runVariationsForAlternate6( env )
+  {
+    _.bufferTyped.isAlternate6( env.bigUint64Array );
+    _.bufferTyped.isAlternate6( env.uint32Array );
+    _.bufferTyped.isAlternate6( env.uint16Array );
+    _.bufferTyped.isAlternate6( env.uint8Array );
+    _.bufferTyped.isAlternate6( env.uint8ClampedArray );
+    _.bufferTyped.isAlternate6( env.bigInt64Array );
+    _.bufferTyped.isAlternate6( env.int32Array );
+    _.bufferTyped.isAlternate6( env.int16Array );
+    _.bufferTyped.isAlternate6( env.int8Array );
+    _.bufferTyped.isAlternate6( env.float64Array );
+    _.bufferTyped.isAlternate6( env.float32Array );
+    _.bufferTyped.isAlternate6( env.bufferNode );
+    _.bufferTyped.isAlternate6( env.rawArrayBuffer );
+    _.bufferTyped.isAlternate6( env.sharedArrayBuffer );
+    _.bufferTyped.isAlternate6( env.nonEmptyArray );
+    _.bufferTyped.isAlternate6( arguments );
+    _.bufferTyped.isAlternate6( env.aNumber );
+    _.bufferTyped.isAlternate6( env.anEmptyObject );
+    _.bufferTyped.isAlternate6();
+    _.bufferTyped.isAlternate6( null );
+    _.bufferTyped.isAlternate6( env.anEmptyRoutine );
+    _.bufferTyped.isAlternate6( env.aString );
+    _.bufferTyped.isAlternate6( env.aBoolean );
+  }
+
+  function runVariationsForAlternate7( env )
+  {
+    _.bufferTyped.isAlternate7( env.bigUint64Array );
+    _.bufferTyped.isAlternate7( env.uint32Array );
+    _.bufferTyped.isAlternate7( env.uint16Array );
+    _.bufferTyped.isAlternate7( env.uint8Array );
+    _.bufferTyped.isAlternate7( env.uint8ClampedArray );
+    _.bufferTyped.isAlternate7( env.bigInt64Array );
+    _.bufferTyped.isAlternate7( env.int32Array );
+    _.bufferTyped.isAlternate7( env.int16Array );
+    _.bufferTyped.isAlternate7( env.int8Array );
+    _.bufferTyped.isAlternate7( env.float64Array );
+    _.bufferTyped.isAlternate7( env.float32Array );
+    _.bufferTyped.isAlternate7( env.bufferNode );
+    _.bufferTyped.isAlternate7( env.rawArrayBuffer );
+    _.bufferTyped.isAlternate7( env.sharedArrayBuffer );
+    _.bufferTyped.isAlternate7( env.nonEmptyArray );
+    _.bufferTyped.isAlternate7( arguments );
+    _.bufferTyped.isAlternate7( env.aNumber );
+    _.bufferTyped.isAlternate7( env.anEmptyObject );
+    _.bufferTyped.isAlternate7();
+    _.bufferTyped.isAlternate7( null );
+    _.bufferTyped.isAlternate7( env.anEmptyRoutine );
+    _.bufferTyped.isAlternate7( env.aString );
+    _.bufferTyped.isAlternate7( env.aBoolean );
+  }
 }
 
 isPerformance.timeOut = 1e7;
@@ -1069,6 +1393,8 @@ const Proto =
     // bufferTyped, l0/l1
     is,
     isAlternate1,
+    isAlternate6,
+    isAlternate7,
     isAlternate2,
     isAlternate3,
     isAlternate4,

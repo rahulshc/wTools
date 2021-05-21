@@ -38,6 +38,26 @@ function isAlternate1( src )
 
 //
 
+function isAlternate6( src )
+{
+  if( !( _.bufferTyped._isAlternate1( src ) ) )
+  return false;
+  if( _.buffer.nodeIs( src ) )
+  return false;
+  return true;
+}
+
+//
+
+function isAlternate7( src )
+{
+  if( src instanceof Object.getPrototypeOf( Int8Array ) )
+  return !_.buffer.nodeIs( src );
+  return false;
+}
+
+//
+
 function isAlternate2( src )
 {
   if( !( src && Object.getPrototypeOf( src.constructor ).name === 'TypedArray' ) )
@@ -75,13 +95,27 @@ function isAlternate4( src )
 
 function isAlternate5( src )
 {
-  //src = { buffer: someData } would break this logic. Any solution?
-  if( !( src && src.buffer ) )
+  if( src && src.buffer )
+  return src instanceof Object.getPrototypeOf( Int8Array ) && !_.buffer.nodeIs( src );
   return false;
-  if( _.buffer.nodeIs( src ) )
-  return false;
-  return true;
 }
+
+//
+
+function _alternate1_functor()
+{
+  let typedArray = Object.getPrototypeOf( Int8Array );
+  return _alternate1;
+
+  function _alternate1( src )
+  {
+    return src instanceof typedArray;
+  }
+
+}
+
+let _isAlternate1 = _alternate1_functor();
+_isAlternate1.functor = _alternate1_functor;
 
 //
 
@@ -375,10 +409,13 @@ let BufferTypedExtension =
   like : is,
   IsResizable,
   isAlternate1,
+  isAlternate6,
+  isAlternate7,
   isAlternate2,
   isAlternate3,
   isAlternate4,
   isAlternate5,
+  _isAlternate1,
   _isAlternate3,
   _isAlternate4,
 
