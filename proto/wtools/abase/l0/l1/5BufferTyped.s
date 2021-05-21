@@ -29,8 +29,7 @@ function is( src )
 
 function isAlternate1( src )
 {
-  let TypedArray = Object.getPrototypeOf( Int8Array );
-  if( !( src instanceof TypedArray ) )
+  if( !( src instanceof Object.getPrototypeOf( Int8Array ) ) )
   return false;
   if( _.buffer.nodeIs( src ) )
   return false;
@@ -53,26 +52,92 @@ function isAlternate2( src )
 function isAlternate3( src )
 {
   let type = Object.prototype.toString.call( src );
-
-  let typedArrays = new Set();
-  typedArrays.add( '[object BigUint64Array]' );
-  typedArrays.add( '[object Uint32Array]' );
-  typedArrays.add( '[object Uint16Array]' );
-  typedArrays.add( '[object Uint8Array]' );
-  typedArrays.add( '[object Uint8ClampedArray]' );
-  typedArrays.add( '[object BigInt64Array]' );
-  typedArrays.add( '[object Int32Array]' );
-  typedArrays.add( '[object Int16Array]' );
-  typedArrays.add( '[object Int8Array]' );
-  typedArrays.add( '[object Float64Array]' );
-  typedArrays.add( '[object Float32Array]' );
-
-  if( !( typedArrays.has( type ) ) )
+  if( !_.bufferTyped._isAlternate3( src, type ) )
   return false;
   if( _.buffer.nodeIs( src ) )
   return false;
   return true;
 }
+
+//
+
+function isAlternate4( src )
+{
+  let type = Object.prototype.toString.call( src );
+  if( !_.bufferTyped._isAlternate4( src, type ) )
+  return false;
+  if( _.buffer.nodeIs( src ) )
+  return false;
+  return true;
+}
+
+//
+
+function isAlternate5( src )
+{
+  //src = { buffer: someData } would break this logic. Any solution?
+  if( !( src && src.buffer ) )
+  return false;
+  if( _.buffer.nodeIs( src ) )
+  return false;
+  return true;
+}
+
+//
+
+function _alternate3_functor()
+{
+  let typedArraysSet = new Set();
+  typedArraysSet.add( '[object BigUint64Array]' );
+  typedArraysSet.add( '[object Uint32Array]' );
+  typedArraysSet.add( '[object Uint16Array]' );
+  typedArraysSet.add( '[object Uint8Array]' );
+  typedArraysSet.add( '[object Uint8ClampedArray]' );
+  typedArraysSet.add( '[object BigInt64Array]' );
+  typedArraysSet.add( '[object Int32Array]' );
+  typedArraysSet.add( '[object Int16Array]' );
+  typedArraysSet.add( '[object Int8Array]' );
+  typedArraysSet.add( '[object Float64Array]' );
+  typedArraysSet.add( '[object Float32Array]' );
+  return _alternate3;
+
+  function _alternate3( src, typeStr )
+  {
+    return typedArraysSet.has( typeStr );
+  }
+
+}
+
+let _isAlternate3 = _alternate3_functor();
+_isAlternate3.functor = _alternate3_functor;
+
+//
+
+function _alternate4_functor()
+{
+  let typedArraysMap = new Map();
+  typedArraysMap.set( '[object BigUint64Array]', '[object BigUint64Array]' );
+  typedArraysMap.set( '[object Uint32Array]', '[object Uint32Array]' );
+  typedArraysMap.set( '[object Uint16Array]', '[object Uint16Array]' );
+  typedArraysMap.set( '[object Uint8Array]', '[object Uint8Array]' );
+  typedArraysMap.set( '[object Uint8ClampedArray]', '[object Uint8ClampedArray]' );
+  typedArraysMap.set( '[object BigInt64Array]', '[object BigInt64Array]' );
+  typedArraysMap.set( '[object Int32Array]', '[object Int32Array]' );
+  typedArraysMap.set( '[object Int16Array]', '[object Int16Array]' );
+  typedArraysMap.set( '[object Int8Array]', '[object Int8Array]' );
+  typedArraysMap.set( '[object Float64Array]', '[object Float64Array]' );
+  typedArraysMap.set( '[object Float32Array]', '[object Float32Array]' );
+  return _alternate4;
+
+  function _alternate4( src, typeStr )
+  {
+    return typedArraysMap.has( typeStr );
+  }
+
+}
+
+let _isAlternate4 = _alternate4_functor();
+_isAlternate4.functor = _alternate4_functor;
 
 //
 
@@ -312,6 +377,10 @@ let BufferTypedExtension =
   isAlternate1,
   isAlternate2,
   isAlternate3,
+  isAlternate4,
+  isAlternate5,
+  _isAlternate3,
+  _isAlternate4,
 
   // maker
 
