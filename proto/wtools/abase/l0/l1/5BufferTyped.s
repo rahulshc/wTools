@@ -38,11 +38,53 @@ function isAlternate1( src )
 
 //
 
-function isAlternate6( src )
+function isAlternate2( src )
 {
-  if( !( _.bufferTyped._isAlternate1( src ) ) )
+  if( !( src && Object.getPrototypeOf( src.constructor ).name === 'TypedArray' ) )
   return false;
   if( _.buffer.nodeIs( src ) )
+  return false;
+  return true;
+}
+
+//
+
+function isAlternate3( src )
+{
+  let type = Object.prototype.toString.call( src );
+  if( !_isAlternate3( src, type ) )
+  return false;
+  if( _.buffer.nodeIs( src ) )
+  return false;
+  return true;
+}
+
+//
+
+function isAlternate4( src )
+{
+  let type = Object.prototype.toString.call( src );
+  if( !_isAlternate4 ( src, type ) )
+  return false;
+  if( _.buffer.nodeIs( src ) )
+  return false;
+  return true;
+}
+
+//
+
+function isAlternate5( src )
+{
+  if( src && src.buffer )
+  return _isAlternate1( src ) && !_.buffer.nodeIs( src );
+  return false;
+}
+
+//
+
+function isAlternate6( src )
+{
+  if( !_isAlternate1( src ) )
   return false;
   return true;
 }
@@ -58,50 +100,6 @@ function isAlternate7( src )
 
 //
 
-function isAlternate2( src )
-{
-  if( !( src && Object.getPrototypeOf( src.constructor ).name === 'TypedArray' ) )
-  return false;
-  if( _.buffer.nodeIs( src ) )
-  return false;
-  return true;
-}
-
-//
-
-function isAlternate3( src )
-{
-  let type = Object.prototype.toString.call( src );
-  if( !_.bufferTyped._isAlternate3( src, type ) )
-  return false;
-  if( _.buffer.nodeIs( src ) )
-  return false;
-  return true;
-}
-
-//
-
-function isAlternate4( src )
-{
-  let type = Object.prototype.toString.call( src );
-  if( !_.bufferTyped._isAlternate4( src, type ) )
-  return false;
-  if( _.buffer.nodeIs( src ) )
-  return false;
-  return true;
-}
-
-//
-
-function isAlternate5( src )
-{
-  if( src && src.buffer )
-  return src instanceof Object.getPrototypeOf( Int8Array ) && !_.buffer.nodeIs( src );
-  return false;
-}
-
-//
-
 function _alternate1_functor()
 {
   let typedArray = Object.getPrototypeOf( Int8Array );
@@ -109,7 +107,11 @@ function _alternate1_functor()
 
   function _alternate1( src )
   {
-    return src instanceof typedArray;
+    if( !( src instanceof typedArray ) )
+    return false;
+    if( _.buffer.nodeIs( src ) )
+    return false;
+    return true;
   }
 
 }
@@ -409,15 +411,12 @@ let BufferTypedExtension =
   like : is,
   IsResizable,
   isAlternate1,
-  isAlternate6,
-  isAlternate7,
   isAlternate2,
   isAlternate3,
   isAlternate4,
   isAlternate5,
-  _isAlternate1,
-  _isAlternate3,
-  _isAlternate4,
+  isAlternate6,
+  isAlternate7,
 
   // maker
 
