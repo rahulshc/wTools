@@ -36,6 +36,7 @@ if( typeof module !== 'undefined' )
   require( './l5/Introspector.s' );
   require( './l5/Itself.s' );
   require( './l5/Logic.s' );
+  require( './l5/Looker.s' );
   require( './l5/Long.s' );
   require( './l5/Map.s' );
   require( './l5/Module.s' );
@@ -55,6 +56,7 @@ if( typeof module !== 'undefined' )
   require( './l5/Sorted.s' );
   require( './l5/Set.s' );
   require( './l5/Str.s' );
+  require( './l5/Stringer.s' );
   require( './l5/Symbol.s' );
   require( './l5/Time.s' );
   require( './l5/Type.s' );

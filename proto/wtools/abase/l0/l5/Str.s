@@ -1921,6 +1921,7 @@ function strSplitFast_head( routine, args )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 || args.length === 2, 'Expects one or two arguments' );
   _.assert( _.strIs( o.src ) );
+  _.assert( o.delimeter === null || _.regexp.like( o.delimeter ) || _.arrayIs( o.delimeter ) );
   _.assert( _.object.isBasic( o ) );
 
   return o;

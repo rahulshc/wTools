@@ -53,6 +53,7 @@ if( typeof module !== 'undefined' )
   require( './l1/Logger.s' );
   require( './l1/Logic.s' );
   require( './l1/LogicNode.s' );
+  require( './l1/Looker.s' );
   require( './l1/Map.s' );
   require( './l1/Module.s' );
   require( './l1/Number.s' );
@@ -69,6 +70,7 @@ if( typeof module !== 'undefined' )
   require( './l1/Set.s' );
   require( './l1/Sorted.s' );
   require( './l1/Str.s' );
+  require( './l1/Stringer.s' );
   require( './l1/Symbol.s' );
   require( './l1/Time.s' );
   require( './l1/Type.s' );

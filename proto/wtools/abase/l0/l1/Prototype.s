@@ -144,6 +144,14 @@ function is( src ) /* xxx : move */
   return Object.hasOwnProperty.call( src, 'constructor' );
 }
 
+//
+
+function set( dst, src )
+{
+  Object.setPrototypeOf( dst, src );
+  return dst;
+}
+
 // --
 // extension
 // --
@@ -160,6 +168,8 @@ var Extension =
   hasPrototype : has, /* xxx : remove */
   has,
   is,
+
+  set,
 
 }
 

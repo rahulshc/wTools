@@ -120,7 +120,8 @@ function _elementWithCardinal( src, key )
 
 function _elementWithKeySet( dst, key, val )
 {
-  dst.set( val );
+  // debugger;
+  dst.add( val );
   return [ val, true ];
 }
 
@@ -132,7 +133,7 @@ function _elementWithCardinalSet( dst, cardinal, val )
   if( was[ 2 ] === true )
   {
     dst.delete( was[ 0 ] );
-    dst.set( val );
+    dst.add( val );
     return [ val, true ];
   }
   else

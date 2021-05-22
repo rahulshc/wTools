@@ -43,6 +43,7 @@ if( typeof module !== 'undefined' )
   require( './l7/Intervalo.s' );
   require( './l7/Introspector.s' );
   require( './l7/Logic.s' );
+  require( './l7/Looker.s' );
   require( './l7/Long.s' );
   require( './l7/Map.s' );
   require( './l7/Module.s' );
@@ -61,6 +62,7 @@ if( typeof module !== 'undefined' )
   require( './l7/Set.s' );
   require( './l7/Sorted.s' );
   require( './l7/Str.s' );
+  require( './l7/Stringer.s' );
   require( './l7/Symbol.s' );
   require( './l7/Time.s' );
   require( './l7/Type.s' );
