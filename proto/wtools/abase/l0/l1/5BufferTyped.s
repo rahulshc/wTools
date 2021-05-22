@@ -27,7 +27,7 @@ function is( src )
 
 //
 
-function isAlternate1( src )
+function isUsingGetPrototype( src )
 {
   if( !( src instanceof Object.getPrototypeOf( Int8Array ) ) )
   return false;
@@ -38,7 +38,23 @@ function isAlternate1( src )
 
 //
 
-function isAlternate2( src )
+function isUsingGetPrototypeAndFunctor( src )
+{
+  return alternateX( src );
+}
+
+//
+
+function isUsingGetPrototypeSimplified( src )
+{
+  if( src instanceof Object.getPrototypeOf( Int8Array ) )
+  return !_.buffer.nodeIs( src );
+  return false;
+}
+
+//
+
+function isUsingGetPrototypeAndEquality( src )
 {
   if( !( src && Object.getPrototypeOf( src.constructor ).name === 'TypedArray' ) )
   return false;
@@ -49,63 +65,35 @@ function isAlternate2( src )
 
 //
 
-function isAlternate3( src )
+function isUsingSet( src )
 {
-  let type = Object.prototype.toString.call( src );
-  if( !_isAlternate3( src, type ) )
-  return false;
-  if( _.buffer.nodeIs( src ) )
-  return false;
-  return true;
+  return alternateSet( src );
 }
 
 //
 
-function isAlternate4( src )
+function isUsingMap( src )
 {
-  let type = Object.prototype.toString.call( src );
-  if( !_isAlternate4 ( src, type ) )
-  return false;
-  if( _.buffer.nodeIs( src ) )
-  return false;
-  return true;
+  return alternateMap( src );
 }
 
 //
 
-function isAlternate5( src )
+function isUsingExistenceOfField( src )
 {
-  if( src && src.buffer )
-  return _isAlternate1( src ) && !_.buffer.nodeIs( src );
+  if( !( src && src.buffer ) )
   return false;
+  return alternateX( src );
 }
 
 //
 
-function isAlternate6( src )
-{
-  if( !_isAlternate1( src ) )
-  return false;
-  return true;
-}
-
-//
-
-function isAlternate7( src )
-{
-  if( src instanceof Object.getPrototypeOf( Int8Array ) )
-  return !_.buffer.nodeIs( src );
-  return false;
-}
-
-//
-
-function _alternate1_functor()
+function alternateX_functor()
 {
   let typedArray = Object.getPrototypeOf( Int8Array );
-  return _alternate1;
+  return alternateX;
 
-  function _alternate1( src )
+  function alternateX( src )
   {
     if( !( src instanceof typedArray ) )
     return false;
@@ -113,15 +101,13 @@ function _alternate1_functor()
     return false;
     return true;
   }
-
 }
 
-let _isAlternate1 = _alternate1_functor();
-_isAlternate1.functor = _alternate1_functor;
+let alternateX = alternateX_functor();
 
 //
 
-function _alternate3_functor()
+function alternateSet_functor()
 {
   let typedArraysSet = new Set();
   typedArraysSet.add( '[object BigUint64Array]' );
@@ -135,21 +121,23 @@ function _alternate3_functor()
   typedArraysSet.add( '[object Int8Array]' );
   typedArraysSet.add( '[object Float64Array]' );
   typedArraysSet.add( '[object Float32Array]' );
-  return _alternate3;
+  return alternateSet;
 
-  function _alternate3( src, typeStr )
+  function alternateSet( src )
   {
-    return typedArraysSet.has( typeStr );
+    if( !( typedArraysSet.has( Object.prototype.toString.call( src ) ) ) )
+    return false;
+    if( _.buffer.nodeIs( src ) )
+    return false;
+    return true;
   }
-
 }
 
-let _isAlternate3 = _alternate3_functor();
-_isAlternate3.functor = _alternate3_functor;
+let alternateSet = alternateSet_functor();
 
 //
 
-function _alternate4_functor()
+function alternateMap_functor()
 {
   let typedArraysMap = new Map();
   typedArraysMap.set( '[object BigUint64Array]', '[object BigUint64Array]' );
@@ -163,17 +151,19 @@ function _alternate4_functor()
   typedArraysMap.set( '[object Int8Array]', '[object Int8Array]' );
   typedArraysMap.set( '[object Float64Array]', '[object Float64Array]' );
   typedArraysMap.set( '[object Float32Array]', '[object Float32Array]' );
-  return _alternate4;
+  return alternateMap;
 
-  function _alternate4( src, typeStr )
+  function alternateMap( src )
   {
-    return typedArraysMap.has( typeStr );
+    if( !( typedArraysMap.has( Object.prototype.toString.call( src ) ) ) )
+    return false;
+    if( _.buffer.nodeIs( src ) )
+    return false;
+    return true;
   }
-
 }
 
-let _isAlternate4 = _alternate4_functor();
-_isAlternate4.functor = _alternate4_functor;
+let alternateMap = alternateMap_functor();
 
 //
 
@@ -410,13 +400,13 @@ let BufferTypedExtension =
   is : is,
   like : is,
   IsResizable,
-  isAlternate1,
-  isAlternate2,
-  isAlternate3,
-  isAlternate4,
-  isAlternate5,
-  isAlternate6,
-  isAlternate7,
+  isUsingGetPrototype,
+  isUsingGetPrototypeAndFunctor,
+  isUsingGetPrototypeSimplified,
+  isUsingGetPrototypeAndEquality,
+  isUsingSet,
+  isUsingMap,
+  isUsingExistenceOfField,
 
   // maker
 

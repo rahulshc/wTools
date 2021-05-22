@@ -137,840 +137,840 @@ function is( test )
 
 //
 
-function isAlternate1( test )
+function isUsingGetPrototype( test )
 {
   test.case = 'BigUint64Array';
-  var got = _.bufferTyped.isAlternate1( new U64x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototype( new U64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint32Array';
-  var got = _.bufferTyped.isAlternate1( new U32x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototype( new U32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint16Array';
-  var got = _.bufferTyped.isAlternate1( new U16x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototype( new U16x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint8Array';
-  var got = _.bufferTyped.isAlternate1( new U8x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototype( new U8x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint8ClampedArray';
-  var got = _.bufferTyped.isAlternate1( new U8xClamped( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototype( new U8xClamped( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Big int 64 array';
-  var got = _.bufferTyped.isAlternate1( new I64x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototype( new I64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int32Array';
-  var got = _.bufferTyped.isAlternate1( new I32x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototype( new I32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int16Array';
-  var got = _.bufferTyped.isAlternate1( new I16x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototype( new I16x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int8Array';
-  var got = _.bufferTyped.isAlternate1( new I8x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototype( new I8x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Float64Array';
-  var got = _.bufferTyped.isAlternate1( new F64x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototype( new F64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Float32Array';
-  var got = _.bufferTyped.isAlternate1( new F32x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototype( new F32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Buffer Node';
-  var got = _.bufferTyped.isAlternate1( BufferNode.alloc( 5 ) );
+  var got = _.bufferTyped.isUsingGetPrototype( BufferNode.alloc( 5 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'raw array buffer';
-  var got = _.bufferTyped.isAlternate1( new BufferRaw( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototype( new BufferRaw( 10 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'shared array buffer';
-  var got = _.bufferTyped.isAlternate1( new BufferRawShared( 1024 ) );
+  var got = _.bufferTyped.isUsingGetPrototype( new BufferRawShared( 1024 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'an array';
-  var got = _.bufferTyped.isAlternate1( [ 1, 2, 3 ] );
+  var got = _.bufferTyped.isUsingGetPrototype( [ 1, 2, 3 ] );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'arguments array';
-  var got = _.bufferTyped.isAlternate1( arguments );
+  var got = _.bufferTyped.isUsingGetPrototype( arguments );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'a number';
-  var got = _.bufferTyped.isAlternate1( 1 );
+  var got = _.bufferTyped.isUsingGetPrototype( 1 );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'an object';
-  var got = _.bufferTyped.isAlternate1( {} );
+  var got = _.bufferTyped.isUsingGetPrototype( {} );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'no argument';
-  var got = _.bufferTyped.isAlternate1();
+  var got = _.bufferTyped.isUsingGetPrototype();
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'null';
-  var got = _.bufferTyped.isAlternate1( null );
+  var got = _.bufferTyped.isUsingGetPrototype( null );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'function';
-  var got = _.bufferTyped.isAlternate1( function() {} );
+  var got = _.bufferTyped.isUsingGetPrototype( function() {} );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'string';
-  var got = _.bufferTyped.isAlternate1( 'x' );
+  var got = _.bufferTyped.isUsingGetPrototype( 'x' );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'boolean';
-  var got = _.bufferTyped.isAlternate1( false );
+  var got = _.bufferTyped.isUsingGetPrototype( false );
   var expected  = false;
   test.identical( got, expected );
 }
 
 //
 
-function isAlternate2( test )
+function isUsingGetPrototypeAndFunctor( test )
 {
   test.case = 'BigUint64Array';
-  var got = _.bufferTyped.isAlternate2( new U64x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( new U64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint32Array';
-  var got = _.bufferTyped.isAlternate2( new U32x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( new U32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint16Array';
-  var got = _.bufferTyped.isAlternate2( new U16x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( new U16x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint8Array';
-  var got = _.bufferTyped.isAlternate2( new U8x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( new U8x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint8ClampedArray';
-  var got = _.bufferTyped.isAlternate2( new U8xClamped( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( new U8xClamped( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Big int 64 array';
-  var got = _.bufferTyped.isAlternate2( new I64x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( new I64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int32Array';
-  var got = _.bufferTyped.isAlternate2( new I32x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( new I32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int16Array';
-  var got = _.bufferTyped.isAlternate2( new I16x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( new I16x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int8Array';
-  var got = _.bufferTyped.isAlternate2( new I8x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( new I8x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Float64Array';
-  var got = _.bufferTyped.isAlternate2( new F64x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( new F64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Float32Array';
-  var got = _.bufferTyped.isAlternate2( new F32x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( new F32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Buffer Node';
-  var got = _.bufferTyped.isAlternate2( BufferNode.alloc( 5 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( BufferNode.alloc( 5 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'raw array buffer';
-  var got = _.bufferTyped.isAlternate2( new BufferRaw( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( new BufferRaw( 10 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'shared array buffer';
-  var got = _.bufferTyped.isAlternate2( new BufferRawShared( 1024 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( new BufferRawShared( 1024 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'an array';
-  var got = _.bufferTyped.isAlternate2( [ 1, 2, 3 ] );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( [ 1, 2, 3 ] );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'arguments array';
-  var got = _.bufferTyped.isAlternate2( arguments );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( arguments );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'a number';
-  var got = _.bufferTyped.isAlternate2( 1 );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( 1 );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'an object';
-  var got = _.bufferTyped.isAlternate2( {} );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( {} );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'no argument';
-  var got = _.bufferTyped.isAlternate2();
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor();
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'null';
-  var got = _.bufferTyped.isAlternate2( null );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( null );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'function';
-  var got = _.bufferTyped.isAlternate2( function() {} );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( function() {} );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'string';
-  var got = _.bufferTyped.isAlternate2( 'x' );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( 'x' );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'boolean';
-  var got = _.bufferTyped.isAlternate2( false );
+  var got = _.bufferTyped.isUsingGetPrototypeAndFunctor( false );
   var expected  = false;
   test.identical( got, expected );
 }
 
 //
 
-function isAlternate3( test )
+function isUsingGetPrototypeSimplified( test )
 {
   test.case = 'BigUint64Array';
-  var got = _.bufferTyped.isAlternate3( new U64x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( new U64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint32Array';
-  var got = _.bufferTyped.isAlternate3( new U32x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( new U32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint16Array';
-  var got = _.bufferTyped.isAlternate3( new U16x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( new U16x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint8Array';
-  var got = _.bufferTyped.isAlternate3( new U8x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( new U8x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint8ClampedArray';
-  var got = _.bufferTyped.isAlternate3( new U8xClamped( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( new U8xClamped( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Big int 64 array';
-  var got = _.bufferTyped.isAlternate3( new I64x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( new I64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int32Array';
-  var got = _.bufferTyped.isAlternate3( new I32x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( new I32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int16Array';
-  var got = _.bufferTyped.isAlternate3( new I16x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( new I16x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int8Array';
-  var got = _.bufferTyped.isAlternate3( new I8x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( new I8x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Float64Array';
-  var got = _.bufferTyped.isAlternate3( new F64x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( new F64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Float32Array';
-  var got = _.bufferTyped.isAlternate3( new F32x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( new F32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Buffer Node';
-  var got = _.bufferTyped.isAlternate3( BufferNode.alloc( 5 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( BufferNode.alloc( 5 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'raw array buffer';
-  var got = _.bufferTyped.isAlternate3( new BufferRaw( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( new BufferRaw( 10 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'shared array buffer';
-  var got = _.bufferTyped.isAlternate3( new BufferRawShared( 1024 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( new BufferRawShared( 1024 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'an array';
-  var got = _.bufferTyped.isAlternate3( [ 1, 2, 3 ] );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( [ 1, 2, 3 ] );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'arguments array';
-  var got = _.bufferTyped.isAlternate3( arguments );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( arguments );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'a number';
-  var got = _.bufferTyped.isAlternate3( 1 );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( 1 );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'an object';
-  var got = _.bufferTyped.isAlternate3( {} );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( {} );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'no argument';
-  var got = _.bufferTyped.isAlternate3();
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified();
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'null';
-  var got = _.bufferTyped.isAlternate3( null );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( null );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'function';
-  var got = _.bufferTyped.isAlternate3( function() {} );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( function() {} );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'string';
-  var got = _.bufferTyped.isAlternate3( 'x' );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( 'x' );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'boolean';
-  var got = _.bufferTyped.isAlternate3( false );
+  var got = _.bufferTyped.isUsingGetPrototypeSimplified( false );
   var expected  = false;
   test.identical( got, expected );
 }
 
 //
 
-function isAlternate4( test )
+function isUsingGetPrototypeAndEquality( test )
 {
   test.case = 'BigUint64Array';
-  var got = _.bufferTyped.isAlternate4( new U64x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( new U64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint32Array';
-  var got = _.bufferTyped.isAlternate4( new U32x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( new U32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint16Array';
-  var got = _.bufferTyped.isAlternate4( new U16x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( new U16x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint8Array';
-  var got = _.bufferTyped.isAlternate4( new U8x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( new U8x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint8ClampedArray';
-  var got = _.bufferTyped.isAlternate4( new U8xClamped( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( new U8xClamped( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Big int 64 array';
-  var got = _.bufferTyped.isAlternate4( new I64x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( new I64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int32Array';
-  var got = _.bufferTyped.isAlternate4( new I32x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( new I32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int16Array';
-  var got = _.bufferTyped.isAlternate4( new I16x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( new I16x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int8Array';
-  var got = _.bufferTyped.isAlternate4( new I8x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( new I8x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Float64Array';
-  var got = _.bufferTyped.isAlternate4( new F64x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( new F64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Float32Array';
-  var got = _.bufferTyped.isAlternate4( new F32x( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( new F32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Buffer Node';
-  var got = _.bufferTyped.isAlternate4( BufferNode.alloc( 5 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( BufferNode.alloc( 5 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'raw array buffer';
-  var got = _.bufferTyped.isAlternate4( new BufferRaw( 10 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( new BufferRaw( 10 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'shared array buffer';
-  var got = _.bufferTyped.isAlternate4( new BufferRawShared( 1024 ) );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( new BufferRawShared( 1024 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'an array';
-  var got = _.bufferTyped.isAlternate4( [ 1, 2, 3 ] );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( [ 1, 2, 3 ] );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'arguments array';
-  var got = _.bufferTyped.isAlternate4( arguments );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( arguments );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'a number';
-  var got = _.bufferTyped.isAlternate4( 1 );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( 1 );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'an object';
-  var got = _.bufferTyped.isAlternate4( {} );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( {} );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'no argument';
-  var got = _.bufferTyped.isAlternate4();
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality();
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'null';
-  var got = _.bufferTyped.isAlternate4( null );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( null );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'function';
-  var got = _.bufferTyped.isAlternate4( function() {} );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( function() {} );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'string';
-  var got = _.bufferTyped.isAlternate4( 'x' );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( 'x' );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'boolean';
-  var got = _.bufferTyped.isAlternate4( false );
+  var got = _.bufferTyped.isUsingGetPrototypeAndEquality( false );
   var expected  = false;
   test.identical( got, expected );
 }
 
 //
 
-function isAlternate5( test )
+function isUsingSet( test )
 {
   test.case = 'BigUint64Array';
-  var got = _.bufferTyped.isAlternate5( new U64x( 10 ) );
+  var got = _.bufferTyped.isUsingSet( new U64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint32Array';
-  var got = _.bufferTyped.isAlternate5( new U32x( 10 ) );
+  var got = _.bufferTyped.isUsingSet( new U32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint16Array';
-  var got = _.bufferTyped.isAlternate5( new U16x( 10 ) );
+  var got = _.bufferTyped.isUsingSet( new U16x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint8Array';
-  var got = _.bufferTyped.isAlternate5( new U8x( 10 ) );
+  var got = _.bufferTyped.isUsingSet( new U8x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint8ClampedArray';
-  var got = _.bufferTyped.isAlternate5( new U8xClamped( 10 ) );
+  var got = _.bufferTyped.isUsingSet( new U8xClamped( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Big int 64 array';
-  var got = _.bufferTyped.isAlternate5( new I64x( 10 ) );
+  var got = _.bufferTyped.isUsingSet( new I64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int32Array';
-  var got = _.bufferTyped.isAlternate5( new I32x( 10 ) );
+  var got = _.bufferTyped.isUsingSet( new I32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int16Array';
-  var got = _.bufferTyped.isAlternate5( new I16x( 10 ) );
+  var got = _.bufferTyped.isUsingSet( new I16x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int8Array';
-  var got = _.bufferTyped.isAlternate5( new I8x( 10 ) );
+  var got = _.bufferTyped.isUsingSet( new I8x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Float64Array';
-  var got = _.bufferTyped.isAlternate5( new F64x( 10 ) );
+  var got = _.bufferTyped.isUsingSet( new F64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Float32Array';
-  var got = _.bufferTyped.isAlternate5( new F32x( 10 ) );
+  var got = _.bufferTyped.isUsingSet( new F32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Buffer Node';
-  var got = _.bufferTyped.isAlternate5( BufferNode.alloc( 5 ) );
+  var got = _.bufferTyped.isUsingSet( BufferNode.alloc( 5 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'raw array buffer';
-  var got = _.bufferTyped.isAlternate5( new BufferRaw( 10 ) );
+  var got = _.bufferTyped.isUsingSet( new BufferRaw( 10 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'shared array buffer';
-  var got = _.bufferTyped.isAlternate5( new BufferRawShared( 1024 ) );
+  var got = _.bufferTyped.isUsingSet( new BufferRawShared( 1024 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'an array';
-  var got = _.bufferTyped.isAlternate5( [ 1, 2, 3 ] );
+  var got = _.bufferTyped.isUsingSet( [ 1, 2, 3 ] );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'arguments array';
-  var got = _.bufferTyped.isAlternate5( arguments );
+  var got = _.bufferTyped.isUsingSet( arguments );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'a number';
-  var got = _.bufferTyped.isAlternate5( 1 );
+  var got = _.bufferTyped.isUsingSet( 1 );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'an object';
-  var got = _.bufferTyped.isAlternate5( {} );
+  var got = _.bufferTyped.isUsingSet( {} );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'no argument';
-  var got = _.bufferTyped.isAlternate5();
+  var got = _.bufferTyped.isUsingSet();
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'null';
-  var got = _.bufferTyped.isAlternate5( null );
+  var got = _.bufferTyped.isUsingSet( null );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'function';
-  var got = _.bufferTyped.isAlternate5( function() {} );
+  var got = _.bufferTyped.isUsingSet( function() {} );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'string';
-  var got = _.bufferTyped.isAlternate5( 'x' );
+  var got = _.bufferTyped.isUsingSet( 'x' );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'boolean';
-  var got = _.bufferTyped.isAlternate5( false );
+  var got = _.bufferTyped.isUsingSet( false );
   var expected  = false;
   test.identical( got, expected );
 }
 
 //
 
-function isAlternate6( test )
+function isUsingMap( test )
 {
   test.case = 'BigUint64Array';
-  var got = _.bufferTyped.isAlternate6( new U64x( 10 ) );
+  var got = _.bufferTyped.isUsingMap( new U64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint32Array';
-  var got = _.bufferTyped.isAlternate6( new U32x( 10 ) );
+  var got = _.bufferTyped.isUsingMap( new U32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint16Array';
-  var got = _.bufferTyped.isAlternate6( new U16x( 10 ) );
+  var got = _.bufferTyped.isUsingMap( new U16x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint8Array';
-  var got = _.bufferTyped.isAlternate6( new U8x( 10 ) );
+  var got = _.bufferTyped.isUsingMap( new U8x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint8ClampedArray';
-  var got = _.bufferTyped.isAlternate6( new U8xClamped( 10 ) );
+  var got = _.bufferTyped.isUsingMap( new U8xClamped( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Big int 64 array';
-  var got = _.bufferTyped.isAlternate6( new I64x( 10 ) );
+  var got = _.bufferTyped.isUsingMap( new I64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int32Array';
-  var got = _.bufferTyped.isAlternate6( new I32x( 10 ) );
+  var got = _.bufferTyped.isUsingMap( new I32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int16Array';
-  var got = _.bufferTyped.isAlternate6( new I16x( 10 ) );
+  var got = _.bufferTyped.isUsingMap( new I16x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int8Array';
-  var got = _.bufferTyped.isAlternate6( new I8x( 10 ) );
+  var got = _.bufferTyped.isUsingMap( new I8x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Float64Array';
-  var got = _.bufferTyped.isAlternate6( new F64x( 10 ) );
+  var got = _.bufferTyped.isUsingMap( new F64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Float32Array';
-  var got = _.bufferTyped.isAlternate6( new F32x( 10 ) );
+  var got = _.bufferTyped.isUsingMap( new F32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Buffer Node';
-  var got = _.bufferTyped.isAlternate6( BufferNode.alloc( 5 ) );
+  var got = _.bufferTyped.isUsingMap( BufferNode.alloc( 5 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'raw array buffer';
-  var got = _.bufferTyped.isAlternate6( new BufferRaw( 10 ) );
+  var got = _.bufferTyped.isUsingMap( new BufferRaw( 10 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'shared array buffer';
-  var got = _.bufferTyped.isAlternate6( new BufferRawShared( 1024 ) );
+  var got = _.bufferTyped.isUsingMap( new BufferRawShared( 1024 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'an array';
-  var got = _.bufferTyped.isAlternate6( [ 1, 2, 3 ] );
+  var got = _.bufferTyped.isUsingMap( [ 1, 2, 3 ] );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'arguments array';
-  var got = _.bufferTyped.isAlternate6( arguments );
+  var got = _.bufferTyped.isUsingMap( arguments );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'a number';
-  var got = _.bufferTyped.isAlternate6( 1 );
+  var got = _.bufferTyped.isUsingMap( 1 );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'an object';
-  var got = _.bufferTyped.isAlternate6( {} );
+  var got = _.bufferTyped.isUsingMap( {} );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'no argument';
-  var got = _.bufferTyped.isAlternate6();
+  var got = _.bufferTyped.isUsingMap();
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'null';
-  var got = _.bufferTyped.isAlternate6( null );
+  var got = _.bufferTyped.isUsingMap( null );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'function';
-  var got = _.bufferTyped.isAlternate6( function() {} );
+  var got = _.bufferTyped.isUsingMap( function() {} );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'string';
-  var got = _.bufferTyped.isAlternate6( 'x' );
+  var got = _.bufferTyped.isUsingMap( 'x' );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'boolean';
-  var got = _.bufferTyped.isAlternate6( false );
+  var got = _.bufferTyped.isUsingMap( false );
   var expected  = false;
   test.identical( got, expected );
 }
 
 //
 
-function isAlternate7( test )
+function isUsingExistenceOfField( test )
 {
   test.case = 'BigUint64Array';
-  var got = _.bufferTyped.isAlternate7( new U64x( 10 ) );
+  var got = _.bufferTyped.isUsingExistenceOfField( new U64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint32Array';
-  var got = _.bufferTyped.isAlternate7( new U32x( 10 ) );
+  var got = _.bufferTyped.isUsingExistenceOfField( new U32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint16Array';
-  var got = _.bufferTyped.isAlternate7( new U16x( 10 ) );
+  var got = _.bufferTyped.isUsingExistenceOfField( new U16x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint8Array';
-  var got = _.bufferTyped.isAlternate7( new U8x( 10 ) );
+  var got = _.bufferTyped.isUsingExistenceOfField( new U8x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint8ClampedArray';
-  var got = _.bufferTyped.isAlternate7( new U8xClamped( 10 ) );
+  var got = _.bufferTyped.isUsingExistenceOfField( new U8xClamped( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Big int 64 array';
-  var got = _.bufferTyped.isAlternate7( new I64x( 10 ) );
+  var got = _.bufferTyped.isUsingExistenceOfField( new I64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int32Array';
-  var got = _.bufferTyped.isAlternate7( new I32x( 10 ) );
+  var got = _.bufferTyped.isUsingExistenceOfField( new I32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int16Array';
-  var got = _.bufferTyped.isAlternate7( new I16x( 10 ) );
+  var got = _.bufferTyped.isUsingExistenceOfField( new I16x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int8Array';
-  var got = _.bufferTyped.isAlternate7( new I8x( 10 ) );
+  var got = _.bufferTyped.isUsingExistenceOfField( new I8x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Float64Array';
-  var got = _.bufferTyped.isAlternate7( new F64x( 10 ) );
+  var got = _.bufferTyped.isUsingExistenceOfField( new F64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Float32Array';
-  var got = _.bufferTyped.isAlternate7( new F32x( 10 ) );
+  var got = _.bufferTyped.isUsingExistenceOfField( new F32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Buffer Node';
-  var got = _.bufferTyped.isAlternate7( BufferNode.alloc( 5 ) );
+  var got = _.bufferTyped.isUsingExistenceOfField( BufferNode.alloc( 5 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'raw array buffer';
-  var got = _.bufferTyped.isAlternate7( new BufferRaw( 10 ) );
+  var got = _.bufferTyped.isUsingExistenceOfField( new BufferRaw( 10 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'shared array buffer';
-  var got = _.bufferTyped.isAlternate7( new BufferRawShared( 1024 ) );
+  var got = _.bufferTyped.isUsingExistenceOfField( new BufferRawShared( 1024 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'an array';
-  var got = _.bufferTyped.isAlternate7( [ 1, 2, 3 ] );
+  var got = _.bufferTyped.isUsingExistenceOfField( [ 1, 2, 3 ] );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'arguments array';
-  var got = _.bufferTyped.isAlternate7( arguments );
+  var got = _.bufferTyped.isUsingExistenceOfField( arguments );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'a number';
-  var got = _.bufferTyped.isAlternate7( 1 );
+  var got = _.bufferTyped.isUsingExistenceOfField( 1 );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'an object';
-  var got = _.bufferTyped.isAlternate7( {} );
+  var got = _.bufferTyped.isUsingExistenceOfField( {} );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'no argument';
-  var got = _.bufferTyped.isAlternate7();
+  var got = _.bufferTyped.isUsingExistenceOfField();
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'null';
-  var got = _.bufferTyped.isAlternate7( null );
+  var got = _.bufferTyped.isUsingExistenceOfField( null );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'function';
-  var got = _.bufferTyped.isAlternate7( function() {} );
+  var got = _.bufferTyped.isUsingExistenceOfField( function() {} );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'string';
-  var got = _.bufferTyped.isAlternate7( 'x' );
+  var got = _.bufferTyped.isUsingExistenceOfField( 'x' );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'boolean';
-  var got = _.bufferTyped.isAlternate7( false );
+  var got = _.bufferTyped.isUsingExistenceOfField( false );
   var expected  = false;
   test.identical( got, expected );
 }
@@ -980,17 +980,18 @@ function isPerformance( test )
   /*
     Average of 10 runs of 1 million iteration of 23 _.bufferTyped.is variations
     Values below are in seconds
-    |-------------------|-----------|-----------|-------------|-------------|-------------|-------------- |-------------- |-------------- |
-    |                   |  Original | Alternate1|  Alternate2 |  Alternate3 |  Alternate4 |   Alternate5  | Alternate6    | Alternate7    |
-    | :---------------: |:----------|-----------|-------------|-------------|-------------|-------------- |-------------- |-------------- |
-    | **Njs : v10.24.1**|   5.400   |           |             |             |             |               |               |               |
-    |-------------------|-----------|-----------|-------------|-------------|-------------|-------------- |-------------- |-------------- |
-    | **Njs : v14.17.0**|   4.439   |           |             |             |             |               |               |               |
-    |-------------------|-----------|-----------|-------------|-------------|-------------|-------------- |-------------- |-------------- |
-    | **Njs : v15.14.0**|   6.288   |           |             |             |             |               |               |               |
-    |-------------------|-----------|-----------|-------------|-------------|-------------|-------------- |-------------- |-------------- |
-    |Kos : Njs : v12.9.1|   5.664   |           |             |             |             |               |               |               |
-    |-------------------|-----------|-----------|-------------|-------------|-------------|-------------- |-------------- |-------------- |
+    |-------------------|-----------|-----------|-------------|-------------|-----------|----------|----------- |
+    |                   |  Original |    Get    |Get Prototype|Get Prototype|   Type    |   Set    | Existence  |
+    |                   |           |  Prototype|   & Functor | Simplified  |  Equality |          |  Of Field  |
+    | :---------------: |:----------|-----------|-------------|-------------|-----------|----------|----------- |
+    | **Njs : v10.24.1**|   5.400   |           |             |             |           |          |            |
+    |-------------------|-----------|-----------|-------------|-------------|-----------|----------|----------- |
+    | **Njs : v14.17.0**|   4.439   |           |             |             |           |          |            |
+    |-------------------|-----------|-----------|-------------|-------------|-----------|----------|----------- |
+    | **Njs : v15.14.0**|   6.288   |           |             |             |           |          |            |
+    |-------------------|-----------|-----------|-------------|-------------|-----------|----------|----------- |
+    |Kos : Njs : v12.9.1|   5.664   |           |             |             |           |          |            |
+    |-------------------|-----------|-----------|-------------|-------------|-----------|----------|----------- |
   */
 
   debugger;
@@ -1013,14 +1014,14 @@ function isPerformance( test )
 
   //
 
-  test.case = 'Typed Buffer Performance Test Alternate 1';
+  test.case = 'Typed Buffer Performance Test using GetPrototype';
   var took, time;
   var env = initializeVariables();
 
   time = _.time.now();
   for( let i = env.times; i > 0; i-- )
   {
-    runVariationsForAlternate1( env );
+    runVariationsForGetPrototype( env );
   }
   took = __.time.spent( time );
 
@@ -1029,14 +1030,14 @@ function isPerformance( test )
 
   //
 
-  test.case = 'Typed Buffer Performance Test Alternate 2';
+  test.case = 'Typed Buffer Performance Test using using GetPrototype and Functor';
   var took, time;
   var env = initializeVariables();
 
   time = _.time.now();
   for( let i = env.times; i > 0; i-- )
   {
-    runVariationsForAlternate2( env );
+    runVariationsForGetProtoTypeAndFunctor( env );
   }
   took = __.time.spent( time );
 
@@ -1045,14 +1046,14 @@ function isPerformance( test )
 
   //
 
-  test.case = 'Typed Buffer Performance Test Alternate 3';
+  test.case = 'Typed Buffer Performance Test using using GetPrototype Simplified';
   var took, time;
   var env = initializeVariables();
 
   time = _.time.now();
   for( let i = env.times; i > 0; i-- )
   {
-    runVariationsForAlternate3( env );
+    runVariationsForGetPrototypeSimplified( env );
   }
   took = __.time.spent( time );
 
@@ -1061,14 +1062,14 @@ function isPerformance( test )
 
   //
 
-  test.case = 'Typed Buffer Performance Test Alternate 4';
+  test.case = 'Typed Buffer Performance Test Using GetPrototype And Equality';
   var took, time;
   var env = initializeVariables();
 
   time = _.time.now();
   for( let i = env.times; i > 0; i-- )
   {
-    runVariationsForAlternate4( env );
+    runVariationsForUsingTypeEquality( env );
   }
   took = __.time.spent( time );
 
@@ -1077,14 +1078,14 @@ function isPerformance( test )
 
   //
 
-  test.case = 'Typed Buffer Performance Test Alternate 5';
+  test.case = 'Typed Buffer Performance using Set';
   var took, time;
   var env = initializeVariables();
 
   time = _.time.now();
   for( let i = env.times; i > 0; i-- )
   {
-    runVariationsForAlternate5( env );
+    runVariationsForSet( env );
   }
   took = __.time.spent( time );
 
@@ -1093,14 +1094,14 @@ function isPerformance( test )
 
   //
 
-  test.case = 'Typed Buffer Performance Test Alternate 6';
+  test.case = 'Typed Buffer Performance Test using Map';
   var took, time;
   var env = initializeVariables();
 
   time = _.time.now();
   for( let i = env.times; i > 0; i-- )
   {
-    runVariationsForAlternate6( env );
+    runVariationsForMap( env );
   }
   took = __.time.spent( time );
 
@@ -1109,14 +1110,14 @@ function isPerformance( test )
 
   //
 
-  test.case = 'Typed Buffer Performance Test Alternate 7';
+  test.case = 'Typed Buffer Performance Test using existence of field';
   var took, time;
   var env = initializeVariables();
 
   time = _.time.now();
   for( let i = env.times; i > 0; i-- )
   {
-    runVariationsForAlternate7( env );
+    runVariationsForExistenceOfField( env );
   }
   took = __.time.spent( time );
 
@@ -1183,193 +1184,193 @@ function isPerformance( test )
     _.bufferTyped.is( env.aBoolean );
   }
 
-  function runVariationsForAlternate1( env )
+  function runVariationsForGetPrototype( env )
   {
-    _.bufferTyped.isAlternate1( env.bigUint64Array );
-    _.bufferTyped.isAlternate1( env.uint32Array );
-    _.bufferTyped.isAlternate1( env.uint16Array );
-    _.bufferTyped.isAlternate1( env.uint8Array );
-    _.bufferTyped.isAlternate1( env.uint8ClampedArray );
-    _.bufferTyped.isAlternate1( env.bigInt64Array );
-    _.bufferTyped.isAlternate1( env.int32Array );
-    _.bufferTyped.isAlternate1( env.int16Array );
-    _.bufferTyped.isAlternate1( env.int8Array );
-    _.bufferTyped.isAlternate1( env.float64Array );
-    _.bufferTyped.isAlternate1( env.float32Array );
-    _.bufferTyped.isAlternate1( env.bufferNode );
-    _.bufferTyped.isAlternate1( env.rawArrayBuffer );
-    _.bufferTyped.isAlternate1( env.sharedArrayBuffer );
-    _.bufferTyped.isAlternate1( env.nonEmptyArray );
-    _.bufferTyped.isAlternate1( arguments );
-    _.bufferTyped.isAlternate1( env.aNumber );
-    _.bufferTyped.isAlternate1( env.anEmptyObject );
-    _.bufferTyped.isAlternate1();
-    _.bufferTyped.isAlternate1( null );
-    _.bufferTyped.isAlternate1( env.anEmptyRoutine );
-    _.bufferTyped.isAlternate1( env.aString );
-    _.bufferTyped.isAlternate1( env.aBoolean );
+    _.bufferTyped.isUsingGetPrototype( env.bigUint64Array );
+    _.bufferTyped.isUsingGetPrototype( env.uint32Array );
+    _.bufferTyped.isUsingGetPrototype( env.uint16Array );
+    _.bufferTyped.isUsingGetPrototype( env.uint8Array );
+    _.bufferTyped.isUsingGetPrototype( env.uint8ClampedArray );
+    _.bufferTyped.isUsingGetPrototype( env.bigInt64Array );
+    _.bufferTyped.isUsingGetPrototype( env.int32Array );
+    _.bufferTyped.isUsingGetPrototype( env.int16Array );
+    _.bufferTyped.isUsingGetPrototype( env.int8Array );
+    _.bufferTyped.isUsingGetPrototype( env.float64Array );
+    _.bufferTyped.isUsingGetPrototype( env.float32Array );
+    _.bufferTyped.isUsingGetPrototype( env.bufferNode );
+    _.bufferTyped.isUsingGetPrototype( env.rawArrayBuffer );
+    _.bufferTyped.isUsingGetPrototype( env.sharedArrayBuffer );
+    _.bufferTyped.isUsingGetPrototype( env.nonEmptyArray );
+    _.bufferTyped.isUsingGetPrototype( arguments );
+    _.bufferTyped.isUsingGetPrototype( env.aNumber );
+    _.bufferTyped.isUsingGetPrototype( env.anEmptyObject );
+    _.bufferTyped.isUsingGetPrototype();
+    _.bufferTyped.isUsingGetPrototype( null );
+    _.bufferTyped.isUsingGetPrototype( env.anEmptyRoutine );
+    _.bufferTyped.isUsingGetPrototype( env.aString );
+    _.bufferTyped.isUsingGetPrototype( env.aBoolean );
   }
 
-  function runVariationsForAlternate2( env )
+  function runVariationsForGetProtoTypeAndFunctor( env )
   {
-    _.bufferTyped.isAlternate2( env.bigUint64Array );
-    _.bufferTyped.isAlternate2( env.uint32Array );
-    _.bufferTyped.isAlternate2( env.uint16Array );
-    _.bufferTyped.isAlternate2( env.uint8Array );
-    _.bufferTyped.isAlternate2( env.uint8ClampedArray );
-    _.bufferTyped.isAlternate2( env.bigInt64Array );
-    _.bufferTyped.isAlternate2( env.int32Array );
-    _.bufferTyped.isAlternate2( env.int16Array );
-    _.bufferTyped.isAlternate2( env.int8Array );
-    _.bufferTyped.isAlternate2( env.float64Array );
-    _.bufferTyped.isAlternate2( env.float32Array );
-    _.bufferTyped.isAlternate2( env.bufferNode );
-    _.bufferTyped.isAlternate2( env.rawArrayBuffer );
-    _.bufferTyped.isAlternate2( env.sharedArrayBuffer );
-    _.bufferTyped.isAlternate2( env.nonEmptyArray );
-    _.bufferTyped.isAlternate2( arguments );
-    _.bufferTyped.isAlternate2( env.aNumber );
-    _.bufferTyped.isAlternate2( env.anEmptyObject );
-    _.bufferTyped.isAlternate2();
-    _.bufferTyped.isAlternate2( null );
-    _.bufferTyped.isAlternate2( env.anEmptyRoutine );
-    _.bufferTyped.isAlternate2( env.aString );
-    _.bufferTyped.isAlternate2( env.aBoolean );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.bigUint64Array );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.uint32Array );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.uint16Array );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.uint8Array );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.uint8ClampedArray );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.bigInt64Array );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.int32Array );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.int16Array );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.int8Array );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.float64Array );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.float32Array );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.bufferNode );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.rawArrayBuffer );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.sharedArrayBuffer );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.nonEmptyArray );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( arguments );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.aNumber );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.anEmptyObject );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor();
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( null );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.anEmptyRoutine );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.aString );
+    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.aBoolean );
   }
 
-  function runVariationsForAlternate3( env )
+  function runVariationsForGetPrototypeSimplified( env )
   {
-    _.bufferTyped.isAlternate3( env.bigUint64Array );
-    _.bufferTyped.isAlternate3( env.uint32Array );
-    _.bufferTyped.isAlternate3( env.uint16Array );
-    _.bufferTyped.isAlternate3( env.uint8Array );
-    _.bufferTyped.isAlternate3( env.uint8ClampedArray );
-    _.bufferTyped.isAlternate3( env.bigInt64Array );
-    _.bufferTyped.isAlternate3( env.int32Array );
-    _.bufferTyped.isAlternate3( env.int16Array );
-    _.bufferTyped.isAlternate3( env.int8Array );
-    _.bufferTyped.isAlternate3( env.float64Array );
-    _.bufferTyped.isAlternate3( env.float32Array );
-    _.bufferTyped.isAlternate3( env.bufferNode );
-    _.bufferTyped.isAlternate3( env.rawArrayBuffer );
-    _.bufferTyped.isAlternate3( env.sharedArrayBuffer );
-    _.bufferTyped.isAlternate3( env.nonEmptyArray );
-    _.bufferTyped.isAlternate3( arguments );
-    _.bufferTyped.isAlternate3( env.aNumber );
-    _.bufferTyped.isAlternate3( env.anEmptyObject );
-    _.bufferTyped.isAlternate3();
-    _.bufferTyped.isAlternate3( null );
-    _.bufferTyped.isAlternate3( env.anEmptyRoutine );
-    _.bufferTyped.isAlternate3( env.aString );
-    _.bufferTyped.isAlternate3( env.aBoolean );
+    _.bufferTyped.isUsingGetPrototypeSimplified( env.bigUint64Array );
+    _.bufferTyped.isUsingGetPrototypeSimplified( env.uint32Array );
+    _.bufferTyped.isUsingGetPrototypeSimplified( env.uint16Array );
+    _.bufferTyped.isUsingGetPrototypeSimplified( env.uint8Array );
+    _.bufferTyped.isUsingGetPrototypeSimplified( env.uint8ClampedArray );
+    _.bufferTyped.isUsingGetPrototypeSimplified( env.bigInt64Array );
+    _.bufferTyped.isUsingGetPrototypeSimplified( env.int32Array );
+    _.bufferTyped.isUsingGetPrototypeSimplified( env.int16Array );
+    _.bufferTyped.isUsingGetPrototypeSimplified( env.int8Array );
+    _.bufferTyped.isUsingGetPrototypeSimplified( env.float64Array );
+    _.bufferTyped.isUsingGetPrototypeSimplified( env.float32Array );
+    _.bufferTyped.isUsingGetPrototypeSimplified( env.bufferNode );
+    _.bufferTyped.isUsingGetPrototypeSimplified( env.rawArrayBuffer );
+    _.bufferTyped.isUsingGetPrototypeSimplified( env.sharedArrayBuffer );
+    _.bufferTyped.isUsingGetPrototypeSimplified( env.nonEmptyArray );
+    _.bufferTyped.isUsingGetPrototypeSimplified( arguments );
+    _.bufferTyped.isUsingGetPrototypeSimplified( env.aNumber );
+    _.bufferTyped.isUsingGetPrototypeSimplified( env.anEmptyObject );
+    _.bufferTyped.isUsingGetPrototypeSimplified();
+    _.bufferTyped.isUsingGetPrototypeSimplified( null );
+    _.bufferTyped.isUsingGetPrototypeSimplified( env.anEmptyRoutine );
+    _.bufferTyped.isUsingGetPrototypeSimplified( env.aString );
+    _.bufferTyped.isUsingGetPrototypeSimplified( env.aBoolean );
   }
 
-  function runVariationsForAlternate4( env )
+  function runVariationsForUsingTypeEquality( env )
   {
-    _.bufferTyped.isAlternate4( env.bigUint64Array );
-    _.bufferTyped.isAlternate4( env.uint32Array );
-    _.bufferTyped.isAlternate4( env.uint16Array );
-    _.bufferTyped.isAlternate4( env.uint8Array );
-    _.bufferTyped.isAlternate4( env.uint8ClampedArray );
-    _.bufferTyped.isAlternate4( env.bigInt64Array );
-    _.bufferTyped.isAlternate4( env.int32Array );
-    _.bufferTyped.isAlternate4( env.int16Array );
-    _.bufferTyped.isAlternate4( env.int8Array );
-    _.bufferTyped.isAlternate4( env.float64Array );
-    _.bufferTyped.isAlternate4( env.float32Array );
-    _.bufferTyped.isAlternate4( env.bufferNode );
-    _.bufferTyped.isAlternate4( env.rawArrayBuffer );
-    _.bufferTyped.isAlternate4( env.sharedArrayBuffer );
-    _.bufferTyped.isAlternate4( env.nonEmptyArray );
-    _.bufferTyped.isAlternate4( arguments );
-    _.bufferTyped.isAlternate4( env.aNumber );
-    _.bufferTyped.isAlternate4( env.anEmptyObject );
-    _.bufferTyped.isAlternate4();
-    _.bufferTyped.isAlternate4( null );
-    _.bufferTyped.isAlternate4( env.anEmptyRoutine );
-    _.bufferTyped.isAlternate4( env.aString );
-    _.bufferTyped.isAlternate4( env.aBoolean );
+    _.bufferTyped.isUsingGetPrototypeAndEquality( env.bigUint64Array );
+    _.bufferTyped.isUsingGetPrototypeAndEquality( env.uint32Array );
+    _.bufferTyped.isUsingGetPrototypeAndEquality( env.uint16Array );
+    _.bufferTyped.isUsingGetPrototypeAndEquality( env.uint8Array );
+    _.bufferTyped.isUsingGetPrototypeAndEquality( env.uint8ClampedArray );
+    _.bufferTyped.isUsingGetPrototypeAndEquality( env.bigInt64Array );
+    _.bufferTyped.isUsingGetPrototypeAndEquality( env.int32Array );
+    _.bufferTyped.isUsingGetPrototypeAndEquality( env.int16Array );
+    _.bufferTyped.isUsingGetPrototypeAndEquality( env.int8Array );
+    _.bufferTyped.isUsingGetPrototypeAndEquality( env.float64Array );
+    _.bufferTyped.isUsingGetPrototypeAndEquality( env.float32Array );
+    _.bufferTyped.isUsingGetPrototypeAndEquality( env.bufferNode );
+    _.bufferTyped.isUsingGetPrototypeAndEquality( env.rawArrayBuffer );
+    _.bufferTyped.isUsingGetPrototypeAndEquality( env.sharedArrayBuffer );
+    _.bufferTyped.isUsingGetPrototypeAndEquality( env.nonEmptyArray );
+    _.bufferTyped.isUsingGetPrototypeAndEquality( arguments );
+    _.bufferTyped.isUsingGetPrototypeAndEquality( env.aNumber );
+    _.bufferTyped.isUsingGetPrototypeAndEquality( env.anEmptyObject );
+    _.bufferTyped.isUsingGetPrototypeAndEquality();
+    _.bufferTyped.isUsingGetPrototypeAndEquality( null );
+    _.bufferTyped.isUsingGetPrototypeAndEquality( env.anEmptyRoutine );
+    _.bufferTyped.isUsingGetPrototypeAndEquality( env.aString );
+    _.bufferTyped.isUsingGetPrototypeAndEquality( env.aBoolean );
   }
 
-  function runVariationsForAlternate5( env )
+  function runVariationsForSet( env )
   {
-    _.bufferTyped.isAlternate5( env.bigUint64Array );
-    _.bufferTyped.isAlternate5( env.uint32Array );
-    _.bufferTyped.isAlternate5( env.uint16Array );
-    _.bufferTyped.isAlternate5( env.uint8Array );
-    _.bufferTyped.isAlternate5( env.uint8ClampedArray );
-    _.bufferTyped.isAlternate5( env.bigInt64Array );
-    _.bufferTyped.isAlternate5( env.int32Array );
-    _.bufferTyped.isAlternate5( env.int16Array );
-    _.bufferTyped.isAlternate5( env.int8Array );
-    _.bufferTyped.isAlternate5( env.float64Array );
-    _.bufferTyped.isAlternate5( env.float32Array );
-    _.bufferTyped.isAlternate5( env.bufferNode );
-    _.bufferTyped.isAlternate5( env.rawArrayBuffer );
-    _.bufferTyped.isAlternate5( env.sharedArrayBuffer );
-    _.bufferTyped.isAlternate5( env.nonEmptyArray );
-    _.bufferTyped.isAlternate5( arguments );
-    _.bufferTyped.isAlternate5( env.aNumber );
-    _.bufferTyped.isAlternate5( env.anEmptyObject );
-    _.bufferTyped.isAlternate5();
-    _.bufferTyped.isAlternate5( null );
-    _.bufferTyped.isAlternate5( env.anEmptyRoutine );
-    _.bufferTyped.isAlternate5( env.aString );
-    _.bufferTyped.isAlternate5( env.aBoolean );
+    _.bufferTyped.isUsingSet( env.bigUint64Array );
+    _.bufferTyped.isUsingSet( env.uint32Array );
+    _.bufferTyped.isUsingSet( env.uint16Array );
+    _.bufferTyped.isUsingSet( env.uint8Array );
+    _.bufferTyped.isUsingSet( env.uint8ClampedArray );
+    _.bufferTyped.isUsingSet( env.bigInt64Array );
+    _.bufferTyped.isUsingSet( env.int32Array );
+    _.bufferTyped.isUsingSet( env.int16Array );
+    _.bufferTyped.isUsingSet( env.int8Array );
+    _.bufferTyped.isUsingSet( env.float64Array );
+    _.bufferTyped.isUsingSet( env.float32Array );
+    _.bufferTyped.isUsingSet( env.bufferNode );
+    _.bufferTyped.isUsingSet( env.rawArrayBuffer );
+    _.bufferTyped.isUsingSet( env.sharedArrayBuffer );
+    _.bufferTyped.isUsingSet( env.nonEmptyArray );
+    _.bufferTyped.isUsingSet( arguments );
+    _.bufferTyped.isUsingSet( env.aNumber );
+    _.bufferTyped.isUsingSet( env.anEmptyObject );
+    _.bufferTyped.isUsingSet();
+    _.bufferTyped.isUsingSet( null );
+    _.bufferTyped.isUsingSet( env.anEmptyRoutine );
+    _.bufferTyped.isUsingSet( env.aString );
+    _.bufferTyped.isUsingSet( env.aBoolean );
   }
 
-  function runVariationsForAlternate6( env )
+  function runVariationsForMap( env )
   {
-    _.bufferTyped.isAlternate6( env.bigUint64Array );
-    _.bufferTyped.isAlternate6( env.uint32Array );
-    _.bufferTyped.isAlternate6( env.uint16Array );
-    _.bufferTyped.isAlternate6( env.uint8Array );
-    _.bufferTyped.isAlternate6( env.uint8ClampedArray );
-    _.bufferTyped.isAlternate6( env.bigInt64Array );
-    _.bufferTyped.isAlternate6( env.int32Array );
-    _.bufferTyped.isAlternate6( env.int16Array );
-    _.bufferTyped.isAlternate6( env.int8Array );
-    _.bufferTyped.isAlternate6( env.float64Array );
-    _.bufferTyped.isAlternate6( env.float32Array );
-    _.bufferTyped.isAlternate6( env.bufferNode );
-    _.bufferTyped.isAlternate6( env.rawArrayBuffer );
-    _.bufferTyped.isAlternate6( env.sharedArrayBuffer );
-    _.bufferTyped.isAlternate6( env.nonEmptyArray );
-    _.bufferTyped.isAlternate6( arguments );
-    _.bufferTyped.isAlternate6( env.aNumber );
-    _.bufferTyped.isAlternate6( env.anEmptyObject );
-    _.bufferTyped.isAlternate6();
-    _.bufferTyped.isAlternate6( null );
-    _.bufferTyped.isAlternate6( env.anEmptyRoutine );
-    _.bufferTyped.isAlternate6( env.aString );
-    _.bufferTyped.isAlternate6( env.aBoolean );
+    _.bufferTyped.isUsingMap( env.bigUint64Array );
+    _.bufferTyped.isUsingMap( env.uint32Array );
+    _.bufferTyped.isUsingMap( env.uint16Array );
+    _.bufferTyped.isUsingMap( env.uint8Array );
+    _.bufferTyped.isUsingMap( env.uint8ClampedArray );
+    _.bufferTyped.isUsingMap( env.bigInt64Array );
+    _.bufferTyped.isUsingMap( env.int32Array );
+    _.bufferTyped.isUsingMap( env.int16Array );
+    _.bufferTyped.isUsingMap( env.int8Array );
+    _.bufferTyped.isUsingMap( env.float64Array );
+    _.bufferTyped.isUsingMap( env.float32Array );
+    _.bufferTyped.isUsingMap( env.bufferNode );
+    _.bufferTyped.isUsingMap( env.rawArrayBuffer );
+    _.bufferTyped.isUsingMap( env.sharedArrayBuffer );
+    _.bufferTyped.isUsingMap( env.nonEmptyArray );
+    _.bufferTyped.isUsingMap( arguments );
+    _.bufferTyped.isUsingMap( env.aNumber );
+    _.bufferTyped.isUsingMap( env.anEmptyObject );
+    _.bufferTyped.isUsingMap();
+    _.bufferTyped.isUsingMap( null );
+    _.bufferTyped.isUsingMap( env.anEmptyRoutine );
+    _.bufferTyped.isUsingMap( env.aString );
+    _.bufferTyped.isUsingMap( env.aBoolean );
   }
 
-  function runVariationsForAlternate7( env )
+  function runVariationsForExistenceOfField( env )
   {
-    _.bufferTyped.isAlternate7( env.bigUint64Array );
-    _.bufferTyped.isAlternate7( env.uint32Array );
-    _.bufferTyped.isAlternate7( env.uint16Array );
-    _.bufferTyped.isAlternate7( env.uint8Array );
-    _.bufferTyped.isAlternate7( env.uint8ClampedArray );
-    _.bufferTyped.isAlternate7( env.bigInt64Array );
-    _.bufferTyped.isAlternate7( env.int32Array );
-    _.bufferTyped.isAlternate7( env.int16Array );
-    _.bufferTyped.isAlternate7( env.int8Array );
-    _.bufferTyped.isAlternate7( env.float64Array );
-    _.bufferTyped.isAlternate7( env.float32Array );
-    _.bufferTyped.isAlternate7( env.bufferNode );
-    _.bufferTyped.isAlternate7( env.rawArrayBuffer );
-    _.bufferTyped.isAlternate7( env.sharedArrayBuffer );
-    _.bufferTyped.isAlternate7( env.nonEmptyArray );
-    _.bufferTyped.isAlternate7( arguments );
-    _.bufferTyped.isAlternate7( env.aNumber );
-    _.bufferTyped.isAlternate7( env.anEmptyObject );
-    _.bufferTyped.isAlternate7();
-    _.bufferTyped.isAlternate7( null );
-    _.bufferTyped.isAlternate7( env.anEmptyRoutine );
-    _.bufferTyped.isAlternate7( env.aString );
-    _.bufferTyped.isAlternate7( env.aBoolean );
+    _.bufferTyped.isUsingExistenceOfField( env.bigUint64Array );
+    _.bufferTyped.isUsingExistenceOfField( env.uint32Array );
+    _.bufferTyped.isUsingExistenceOfField( env.uint16Array );
+    _.bufferTyped.isUsingExistenceOfField( env.uint8Array );
+    _.bufferTyped.isUsingExistenceOfField( env.uint8ClampedArray );
+    _.bufferTyped.isUsingExistenceOfField( env.bigInt64Array );
+    _.bufferTyped.isUsingExistenceOfField( env.int32Array );
+    _.bufferTyped.isUsingExistenceOfField( env.int16Array );
+    _.bufferTyped.isUsingExistenceOfField( env.int8Array );
+    _.bufferTyped.isUsingExistenceOfField( env.float64Array );
+    _.bufferTyped.isUsingExistenceOfField( env.float32Array );
+    _.bufferTyped.isUsingExistenceOfField( env.bufferNode );
+    _.bufferTyped.isUsingExistenceOfField( env.rawArrayBuffer );
+    _.bufferTyped.isUsingExistenceOfField( env.sharedArrayBuffer );
+    _.bufferTyped.isUsingExistenceOfField( env.nonEmptyArray );
+    _.bufferTyped.isUsingExistenceOfField( arguments );
+    _.bufferTyped.isUsingExistenceOfField( env.aNumber );
+    _.bufferTyped.isUsingExistenceOfField( env.anEmptyObject );
+    _.bufferTyped.isUsingExistenceOfField();
+    _.bufferTyped.isUsingExistenceOfField( null );
+    _.bufferTyped.isUsingExistenceOfField( env.anEmptyRoutine );
+    _.bufferTyped.isUsingExistenceOfField( env.aString );
+    _.bufferTyped.isUsingExistenceOfField( env.aBoolean );
   }
 }
 
@@ -1392,13 +1393,13 @@ const Proto =
 
     // bufferTyped, l0/l1
     is,
-    isAlternate1,
-    isAlternate2,
-    isAlternate3,
-    isAlternate4,
-    isAlternate5,
-    isAlternate6,
-    isAlternate7,
+    isUsingGetPrototype,
+    isUsingGetPrototypeAndFunctor,
+    isUsingGetPrototypeSimplified,
+    isUsingGetPrototypeAndEquality,
+    isUsingSet,
+    isUsingMap,
+    isUsingExistenceOfField,
     isPerformance,
 
   }
