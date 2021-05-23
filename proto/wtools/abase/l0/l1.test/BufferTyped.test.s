@@ -1512,9 +1512,9 @@ const Proto =
     // bufferTyped, l0/l1
     is,
     isUsingGetPrototype,
-    isUsingGetPrototypeAndFunctor,
-    isUsingGetPrototypeSimplified,
-    isUsingGetPrototypeAndEquality,
+    // isUsingGetPrototypeAndFunctor,
+    // isUsingGetPrototypeSimplified,
+    // isUsingGetPrototypeAndEquality,
     isUsingSet,
     isUsingHashMap,
     isUsingExistenceOfField,
