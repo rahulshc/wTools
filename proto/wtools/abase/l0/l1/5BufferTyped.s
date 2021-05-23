@@ -27,6 +27,146 @@ function is( src )
 
 //
 
+function isUsingGetPrototype( src )
+{
+  if( !( src instanceof Object.getPrototypeOf( Int8Array ) ) )
+  return false;
+  if( _.buffer.nodeIs( src ) )
+  return false;
+  return true;
+}
+
+//
+
+function isUsingGetPrototypeAndFunctor( src )
+{
+  return alternateX( src );
+}
+
+//
+
+function isUsingGetPrototypeSimplified( src )
+{
+  if( src instanceof Object.getPrototypeOf( Int8Array ) )
+  return !_.buffer.nodeIs( src );
+  return false;
+}
+
+//
+
+function isUsingGetPrototypeAndEquality( src )
+{
+  if( !( src && Object.getPrototypeOf( src.constructor ).name === 'TypedArray' ) )
+  return false;
+  if( _.buffer.nodeIs( src ) )
+  return false;
+  return true;
+}
+
+//
+
+function isUsingSet( src )
+{
+  return alternateSet( src );
+}
+
+//
+
+function isUsingMap( src )
+{
+  return alternateMap( src );
+}
+
+//
+
+function isUsingExistenceOfField( src )
+{
+  if( !( src && src.buffer ) )
+  return false;
+  return alternateX( src );
+}
+
+//
+
+function alternateX_functor()
+{
+  let typedArray = Object.getPrototypeOf( Int8Array );
+  return alternateX;
+
+  function alternateX( src )
+  {
+    if( !( src instanceof typedArray ) )
+    return false;
+    if( _.buffer.nodeIs( src ) )
+    return false;
+    return true;
+  }
+}
+
+let alternateX = alternateX_functor();
+
+//
+
+function alternateSet_functor()
+{
+  let typedArraysSet = new Set();
+  typedArraysSet.add( '[object BigUint64Array]' );
+  typedArraysSet.add( '[object Uint32Array]' );
+  typedArraysSet.add( '[object Uint16Array]' );
+  typedArraysSet.add( '[object Uint8Array]' );
+  typedArraysSet.add( '[object Uint8ClampedArray]' );
+  typedArraysSet.add( '[object BigInt64Array]' );
+  typedArraysSet.add( '[object Int32Array]' );
+  typedArraysSet.add( '[object Int16Array]' );
+  typedArraysSet.add( '[object Int8Array]' );
+  typedArraysSet.add( '[object Float64Array]' );
+  typedArraysSet.add( '[object Float32Array]' );
+  return alternateSet;
+
+  function alternateSet( src )
+  {
+    if( !( typedArraysSet.has( Object.prototype.toString.call( src ) ) ) )
+    return false;
+    if( _.buffer.nodeIs( src ) )
+    return false;
+    return true;
+  }
+}
+
+let alternateSet = alternateSet_functor();
+
+//
+
+function alternateMap_functor()
+{
+  let typedArraysMap = new Map();
+  typedArraysMap.set( '[object BigUint64Array]', '[object BigUint64Array]' );
+  typedArraysMap.set( '[object Uint32Array]', '[object Uint32Array]' );
+  typedArraysMap.set( '[object Uint16Array]', '[object Uint16Array]' );
+  typedArraysMap.set( '[object Uint8Array]', '[object Uint8Array]' );
+  typedArraysMap.set( '[object Uint8ClampedArray]', '[object Uint8ClampedArray]' );
+  typedArraysMap.set( '[object BigInt64Array]', '[object BigInt64Array]' );
+  typedArraysMap.set( '[object Int32Array]', '[object Int32Array]' );
+  typedArraysMap.set( '[object Int16Array]', '[object Int16Array]' );
+  typedArraysMap.set( '[object Int8Array]', '[object Int8Array]' );
+  typedArraysMap.set( '[object Float64Array]', '[object Float64Array]' );
+  typedArraysMap.set( '[object Float32Array]', '[object Float32Array]' );
+  return alternateMap;
+
+  function alternateMap( src )
+  {
+    if( !( typedArraysMap.has( Object.prototype.toString.call( src ) ) ) )
+    return false;
+    if( _.buffer.nodeIs( src ) )
+    return false;
+    return true;
+  }
+}
+
+let alternateMap = alternateMap_functor();
+
+//
+
 function IsResizable()
 {
   _.assert( arguments.length === 0 );
@@ -260,6 +400,13 @@ let BufferTypedExtension =
   is : is,
   like : is,
   IsResizable,
+  isUsingGetPrototype,
+  isUsingGetPrototypeAndFunctor,
+  isUsingGetPrototypeSimplified,
+  isUsingGetPrototypeAndEquality,
+  isUsingSet,
+  isUsingMap,
+  isUsingExistenceOfField,
 
   // maker
 
