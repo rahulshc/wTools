@@ -737,120 +737,120 @@ function isUsingSet( test )
 
 //
 
-function isUsingMap( test )
+function isUsingHashMap( test )
 {
   test.case = 'BigUint64Array';
-  var got = _.bufferTyped.isUsingMap( new U64x( 10 ) );
+  var got = _.bufferTyped.isUsingHashMap( new U64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint32Array';
-  var got = _.bufferTyped.isUsingMap( new U32x( 10 ) );
+  var got = _.bufferTyped.isUsingHashMap( new U32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint16Array';
-  var got = _.bufferTyped.isUsingMap( new U16x( 10 ) );
+  var got = _.bufferTyped.isUsingHashMap( new U16x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint8Array';
-  var got = _.bufferTyped.isUsingMap( new U8x( 10 ) );
+  var got = _.bufferTyped.isUsingHashMap( new U8x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Uint8ClampedArray';
-  var got = _.bufferTyped.isUsingMap( new U8xClamped( 10 ) );
+  var got = _.bufferTyped.isUsingHashMap( new U8xClamped( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Big int 64 array';
-  var got = _.bufferTyped.isUsingMap( new I64x( 10 ) );
+  var got = _.bufferTyped.isUsingHashMap( new I64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int32Array';
-  var got = _.bufferTyped.isUsingMap( new I32x( 10 ) );
+  var got = _.bufferTyped.isUsingHashMap( new I32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int16Array';
-  var got = _.bufferTyped.isUsingMap( new I16x( 10 ) );
+  var got = _.bufferTyped.isUsingHashMap( new I16x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Int8Array';
-  var got = _.bufferTyped.isUsingMap( new I8x( 10 ) );
+  var got = _.bufferTyped.isUsingHashMap( new I8x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Float64Array';
-  var got = _.bufferTyped.isUsingMap( new F64x( 10 ) );
+  var got = _.bufferTyped.isUsingHashMap( new F64x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Float32Array';
-  var got = _.bufferTyped.isUsingMap( new F32x( 10 ) );
+  var got = _.bufferTyped.isUsingHashMap( new F32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'Buffer Node';
-  var got = _.bufferTyped.isUsingMap( BufferNode.alloc( 5 ) );
+  var got = _.bufferTyped.isUsingHashMap( BufferNode.alloc( 5 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'raw array buffer';
-  var got = _.bufferTyped.isUsingMap( new BufferRaw( 10 ) );
+  var got = _.bufferTyped.isUsingHashMap( new BufferRaw( 10 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'shared array buffer';
-  var got = _.bufferTyped.isUsingMap( new BufferRawShared( 1024 ) );
+  var got = _.bufferTyped.isUsingHashMap( new BufferRawShared( 1024 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'an array';
-  var got = _.bufferTyped.isUsingMap( [ 1, 2, 3 ] );
+  var got = _.bufferTyped.isUsingHashMap( [ 1, 2, 3 ] );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'arguments array';
-  var got = _.bufferTyped.isUsingMap( arguments );
+  var got = _.bufferTyped.isUsingHashMap( arguments );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'a number';
-  var got = _.bufferTyped.isUsingMap( 1 );
+  var got = _.bufferTyped.isUsingHashMap( 1 );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'an object';
-  var got = _.bufferTyped.isUsingMap( {} );
+  var got = _.bufferTyped.isUsingHashMap( {} );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'no argument';
-  var got = _.bufferTyped.isUsingMap();
+  var got = _.bufferTyped.isUsingHashMap();
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'null';
-  var got = _.bufferTyped.isUsingMap( null );
+  var got = _.bufferTyped.isUsingHashMap( null );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'function';
-  var got = _.bufferTyped.isUsingMap( function() {} );
+  var got = _.bufferTyped.isUsingHashMap( function() {} );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'string';
-  var got = _.bufferTyped.isUsingMap( 'x' );
+  var got = _.bufferTyped.isUsingHashMap( 'x' );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'boolean';
-  var got = _.bufferTyped.isUsingMap( false );
+  var got = _.bufferTyped.isUsingHashMap( false );
   var expected  = false;
   test.identical( got, expected );
 }
@@ -975,154 +975,241 @@ function isUsingExistenceOfField( test )
   test.identical( got, expected );
 }
 
+//
+
 function isPerformance( test )
 {
   /*
     Average of 10 runs of 1 million iteration of 23 _.bufferTyped.is variations
     Values below are in seconds
     |-------------------|-----------|-----------|-------------|-------------|-----------|----------|----------- |----------- |
-    |                   |  Original |    Get    |Get Prototype|Get Prototype|   Type    |   Set    | Map        | Existence  |
-    |                   |           |  Prototype|   & Functor | Simplified  |  Equality |          |            |  of Field  |
+    |                   |  Original |    Get    |Get Prototype| Map         |   Type    |   Set    | HashMap    | Existence  |
+    |                   |           |  Prototype|   & Functor |             |  Equality |          |            |  of Field  |
     | :---------------: |:----------|-----------|-------------|-------------|-----------|----------|----------- |----------- |
-    | **Njs : v10.24.1**|   5.400   |  0.459    |   0.457     |   0.444     |  2.023    |   4.166  |  4.193     |  1.209     |
+    | **Njs : v10.24.1**|
     |-------------------|-----------|-----------|-------------|-------------|-----------|----------|----------- |----------- |
-    | **Njs : v14.17.0**|   4.439   |  0.532    |   0.529     |    0.547    |  2.008    |  5.390   |  5.336     |  1.161     |
+    | **Njs : v14.17.0**|
     |-------------------|-----------|-----------|-------------|-------------|-----------|----------|----------- |----------- |
-    | **Njs : v15.14.0**|   6.288   |  0.464    |   0.465     |    0.466    |  1.995    |  5.434   |  5.325     |  1.046     |
+    | **Njs : v15.14.0**|
     |-------------------|-----------|-----------|-------------|-------------|-----------|----------|----------- |----------- |
-    |Kos : Njs : v12.9.1|   5.664   |           |             |             |           |          |            |            |
+    |Kos : Njs : v12.9.1|
     |-------------------|-----------|-----------|-------------|-------------|-----------|----------|----------- |----------- |
+
+    = qqq : for Rahul : bad table. use name of routines in header. update.
+
+    = qqq : for Rahul : implement generating of the table using __.strTable()
+    use example https://github.com/Wandalen/wStringsExtra/blob/master/proto/wtools/abase/l5.test/StringTools.test.s#L9830
+  test.case = 'topHead';
+  var exp =
+`╔═══════════╗
+║head12  3  ║
+╟───────────╢
+║ a13 b  c  ║
+║  d  ef1313║
+║  g  h  i  ║
+║  k        ║
+╚═══════════╝`;
+  var dim = [ 4, 3 ];
+  var data = [ 'a13', 'b', 'c', 'd', 'e', 'f1313', 'g', 'h', 'i', 'k', '', '' ];
+  var style = 'doubleBorder';
+  var topHead = [ 'head1', '2', '3' ];
+  var got = _.strTable({ data, dim, style, topHead });
+  test.identical( got.result, exp );
+
   */
 
   debugger;
   var debugFlag = Config.debug;
   Config.debug = false;
 
-  test.case = 'Typed Buffer Performance Test Original Version';
+  /* */
+
+  test.case = 'is';
   var took, time;
   var env = initializeVariables();
 
   time = _.time.now();
   for( let i = env.times; i > 0; i-- )
   {
-    runVariationsForIs( env );
+    env.name = 'is';
+    run( env );
   }
   took = __.time.spent( time );
 
   console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
   test.identical( true, true );
 
+  /* */
+
+  test.case = 'isSlow';
+  var took, time;
+  var env = initializeVariables();
+
+  time = _.time.now();
+  for( let i = env.times; i > 0; i-- )
+  {
+    env.name = 'isSlow';
+    run( env );
+  }
+  took = __.time.spent( time );
+
+  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  test.identical( true, true );
+
+  /* */
+
+  test.case = 'isUsingGetPrototype';
+  var took, time;
+  var env = initializeVariables();
+
+  time = _.time.now();
+  for( let i = env.times; i > 0; i-- )
+  {
+    env.name = 'isUsingGetPrototype';
+    run( env );
+  }
+  took = __.time.spent( time );
+
+  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  test.identical( true, true );
+
+  /* */
+
+  test.case = 'isUsingGetPrototypeWithFunctor';
+  var took, time;
+  var env = initializeVariables();
+
+  time = _.time.now();
+  for( let i = env.times; i > 0; i-- )
+  {
+    env.name = 'isUsingGetPrototypeWithFunctor';
+    run( env );
+  }
+  took = __.time.spent( time );
+
+  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  test.identical( true, true );
+
+  /* */
+
+  test.case = 'isUsingExistenceOfField';
+  var took, time;
+  var env = initializeVariables();
+
+  time = _.time.now();
+  for( let i = env.times; i > 0; i-- )
+  {
+    env.name = 'isUsingExistenceOfField';
+    run( env );
+  }
+  took = __.time.spent( time );
+
+  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  test.identical( true, true );
+
+  /* */
+
+  // test.case = 'usingGetPrototype and Functor';
+  // var took, time;
+  // var env = initializeVariables();
   //
-
-  test.case = 'Typed Buffer Performance Test using GetPrototype';
-  var took, time;
-  var env = initializeVariables();
-
-  time = _.time.now();
-  for( let i = env.times; i > 0; i-- )
-  {
-    runVariationsForGetPrototype( env );
-  }
-  took = __.time.spent( time );
-
-  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  test.identical( true, true );
-
+  // time = _.time.now();
+  // for( let i = env.times; i > 0; i-- )
+  // {
+  //   env.name = 'isUsingGetPrototypeAndFunctor';
+  //   run( env );
+  // }
+  // took = __.time.spent( time );
   //
+  // console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  // test.identical( true, true );
 
-  test.case = 'Typed Buffer Performance Test using using GetPrototype and Functor';
-  var took, time;
-  var env = initializeVariables();
+  /* */
 
-  time = _.time.now();
-  for( let i = env.times; i > 0; i-- )
-  {
-    runVariationsForGetProtoTypeAndFunctor( env );
-  }
-  took = __.time.spent( time );
-
-  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  test.identical( true, true );
-
+  // test.case = 'usingGetPrototype Simplified';
+  // var took, time;
+  // var env = initializeVariables();
   //
-
-  test.case = 'Typed Buffer Performance Test using using GetPrototype Simplified';
-  var took, time;
-  var env = initializeVariables();
-
-  time = _.time.now();
-  for( let i = env.times; i > 0; i-- )
-  {
-    runVariationsForGetPrototypeSimplified( env );
-  }
-  took = __.time.spent( time );
-
-  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  test.identical( true, true );
-
+  // time = _.time.now();
+  // for( let i = env.times; i > 0; i-- )
+  // {
+  //   env.name = 'isUsingGetPrototypeSimplified';
+  //   run( env );
+  // }
+  // took = __.time.spent( time );
   //
+  // console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  // test.identical( true, true );
 
-  test.case = 'Typed Buffer Performance Test Using GetPrototype And Equality';
-  var took, time;
-  var env = initializeVariables();
+  /* */
 
-  time = _.time.now();
-  for( let i = env.times; i > 0; i-- )
-  {
-    runVariationsForUsingTypeEquality( env );
-  }
-  took = __.time.spent( time );
-
-  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  test.identical( true, true );
-
+  // test.case = 'isUsingGetPrototypeAndEquality';
+  // var took, time;
+  // var env = initializeVariables();
   //
-
-  test.case = 'Typed Buffer Performance using Set';
-  var took, time;
-  var env = initializeVariables();
-
-  time = _.time.now();
-  for( let i = env.times; i > 0; i-- )
-  {
-    runVariationsForSet( env );
-  }
-  took = __.time.spent( time );
-
-  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  test.identical( true, true );
-
+  // time = _.time.now();
+  // for( let i = env.times; i > 0; i-- )
+  // {
+  //   env.name = 'isUsingGetPrototypeAndEquality';
+  //   run( env );
+  // }
+  // took = __.time.spent( time );
   //
+  // console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  // test.identical( true, true );
 
-  test.case = 'Typed Buffer Performance Test using Map';
+  /* */
+
+  test.case = 'isUsingSet';
   var took, time;
   var env = initializeVariables();
 
   time = _.time.now();
   for( let i = env.times; i > 0; i-- )
   {
-    runVariationsForMap( env );
+    env.name = 'isUsingSet';
+    run( env );
   }
   took = __.time.spent( time );
 
   console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
   test.identical( true, true );
 
-  //
+  /* */
 
-  test.case = 'Typed Buffer Performance Test using existence of field';
+  test.case = 'isUsingHashMap';
   var took, time;
   var env = initializeVariables();
 
   time = _.time.now();
   for( let i = env.times; i > 0; i-- )
   {
-    runVariationsForExistenceOfField( env );
+    env.name = 'isUsingHashMap';
+    run( env );
   }
   took = __.time.spent( time );
 
   console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
   test.identical( true, true );
+
+  /* */
+
+  test.case = 'isUsingMap';
+  var took, time;
+  var env = initializeVariables();
+
+  time = _.time.now();
+  for( let i = env.times; i > 0; i-- )
+  {
+    env.name = 'isUsingMap';
+    run( env );
+  }
+  took = __.time.spent( time );
+
+  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  test.identical( true, true );
+
+  /* */
 
   Config.debug = debugFlag;
   debugger;
@@ -1152,226 +1239,257 @@ function isPerformance( test )
     env.aString = 'x';
     env.aNumber = 1;
     env.aBoolean = false;
-    env.anEmptyObject = {};
-
+    env.anEmptyMap = {};
+    env.aMapWithFieldBuffer = { buffer : [] };
     return env;
   }
 
-  function runVariationsForIs( env )
+  /**/
+
+  function run( env )
   {
-    _.bufferTyped.is( env.bigUint64Array );
-    _.bufferTyped.is( env.uint32Array );
-    _.bufferTyped.is( env.uint16Array );
-    _.bufferTyped.is( env.uint8Array );
-    _.bufferTyped.is( env.uint8ClampedArray );
-    _.bufferTyped.is( env.bigInt64Array );
-    _.bufferTyped.is( env.int32Array );
-    _.bufferTyped.is( env.int16Array );
-    _.bufferTyped.is( env.int8Array );
-    _.bufferTyped.is( env.float64Array );
-    _.bufferTyped.is( env.float32Array );
-    _.bufferTyped.is( env.bufferNode );
-    _.bufferTyped.is( env.rawArrayBuffer );
-    _.bufferTyped.is( env.sharedArrayBuffer );
-    _.bufferTyped.is( env.nonEmptyArray );
-    _.bufferTyped.is( arguments );
-    _.bufferTyped.is( env.aNumber );
-    _.bufferTyped.is( env.anEmptyObject );
-    _.bufferTyped.is();
-    _.bufferTyped.is( null );
-    _.bufferTyped.is( env.anEmptyRoutine );
-    _.bufferTyped.is( env.aString );
-    _.bufferTyped.is( env.aBoolean );
+    _.bufferTyped[ env.name ]( env.bigUint64Array );
+    _.bufferTyped[ env.name ]( env.uint32Array );
+    _.bufferTyped[ env.name ]( env.uint16Array );
+    _.bufferTyped[ env.name ]( env.uint8Array );
+    _.bufferTyped[ env.name ]( env.uint8ClampedArray );
+    _.bufferTyped[ env.name ]( env.bigInt64Array );
+    _.bufferTyped[ env.name ]( env.int32Array );
+    _.bufferTyped[ env.name ]( env.int16Array );
+    _.bufferTyped[ env.name ]( env.int8Array );
+    _.bufferTyped[ env.name ]( env.float64Array );
+    _.bufferTyped[ env.name ]( env.float32Array );
+    _.bufferTyped[ env.name ]( env.bufferNode );
+    _.bufferTyped[ env.name ]( env.rawArrayBuffer );
+    _.bufferTyped[ env.name ]( env.sharedArrayBuffer );
+    _.bufferTyped[ env.name ]( env.nonEmptyArray );
+    _.bufferTyped[ env.name ]( arguments );
+    _.bufferTyped[ env.name ]( env.aNumber );
+    _.bufferTyped[ env.name ]( env.anEmptyMap );
+    _.bufferTyped[ env.name ]( env.aMapWithFieldBuffer );
+    _.bufferTyped[ env.name ]();
+    _.bufferTyped[ env.name ]( null );
+    _.bufferTyped[ env.name ]( env.anEmptyRoutine );
+    _.bufferTyped[ env.name ]( env.aString );
+    _.bufferTyped[ env.name ]( env.aBoolean );
   }
 
-  function runVariationsForGetPrototype( env )
-  {
-    _.bufferTyped.isUsingGetPrototype( env.bigUint64Array );
-    _.bufferTyped.isUsingGetPrototype( env.uint32Array );
-    _.bufferTyped.isUsingGetPrototype( env.uint16Array );
-    _.bufferTyped.isUsingGetPrototype( env.uint8Array );
-    _.bufferTyped.isUsingGetPrototype( env.uint8ClampedArray );
-    _.bufferTyped.isUsingGetPrototype( env.bigInt64Array );
-    _.bufferTyped.isUsingGetPrototype( env.int32Array );
-    _.bufferTyped.isUsingGetPrototype( env.int16Array );
-    _.bufferTyped.isUsingGetPrototype( env.int8Array );
-    _.bufferTyped.isUsingGetPrototype( env.float64Array );
-    _.bufferTyped.isUsingGetPrototype( env.float32Array );
-    _.bufferTyped.isUsingGetPrototype( env.bufferNode );
-    _.bufferTyped.isUsingGetPrototype( env.rawArrayBuffer );
-    _.bufferTyped.isUsingGetPrototype( env.sharedArrayBuffer );
-    _.bufferTyped.isUsingGetPrototype( env.nonEmptyArray );
-    _.bufferTyped.isUsingGetPrototype( arguments );
-    _.bufferTyped.isUsingGetPrototype( env.aNumber );
-    _.bufferTyped.isUsingGetPrototype( env.anEmptyObject );
-    _.bufferTyped.isUsingGetPrototype();
-    _.bufferTyped.isUsingGetPrototype( null );
-    _.bufferTyped.isUsingGetPrototype( env.anEmptyRoutine );
-    _.bufferTyped.isUsingGetPrototype( env.aString );
-    _.bufferTyped.isUsingGetPrototype( env.aBoolean );
-  }
+  // function runForIs( env )
+  // {
+  //   _.bufferTyped.is( env.bigUint64Array );
+  //   _.bufferTyped.is( env.uint32Array );
+  //   _.bufferTyped.is( env.uint16Array );
+  //   _.bufferTyped.is( env.uint8Array );
+  //   _.bufferTyped.is( env.uint8ClampedArray );
+  //   _.bufferTyped.is( env.bigInt64Array );
+  //   _.bufferTyped.is( env.int32Array );
+  //   _.bufferTyped.is( env.int16Array );
+  //   _.bufferTyped.is( env.int8Array );
+  //   _.bufferTyped.is( env.float64Array );
+  //   _.bufferTyped.is( env.float32Array );
+  //   _.bufferTyped.is( env.bufferNode );
+  //   _.bufferTyped.is( env.rawArrayBuffer );
+  //   _.bufferTyped.is( env.sharedArrayBuffer );
+  //   _.bufferTyped.is( env.nonEmptyArray );
+  //   _.bufferTyped.is( arguments );
+  //   _.bufferTyped.is( env.aNumber );
+  //   _.bufferTyped.is( env.anEmptyMap );
+  //   _.bufferTyped.is();
+  //   _.bufferTyped.is( null );
+  //   _.bufferTyped.is( env.anEmptyRoutine );
+  //   _.bufferTyped.is( env.aString );
+  //   _.bufferTyped.is( env.aBoolean );
+  // }
+  //
+  // function runForGetPrototype( env )
+  // {
+  //   _.bufferTyped.isUsingGetPrototype( env.bigUint64Array );
+  //   _.bufferTyped.isUsingGetPrototype( env.uint32Array );
+  //   _.bufferTyped.isUsingGetPrototype( env.uint16Array );
+  //   _.bufferTyped.isUsingGetPrototype( env.uint8Array );
+  //   _.bufferTyped.isUsingGetPrototype( env.uint8ClampedArray );
+  //   _.bufferTyped.isUsingGetPrototype( env.bigInt64Array );
+  //   _.bufferTyped.isUsingGetPrototype( env.int32Array );
+  //   _.bufferTyped.isUsingGetPrototype( env.int16Array );
+  //   _.bufferTyped.isUsingGetPrototype( env.int8Array );
+  //   _.bufferTyped.isUsingGetPrototype( env.float64Array );
+  //   _.bufferTyped.isUsingGetPrototype( env.float32Array );
+  //   _.bufferTyped.isUsingGetPrototype( env.bufferNode );
+  //   _.bufferTyped.isUsingGetPrototype( env.rawArrayBuffer );
+  //   _.bufferTyped.isUsingGetPrototype( env.sharedArrayBuffer );
+  //   _.bufferTyped.isUsingGetPrototype( env.nonEmptyArray );
+  //   _.bufferTyped.isUsingGetPrototype( arguments );
+  //   _.bufferTyped.isUsingGetPrototype( env.aNumber );
+  //   _.bufferTyped.isUsingGetPrototype( env.anEmptyMap );
+  //   _.bufferTyped.isUsingGetPrototype();
+  //   _.bufferTyped.isUsingGetPrototype( null );
+  //   _.bufferTyped.isUsingGetPrototype( env.anEmptyRoutine );
+  //   _.bufferTyped.isUsingGetPrototype( env.aString );
+  //   _.bufferTyped.isUsingGetPrototype( env.aBoolean );
+  // }
+  //
+  // function runForGetProtoTypeAndFunctor( env )
+  // {
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( env.bigUint64Array );
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( env.uint32Array );
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( env.uint16Array );
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( env.uint8Array );
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( env.uint8ClampedArray );
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( env.bigInt64Array );
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( env.int32Array );
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( env.int16Array );
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( env.int8Array );
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( env.float64Array );
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( env.float32Array );
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( env.bufferNode );
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( env.rawArrayBuffer );
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( env.sharedArrayBuffer );
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( env.nonEmptyArray );
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( arguments );
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( env.aNumber );
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( env.anEmptyMap );
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor();
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( null );
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( env.anEmptyRoutine );
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( env.aString );
+  //   _.bufferTyped.isUsingGetPrototypeAndFunctor( env.aBoolean );
+  // }
+  //
+  // function runForGetPrototypeSimplified( env )
+  // {
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( env.bigUint64Array );
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( env.uint32Array );
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( env.uint16Array );
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( env.uint8Array );
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( env.uint8ClampedArray );
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( env.bigInt64Array );
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( env.int32Array );
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( env.int16Array );
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( env.int8Array );
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( env.float64Array );
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( env.float32Array );
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( env.bufferNode );
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( env.rawArrayBuffer );
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( env.sharedArrayBuffer );
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( env.nonEmptyArray );
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( arguments );
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( env.aNumber );
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( env.anEmptyMap );
+  //   _.bufferTyped.isUsingGetPrototypeSimplified();
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( null );
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( env.anEmptyRoutine );
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( env.aString );
+  //   _.bufferTyped.isUsingGetPrototypeSimplified( env.aBoolean );
+  // }
+  //
+  // function runForUsingTypeEquality( env )
+  // {
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( env.bigUint64Array );
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( env.uint32Array );
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( env.uint16Array );
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( env.uint8Array );
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( env.uint8ClampedArray );
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( env.bigInt64Array );
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( env.int32Array );
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( env.int16Array );
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( env.int8Array );
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( env.float64Array );
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( env.float32Array );
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( env.bufferNode );
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( env.rawArrayBuffer );
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( env.sharedArrayBuffer );
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( env.nonEmptyArray );
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( arguments );
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( env.aNumber );
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( env.anEmptyMap );
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality();
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( null );
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( env.anEmptyRoutine );
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( env.aString );
+  //   _.bufferTyped.isUsingGetPrototypeAndEquality( env.aBoolean );
+  // }
+  //
+  // function runForSet( env )
+  // {
+  //   _.bufferTyped.isUsingSet( env.bigUint64Array );
+  //   _.bufferTyped.isUsingSet( env.uint32Array );
+  //   _.bufferTyped.isUsingSet( env.uint16Array );
+  //   _.bufferTyped.isUsingSet( env.uint8Array );
+  //   _.bufferTyped.isUsingSet( env.uint8ClampedArray );
+  //   _.bufferTyped.isUsingSet( env.bigInt64Array );
+  //   _.bufferTyped.isUsingSet( env.int32Array );
+  //   _.bufferTyped.isUsingSet( env.int16Array );
+  //   _.bufferTyped.isUsingSet( env.int8Array );
+  //   _.bufferTyped.isUsingSet( env.float64Array );
+  //   _.bufferTyped.isUsingSet( env.float32Array );
+  //   _.bufferTyped.isUsingSet( env.bufferNode );
+  //   _.bufferTyped.isUsingSet( env.rawArrayBuffer );
+  //   _.bufferTyped.isUsingSet( env.sharedArrayBuffer );
+  //   _.bufferTyped.isUsingSet( env.nonEmptyArray );
+  //   _.bufferTyped.isUsingSet( arguments );
+  //   _.bufferTyped.isUsingSet( env.aNumber );
+  //   _.bufferTyped.isUsingSet( env.anEmptyMap );
+  //   _.bufferTyped.isUsingSet();
+  //   _.bufferTyped.isUsingSet( null );
+  //   _.bufferTyped.isUsingSet( env.anEmptyRoutine );
+  //   _.bufferTyped.isUsingSet( env.aString );
+  //   _.bufferTyped.isUsingSet( env.aBoolean );
+  // }
+  //
+  // function runForMap( env )
+  // {
+  //   _.bufferTyped.isUsingHashMap( env.bigUint64Array );
+  //   _.bufferTyped.isUsingHashMap( env.uint32Array );
+  //   _.bufferTyped.isUsingHashMap( env.uint16Array );
+  //   _.bufferTyped.isUsingHashMap( env.uint8Array );
+  //   _.bufferTyped.isUsingHashMap( env.uint8ClampedArray );
+  //   _.bufferTyped.isUsingHashMap( env.bigInt64Array );
+  //   _.bufferTyped.isUsingHashMap( env.int32Array );
+  //   _.bufferTyped.isUsingHashMap( env.int16Array );
+  //   _.bufferTyped.isUsingHashMap( env.int8Array );
+  //   _.bufferTyped.isUsingHashMap( env.float64Array );
+  //   _.bufferTyped.isUsingHashMap( env.float32Array );
+  //   _.bufferTyped.isUsingHashMap( env.bufferNode );
+  //   _.bufferTyped.isUsingHashMap( env.rawArrayBuffer );
+  //   _.bufferTyped.isUsingHashMap( env.sharedArrayBuffer );
+  //   _.bufferTyped.isUsingHashMap( env.nonEmptyArray );
+  //   _.bufferTyped.isUsingHashMap( arguments );
+  //   _.bufferTyped.isUsingHashMap( env.aNumber );
+  //   _.bufferTyped.isUsingHashMap( env.anEmptyMap );
+  //   _.bufferTyped.isUsingHashMap();
+  //   _.bufferTyped.isUsingHashMap( null );
+  //   _.bufferTyped.isUsingHashMap( env.anEmptyRoutine );
+  //   _.bufferTyped.isUsingHashMap( env.aString );
+  //   _.bufferTyped.isUsingHashMap( env.aBoolean );
+  // }
+  //
+  // function runForExistenceOfField( env )
+  // {
+  //   _.bufferTyped.isUsingExistenceOfField( env.bigUint64Array );
+  //   _.bufferTyped.isUsingExistenceOfField( env.uint32Array );
+  //   _.bufferTyped.isUsingExistenceOfField( env.uint16Array );
+  //   _.bufferTyped.isUsingExistenceOfField( env.uint8Array );
+  //   _.bufferTyped.isUsingExistenceOfField( env.uint8ClampedArray );
+  //   _.bufferTyped.isUsingExistenceOfField( env.bigInt64Array );
+  //   _.bufferTyped.isUsingExistenceOfField( env.int32Array );
+  //   _.bufferTyped.isUsingExistenceOfField( env.int16Array );
+  //   _.bufferTyped.isUsingExistenceOfField( env.int8Array );
+  //   _.bufferTyped.isUsingExistenceOfField( env.float64Array );
+  //   _.bufferTyped.isUsingExistenceOfField( env.float32Array );
+  //   _.bufferTyped.isUsingExistenceOfField( env.bufferNode );
+  //   _.bufferTyped.isUsingExistenceOfField( env.rawArrayBuffer );
+  //   _.bufferTyped.isUsingExistenceOfField( env.sharedArrayBuffer );
+  //   _.bufferTyped.isUsingExistenceOfField( env.nonEmptyArray );
+  //   _.bufferTyped.isUsingExistenceOfField( arguments );
+  //   _.bufferTyped.isUsingExistenceOfField( env.aNumber );
+  //   _.bufferTyped.isUsingExistenceOfField( env.anEmptyMap );
+  //   _.bufferTyped.isUsingExistenceOfField();
+  //   _.bufferTyped.isUsingExistenceOfField( null );
+  //   _.bufferTyped.isUsingExistenceOfField( env.anEmptyRoutine );
+  //   _.bufferTyped.isUsingExistenceOfField( env.aString );
+  //   _.bufferTyped.isUsingExistenceOfField( env.aBoolean );
+  // }
 
-  function runVariationsForGetProtoTypeAndFunctor( env )
-  {
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.bigUint64Array );
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.uint32Array );
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.uint16Array );
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.uint8Array );
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.uint8ClampedArray );
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.bigInt64Array );
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.int32Array );
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.int16Array );
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.int8Array );
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.float64Array );
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.float32Array );
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.bufferNode );
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.rawArrayBuffer );
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.sharedArrayBuffer );
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.nonEmptyArray );
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( arguments );
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.aNumber );
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.anEmptyObject );
-    _.bufferTyped.isUsingGetPrototypeAndFunctor();
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( null );
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.anEmptyRoutine );
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.aString );
-    _.bufferTyped.isUsingGetPrototypeAndFunctor( env.aBoolean );
-  }
-
-  function runVariationsForGetPrototypeSimplified( env )
-  {
-    _.bufferTyped.isUsingGetPrototypeSimplified( env.bigUint64Array );
-    _.bufferTyped.isUsingGetPrototypeSimplified( env.uint32Array );
-    _.bufferTyped.isUsingGetPrototypeSimplified( env.uint16Array );
-    _.bufferTyped.isUsingGetPrototypeSimplified( env.uint8Array );
-    _.bufferTyped.isUsingGetPrototypeSimplified( env.uint8ClampedArray );
-    _.bufferTyped.isUsingGetPrototypeSimplified( env.bigInt64Array );
-    _.bufferTyped.isUsingGetPrototypeSimplified( env.int32Array );
-    _.bufferTyped.isUsingGetPrototypeSimplified( env.int16Array );
-    _.bufferTyped.isUsingGetPrototypeSimplified( env.int8Array );
-    _.bufferTyped.isUsingGetPrototypeSimplified( env.float64Array );
-    _.bufferTyped.isUsingGetPrototypeSimplified( env.float32Array );
-    _.bufferTyped.isUsingGetPrototypeSimplified( env.bufferNode );
-    _.bufferTyped.isUsingGetPrototypeSimplified( env.rawArrayBuffer );
-    _.bufferTyped.isUsingGetPrototypeSimplified( env.sharedArrayBuffer );
-    _.bufferTyped.isUsingGetPrototypeSimplified( env.nonEmptyArray );
-    _.bufferTyped.isUsingGetPrototypeSimplified( arguments );
-    _.bufferTyped.isUsingGetPrototypeSimplified( env.aNumber );
-    _.bufferTyped.isUsingGetPrototypeSimplified( env.anEmptyObject );
-    _.bufferTyped.isUsingGetPrototypeSimplified();
-    _.bufferTyped.isUsingGetPrototypeSimplified( null );
-    _.bufferTyped.isUsingGetPrototypeSimplified( env.anEmptyRoutine );
-    _.bufferTyped.isUsingGetPrototypeSimplified( env.aString );
-    _.bufferTyped.isUsingGetPrototypeSimplified( env.aBoolean );
-  }
-
-  function runVariationsForUsingTypeEquality( env )
-  {
-    _.bufferTyped.isUsingGetPrototypeAndEquality( env.bigUint64Array );
-    _.bufferTyped.isUsingGetPrototypeAndEquality( env.uint32Array );
-    _.bufferTyped.isUsingGetPrototypeAndEquality( env.uint16Array );
-    _.bufferTyped.isUsingGetPrototypeAndEquality( env.uint8Array );
-    _.bufferTyped.isUsingGetPrototypeAndEquality( env.uint8ClampedArray );
-    _.bufferTyped.isUsingGetPrototypeAndEquality( env.bigInt64Array );
-    _.bufferTyped.isUsingGetPrototypeAndEquality( env.int32Array );
-    _.bufferTyped.isUsingGetPrototypeAndEquality( env.int16Array );
-    _.bufferTyped.isUsingGetPrototypeAndEquality( env.int8Array );
-    _.bufferTyped.isUsingGetPrototypeAndEquality( env.float64Array );
-    _.bufferTyped.isUsingGetPrototypeAndEquality( env.float32Array );
-    _.bufferTyped.isUsingGetPrototypeAndEquality( env.bufferNode );
-    _.bufferTyped.isUsingGetPrototypeAndEquality( env.rawArrayBuffer );
-    _.bufferTyped.isUsingGetPrototypeAndEquality( env.sharedArrayBuffer );
-    _.bufferTyped.isUsingGetPrototypeAndEquality( env.nonEmptyArray );
-    _.bufferTyped.isUsingGetPrototypeAndEquality( arguments );
-    _.bufferTyped.isUsingGetPrototypeAndEquality( env.aNumber );
-    _.bufferTyped.isUsingGetPrototypeAndEquality( env.anEmptyObject );
-    _.bufferTyped.isUsingGetPrototypeAndEquality();
-    _.bufferTyped.isUsingGetPrototypeAndEquality( null );
-    _.bufferTyped.isUsingGetPrototypeAndEquality( env.anEmptyRoutine );
-    _.bufferTyped.isUsingGetPrototypeAndEquality( env.aString );
-    _.bufferTyped.isUsingGetPrototypeAndEquality( env.aBoolean );
-  }
-
-  function runVariationsForSet( env )
-  {
-    _.bufferTyped.isUsingSet( env.bigUint64Array );
-    _.bufferTyped.isUsingSet( env.uint32Array );
-    _.bufferTyped.isUsingSet( env.uint16Array );
-    _.bufferTyped.isUsingSet( env.uint8Array );
-    _.bufferTyped.isUsingSet( env.uint8ClampedArray );
-    _.bufferTyped.isUsingSet( env.bigInt64Array );
-    _.bufferTyped.isUsingSet( env.int32Array );
-    _.bufferTyped.isUsingSet( env.int16Array );
-    _.bufferTyped.isUsingSet( env.int8Array );
-    _.bufferTyped.isUsingSet( env.float64Array );
-    _.bufferTyped.isUsingSet( env.float32Array );
-    _.bufferTyped.isUsingSet( env.bufferNode );
-    _.bufferTyped.isUsingSet( env.rawArrayBuffer );
-    _.bufferTyped.isUsingSet( env.sharedArrayBuffer );
-    _.bufferTyped.isUsingSet( env.nonEmptyArray );
-    _.bufferTyped.isUsingSet( arguments );
-    _.bufferTyped.isUsingSet( env.aNumber );
-    _.bufferTyped.isUsingSet( env.anEmptyObject );
-    _.bufferTyped.isUsingSet();
-    _.bufferTyped.isUsingSet( null );
-    _.bufferTyped.isUsingSet( env.anEmptyRoutine );
-    _.bufferTyped.isUsingSet( env.aString );
-    _.bufferTyped.isUsingSet( env.aBoolean );
-  }
-
-  function runVariationsForMap( env )
-  {
-    _.bufferTyped.isUsingMap( env.bigUint64Array );
-    _.bufferTyped.isUsingMap( env.uint32Array );
-    _.bufferTyped.isUsingMap( env.uint16Array );
-    _.bufferTyped.isUsingMap( env.uint8Array );
-    _.bufferTyped.isUsingMap( env.uint8ClampedArray );
-    _.bufferTyped.isUsingMap( env.bigInt64Array );
-    _.bufferTyped.isUsingMap( env.int32Array );
-    _.bufferTyped.isUsingMap( env.int16Array );
-    _.bufferTyped.isUsingMap( env.int8Array );
-    _.bufferTyped.isUsingMap( env.float64Array );
-    _.bufferTyped.isUsingMap( env.float32Array );
-    _.bufferTyped.isUsingMap( env.bufferNode );
-    _.bufferTyped.isUsingMap( env.rawArrayBuffer );
-    _.bufferTyped.isUsingMap( env.sharedArrayBuffer );
-    _.bufferTyped.isUsingMap( env.nonEmptyArray );
-    _.bufferTyped.isUsingMap( arguments );
-    _.bufferTyped.isUsingMap( env.aNumber );
-    _.bufferTyped.isUsingMap( env.anEmptyObject );
-    _.bufferTyped.isUsingMap();
-    _.bufferTyped.isUsingMap( null );
-    _.bufferTyped.isUsingMap( env.anEmptyRoutine );
-    _.bufferTyped.isUsingMap( env.aString );
-    _.bufferTyped.isUsingMap( env.aBoolean );
-  }
-
-  function runVariationsForExistenceOfField( env )
-  {
-    _.bufferTyped.isUsingExistenceOfField( env.bigUint64Array );
-    _.bufferTyped.isUsingExistenceOfField( env.uint32Array );
-    _.bufferTyped.isUsingExistenceOfField( env.uint16Array );
-    _.bufferTyped.isUsingExistenceOfField( env.uint8Array );
-    _.bufferTyped.isUsingExistenceOfField( env.uint8ClampedArray );
-    _.bufferTyped.isUsingExistenceOfField( env.bigInt64Array );
-    _.bufferTyped.isUsingExistenceOfField( env.int32Array );
-    _.bufferTyped.isUsingExistenceOfField( env.int16Array );
-    _.bufferTyped.isUsingExistenceOfField( env.int8Array );
-    _.bufferTyped.isUsingExistenceOfField( env.float64Array );
-    _.bufferTyped.isUsingExistenceOfField( env.float32Array );
-    _.bufferTyped.isUsingExistenceOfField( env.bufferNode );
-    _.bufferTyped.isUsingExistenceOfField( env.rawArrayBuffer );
-    _.bufferTyped.isUsingExistenceOfField( env.sharedArrayBuffer );
-    _.bufferTyped.isUsingExistenceOfField( env.nonEmptyArray );
-    _.bufferTyped.isUsingExistenceOfField( arguments );
-    _.bufferTyped.isUsingExistenceOfField( env.aNumber );
-    _.bufferTyped.isUsingExistenceOfField( env.anEmptyObject );
-    _.bufferTyped.isUsingExistenceOfField();
-    _.bufferTyped.isUsingExistenceOfField( null );
-    _.bufferTyped.isUsingExistenceOfField( env.anEmptyRoutine );
-    _.bufferTyped.isUsingExistenceOfField( env.aString );
-    _.bufferTyped.isUsingExistenceOfField( env.aBoolean );
-  }
 }
 
 isPerformance.timeOut = 1e7;
@@ -1398,7 +1516,7 @@ const Proto =
     isUsingGetPrototypeSimplified,
     isUsingGetPrototypeAndEquality,
     isUsingSet,
-    isUsingMap,
+    isUsingHashMap,
     isUsingExistenceOfField,
     isPerformance,
 

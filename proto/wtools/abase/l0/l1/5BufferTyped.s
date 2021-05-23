@@ -15,6 +15,17 @@ _.bufferTyped.namespaces = _.bufferTyped.namespaces || Object.create( null );
 
 function is( src )
 {
+  if( !( src instanceof Object.getPrototypeOf( Int8Array ) ) )
+  return false;
+  if( _.buffer.nodeIs( src ) )
+  return false;
+  return true;
+}
+
+//
+
+function isSlow( src )
+{
   let type = Object.prototype.toString.call( src );
   if( !/\wArray/.test( type ) )
   return false;
@@ -38,30 +49,70 @@ function isUsingGetPrototype( src )
 
 //
 
-function isUsingGetPrototypeAndFunctor( src )
+function isUsingGetPrototypeWithFunctor_functor()
 {
-  return alternateX( src );
+  let TypedArray = Object.getPrototypeOf( Int8Array );
+  return isUsingGetPrototypeWithFunctor;
+  function isUsingGetPrototypeWithFunctor( src )
+  {
+    if( !( src instanceof TypedArray ) )
+    return false;
+    if( _.buffer.nodeIs( src ) )
+    return false;
+    return true;
+  }
 }
+
+let isUsingGetPrototypeWithFunctor = isUsingGetPrototypeWithFunctor_functor();
 
 //
 
-function isUsingGetPrototypeSimplified( src )
+function isUsingExistenceOfField_functor()
 {
-  if( src instanceof Object.getPrototypeOf( Int8Array ) )
-  return !_.buffer.nodeIs( src );
-  return false;
+  let TypedArray = Object.getPrototypeOf( Int8Array );
+  return isUsingExistenceOfField;
+  function isUsingExistenceOfField( src )
+  {
+    if( !src )
+    return false;
+    if( !( src.buffer ) )
+    return false;
+    if( !( src instanceof TypedArray ) )
+    return false;
+    if( _.buffer.nodeIs( src ) )
+    return false;
+    return true;
+  }
 }
 
+let isUsingExistenceOfField = isUsingExistenceOfField_functor();
+
+// //
 //
-
-function isUsingGetPrototypeAndEquality( src )
-{
-  if( !( src && Object.getPrototypeOf( src.constructor ).name === 'TypedArray' ) )
-  return false;
-  if( _.buffer.nodeIs( src ) )
-  return false;
-  return true;
-}
+// function isUsingGetPrototypeAndFunctor( src )
+// {
+//   return alternateX( src );
+// }
+//
+// //
+// /* qqq : for Rahul : it is not simplification */
+// function isUsingGetPrototypeSimplified( src )
+// {
+//   if( src instanceof Object.getPrototypeOf( Int8Array ) )
+//   return !_.buffer.nodeIs( src );
+//   return false;
+// }
+//
+// //
+// /* qqq : for Rahul : pointless */
+// function isUsingGetPrototypeAndEquality( src )
+// {
+//   if( !( src && Object.getPrototypeOf( src.constructor ).name === 'TypedArray' ) )
+//   return false;
+//   if( _.buffer.nodeIs( src ) )
+//   return false;
+//   return true;
+// }
 
 //
 
@@ -70,40 +121,21 @@ function isUsingSet( src )
   return alternateSet( src );
 }
 
+// //
 //
-
-function isUsingMap( src )
-{
-  return alternateMap( src );
-}
-
+// function isUsingHashMap( src )
+// {
+//   return alternateMap( src );
+// }
 //
-
-function isUsingExistenceOfField( src )
-{
-  if( !( src && src.buffer ) )
-  return false;
-  return alternateX( src );
-}
-
+// //
 //
-
-function alternateX_functor()
-{
-  let typedArray = Object.getPrototypeOf( Int8Array );
-  return alternateX;
-
-  function alternateX( src )
-  {
-    if( !( src instanceof typedArray ) )
-    return false;
-    if( _.buffer.nodeIs( src ) )
-    return false;
-    return true;
-  }
-}
-
-let alternateX = alternateX_functor();
+// function isUsingExistenceOfField( src )
+// {
+//   if( !( src && src.buffer ) )
+//   return false;
+//   return isUsingExistenceOfField( src );
+// }
 
 //
 
@@ -137,7 +169,7 @@ let alternateSet = alternateSet_functor();
 
 //
 
-function alternateMap_functor()
+function isUsingHashMap_functor()
 {
   let typedArraysMap = new Map();
   typedArraysMap.set( '[object BigUint64Array]', '[object BigUint64Array]' );
@@ -151,9 +183,9 @@ function alternateMap_functor()
   typedArraysMap.set( '[object Int8Array]', '[object Int8Array]' );
   typedArraysMap.set( '[object Float64Array]', '[object Float64Array]' );
   typedArraysMap.set( '[object Float32Array]', '[object Float32Array]' );
-  return alternateMap;
+  return isUsingHashMap;
 
-  function alternateMap( src )
+  function isUsingHashMap( src )
   {
     if( !( typedArraysMap.has( Object.prototype.toString.call( src ) ) ) )
     return false;
@@ -163,7 +195,37 @@ function alternateMap_functor()
   }
 }
 
-let alternateMap = alternateMap_functor();
+let isUsingHashMap = isUsingHashMap_functor();
+
+//
+
+function isUsingMap_functor()
+{
+  let typedArraysMap = Object.create( null );
+  typedArraysMap[ '[object BigUint64Array]' ] = '[object BigUint64Array]';
+  typedArraysMap[ '[object Uint32Array]' ] = '[object Uint32Array]';
+  typedArraysMap[ '[object Uint16Array]' ] = '[object Uint16Array]';
+  typedArraysMap[ '[object Uint8Array]' ] = '[object Uint8Array]';
+  typedArraysMap[ '[object Uint8ClampedArray]' ] = '[object Uint8ClampedArray]';
+  typedArraysMap[ '[object BigInt64Array]' ] = '[object BigInt64Array]';
+  typedArraysMap[ '[object Int32Array]' ] = '[object Int32Array]';
+  typedArraysMap[ '[object Int16Array]' ] = '[object Int16Array]';
+  typedArraysMap[ '[object Int8Array]' ] = '[object Int8Array]';
+  typedArraysMap[ '[object Float64Array]' ] = '[object Float64Array]';
+  typedArraysMap[ '[object Float32Array]' ] = '[object Float32Array]';
+  return isUsingMap;
+
+  function isUsingMap( src )
+  {
+    if( !typedArraysMap[ Object.prototype.toString.call( src ) ] )
+    return false;
+    if( _.buffer.nodeIs( src ) )
+    return false;
+    return true;
+  }
+}
+
+let isUsingMap = isUsingMap_functor();
 
 //
 
@@ -400,13 +462,16 @@ let BufferTypedExtension =
   is : is,
   like : is,
   IsResizable,
+  isSlow,
   isUsingGetPrototype,
-  isUsingGetPrototypeAndFunctor,
-  isUsingGetPrototypeSimplified,
-  isUsingGetPrototypeAndEquality,
-  isUsingSet,
-  isUsingMap,
+  isUsingGetPrototypeWithFunctor,
   isUsingExistenceOfField,
+  // isUsingGetPrototypeAndFunctor,
+  // isUsingGetPrototypeSimplified,
+  // isUsingGetPrototypeAndEquality,
+  isUsingSet,
+  isUsingHashMap,
+  isUsingMap,
 
   // maker
 
