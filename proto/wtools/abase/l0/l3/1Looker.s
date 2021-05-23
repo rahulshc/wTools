@@ -37,8 +37,25 @@ function iteratorRetype( iterator )
 
 //
 
-const _iteratorInitExcluding = new Set([ 'Looker', 'iterationPrototype', 'iterator' ]);
 function iteratorInit( iterator )
+{
+  let looker = this;
+  looker.iteratorInitBegin( iterator );
+  looker.iteratorInitEnd( iterator );
+}
+
+//
+
+function iteratorInitBegin( iterator )
+{
+  iterator.iterator = iterator;
+  return iterator;
+}
+
+//
+
+const _iteratorInitExcluding = new Set([ 'Looker', 'iterationPrototype', 'iterator' ]);
+function iteratorInitEnd( iterator )
 {
   iterator.iterationPrototype = Object.create( iterator );
   Object.assign( iterator.iterationPrototype, iterator.Looker.Iteration );
@@ -54,6 +71,7 @@ function iteratorInit( iterator )
   }
 
   Object.preventExtensions( iterator.iterationPrototype );
+  return iterator;
 }
 
 //
@@ -124,19 +142,27 @@ function classDefine( o )
 
   let looker = _.props.extend( null, o.parent );
 
-  _.assert( !!o.looker && !!o.looker.constructor && o.looker.constructor !== Object );
-  // if( !o.looker || !o.looker.constructor || o.looker.constructor === Object )
-  // {
-  //   let CustomLooker = (function()
-  //   {
-  //     return ({
-  //       [ o.name ] : function(){},
-  //     })[ o.name ];
-  //   })();
-  //   looker.constructor = CustomLooker;
-  //   _.assert( looker.constructor.name === o.name );
-  //   debugger;
-  // }
+  // _.assert
+  // (
+  //   !!o.looker && !!o.looker.constructor && o.looker.constructor !== Object,
+  //   'Looker should have explicitly defined constructor'
+  // );
+
+  if( !o.looker || !o.looker.constructor || o.looker.constructor === Object )
+  {
+    let CustomLooker = (function()
+    {
+      return ({
+        [ o.name ] : function(){},
+      })[ o.name ];
+    })();
+    looker.constructor = CustomLooker;
+    // looker.constructor = ({
+    //   [ o.name ] : function(){},
+    // })[ o.name ];
+    _.assert( looker.constructor.name === o.name );
+    // debugger;
+  }
 
   if( o.prime )
   _.props.extend( looker, o.prime );
@@ -172,7 +198,6 @@ function classDefine( o )
   if( o.iteration )
   _.props.extend( iteration, o.iteration );
 
-  if( Config.debug )
   validate();
 
   return looker;
@@ -201,6 +226,8 @@ function classDefine( o )
 
   function validate()
   {
+    if( !Config.debug )
+    return;
     /* qqq : add explanation for each assert */
     _.assert( looker.Prime.Looker === undefined );
     // _.assert( _.routineIs( looker.iterableEval ) );
@@ -261,6 +288,8 @@ Looker.constructor.prototype = Looker;
 Looker.optionsToIteration = optionsToIteration;
 Looker.iteratorRetype = iteratorRetype;
 Looker.iteratorInit = iteratorInit;
+Looker.iteratorInitBegin = iteratorInitBegin;
+Looker.iteratorInitEnd = iteratorInitEnd;
 Looker.iteratorIterationMake = iteratorIterationMake;
 Looker.iterationMakeCommon = iterationMakeCommon;
 Looker.iterationMake = iterationMake;

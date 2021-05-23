@@ -78,6 +78,7 @@ function lineWrite( src )
   let it = this;
   _.assert( arguments.length === 1 );
   it.iterator.result += `\n${it.tab}${src}`;
+  return it;
 }
 
 //
@@ -87,6 +88,7 @@ function write( src )
   let it = this;
   _.assert( arguments.length === 1 );
   it.iterator.result += src;
+  return it;
 }
 
 //
@@ -96,6 +98,17 @@ function nlWrite()
   let it = this;
   _.assert( arguments.length === 0 );
   it.iterator.result += '\n';
+  return it;
+}
+
+//
+
+function tabWrite()
+{
+  let it = this;
+  _.assert( arguments.length === 0 );
+  it.iterator.result += it.tab;
+  return it;
 }
 
 // --
@@ -112,6 +125,7 @@ StringerClassExtension.levelUp = levelUp;
 StringerClassExtension.levelDown = levelDown;
 StringerClassExtension.write = write;
 StringerClassExtension.nlWrite = nlWrite;
+StringerClassExtension.tabWrite = tabWrite;
 StringerClassExtension.lineWrite = lineWrite;
 
 const Iterator = StringerClassExtension.Iterator = Object.create( null );
