@@ -31,38 +31,53 @@ function dichotomy( test )
   test.identical( _.long.is( src ), true );
   test.identical( _.long.like( src ), true );
 
+  test.case = 'a derived array';
+  var src = 'abc'.match(/[a-z]/g);
+  test.identical( _.long.is( src ), true );
+  test.identical( _.long.like( src ), true );
+
+  test.case = 'array pototype';
+  var src = Array.prototype;
+  test.identical( _.long.is( src ), true );
+  test.identical( _.long.like( src ), true );
+
+  test.case = 'multiple arguments';
+  var src = [ 1, 2, 3 ];
+  test.identical( _.long.is( src, 'x' ), true );
+  test.identical( _.long.like( src, 'x' ), true );
+
   test.case = 'a multidimensional array';
   var src = [ [ 'Divyanshu', '32' ], [ 'Shankar', '34' ], [ 'Rahul', '29' ] ];
   test.identical( _.long.is( src ), true );
   test.identical( _.long.like( src ), true );
 
-  test.case = 'a pseudo array';
+  test.case = 'arguments array';
   var src = arguments;
   test.identical( _.long.is( src ), true );
   test.identical( _.long.like( src ), true );
 
-  test.case = 'Float32Array';
+  test.case = 'typed buffer Float32';
   var src = new F32x( 10 );
   test.identical( _.long.is( src ), true );
   test.identical( _.long.like( src ), true );
 
-  test.case = 'BigUint64Array';
-  var src = new U64x( 10 );
+  test.case = 'typed buffer U8xClamped';
+  var src = new U8xClamped( 10 );
   test.identical( _.long.is( src ), true );
   test.identical( _.long.like( src ), true );
 
-  test.case = 'Int32Array';
-  var src =  new I32x( 10 );
-  test.identical( _.long.is( src ), true );
-  test.identical( _.long.like( src ), true );
-
-  test.case = 'Int16Array';
-  var src =  new I16x( 10 );
-  test.identical( _.long.is( src ), true );
-  test.identical( _.long.like( src ), true );
+  test.case = 'node buffer';
+  var src = BufferNode.alloc( 5 );
+  test.identical( _.long.is( src ), false );
+  test.identical( _.long.like( src ), false );
 
   test.case = 'raw array buffer';
   var src = new BufferRaw( 10 );
+  test.identical( _.long.is( src ), false );
+  test.identical( _.long.like( src ), false );
+
+  test.case = 'shared array buffer';
+  var src = new BufferRawShared( 1024 );
   test.identical( _.long.is( src ), false );
   test.identical( _.long.like( src ), false );
 
