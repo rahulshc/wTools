@@ -18,6 +18,104 @@ const __ = _globals_.testing.wTools;
 //--
 
 /* qqq : for junior : merge routines is and like to routine dichotomy and extend */
+
+function dichotomy( test )
+{
+  test.case = 'an empty array';
+  var src = [];
+  test.identical( _.long.is( src ), true );
+  test.identical( _.long.like( src ), true );
+
+  test.case = 'an array';
+  var src = [ 1, 2, 3 ];
+  test.identical( _.long.is( src ), true );
+  test.identical( _.long.like( src ), true );
+
+  test.case = 'a multidimensional array';
+  var src = [ [ 'Divyanshu', '32' ], [ 'Shankar', '34' ], [ 'Rahul', '29' ] ];;
+  test.identical( _.long.is( src ), true );
+  test.identical( _.long.like( src ), true );
+
+  test.case = 'a pseudo array';
+  var src = arguments;
+  test.identical( _.long.is( src ), true );
+  test.identical( _.long.like( src ), true );
+
+  test.case = 'Float32Array';
+  var src = new F32x( 10 );
+  test.identical( _.long.is( src ), true );
+  test.identical( _.long.like( src ), true );
+
+  test.case = 'BigUint64Array';
+  var src = new U64x( 10 );
+  test.identical( _.long.is( src ), true );
+  test.identical( _.long.like( src ), true );
+
+  test.case = 'Int32Array';
+  var src =  new I32x( 10 );
+  test.identical( _.long.is( src ), true );
+  test.identical( _.long.like( src ), true );
+
+  test.case = 'Int16Array';
+  var src =  new I16x( 10 );
+  test.identical( _.long.is( src ), true );
+  test.identical( _.long.like( src ), true );
+
+  test.case = 'raw array buffer';
+  var src = new BufferRaw( 10 );
+  test.identical( _.long.is( src ), false );
+  test.identical( _.long.like( src ), false );
+
+  test.case = 'no arguments';
+  var src = undefined;
+  test.identical( _.long.is( src ), false );
+  test.identical( _.long.like( src ), false );
+
+  test.case = 'null';
+  var src = null;
+  test.identical( _.long.is( src ), false );
+  test.identical( _.long.like( src ), false );
+
+  test.case = 'function';
+  var src = new function() {};
+  test.identical( _.long.is( src ), false );
+  test.identical( _.long.like( src ), false );
+
+  test.case = 'string';
+  var src = 'x';
+  test.identical( _.long.is( src ), false );
+  test.identical( _.long.like( src ), false );
+
+  test.case = 'number';
+  var src = 123;
+  test.identical( _.long.is( src ), false );
+  test.identical( _.long.like( src ), false );
+
+  test.case = 'boolean';
+  var src = false;
+  test.identical( _.long.is( src ), false );
+  test.identical( _.long.like( src ), false );
+
+  test.case = 'object';
+  var src = { };
+  test.identical( _.long.is( src ), false );
+  test.identical( _.long.like( src ), false );
+
+  test.case = 'object with fields and iteraor method';
+  var src = new function()
+  {
+    this[ Symbol.iterator ] = function ()
+    {
+      return { next() { return { done : true } } }
+    }
+  }
+  test.identical( _.long.is( src ), false );
+  test.identical( _.long.like( src ), false );
+
+}
+
+//
+
 function is( test )
 {
   test.case = 'an empty array';
@@ -8858,6 +8956,7 @@ const Proto =
 
     is,
     like,
+    dichotomy,
 
     // long, l0/l5
 
