@@ -126,7 +126,6 @@ function dichotomy( test )
   }
   test.identical( _.long.is( src ), false );
   test.identical( _.long.like( src ), false );
-
 }
 
 //
