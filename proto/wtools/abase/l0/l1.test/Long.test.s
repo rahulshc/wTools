@@ -32,7 +32,7 @@ function dichotomy( test )
   test.identical( _.long.like( src ), true );
 
   test.case = 'a multidimensional array';
-  var src = [ [ 'Divyanshu', '32' ], [ 'Shankar', '34' ], [ 'Rahul', '29' ] ];;
+  var src = [ [ 'Divyanshu', '32' ], [ 'Shankar', '34' ], [ 'Rahul', '29' ] ];
   test.identical( _.long.is( src ), true );
   test.identical( _.long.like( src ), true );
 
