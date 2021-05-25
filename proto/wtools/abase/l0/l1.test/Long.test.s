@@ -8836,16 +8836,16 @@ function longRight( test )
 function isPerformance( test )
 {
    /*
-    Average of 10 runs of 5 million iteration of 13 _.long.is variations
+    Average of 10 runs of 5 million iteration of 18 _.long.is variations
     Values below are in seconds
     |-------------------|-------------------|-------------------|
     |                   |      is           |     isCompact     |
     | :---------------: |:---------------:  |-------------------|
-    | **Njs : v10.24.1**|    7.136          |  3.953            |
+    | **Njs : v10.24.1**|    11.518         |  5.148            |
     |-------------------|-------------------|-------------------|
-    | **Njs : v14.17.0**|    7.956          |  3.950            |
+    | **Njs : v14.17.0**|    12.658         |  5.455            |
     |-------------------|-------------------|-------------------|
-    | **Njs : v15.14.0**|    7.824          |  4.007            |
+    | **Njs : v15.14.0**|    12.446         |  5.345            |
     |-------------------|-------------------|-------------------|
     | Kos . Njs:v12.9.1 |                   |                   |
     |-------------------|-------------------|-------------------|
@@ -8900,6 +8900,11 @@ function isPerformance( test )
     env.nonEmptyArray = [ 1, 2, 3 ];
     env.rawBuffer = new BufferRaw( 10 );
     env.float32Array = new F32x( 10 );
+    env.int32Array = new I32x( 10 );
+    env.derivedArray = 'abc'.match( /[a-z]/g );
+    env.arrayProtoType = Array.prototype;
+    env.multiDimensionalArray = [ [ 'Divyanshu', '32' ], [ 'Shankar', '34' ], [ 'Rahul', '29' ] ];
+    env.constructedArray = new Array( 3 );
     env.anEmptyRoutine = new function() {};
     env.aString = 'x';
     env.aNumber = 1;
@@ -8922,8 +8927,13 @@ function isPerformance( test )
     _.long[ env.name ]( [] );
     _.long[ env.name ]( env.nonEmptyArray );
     _.long[ env.name ]( arguments );
-    _.long[ env.name ]( env.rawBuffer );
     _.long[ env.name ]( env.float32Array );
+    _.long[ env.name ]( env.int32Array );
+    _.long[ env.name ]( env.derivedArray );
+    _.long[ env.name ]( env.arrayProtoType );
+    _.long[ env.name ]( env.multiDimensionalArray );
+    _.long[ env.name ]( env.constructedArray );
+    _.long[ env.name ]( env.rawBuffer );
     _.long[ env.name ]();
     _.long[ env.name ]( null );
     _.long[ env.name ]( env.anEmptyRoutine );
