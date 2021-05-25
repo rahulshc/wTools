@@ -126,163 +126,6 @@ function dichotomy( test )
   }
   test.identical( _.long.is( src ), false );
   test.identical( _.long.like( src ), false );
-}
-
-//
-
-function is( test )
-{
-  test.case = 'an empty array';
-  var got = _.long.is( [] );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'an array';
-  var got = _.long.is( [ 1, 2, 3 ] );
-  var expected  = true;
-  test.identical( got, expected );
-
-  test.case = 'a pseudo array';
-  var got = _.long.is( arguments );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'raw array buffer';
-  var got = _.long.is( new BufferRaw( 10 ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'typed array buffer';
-  var got = _.long.is( new F32x( 10 ) );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'no argument';
-  var got = _.long.is();
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'null';
-  var got = _.long.is( null );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'function';
-  var got = _.long.is( function() {} );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'string';
-  var got = _.long.is( 'x' );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'number';
-  var got = _.long.is( 1 );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'boolean';
-  var got = _.long.is( true );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'object';
-  var got = _.long.is( {} );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'object with fields and iteraor method';
-  var src = new function()
-  {
-    this[ Symbol.iterator ] = function ()
-    {
-      return { next() { return { done : true } } }
-    }
-  }
-  var got = _.long.is( src );
-  var expected  = false;
-  test.identical( got, expected );
-}
-
-//
-
-function like( test )
-{
-  test.case = 'an empty array';
-  var got = _.long.like( [] );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'an array';
-  var got = _.long.like( [ 1, 2, 3 ] );
-  var expected  = true;
-  test.identical( got, expected );
-
-  test.case = 'a pseudo array';
-  var got = _.long.like( arguments );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'raw array buffer';
-  var got = _.long.like( new BufferRaw( 10 ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'typed array buffer';
-  var got = _.long.like( new F32x( 10 ) );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'no argument';
-  var got = _.long.like();
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'null';
-  var got = _.long.like( null );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'function';
-  var got = _.long.like( function() {} );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'string';
-  var got = _.long.like( 'x' );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'number';
-  var got = _.long.like( 1 );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'boolean';
-  var got = _.long.like( true );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'empty object';
-  var got = _.long.like( {} );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'object with fields';
-  var got = _.long.like( { 0 : 1, 1 : 2, length : 2 } );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'object with fields and iteraor method';
-  var src = new function()
-  {
-    this[ Symbol.iterator ] = function ()
-    {
-      return { next() { return { done : true } } }
-    }
-  }
-
   test.identical( _.arrayIs( src ), false );
   test.identical( _.argumentsArray.like( src ), false );
   test.identical( _.long.is( src ), false );
@@ -291,14 +134,179 @@ function like( test )
   test.identical( _.vector.like( src ), false );
   test.identical( _.countable.is( src ), true );
   test.identical( _.countable.like( src ), true );
-
-  /* qqq for junior : write very good test "typing" testing routines which check 'countable', 'vector', 'long', 'array' */
-
-  /* - */
-
-  if( !Config.debug )
-  return;
 }
+
+//
+
+// function is( test )
+// {
+//   test.case = 'an empty array';
+//   var got = _.long.is( [] );
+//   var expected = true;
+//   test.identical( got, expected );
+
+//   test.case = 'an array';
+//   var got = _.long.is( [ 1, 2, 3 ] );
+//   var expected  = true;
+//   test.identical( got, expected );
+
+//   test.case = 'a pseudo array';
+//   var got = _.long.is( arguments );
+//   var expected = true;
+//   test.identical( got, expected );
+
+//   test.case = 'raw array buffer';
+//   var got = _.long.is( new BufferRaw( 10 ) );
+//   var expected = false;
+//   test.identical( got, expected );
+
+//   test.case = 'typed array buffer';
+//   var got = _.long.is( new F32x( 10 ) );
+//   var expected = true;
+//   test.identical( got, expected );
+
+//   test.case = 'no argument';
+//   var got = _.long.is();
+//   var expected  = false;
+//   test.identical( got, expected );
+
+//   test.case = 'null';
+//   var got = _.long.is( null );
+//   var expected  = false;
+//   test.identical( got, expected );
+
+//   test.case = 'function';
+//   var got = _.long.is( function() {} );
+//   var expected  = false;
+//   test.identical( got, expected );
+
+//   test.case = 'string';
+//   var got = _.long.is( 'x' );
+//   var expected  = false;
+//   test.identical( got, expected );
+
+//   test.case = 'number';
+//   var got = _.long.is( 1 );
+//   var expected  = false;
+//   test.identical( got, expected );
+
+//   test.case = 'boolean';
+//   var got = _.long.is( true );
+//   var expected  = false;
+//   test.identical( got, expected );
+
+//   test.case = 'object';
+//   var got = _.long.is( {} );
+//   var expected  = false;
+//   test.identical( got, expected );
+
+//   test.case = 'object with fields and iteraor method';
+//   var src = new function()
+//   {
+//     this[ Symbol.iterator ] = function ()
+//     {
+//       return { next() { return { done : true } } }
+//     }
+//   }
+//   var got = _.long.is( src );
+//   var expected  = false;
+//   test.identical( got, expected );
+// }
+
+// //
+
+// function like( test )
+// {
+//   test.case = 'an empty array';
+//   var got = _.long.like( [] );
+//   var expected = true;
+//   test.identical( got, expected );
+
+//   test.case = 'an array';
+//   var got = _.long.like( [ 1, 2, 3 ] );
+//   var expected  = true;
+//   test.identical( got, expected );
+
+//   test.case = 'a pseudo array';
+//   var got = _.long.like( arguments );
+//   var expected = true;
+//   test.identical( got, expected );
+
+//   test.case = 'raw array buffer';
+//   var got = _.long.like( new BufferRaw( 10 ) );
+//   var expected = false;
+//   test.identical( got, expected );
+
+//   test.case = 'typed array buffer';
+//   var got = _.long.like( new F32x( 10 ) );
+//   var expected = true;
+//   test.identical( got, expected );
+
+//   test.case = 'no argument';
+//   var got = _.long.like();
+//   var expected  = false;
+//   test.identical( got, expected );
+
+//   test.case = 'null';
+//   var got = _.long.like( null );
+//   var expected  = false;
+//   test.identical( got, expected );
+
+//   test.case = 'function';
+//   var got = _.long.like( function() {} );
+//   var expected  = false;
+//   test.identical( got, expected );
+
+//   test.case = 'string';
+//   var got = _.long.like( 'x' );
+//   var expected  = false;
+//   test.identical( got, expected );
+
+//   test.case = 'number';
+//   var got = _.long.like( 1 );
+//   var expected  = false;
+//   test.identical( got, expected );
+
+//   test.case = 'boolean';
+//   var got = _.long.like( true );
+//   var expected  = false;
+//   test.identical( got, expected );
+
+//   test.case = 'empty object';
+//   var got = _.long.like( {} );
+//   var expected  = false;
+//   test.identical( got, expected );
+
+//   test.case = 'object with fields';
+//   var got = _.long.like( { 0 : 1, 1 : 2, length : 2 } );
+//   var expected  = false;
+//   test.identical( got, expected );
+
+//   test.case = 'object with fields and iteraor method';
+//   var src = new function()
+//   {
+//     this[ Symbol.iterator ] = function ()
+//     {
+//       return { next() { return { done : true } } }
+//     }
+//   }
+
+//   test.identical( _.arrayIs( src ), false );
+//   test.identical( _.argumentsArray.like( src ), false );
+//   test.identical( _.long.is( src ), false );
+//   test.identical( _.long.like( src ), false );
+//   test.identical( _.vector.is( src ), false );
+//   test.identical( _.vector.like( src ), false );
+//   test.identical( _.countable.is( src ), true );
+//   test.identical( _.countable.like( src ), true );
+
+//   /* qqq for junior : write very good test "typing" testing routines which check 'countable', 'vector', 'long', 'array' */
+
+//   /* - */
+
+//   if( !Config.debug )
+//   return;
+// }
 
 // --
 //
@@ -8968,8 +8976,8 @@ const Proto =
 
     // long l0/l3
 
-    is,
-    like,
+    //is,
+    //like,
     dichotomy,
 
     // long, l0/l5
