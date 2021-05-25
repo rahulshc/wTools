@@ -95,6 +95,83 @@ function is( test )
 
 //
 
+function isCompact( test )
+{
+  test.case = 'an empty array';
+  var got = _.long.isCompact( [] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'an array';
+  var got = _.long.isCompact( [ 1, 2, 3 ] );
+  var expected  = true;
+  test.identical( got, expected );
+
+  test.case = 'a pseudo array';
+  var got = _.long.isCompact( arguments );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'raw array buffer';
+  var got = _.long.isCompact( new BufferRaw( 10 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'typed array buffer';
+  var got = _.long.isCompact( new F32x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'no argument';
+  var got = _.long.isCompact();
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'null';
+  var got = _.long.isCompact( null );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'function';
+  var got = _.long.isCompact( function() {} );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'string';
+  var got = _.long.isCompact( 'x' );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'number';
+  var got = _.long.isCompact( 1 );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'boolean';
+  var got = _.long.isCompact( true );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'object';
+  var got = _.long.isCompact( {} );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'object with fields and iteraor method';
+  var src = new function()
+  {
+    this[ Symbol.iterator ] = function ()
+    {
+      return { next() { return { done : true } } }
+    }
+  }
+  var got = _.long.isCompact( src );
+  var expected  = false;
+  test.identical( got, expected );
+}
+
+//
+
 function like( test )
 {
   test.case = 'an empty array';
@@ -8761,37 +8838,58 @@ function isPerformance( test )
    /*
     Average of 10 runs of 5 million iteration of 13 _.long.is variations
     Values below are in seconds
-    |-------------------|-------------------|
-    |                   |                   |
-    | :---------------: |:---------------:  |
-    | **Njs : v10.24.1**|    8.3735         |
-    |-------------------|-------------------|
-    | **Njs : v14.17.0**|    12.3397        |
-    |-------------------|-------------------|
-    | **Njs : v15.14.0**|    10.3089        |
-    |-------------------|-------------------|
-    | Kos . Njs:v12.9.1 |    11.046s        |
-    |-------------------|-------------------|
+    |-------------------|-------------------|-------------------|
+    |                   |      is           |     isCompact     |
+    | :---------------: |:---------------:  |-------------------|
+    | **Njs : v10.24.1**|    7.136          |  3.953            |
+    |-------------------|-------------------|-------------------|
+    | **Njs : v14.17.0**|    7.956          |  3.950            |
+    |-------------------|-------------------|-------------------|
+    | **Njs : v15.14.0**|    7.824          |  4.007            |
+    |-------------------|-------------------|-------------------|
+    | Kos . Njs:v12.9.1 |                   |                   |
+    |-------------------|-------------------|-------------------|
   */
-
+  debugger;
   var debugFlag = Config.debug;
   Config.debug = false;
 
-  test.case = '_.long.is performance test';
+  test.case = 'is';
   var took, time;
   var env = initializeVariables();
 
   time = _.time.now();
   for( let i = env.times; i > 0; i-- )
   {
-    runVariations( env );
+    env.name = 'is';
+    run( env );
   }
   took = __.time.spent( time );
 
   console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
   test.identical( true, true );
 
+  /* */
+
+  test.case = 'isCompact';
+  var took, time;
+  var env = initializeVariables();
+
+  time = _.time.now();
+  for( let i = env.times; i > 0; i-- )
+  {
+    env.name = 'isCompact';
+    run( env );
+  }
+  took = __.time.spent( time );
+
+  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  test.identical( true, true );
+
+  /* */
+
   Config.debug = debugFlag;
+  debugger;
 
   /* - */
 
@@ -8819,21 +8917,21 @@ function isPerformance( test )
   }
 
   /* qqq : for Rahul : lets add more typed buffers and non-longs */
-  function runVariations( env )
+  function run( env )
   {
-    _.long.is( [] );
-    _.long.is( env.nonEmptyArray );
-    _.long.is( arguments );
-    _.long.is( env.rawBuffer );
-    _.long.is( env.float32Array );
-    _.long.is();
-    _.long.is( null );
-    _.long.is( env.anEmptyRoutine );
-    _.long.is( env.aString );
-    _.long.is( env.aNumber );
-    _.long.is( env.aBoolean );
-    _.long.is( env.anEmptyObject );
-    _.long.is( env.routine );
+    _.long[ env.name ]( [] );
+    _.long[ env.name ]( env.nonEmptyArray );
+    _.long[ env.name ]( arguments );
+    _.long[ env.name ]( env.rawBuffer );
+    _.long[ env.name ]( env.float32Array );
+    _.long[ env.name ]();
+    _.long[ env.name ]( null );
+    _.long[ env.name ]( env.anEmptyRoutine );
+    _.long[ env.name ]( env.aString );
+    _.long[ env.name ]( env.aNumber );
+    _.long[ env.name ]( env.aBoolean );
+    _.long[ env.name ]( env.anEmptyObject );
+    _.long[ env.name ]( env.routine );
   }
 }
 
@@ -8857,6 +8955,7 @@ const Proto =
     // long l0/l3
 
     is,
+    isCompact,
     like,
 
     // long, l0/l5
