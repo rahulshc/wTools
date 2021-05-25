@@ -5828,6 +5828,125 @@ function bufferNodeFrom( test )
 
 }
 
+//
+
+function isPerformance( test )
+{
+  debugger;
+  var debugFlag = Config.debug;
+  Config.debug = false;
+
+  /* */
+
+  test.case = 'anyIs';
+  var took, time;
+  var env = initializeVariables();
+  time = _.time.now();
+  for( let i = env.times; i > 0; i-- )
+  {
+    env.name = 'anyIs';
+    run( env );
+  }
+  took = __.time.spent( time );
+  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  test.identical( true, true );
+
+  /* */
+
+  test.case = 'bufferAnyIsAlternative';
+  var took, time;
+  var env = initializeVariables();
+  time = _.time.now();
+  for( let i = env.times; i > 0; i-- )
+  {
+    env.name = 'bufferAnyIsAlternative';
+    run( env );
+  }
+  took = __.time.spent( time );
+  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  test.identical( true, true );
+
+  /* */
+
+  Config.debug = debugFlag;
+  debugger;
+
+  /* */
+
+  function initializeVariables()
+  {
+    var env = {};
+    env.times = 5000000;
+    env.aSymbol = Symbol( 'a' );
+    env.anEmptyMap = {};
+    env.anEmptyArray = [];
+    env.aString = 'string';
+    env.U8xconstructor = U8x;
+    env.emptyU8xInstance = new U8x( 5 );
+    env.emptyU16xInstance = new U16x( 5 );
+    env.emptyU32xInstance = new U32x( 5 );
+    env.emptyU64xInstance = new U64x( 5 );
+    env.emptyI8xInstance = new I8x( 5 );
+    env.emptyI16xInstance = new I16x( 5 );
+    env.emptyI32xInstance = new I32x( 5 );
+    env.emptyI64xInstance = new I64x( 5 );
+    env.emptyF32xInstance = new F32x( 5 );
+    if( Config.interpreter === 'njs' )
+    {
+      env.emptyBufferNodeInstance = BufferNode.alloc( 5 );
+      env.BufferNodeInstance = BufferNode.allocUnsafe( 5 );
+      env.BufferNodeFromString = BufferNode.from( 'str' );
+    }
+    env.BufferRawconstructor = BufferRaw;
+    env.emptyBufferRawInstance = new BufferRaw( 5 );
+    env.BufferRawSharedInstance = new BufferRawShared( 5 );
+    env.BufferViewConstructor = BufferView;
+
+    return env;
+  }
+
+  /* */
+
+  function run( env )
+  {
+    _.buffer [ env.name ]( null );
+    _.buffer [ env.name ]( undefined );
+    _.buffer [ env.name ]( 0 );
+    _.buffer [ env.name ]( false );
+    _.buffer [ env.name ]( NaN );
+    _.buffer [ env.name ]( env.aSymbol );
+    _.buffer [ env.name ]( env.anEmptyMap );
+    _.buffer [ env.name ]( env.anEmptyArray );
+    _.buffer [ env.name ]( env.aString );
+    _.buffer [ env.name ]( env.U8xconstructor );
+    _.buffer [ env.name ]( env.emptyU8xInstance );
+    _.buffer [ env.name ]( env.emptyU16xInstance );
+    _.buffer [ env.name ]( env.emptyU32xInstance );
+    _.buffer [ env.name ]( env.emptyU64xInstance );
+    _.buffer [ env.name ]( env.emptyI8xInstance );
+    _.buffer [ env.name ]( env.emptyI16xInstance );
+    _.buffer [ env.name ]( env.emptyI32xInstance );
+    _.buffer [ env.name ]( env.emptyI64xInstance );
+    _.buffer [ env.name ]( env.emptyF32xInstance );
+    if( Config.interpreter === 'njs' )
+    {
+      _.buffer [ env.name ]( env.BufferNodeInstance );
+      _.buffer [ env.name ]( env.BufferNodeInstance );
+      _.buffer [ env.name ]( env.BufferNodeFromString );
+    }
+    _.buffer [ env.name ]( env.BufferRawconstructor );
+    _.buffer [ env.name ]( env.emptyBufferRawInstance );
+    _.buffer [ env.name ]( env.BufferRawSharedInstance );
+    _.buffer [ env.name ]( env.BufferViewConstructor );
+    _.buffer [ env.name ]();
+    _.buffer [ env.name ]( new U8x( [ 1, 2, 3 ] ), new BufferRaw( 5 ) );
+  }
+}
+
+isPerformance.timeOut = 1e7;
+isPerformance.experimental = true;
+
+
 // --
 // declaration
 // --
@@ -5850,6 +5969,7 @@ const Proto =
     bufferViewIs,
     bufferNodeIs,
     bufferAnyIs,
+    isPerformance,
     bufferBytesIs,
     // constructorIsBuffer,
 
