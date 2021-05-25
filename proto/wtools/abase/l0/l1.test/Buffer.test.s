@@ -5832,6 +5832,20 @@ function bufferNodeFrom( test )
 
 function isPerformance( test )
 {
+  /* Average of 10 runs of 5 million iterations of 28 input variants
+     Values below are in seconds
+  ╔═══════════════════╤═════╤══════════════════════╗
+  ║                   │anyIs│bufferAnyIsAlternative║
+  ╟───────────────────┼─────┼──────────────────────╢
+  ║ **Njs : v10.24.1**│8.575│         7.643        ║
+  ╟───────────────────┼─────┼──────────────────────╢
+  ║ **Njs : v14.17.0**│     │                      ║
+  ╟───────────────────┼─────┼──────────────────────╢
+  ║ **Njs : v15.14.0**│     │                      ║
+  ╟───────────────────┼─────┼──────────────────────╢
+  ║Kos : Njs : v12.9.1│     │                      ║
+  ╚═══════════════════╧═════╧══════════════════════╝
+  */
   debugger;
   var debugFlag = Config.debug;
   Config.debug = false;
