@@ -275,182 +275,188 @@ function bufferNodeIs( test )
 
 function bufferAnyIs( test )
 {
-  test.case = 'check null';
-  var got = _.bufferAnyIs( null );
-  var expected = false;
-  test.identical( got, expected );
+  bufferAnyIsTemplate( { method : 'anyIs' } );
+  bufferAnyIsTemplate( { method : 'bufferAnyIsAlternative' } );
 
-  test.case = 'check undefined';
-  var got = _.bufferAnyIs( undefined );
-  var expected = false;
-  test.identical( got, expected );
+  function bufferAnyIsTemplate( env )
+  {
+    test.case = `${__.entity.exportStringSolo( env )}, check null`;
+    var got = _.buffer[ env.method ]( null );
+    var expected = false;
+    test.identical( got, expected );
 
-  test.case = 'check zero';
-  var got = _.bufferAnyIs( 0 );
-  var expected = false;
-  test.identical( got, expected );
+    test.case = `${__.entity.exportStringSolo( env )}, check undefined`;
+    var got = _.buffer[ env.method ]( undefined );
+    var expected = false;
+    test.identical( got, expected );
 
-  test.case = 'check false';
-  var got = _.bufferAnyIs( false );
-  var expected = false;
-  test.identical( got, expected );
+    test.case = `${__.entity.exportStringSolo( env )}, check zero`;
+    var got = _.buffer[ env.method ]( 0 );
+    var expected = false;
+    test.identical( got, expected );
 
-  test.case = 'check NaN';
-  var got = _.bufferAnyIs( NaN );
-  var expected = false;
-  test.identical( got, expected );
+    test.case = `${__.entity.exportStringSolo( env )}, check false`;
+    var got = _.buffer[ env.method ]( false );
+    var expected = false;
+    test.identical( got, expected );
 
-  test.case = 'check Symbol';
-  var got = _.bufferAnyIs( Symbol( 'a' ) );
-  var expected = false;
-  test.identical( got, expected );
+    test.case = `${__.entity.exportStringSolo( env )}, check NaN`;
+    var got = _.buffer[ env.method ]( NaN );
+    var expected = false;
+    test.identical( got, expected );
 
-  test.case = 'check empty map';
-  var got = _.bufferAnyIs( {} );
-  var expected = false;
-  test.identical( got, expected );
+    test.case = `${__.entity.exportStringSolo( env )}, check Symbol`;
+    var got = _.buffer[ env.method ]( Symbol( 'a' ) );
+    var expected = false;
+    test.identical( got, expected );
 
-  test.case = 'check empty array';
-  var got = _.bufferAnyIs( [] );
-  var expected = false;
-  test.identical( got, expected );
+    test.case = `${__.entity.exportStringSolo( env )}, check empty map`;
+    var got = _.buffer[ env.method ]( {} );
+    var expected = false;
+    test.identical( got, expected );
 
-  test.case = 'check string';
-  var got = _.bufferAnyIs( 'string' );
-  var expected = false;
-  test.identical( got, expected );
+    test.case = `${__.entity.exportStringSolo( env )}, check empty array`;
+    var got = _.buffer[ env.method ]( [] );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, check string`;
+    var got = _.buffer[ env.method ]( 'string' );
+    var expected = false;
+    test.identical( got, expected );
 
   /* BufferTyped */
 
-  test.case = 'check U8x constructor';
-  var got = _.bufferAnyIs( U8x );
-  var expected = false;
-  test.identical( got, expected );
+    test.case = `${__.entity.exportStringSolo( env )}, check U8x constructor`;
+    var got = _.buffer[ env.method ]( U8x );
+    var expected = false;
+    test.identical( got, expected );
 
-  test.case = 'check empty U8x instance';
-  var src = new U8x( 5 );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
+    test.case = `${__.entity.exportStringSolo( env )}, check empty U8x instance`;
+    var src = new U8x( 5 );
+    var got = _.buffer[ env.method ]( src );
+    var expected = true;
+    test.identical( got, expected );
 
-  test.case = 'check empty U16x instance';
-  var src = new U16x( 5 );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
+    test.case = `${__.entity.exportStringSolo( env )}, check empty U16x instance`;
+    var src = new U16x( 5 );
+    var got = _.buffer[ env.method ]( src );
+    var expected = true;
+    test.identical( got, expected );
 
-  test.case = 'check empty U32x instance';
-  var src = new U32x( 5 );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
+    test.case = `${__.entity.exportStringSolo( env )}, check empty U32x instance`;
+    var src = new U32x( 5 );
+    var got = _.buffer[ env.method ]( src );
+    var expected = true;
+    test.identical( got, expected );
 
-  test.case = 'check empty U64x instance';
-  var src = new U64x( 2 );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
-
-  /**/
-
-  test.case = 'check empty I8x instance';
-  var src = new I8x( 5 );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'check empty I16x instance';
-  var src = new I16x( 5 );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'check empty I32x instance';
-  var src = new I32x( 5 );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'check empty I64x instance';
-  var src = new I64x( 5 );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
+    test.case = `${__.entity.exportStringSolo( env )}, check empty U64x instance`;
+    var src = new U64x( 2 );
+    var got = _.buffer[ env.method ]( src );
+    var expected = true;
+    test.identical( got, expected );
 
   /**/
 
-  test.case = 'check empty F32x instance';
-  var src = new F32x( 5 );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
+    test.case = `${__.entity.exportStringSolo( env )}, check empty I8x instance`;
+    var src = new I8x( 5 );
+    var got = _.buffer[ env.method ]( src );
+    var expected = true;
+    test.identical( got, expected );
 
-  test.case = 'check empty F64x instance';
-  var src = new F32x( 5 );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
+    test.case = `${__.entity.exportStringSolo( env )}, check empty I16x instance`;
+    var src = new I16x( 5 );
+    var got = _.buffer[ env.method ]( src );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, check empty I32x instance`;
+    var src = new I32x( 5 );
+    var got = _.buffer[ env.method ]( src );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, check empty I64x instance`;
+    var src = new I64x( 5 );
+    var got = _.buffer[ env.method ]( src );
+    var expected = true;
+    test.identical( got, expected );
+
+  /**/
+
+    test.case = `${__.entity.exportStringSolo( env )}, check empty F32x instance`;
+    var src = new F32x( 5 );
+    var got = _.buffer[ env.method ]( src );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, check empty F64x instance`;
+    var src = new F32x( 5 );
+    var got = _.buffer[ env.method ]( src );
+    var expected = true;
+    test.identical( got, expected );
 
   /* BufferNode */
 
   if( Config.interpreter === 'njs' )
   {
-    test.case = 'check empty BufferNode instance';
+    test.case = `${__.entity.exportStringSolo( env )}, check empty BufferNode instance`;
     var src1 = BufferNode.alloc( 5 );
-    var got1 = _.bufferAnyIs( src1 );
+    var got1 = _.buffer[ env.method ]( src1 );
     var expected1 = true;
     test.identical( got1, expected1 );
 
-    test.case = 'check BufferNode instance';
+    test.case = `${__.entity.exportStringSolo( env )}, check BufferNode instance`;
     var src1 = BufferNode.allocUnsafe( 5 );
-    var got1 = _.bufferAnyIs( src1 );
+    var got1 = _.buffer[ env.method ]( src1 );
     var expected1 = true;
     test.identical( got1, expected1 );
 
-    test.case = 'check BufferNode from string';
+    test.case = `${__.entity.exportStringSolo( env )}, check BufferNode from string`;
     var src1 = BufferNode.from( 'str' );
-    var got1 = _.bufferAnyIs( src1 );
+    var got1 = _.buffer[ env.method ]( src1 );
     var expected1 = true;
     test.identical( got1, expected1 );
   }
 
   /* BufferRaw */
 
-  test.case = 'check BufferRaw constructor';
-  var got = _.bufferAnyIs( BufferRaw );
+  test.case = `${__.entity.exportStringSolo( env )}, check BufferRaw constructor`;
+  var got = _.buffer[ env.method ]( BufferRaw );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'check empty BufferRaw instance';
+  test.case = `${__.entity.exportStringSolo( env )}, check empty BufferRaw instance`;
   var src = new BufferRaw( 5 );
-  var got = _.bufferAnyIs( src );
+  var got = _.buffer[ env.method ]( src );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check BufferRawShared instance';
+  test.case = `${__.entity.exportStringSolo( env )}, check BufferRawShared instance`;
   var src = new BufferRawShared( 5 );
-  var got = _.bufferAnyIs( src );
+  var got = _.buffer[ env.method ]( src );
   var expected = true;
   test.identical( got, expected );
 
   /* BufferView */
 
-  test.case = 'check BufferView constructor';
-  var got = _.bufferAnyIs( BufferView );
+  test.case = `${__.entity.exportStringSolo( env )}, check BufferView constructor`;
+  var got = _.buffer[ env.method ]( BufferView );
   var expected = false;
   test.identical( got, expected );
 
   /**/
 
-  test.case = 'check without argument';
-  var got = _.bufferAnyIs();
+  test.case = `${__.entity.exportStringSolo( env )}, check without argument`;
+  var got = _.buffer[ env.method ]();
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'check extra arguments';
-  var got = _.bufferAnyIs( new U8x( [ 1, 2, 3 ] ), new BufferRaw( 5 ) );
+  test.case = `${__.entity.exportStringSolo( env )}, check extra arguments`;
+  var got = _.buffer[ env.method ]( new U8x( [ 1, 2, 3 ] ), new BufferRaw( 5 ) );
   var expected = true;
   test.identical( got, expected );
+  }
 }
 
 //
