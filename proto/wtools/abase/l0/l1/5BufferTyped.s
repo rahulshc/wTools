@@ -38,6 +38,7 @@ function isSlow( src )
 
 //
 
+// /*qqq: Same as is. Should We Keep it?
 function isUsingGetPrototype( src )
 {
   if( !( src instanceof Object.getPrototypeOf( Int8Array ) ) )
