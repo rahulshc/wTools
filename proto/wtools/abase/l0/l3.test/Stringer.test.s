@@ -24,14 +24,17 @@ function basic( test )
 
   test.case = 'basic';
   var it = _.stringer.it({ verbosity : 5 });
+  test.identical( it.tab, '' );
+  test.identical( it.dtab, '  ' );
+  test.identical( it.tabLevel, 0 );
+  test.identical( it.verbosity, 5 );
   var exp = {}
   test.identical( _.props.onlyOwn( _.prototype.each( it )[ 0 ] ), exp );
   var exp =
   {
     'tab' : '',
-    'dtab' : '  ',
     'verbosity' : 5,
-    'level' : 0,
+    'tabLevel' : 0,
   }
   test.identical( _.props.onlyOwn( _.prototype.each( it )[ 1 ] ), exp );
   var exp = new Set([ 'verbosity', 'Looker', 'iterator', 'iterationPrototype' ]);
@@ -43,6 +46,8 @@ function basic( test )
     'optionsToIteration',
     'iteratorRetype',
     'iteratorInit',
+    'iteratorInitBegin',
+    'iteratorInitEnd',
     'iteratorIterationMake',
     'iterationMakeCommon',
     'iterationMake',
@@ -56,9 +61,14 @@ function basic( test )
     'levelDown',
     'write',
     'nlWrite',
+    'tabWrite',
     'lineWrite',
     'IterationPreserve',
     'result',
+    'dtab',
+    'tab',
+    'verbosity',
+    'tabLevel',
     'Looker',
     'Prime'
   ]);

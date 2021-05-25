@@ -35,7 +35,6 @@ function itUp()
 {
   let it = this;
   let it2 = it.iterationMake();
-  // it2.level += 1;
   it2.levelUp();
   it2.verbosity -= 1;
   return it2;
@@ -55,8 +54,7 @@ function levelUp()
 {
   let it = this;
   it.tab += it.dtab;
-  it.level += 1;
-  // it.verbosity -= 1;
+  it.tabLevel += 1;
   return it;
 }
 
@@ -66,8 +64,7 @@ function levelDown()
 {
   let it = this;
   it.tab = it.tab.slice( 0, it.tab.length - it.dtab.length );
-  it.level -= 1;
-  // it.verbosity += 1;
+  it.tabLevel -= 1;
   return it;
 }
 
@@ -130,14 +127,17 @@ StringerClassExtension.lineWrite = lineWrite;
 
 const Iterator = StringerClassExtension.Iterator = Object.create( null );
 Iterator.result = '';
+Iterator.dtab = '  ';
 
 const Iteration = StringerClassExtension.Iteration = Object.create( null );
 Iteration.tab = '';
-Iteration.dtab = '  ';
 Iteration.verbosity = 2;
-Iteration.level = 0;
+Iteration.tabLevel = 0;
 
 const IterationPreserve = StringerClassExtension.IterationPreserve = Object.create( null );
+IterationPreserve.tab = null;
+IterationPreserve.verbosity = null;
+IterationPreserve.tabLevel = null;
 
 const Prime = {};
 const Stringer = _.looker.classDefine

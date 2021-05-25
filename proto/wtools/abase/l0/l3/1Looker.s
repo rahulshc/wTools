@@ -66,7 +66,7 @@ function iteratorInitEnd( iterator )
     if( _.props.has( iterator.iterationPrototype, key ) )
     {
       iterator.iterationPrototype[ key ] = val;
-      console.log( ` ! ${key}` );
+      // console.log( ` ! ${key}` );
     }
   }
 
@@ -271,6 +271,7 @@ classDefine.defaults =
 
 const Looker = Object.create( null );
 Looker.OriginalLooker = Looker;
+Looker.Looker = Looker;
 Looker.constructor = function Looker() /* xxx : implement */
 {
   _.assert( 0, 'not implemented' );
@@ -299,6 +300,8 @@ const Iterator = Looker.Iterator = Object.create( null );
 
 const Iteration = Looker.Iteration = Object.create( null );
 Iteration.down = null;
+
+const IterationPreserve = Looker.IterationPreserve = Object.create( null );
 
 // --
 // looker extension
