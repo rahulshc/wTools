@@ -95,7 +95,7 @@ let isUsingExistenceOfField = isUsingExistenceOfField_functor();
 // }
 //
 // //
-// /* qqq : for Rahul : it is not simplification */
+// /* qqq : for Rahul : it is not simplification */ Rahul : Got it!
 // function isUsingGetPrototypeSimplified( src )
 // {
 //   if( src instanceof Object.getPrototypeOf( Int8Array ) )
@@ -104,7 +104,7 @@ let isUsingExistenceOfField = isUsingExistenceOfField_functor();
 // }
 //
 // //
-// /* qqq : for Rahul : pointless */
+// /* qqq : for Rahul : pointless */ Rahul: Yes agreed, with reference to isUsingGetPrototype, indeed pointless.
 // function isUsingGetPrototypeAndEquality( src )
 // {
 //   if( !( src && Object.getPrototypeOf( src.constructor ).name === 'TypedArray' ) )
@@ -115,11 +115,6 @@ let isUsingExistenceOfField = isUsingExistenceOfField_functor();
 // }
 
 //
-
-function isUsingSet( src )
-{
-  return alternateSet( src );
-}
 
 // //
 //
@@ -165,7 +160,7 @@ function alternateSet_functor()
   }
 }
 
-let alternateSet = alternateSet_functor();
+let isUsingSet = alternateSet_functor();
 
 //
 

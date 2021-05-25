@@ -983,25 +983,26 @@ function isPerformance( test )
     Average of 10 runs of 1 million iteration of 23 _.bufferTyped.is variations
     Values below are in seconds
     |-------------------|-----------|-----------|-------------|-------------|-----------|----------|----------- |----------- |
-    |                   |  Original |    Get    |Get Prototype| Map         |   Type    |   Set    | HashMap    | Existence  |
-    |                   |           |  Prototype|   & Functor |             |  Equality |          |            |  of Field  |
+    |                   |  is       |    isSlow |isUsing      | isUsing     | isUsing   |isUsingSet| isUsing    | isusing    |
+    |                   |           |           |GetPrototype | GetPrototype|ExistenceOf|          | HashMap    |  Map       |
+    |                   |           |           |             |  AndFunctor |   Field   |          |            |            |
     | :---------------: |:----------|-----------|-------------|-------------|-----------|----------|----------- |----------- |
-    | **Njs : v10.24.1**|
+    | **Njs : v10.24.1**| 0.530     | 4.250     | 0.685       | 0.700       | 1.432     | 4.266    |  4.215     | 3.414      |
     |-------------------|-----------|-----------|-------------|-------------|-----------|----------|----------- |----------- |
-    | **Njs : v14.17.0**|
+    | **Njs : v14.17.0**| 0.603     | 6.347     | 0.671       | 0.675       | 1.418     | 5.597    | 5.573      | 4.682      |
     |-------------------|-----------|-----------|-------------|-------------|-----------|----------|----------- |----------- |
-    | **Njs : v15.14.0**|
+    | **Njs : v15.14.0**| 0.562     | 6.437     | 0.627       | 0.584       | 1.318     | 5.572    | 5.558      | 4.520      |
     |-------------------|-----------|-----------|-------------|-------------|-----------|----------|----------- |----------- |
     |Kos : Njs : v12.9.1|
     |-------------------|-----------|-----------|-------------|-------------|-----------|----------|----------- |----------- |
 
-    = qqq : for Rahul : bad table. use name of routines in header. update.
+    = qqq : for Rahul : bad table. use name of routines in header. update. Rahul: Ready
 
-    = qqq : for Rahul : implement generating of the table using __.strTable()
+    = qqq : for Rahul : implement generating of the table using __.strTable() Rahul: Work in progress
     use example https://github.com/Wandalen/wStringsExtra/blob/master/proto/wtools/abase/l5.test/StringTools.test.s#L9830
   test.case = 'topHead';
   var exp =
-`╔═══════════╗
+╔═══════════╗
 ║head12  3  ║
 ╟───────────╢
 ║ a13 b  c  ║
