@@ -20,154 +20,83 @@ const __ = _globals_.testing.wTools;
 /* qqq : for junior : merge routines is and like to routine dichotomy and extend */
 function is( test )
 {
-  test.case = 'an empty array';
-  var got = _.long.is( [] );
-  var expected = true;
-  test.identical( got, expected );
+  isTemplate( { method : 'is' } );
+  isTemplate( { method : 'isCompact' } );
 
-  test.case = 'an array';
-  var got = _.long.is( [ 1, 2, 3 ] );
-  var expected  = true;
-  test.identical( got, expected );
-
-  test.case = 'a pseudo array';
-  var got = _.long.is( arguments );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'raw array buffer';
-  var got = _.long.is( new BufferRaw( 10 ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'typed array buffer';
-  var got = _.long.is( new F32x( 10 ) );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'no argument';
-  var got = _.long.is();
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'null';
-  var got = _.long.is( null );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'function';
-  var got = _.long.is( function() {} );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'string';
-  var got = _.long.is( 'x' );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'number';
-  var got = _.long.is( 1 );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'boolean';
-  var got = _.long.is( true );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'object';
-  var got = _.long.is( {} );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'object with fields and iteraor method';
-  var src = new function()
+  function isTemplate( env )
   {
-    this[ Symbol.iterator ] = function ()
+    test.case = `${__.entity.exportStringSolo( env )}, an empty array`;
+    var got = _.long[ env.method ]( [] );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, an array`;
+    var got = _.long[ env.method ]( [ 1, 2, 3 ] );
+    var expected  = true;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a pseudo array`;
+    var got = _.long[ env.method ]( arguments );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, raw array buffer`;
+    var got = _.long[ env.method ]( new BufferRaw( 10 ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, typed array buffer`;
+    var got = _.long[ env.method ]( new F32x( 10 ) );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, no arguments`;
+    var got = _.long[ env.method ]();
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, null`;
+    var got = _.long[ env.method ]( null );
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, function`;
+    var got = _.long[ env.method ]( function() {} );
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, string`;
+    var got = _.long[ env.method ]( 'x' );
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, number`;
+    var got = _.long[ env.method ]( 1 );
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, boolean`;
+    var got = _.long[ env.method ]( true );
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, empty map`;
+    var got = _.long[ env.method ]( {} );
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, object with fields and iteraor method`;
+    var src = new function()
     {
-      return { next() { return { done : true } } }
+      this[ Symbol.iterator ] = function ()
+      {
+        return { next() { return { done : true } } }
+      }
     }
+    var got = _.long[ env.method ]( src );
+    var expected  = false;
+    test.identical( got, expected );
   }
-  var got = _.long.is( src );
-  var expected  = false;
-  test.identical( got, expected );
-}
-
-//
-
-function isCompact( test )
-{
-  test.case = 'an empty array';
-  var got = _.long.isCompact( [] );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'an array';
-  var got = _.long.isCompact( [ 1, 2, 3 ] );
-  var expected  = true;
-  test.identical( got, expected );
-
-  test.case = 'a pseudo array';
-  var got = _.long.isCompact( arguments );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'raw array buffer';
-  var got = _.long.isCompact( new BufferRaw( 10 ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'typed array buffer';
-  var got = _.long.isCompact( new F32x( 10 ) );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'no argument';
-  var got = _.long.isCompact();
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'null';
-  var got = _.long.isCompact( null );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'function';
-  var got = _.long.isCompact( function() {} );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'string';
-  var got = _.long.isCompact( 'x' );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'number';
-  var got = _.long.isCompact( 1 );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'boolean';
-  var got = _.long.isCompact( true );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'object';
-  var got = _.long.isCompact( {} );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'object with fields and iteraor method';
-  var src = new function()
-  {
-    this[ Symbol.iterator ] = function ()
-    {
-      return { next() { return { done : true } } }
-    }
-  }
-  var got = _.long.isCompact( src );
-  var expected  = false;
-  test.identical( got, expected );
 }
 
 //
@@ -8965,7 +8894,6 @@ const Proto =
     // long l0/l3
 
     is,
-    isCompact,
     like,
 
     // long, l0/l5
