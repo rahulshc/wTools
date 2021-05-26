@@ -18,6 +18,21 @@ function is( src )
 
 //
 
+function isUsingFunctor_functor( src )
+{
+  let argumentObject = '[object Arguments]';
+  return isUsingFunctor;
+
+  function isUsingFunctor( src )
+  {
+    return Object.prototype.toString.call( src ) === argumentObject;
+  }
+}
+
+let isUsingFunctor = isUsingFunctor_functor();
+
+//
+
 function like( src )
 {
   if( _.argumentsArray.is( src ) )
@@ -287,6 +302,7 @@ var ArgumentsArrayExtension =
   // dichotomy
 
   is, /* qqq : cover */
+  isUsingFunctor,
   like, /* qqq : cover */
   IsResizable,
 

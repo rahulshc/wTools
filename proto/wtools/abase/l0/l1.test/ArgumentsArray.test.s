@@ -23,6 +23,7 @@ function dichotomy( test )
   test.case = 'argumentsArray from empty array';
   var src = _.argumentsArray.make( [] );
   test.true( _.argumentsArray.is( src ) );
+  test.true( _.argumentsArray.isUsingFunctor( src ) );
   test.true( _.argumentsArray.like( src ) );
   test.true( !_.array.is( src ) );
   test.true( !_.array.like( src ) );
@@ -30,10 +31,50 @@ function dichotomy( test )
   test.case = 'array';
   var src = [ 1, 2, 3 ];
   test.true( !_.argumentsArray.is( src ) );
+  test.true( !_.argumentsArray.isUsingFunctor( src ) );
   test.true( _.argumentsArray.like( src ) );
   test.true( _.array.is( src ) );
   test.true( _.array.like( src ) );
 
+  test.case = 'argument object';
+  var src = arguments;
+  test.true( _.argumentsArray.is( src ) );
+  test.true( _.argumentsArray.isUsingFunctor( src ) );
+  test.true( _.argumentsArray.like( src ) );
+  test.true( !_.array.is( src ) );
+  test.true( !_.array.like( src ) );
+
+  test.case = 'array prototype';
+  var src = Array.prototype;
+  test.true( !_.argumentsArray.is( src ) );
+  test.true( !_.argumentsArray.isUsingFunctor( src ) );
+  test.true( _.argumentsArray.like( src ) );
+  test.true( _.array.is( src ) );
+  test.true( _.array.like( src ) );
+
+  test.case = 'string';
+  var src = 'string';
+  test.false( _.argumentsArray.is( src ) );
+  test.false( _.argumentsArray.isUsingFunctor( src ) );
+  test.false( _.argumentsArray.like( src ) );
+  test.false( _.array.is( src ) );
+  test.false( _.array.like( src ) );
+
+  test.case = 'typed array';
+  var src = new U64x( 10 );
+  test.false( _.argumentsArray.is( src ) );
+  test.false( _.argumentsArray.isUsingFunctor( src ) );
+  test.false( _.argumentsArray.like( src ) );
+  test.false( _.array.is( src ) );
+  test.false( _.array.like( src ) );
+
+  test.case = 'false array';
+  var src = { __proto__ : Array.prototype };
+  test.false( _.argumentsArray.is( src ) );
+  test.false( _.argumentsArray.isUsingFunctor( src ) );
+  test.false( _.argumentsArray.like( src ) );
+  test.false( _.array.is( src ) );
+  test.false( _.array.like( src ) );
 }
 
 //
@@ -327,6 +368,88 @@ function from( test )
   test.shouldThrowErrorSync( () => _.argumentsArray.from( {} ) );
   test.shouldThrowErrorSync( () => _.argumentsArray.from( 'wrong' ) );
 }
+//
+
+function isPerformance( test )
+{
+  debugger;
+  var debugFlag = Config.debug;
+  Config.debug = false;
+
+  /* */
+
+  test.case = 'is';
+  var took, time;
+  var env = initializeVariables();
+
+  time = _.time.now();
+  for( let i = env.times; i > 0; i-- )
+  {
+    env.name = 'is';
+    run( env );
+  }
+  took = __.time.spent( time );
+
+  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  test.identical( true, true );
+
+  /* */
+
+  test.case = 'isUsingFunctor';
+  var took, time;
+  var env = initializeVariables();
+
+  time = _.time.now();
+  for( let i = env.times; i > 0; i-- )
+  {
+    env.name = 'isUsingFunctor';
+    run( env );
+  }
+  took = __.time.spent( time );
+
+  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  test.identical( true, true );
+
+  /* */
+
+  Config.debug = debugFlag;
+  debugger;
+
+  /* */
+
+  function initializeVariables()
+  {
+    var env = {};
+    env.times = 5000000;
+    env.argumentArray = arguments;
+    env.madeArgumentArray = _.argumentsArray.make( [] );
+    env.anArray = [ 1, 2, 3 ];
+    env.arrayProtoType = Array.prototype;
+    env.aString = 'string';
+    env.aTypedArray = new U64x( 10 );
+    env.falseArray = { __proto__ : Array.prototype }
+
+    return env;
+  }
+
+  /* */
+
+  function run( env )
+  {
+    _.argumentsArray[ env.name ]( env.argumentArray );
+    _.argumentsArray[ env.name ]( env.madeArgumentArray );
+    _.argumentsArray[ env.name ]( env.anArray );
+    _.argumentsArray[ env.name ]( env.arrayProtoType );
+    _.argumentsArray[ env.name ]( env.aString );
+    _.argumentsArray[ env.name ]( env.aTypedArray );
+    _.argumentsArray[ env.name ]( env.falseArray );
+    _.argumentsArray[ env.name ]();
+  }
+
+}
+
+isPerformance.timeOut = 1e7;
+isPerformance.experimental = true;
 
 // --
 //
@@ -344,6 +467,7 @@ const Proto =
     dichotomy,
     make,
     from,
+    isPerformance
   }
 
 }
