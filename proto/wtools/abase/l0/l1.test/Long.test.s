@@ -22,6 +22,7 @@ function is( test )
 {
   isTemplate( { method : 'is' } );
   isTemplate( { method : 'isCompact' } );
+  isTemplate( { method : 'isUnfolded' } );
 
   function isTemplate( env )
   {
@@ -8765,76 +8766,74 @@ function longRight( test )
 function isPerformance( test )
 {
    /*
-    Average of 10 runs of 5 million iteration of 18 _.long.is variations
+    Average of 10 runs of 1 million iteration of 24 _.long.is variations
     Values below are in seconds
-    ╔═══════════════════╤══════╤═════════╗
-    ║                   │  is  │isCompact║
-    ╟───────────────────┼──────┼─────────╢
-    ║ **Njs : v10.24.1**│11.518│  5.148  ║
-    ╟───────────────────┼──────┼─────────╢
-    ║ **Njs : v14.17.0**│12.658│  5.455  ║
-    ╟───────────────────┼──────┼─────────╢
-    ║ **Njs : v15.14.0**│12.446│  5.345  ║
-    ╟───────────────────┼──────┼─────────╢
-    ║Kos : Njs : v12.9.1│      │         ║
-    ╚═══════════════════╧══════╧═════════╝
+    ╔═══════════════════╤═════╤═════════╤══════════╗
+    ║                   │  is │isCompact│isUnfolded║
+    ╟───────────────────┼─────┼─────────┼──────────╢
+    ║ **Njs : v10.24.1**│3.662│  1.209  │   1.109  ║
+    ╟───────────────────┼─────┼─────────┼──────────╢
+    ║ **Njs : v14.17.0**│4.244│  1.263  │   1.156  ║
+    ╟───────────────────┼─────┼─────────┼──────────╢
+    ║ **Njs : v15.14.0**│4.092│  1.248  │   1.181  ║
+    ╟───────────────────┼─────┼─────────┼──────────╢
+    ║Kos : Njs : v12.9.1│     │         │          ║
+    ╚═══════════════════╧═════╧═════════╧══════════╝
   */
   debugger;
   var debugFlag = Config.debug;
   Config.debug = false;
 
-  test.case = 'is';
-  var took, time;
-  var env = initializeVariables();
-
-  time = _.time.now();
-  for( let i = env.times; i > 0; i-- )
-  {
-    env.name = 'is';
-    run( env );
-  }
-  took = __.time.spent( time );
-
-  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  test.identical( true, true );
-
   /* */
 
-  test.case = 'isCompact';
-  var took, time;
-  var env = initializeVariables();
-
-  time = _.time.now();
-  for( let i = env.times; i > 0; i-- )
-  {
-    env.name = 'isCompact';
-    run( env );
-  }
-  took = __.time.spent( time );
-
-  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  test.identical( true, true );
+  isPerformanceTemplate( { method : 'is' } );
+  isPerformanceTemplate( { method : 'isCompact' } );
+  isPerformanceTemplate( { method : 'isUnfolded' } );
 
   /* */
 
   Config.debug = debugFlag;
   debugger;
 
+  /* */
+
+  function isPerformanceTemplate( data )
+  {
+    test.case = `${data.method}`;
+    var took, time;
+    var env = initializeVariables();
+
+    time = _.time.now();
+    for( let i = env.times; i > 0; i-- )
+    {
+      env.name = data.method;
+      run( env );
+    }
+    took = __.time.spent( time );
+
+    console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+    test.identical( true, true );
+  }
+
   /* - */
 
   function initializeVariables()
   {
     var env = {};
-    env.times = 5000000;
+    env.times = 1000000;
     env.nonEmptyArray = [ 1, 2, 3 ];
     env.rawBuffer = new BufferRaw( 10 );
     env.float32Array = new F32x( 10 );
     env.int32Array = new I32x( 10 );
+    env.uint16Array = new U16x( 10 );
+    env.uint8Array = new U8x( 10 );
+    env.uint8ClampedArray = new U8xClamped( 10 );
     env.derivedArray = 'abc'.match( /[a-z]/g );
     env.arrayProtoType = Array.prototype;
     env.multiDimensionalArray = [ [ 'Divyanshu', '32' ], [ 'Shankar', '34' ], [ 'Rahul', '29' ] ];
     env.constructedArray = new Array( 3 );
     env.anEmptyRoutine = new function() {};
+    env.aSymbol = Symbol( 'a' );
     env.aString = 'x';
     env.aNumber = 1;
     env.aBoolean = false;
@@ -8850,7 +8849,7 @@ function isPerformance( test )
     return env;
   }
 
-  /* qqq : for Rahul : lets add more typed buffers and non-longs */
+  /* qqq : for Rahul : lets add more typed buffers and non-longs Rahul: Done */
   function run( env )
   {
     _.long[ env.name ]( [] );
@@ -8858,6 +8857,9 @@ function isPerformance( test )
     _.long[ env.name ]( arguments );
     _.long[ env.name ]( env.float32Array );
     _.long[ env.name ]( env.int32Array );
+    _.long[ env.name ]( env.uint16Array );
+    _.long[ env.name ]( env.uint8Array );
+    _.long[ env.name ]( env.uint8ClampedArray );
     _.long[ env.name ]( env.derivedArray );
     _.long[ env.name ]( env.arrayProtoType );
     _.long[ env.name ]( env.multiDimensionalArray );
@@ -8865,6 +8867,9 @@ function isPerformance( test )
     _.long[ env.name ]( env.rawBuffer );
     _.long[ env.name ]();
     _.long[ env.name ]( null );
+    _.long[ env.name ]( undefined );
+    _.long[ env.name ]( NaN );
+    _.long[ env.name ]( new Date() );
     _.long[ env.name ]( env.anEmptyRoutine );
     _.long[ env.name ]( env.aString );
     _.long[ env.name ]( env.aNumber );
