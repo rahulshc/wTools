@@ -5857,7 +5857,7 @@ function isPerformance( test )
 
   /* */
 
-  //isPerformanceTemplate( { method : 'anyIs' } );
+  isPerformanceTemplate( { method : 'anyIs' } );
   isPerformanceTemplate( { method : 'anyIsUsingInstanceOf' } );
 
   /* */
@@ -5953,37 +5953,37 @@ function isPerformance( test )
 
   function run( env )
   {
-    _.buffer [ env.name ]( null );
-    _.buffer [ env.name ]( undefined );
-    _.buffer [ env.name ]( 0 );
-    _.buffer [ env.name ]( false );
-    _.buffer [ env.name ]( NaN );
-    _.buffer [ env.name ]( env.aSymbol );
-    _.buffer [ env.name ]( env.anEmptyMap );
-    _.buffer [ env.name ]( env.anEmptyArray );
-    _.buffer [ env.name ]( env.aString );
-    _.buffer [ env.name ]( env.U8xconstructor );
-    _.buffer [ env.name ]( env.emptyU8xInstance );
-    _.buffer [ env.name ]( env.emptyU16xInstance );
-    _.buffer [ env.name ]( env.emptyU32xInstance );
-    _.buffer [ env.name ]( env.emptyU64xInstance );
-    _.buffer [ env.name ]( env.emptyI8xInstance );
-    _.buffer [ env.name ]( env.emptyI16xInstance );
-    _.buffer [ env.name ]( env.emptyI32xInstance );
-    _.buffer [ env.name ]( env.emptyI64xInstance );
-    _.buffer [ env.name ]( env.emptyF32xInstance );
+    _.buffer[ env.name ]( null );
+    _.buffer[ env.name ]( undefined );
+    _.buffer[ env.name ]( 0 );
+    _.buffer[ env.name ]( false );
+    _.buffer[ env.name ]( NaN );
+    _.buffer[ env.name ]( env.aSymbol );
+    _.buffer[ env.name ]( env.anEmptyMap );
+    _.buffer[ env.name ]( env.anEmptyArray );
+    _.buffer[ env.name ]( env.aString );
+    _.buffer[ env.name ]( env.U8xconstructor );
+    _.buffer[ env.name ]( env.emptyU8xInstance );
+    _.buffer[ env.name ]( env.emptyU16xInstance );
+    _.buffer[ env.name ]( env.emptyU32xInstance );
+    _.buffer[ env.name ]( env.emptyU64xInstance );
+    _.buffer[ env.name ]( env.emptyI8xInstance );
+    _.buffer[ env.name ]( env.emptyI16xInstance );
+    _.buffer[ env.name ]( env.emptyI32xInstance );
+    _.buffer[ env.name ]( env.emptyI64xInstance );
+    _.buffer[ env.name ]( env.emptyF32xInstance );
     if( Config.interpreter === 'njs' )
     {
-      _.buffer [ env.name ]( env.BufferNodeInstance );
-      _.buffer [ env.name ]( env.BufferNodeInstance );
-      _.buffer [ env.name ]( env.BufferNodeFromString );
+      _.buffer[ env.name ]( env.BufferNodeInstance );
+      _.buffer[ env.name ]( env.BufferNodeInstance );
+      _.buffer[ env.name ]( env.BufferNodeFromString );
     }
-    _.buffer [ env.name ]( env.BufferRawconstructor );
-    _.buffer [ env.name ]( env.emptyBufferRawInstance );
-    _.buffer [ env.name ]( env.BufferRawSharedInstance );
-    _.buffer [ env.name ]( env.BufferViewConstructor );
-    _.buffer [ env.name ]();
-    _.buffer [ env.name ]( new U8x( [ 1, 2, 3 ] ), new BufferRaw( 5 ) );
+    _.buffer[ env.name ]( env.BufferRawconstructor );
+    _.buffer[ env.name ]( env.emptyBufferRawInstance );
+    _.buffer[ env.name ]( env.BufferRawSharedInstance );
+    _.buffer[ env.name ]( env.BufferViewConstructor );
+    _.buffer[ env.name ]();
+    _.buffer[ env.name ]( new U8x( [ 1, 2, 3 ] ), new BufferRaw( 5 ) );
   }
 }
 
