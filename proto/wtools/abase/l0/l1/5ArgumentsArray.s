@@ -44,6 +44,17 @@ function like( src )
 
 //
 
+function likeUsingIsFunctor( src )
+{
+  if( _.argumentsArray.isUsingFunctor( src ) )
+  return true;
+  if( _.array.is( src ) )
+  return true;
+  return false;
+}
+
+//
+
 function IsResizable()
 {
   _.assert( arguments.length === 0 );
@@ -304,6 +315,7 @@ var ArgumentsArrayExtension =
   is, /* qqq : cover */
   isUsingFunctor,
   like, /* qqq : cover */
+  likeUsingIsFunctor,
   IsResizable,
 
   // maker

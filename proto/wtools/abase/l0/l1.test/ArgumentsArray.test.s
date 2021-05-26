@@ -23,8 +23,9 @@ function dichotomy( test )
   test.case = 'argumentsArray from empty array';
   var src = _.argumentsArray.make( [] );
   test.true( _.argumentsArray.is( src ) );
-  test.true( _.argumentsArray.isUsingFunctor( src ) );
   test.true( _.argumentsArray.like( src ) );
+  test.true( _.argumentsArray.isUsingFunctor( src ) );
+  test.true( _.argumentsArray.likeUsingIsFunctor( src ) );
   test.true( !_.array.is( src ) );
   test.true( !_.array.like( src ) );
 
@@ -33,6 +34,7 @@ function dichotomy( test )
   test.true( !_.argumentsArray.is( src ) );
   test.true( !_.argumentsArray.isUsingFunctor( src ) );
   test.true( _.argumentsArray.like( src ) );
+  test.true( _.argumentsArray.likeUsingIsFunctor( src ) );
   test.true( _.array.is( src ) );
   test.true( _.array.like( src ) );
 
@@ -41,6 +43,7 @@ function dichotomy( test )
   test.true( _.argumentsArray.is( src ) );
   test.true( _.argumentsArray.isUsingFunctor( src ) );
   test.true( _.argumentsArray.like( src ) );
+  test.true( _.argumentsArray.likeUsingIsFunctor( src ) );
   test.true( !_.array.is( src ) );
   test.true( !_.array.like( src ) );
 
@@ -49,6 +52,7 @@ function dichotomy( test )
   test.true( !_.argumentsArray.is( src ) );
   test.true( !_.argumentsArray.isUsingFunctor( src ) );
   test.true( _.argumentsArray.like( src ) );
+  test.true( _.argumentsArray.likeUsingIsFunctor( src ) );
   test.true( _.array.is( src ) );
   test.true( _.array.like( src ) );
 
@@ -57,6 +61,7 @@ function dichotomy( test )
   test.false( _.argumentsArray.is( src ) );
   test.false( _.argumentsArray.isUsingFunctor( src ) );
   test.false( _.argumentsArray.like( src ) );
+  test.false( _.argumentsArray.likeUsingIsFunctor( src ) );
   test.false( _.array.is( src ) );
   test.false( _.array.like( src ) );
 
@@ -65,6 +70,7 @@ function dichotomy( test )
   test.false( _.argumentsArray.is( src ) );
   test.false( _.argumentsArray.isUsingFunctor( src ) );
   test.false( _.argumentsArray.like( src ) );
+  test.false( _.argumentsArray.likeUsingIsFunctor( src ) );
   test.false( _.array.is( src ) );
   test.false( _.array.like( src ) );
 
@@ -73,6 +79,7 @@ function dichotomy( test )
   test.false( _.argumentsArray.is( src ) );
   test.false( _.argumentsArray.isUsingFunctor( src ) );
   test.false( _.argumentsArray.like( src ) );
+  test.false( _.argumentsArray.likeUsingIsFunctor( src ) );
   test.false( _.array.is( src ) );
   test.false( _.array.like( src ) );
 }
@@ -373,17 +380,17 @@ function from( test )
 function isPerformance( test )
 {
   /* Average of 10 runs of 5 million ierations of 8 input variants
-  ╔═══════════════════╤═════╤══════════════╗
-  ║                   │  is │isUsingFunctor║
-  ╟───────────────────┼─────┼──────────────╢
-  ║ **Njs : v10.24.1**│0.583│     1.594    ║
-  ╟───────────────────┼─────┼──────────────╢
-  ║ **Njs : v14.17.0**│     │              ║
-  ╟───────────────────┼─────┼──────────────╢
-  ║ **Njs : v15.14.0**│     │              ║
-  ╟───────────────────┼─────┼──────────────╢
-  ║Kos : Njs : v12.9.1│     │              ║
-  ╚═══════════════════╧═════╧══════════════╝
+  ╔═══════════════════╤═════╤══════════════╤═════╤══════════════════╗
+  ║                   │  is │isUsingFunctor│ like│likeUsingIsFunctor║
+  ╟───────────────────┼─────┼──────────────┼─────┼──────────────────╢
+  ║ **Njs : v10.24.1**│0.594│     0.598    │0.767│       0.780      ║
+  ╟───────────────────┼─────┼──────────────┼─────┼──────────────────╢
+  ║ **Njs : v14.17.0**│0.552│     0.561    │0.665│       0.664      ║
+  ╟───────────────────┼─────┼──────────────┼─────┼──────────────────╢
+  ║ **Njs : v15.14.0**│0.571│     0.574    │0.684│       0.682      ║
+  ╟───────────────────┼─────┼──────────────┼─────┼──────────────────╢
+  ║Kos : Njs : v12.9.1│     │              │     │                  ║
+  ╚═══════════════════╧═════╧══════════════╧═════╧══════════════════╝
   */
   debugger;
   var debugFlag = Config.debug;
@@ -391,42 +398,68 @@ function isPerformance( test )
 
   /* */
 
-  test.case = 'is';
-  var took, time;
-  var env = initializeVariables();
-
-  time = _.time.now();
-  for( let i = env.times; i > 0; i-- )
-  {
-    env.name = 'is';
-    run( env );
-  }
-  took = __.time.spent( time );
-
-  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  test.identical( true, true );
-
-  /* */
-
-  test.case = 'isUsingFunctor';
-  var took, time;
-  var env = initializeVariables();
-
-  time = _.time.now();
-  for( let i = env.times; i > 0; i-- )
-  {
-    env.name = 'isUsingFunctor';
-    run( env );
-  }
-  took = __.time.spent( time );
-
-  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  test.identical( true, true );
+  isPerformanceTemplate( { method : 'is' } );
+  isPerformanceTemplate( { method : 'isUsingFunctor' } );
+  isPerformanceTemplate( { method : 'like' } );
+  isPerformanceTemplate( { method : 'likeUsingIsFunctor' } );
 
   /* */
 
   Config.debug = debugFlag;
   debugger;
+
+  function isPerformanceTemplate( data )
+  {
+
+    test.case = `${data.method}`;
+    var took, time;
+    var env = initializeVariables();
+
+    time = _.time.now();
+    for( let i = env.times; i > 0; i-- )
+    {
+      env.name = data.method;
+      run( env );
+    }
+    took = __.time.spent( time );
+
+    console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+    test.identical( true, true );
+  }
+
+  /* */
+
+  // test.case = 'is';
+  // var took, time;
+  // var env = initializeVariables();
+
+  // time = _.time.now();
+  // for( let i = env.times; i > 0; i-- )
+  // {
+  //   env.name = 'is';
+  //   run( env );
+  // }
+  // took = __.time.spent( time );
+
+  // console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  // test.identical( true, true );
+
+  /* */
+
+  // test.case = 'isUsingFunctor';
+  // var took, time;
+  // var env = initializeVariables();
+
+  // time = _.time.now();
+  // for( let i = env.times; i > 0; i-- )
+  // {
+  //   env.name = 'isUsingFunctor';
+  //   run( env );
+  // }
+  // took = __.time.spent( time );
+
+  // console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  // test.identical( true, true );
 
   /* */
 
