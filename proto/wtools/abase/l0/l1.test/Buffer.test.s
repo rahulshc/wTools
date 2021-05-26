@@ -445,6 +445,11 @@ function bufferAnyIs( test )
   var expected = false;
   test.identical( got, expected );
 
+  test.case = `${__.entity.exportStringSolo( env )}, check BufferView instance`;
+  var got = _.buffer[ env.method ]( new BufferView( new ArrayBuffer(16) ) );
+  var expected = true;
+  test.identical( got, expected );
+
   /**/
 
   test.case = `${__.entity.exportStringSolo( env )}, check without argument`;
@@ -5837,11 +5842,11 @@ function isPerformance( test )
   ╔═══════════════════╤═════╤════════════════════╗
   ║                   │anyIs│anyIsUsingInstanceOf║
   ╟───────────────────┼─────┼────────────────────╢
-  ║ **Njs : v10.24.1**│8.575│         7.643      ║
+  ║ **Njs : v10.24.1**│8.575│        7.643       ║
   ╟───────────────────┼─────┼────────────────────╢
-  ║ **Njs : v14.17.0**│     │                    ║
+  ║ **Njs : v14.17.0**│8.427│        6.161       ║
   ╟───────────────────┼─────┼────────────────────╢
-  ║ **Njs : v15.14.0**│     │                    ║
+  ║ **Njs : v15.14.0**│8.195│        6.494       ║
   ╟───────────────────┼─────┼────────────────────╢
   ║Kos : Njs : v12.9.1│     │                    ║
   ╚═══════════════════╧═════╧════════════════════╝
