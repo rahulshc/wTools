@@ -372,6 +372,19 @@ function from( test )
 
 function isPerformance( test )
 {
+  /* Average of 10 runs of 5 million ierations of 8 input variants
+  ╔═══════════════════╤═════╤══════════════╗
+  ║                   │  is │isUsingFunctor║
+  ╟───────────────────┼─────┼──────────────╢
+  ║ **Njs : v10.24.1**│0.583│     1.594    ║
+  ╟───────────────────┼─────┼──────────────╢
+  ║ **Njs : v14.17.0**│     │              ║
+  ╟───────────────────┼─────┼──────────────╢
+  ║ **Njs : v15.14.0**│     │              ║
+  ╟───────────────────┼─────┼──────────────╢
+  ║Kos : Njs : v12.9.1│     │              ║
+  ╚═══════════════════╧═════╧══════════════╝
+  */
   debugger;
   var debugFlag = Config.debug;
   Config.debug = false;
