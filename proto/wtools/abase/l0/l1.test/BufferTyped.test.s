@@ -1035,88 +1035,122 @@ function isPerformance( test )
 
   /* */
 
-  test.case = 'is';
-  var took, time;
-  var env = initializeVariables();
-
-  time = _.time.now();
-  for( let i = env.times; i > 0; i-- )
-  {
-    env.name = 'is';
-    run( env );
-  }
-  took = __.time.spent( time );
-
-  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  test.identical( true, true );
+  isPerformanceTemplate( { method : 'is' } );
+  isPerformanceTemplate( { method : 'isSlow' } );
+  isPerformanceTemplate( { method : 'isUsingGetPrototype' } );
+  isPerformanceTemplate( { method : 'isUsingGetPrototypeWithFunctor' } );
+  isPerformanceTemplate( { method : 'isUsingExistenceOfField' } );
+  isPerformanceTemplate( { method : 'isUsingSet' } );
+  isPerformanceTemplate( { method : 'isUsingHashMap' } );
+  isPerformanceTemplate( { method : 'isUsingMap' } );
 
   /* */
 
-  test.case = 'isSlow';
-  var took, time;
-  var env = initializeVariables();
-
-  time = _.time.now();
-  for( let i = env.times; i > 0; i-- )
+  function isPerformanceTemplate( data )
   {
-    env.name = 'isSlow';
-    run( env );
-  }
-  took = __.time.spent( time );
+    test.case = `${data.method}`;
+    var took, time;
+    var env = initializeVariables();
 
-  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  test.identical( true, true );
+    time = _.time.now();
+    for( let i = env.times; i > 0; i-- )
+    {
+      env.name = data.method;
+      run( env );
+    }
+    took = __.time.spent( time );
+
+    console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+    test.identical( true, true );
+  }
 
   /* */
 
-  test.case = 'isUsingGetPrototype';
-  var took, time;
-  var env = initializeVariables();
+  Config.debug = debugFlag;
+  debugger;
 
-  time = _.time.now();
-  for( let i = env.times; i > 0; i-- )
-  {
-    env.name = 'isUsingGetPrototype';
-    run( env );
-  }
-  took = __.time.spent( time );
+  // test.case = 'is';
+  // var took, time;
+  // var env = initializeVariables();
 
-  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  test.identical( true, true );
+  // time = _.time.now();
+  // for( let i = env.times; i > 0; i-- )
+  // {
+  //   env.name = 'is';
+  //   run( env );
+  // }
+  // took = __.time.spent( time );
 
-  /* */
+  // console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  // test.identical( true, true );
 
-  test.case = 'isUsingGetPrototypeWithFunctor';
-  var took, time;
-  var env = initializeVariables();
+  // /* */
 
-  time = _.time.now();
-  for( let i = env.times; i > 0; i-- )
-  {
-    env.name = 'isUsingGetPrototypeWithFunctor';
-    run( env );
-  }
-  took = __.time.spent( time );
+  // test.case = 'isSlow';
+  // var took, time;
+  // var env = initializeVariables();
 
-  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  test.identical( true, true );
+  // time = _.time.now();
+  // for( let i = env.times; i > 0; i-- )
+  // {
+  //   env.name = 'isSlow';
+  //   run( env );
+  // }
+  // took = __.time.spent( time );
 
-  /* */
+  // console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  // test.identical( true, true );
 
-  test.case = 'isUsingExistenceOfField';
-  var took, time;
-  var env = initializeVariables();
+  // /* */
 
-  time = _.time.now();
-  for( let i = env.times; i > 0; i-- )
-  {
-    env.name = 'isUsingExistenceOfField';
-    run( env );
-  }
-  took = __.time.spent( time );
+  // test.case = 'isUsingGetPrototype';
+  // var took, time;
+  // var env = initializeVariables();
 
-  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  test.identical( true, true );
+  // time = _.time.now();
+  // for( let i = env.times; i > 0; i-- )
+  // {
+  //   env.name = 'isUsingGetPrototype';
+  //   run( env );
+  // }
+  // took = __.time.spent( time );
+
+  // console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  // test.identical( true, true );
+
+  // /* */
+
+  // test.case = 'isUsingGetPrototypeWithFunctor';
+  // var took, time;
+  // var env = initializeVariables();
+
+  // time = _.time.now();
+  // for( let i = env.times; i > 0; i-- )
+  // {
+  //   env.name = 'isUsingGetPrototypeWithFunctor';
+  //   run( env );
+  // }
+  // took = __.time.spent( time );
+
+  // console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  // test.identical( true, true );
+
+  // /* */
+
+  // test.case = 'isUsingExistenceOfField';
+  // var took, time;
+  // var env = initializeVariables();
+
+  // time = _.time.now();
+  // for( let i = env.times; i > 0; i-- )
+  // {
+  //   env.name = 'isUsingExistenceOfField';
+  //   run( env );
+  // }
+  // took = __.time.spent( time );
+
+  // console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  // test.identical( true, true );
 
   /* */
 
@@ -1171,59 +1205,54 @@ function isPerformance( test )
 
   /* */
 
-  test.case = 'isUsingSet';
-  var took, time;
-  var env = initializeVariables();
+  // test.case = 'isUsingSet';
+  // var took, time;
+  // var env = initializeVariables();
 
-  time = _.time.now();
-  for( let i = env.times; i > 0; i-- )
-  {
-    env.name = 'isUsingSet';
-    run( env );
-  }
-  took = __.time.spent( time );
+  // time = _.time.now();
+  // for( let i = env.times; i > 0; i-- )
+  // {
+  //   env.name = 'isUsingSet';
+  //   run( env );
+  // }
+  // took = __.time.spent( time );
 
-  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  test.identical( true, true );
+  // console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  // test.identical( true, true );
 
-  /* */
+  // /* */
 
-  test.case = 'isUsingHashMap';
-  var took, time;
-  var env = initializeVariables();
+  // test.case = 'isUsingHashMap';
+  // var took, time;
+  // var env = initializeVariables();
 
-  time = _.time.now();
-  for( let i = env.times; i > 0; i-- )
-  {
-    env.name = 'isUsingHashMap';
-    run( env );
-  }
-  took = __.time.spent( time );
+  // time = _.time.now();
+  // for( let i = env.times; i > 0; i-- )
+  // {
+  //   env.name = 'isUsingHashMap';
+  //   run( env );
+  // }
+  // took = __.time.spent( time );
 
-  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  test.identical( true, true );
+  // console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  // test.identical( true, true );
 
-  /* */
+  // /* */
 
-  test.case = 'isUsingMap';
-  var took, time;
-  var env = initializeVariables();
+  // test.case = 'isUsingMap';
+  // var took, time;
+  // var env = initializeVariables();
 
-  time = _.time.now();
-  for( let i = env.times; i > 0; i-- )
-  {
-    env.name = 'isUsingMap';
-    run( env );
-  }
-  took = __.time.spent( time );
+  // time = _.time.now();
+  // for( let i = env.times; i > 0; i-- )
+  // {
+  //   env.name = 'isUsingMap';
+  //   run( env );
+  // }
+  // took = __.time.spent( time );
 
-  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  test.identical( true, true );
-
-  /* */
-
-  Config.debug = debugFlag;
-  debugger;
+  // console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  // test.identical( true, true );
 
   /* - */
 
