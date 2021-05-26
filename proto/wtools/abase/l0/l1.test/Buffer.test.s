@@ -5842,11 +5842,11 @@ function isPerformance( test )
   ╔═══════════════════╤═════╤════════════════════╗
   ║                   │anyIs│anyIsUsingInstanceOf║
   ╟───────────────────┼─────┼────────────────────╢
-  ║ **Njs : v10.24.1**│8.575│        7.643       ║
+  ║ **Njs : v10.24.1**│8.575│        6.500       ║
   ╟───────────────────┼─────┼────────────────────╢
-  ║ **Njs : v14.17.0**│8.427│        6.161       ║
+  ║ **Njs : v14.17.0**│8.427│        5.661       ║
   ╟───────────────────┼─────┼────────────────────╢
-  ║ **Njs : v15.14.0**│8.195│        6.494       ║
+  ║ **Njs : v15.14.0**│8.195│        5.763       ║
   ╟───────────────────┼─────┼────────────────────╢
   ║Kos : Njs : v12.9.1│     │                    ║
   ╚═══════════════════╧═════╧════════════════════╝
@@ -5857,38 +5857,63 @@ function isPerformance( test )
 
   /* */
 
-  test.case = 'anyIs';
-  var took, time;
-  var env = initializeVariables();
-  time = _.time.now();
-  for( let i = env.times; i > 0; i-- )
-  {
-    env.name = 'anyIs';
-    run( env );
-  }
-  took = __.time.spent( time );
-  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  test.identical( true, true );
-
-  /* */
-
-  test.case = 'anyIsUsingInstanceOf';
-  var took, time;
-  var env = initializeVariables();
-  time = _.time.now();
-  for( let i = env.times; i > 0; i-- )
-  {
-    env.name = 'anyIsUsingInstanceOf';
-    run( env );
-  }
-  took = __.time.spent( time );
-  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  test.identical( true, true );
+  //isPerformanceTemplate( { method : 'anyIs' } );
+  isPerformanceTemplate( { method : 'anyIsUsingInstanceOf' } );
 
   /* */
 
   Config.debug = debugFlag;
   debugger;
+
+  /* */
+
+  function isPerformanceTemplate( data )
+  {
+    test.case = `${data.method}`;
+    var took, time;
+    var env = initializeVariables();
+
+    time = _.time.now();
+    for( let i = env.times; i > 0; i-- )
+    {
+      env.name = data.method;
+      run( env );
+    }
+    took = __.time.spent( time );
+
+    console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+    test.identical( true, true );
+  }
+
+  /* */
+
+  // test.case = 'anyIs';
+  // var took, time;
+  // var env = initializeVariables();
+  // time = _.time.now();
+  // for( let i = env.times; i > 0; i-- )
+  // {
+  //   env.name = 'anyIs';
+  //   run( env );
+  // }
+  // took = __.time.spent( time );
+  // console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  // test.identical( true, true );
+
+  /* */
+
+  // test.case = 'anyIsUsingInstanceOf';
+  // var took, time;
+  // var env = initializeVariables();
+  // time = _.time.now();
+  // for( let i = env.times; i > 0; i-- )
+  // {
+  //   env.name = 'anyIsUsingInstanceOf';
+  //   run( env );
+  // }
+  // took = __.time.spent( time );
+  // console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  // test.identical( true, true );
 
   /* */
 
