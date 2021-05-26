@@ -276,7 +276,7 @@ function bufferNodeIs( test )
 function bufferAnyIs( test )
 {
   bufferAnyIsTemplate( { method : 'anyIs' } );
-  bufferAnyIsTemplate( { method : 'bufferAnyIsAlternative' } );
+  bufferAnyIsTemplate( { method : 'anyIsUsingInstanceOf' } );
 
   function bufferAnyIsTemplate( env )
   {
@@ -5834,17 +5834,17 @@ function isPerformance( test )
 {
   /* Average of 10 runs of 5 million iterations of 28 input variants
      Values below are in seconds
-  ╔═══════════════════╤═════╤══════════════════════╗
-  ║                   │anyIs│bufferAnyIsAlternative║
-  ╟───────────────────┼─────┼──────────────────────╢
-  ║ **Njs : v10.24.1**│8.575│         7.643        ║
-  ╟───────────────────┼─────┼──────────────────────╢
-  ║ **Njs : v14.17.0**│     │                      ║
-  ╟───────────────────┼─────┼──────────────────────╢
-  ║ **Njs : v15.14.0**│     │                      ║
-  ╟───────────────────┼─────┼──────────────────────╢
-  ║Kos : Njs : v12.9.1│     │                      ║
-  ╚═══════════════════╧═════╧══════════════════════╝
+  ╔═══════════════════╤═════╤════════════════════╗
+  ║                   │anyIs│anyIsUsingInstanceOf║
+  ╟───────────────────┼─────┼────────────────────╢
+  ║ **Njs : v10.24.1**│8.575│         7.643      ║
+  ╟───────────────────┼─────┼────────────────────╢
+  ║ **Njs : v14.17.0**│     │                    ║
+  ╟───────────────────┼─────┼────────────────────╢
+  ║ **Njs : v15.14.0**│     │                    ║
+  ╟───────────────────┼─────┼────────────────────╢
+  ║Kos : Njs : v12.9.1│     │                    ║
+  ╚═══════════════════╧═════╧════════════════════╝
   */
   debugger;
   var debugFlag = Config.debug;
@@ -5867,13 +5867,13 @@ function isPerformance( test )
 
   /* */
 
-  test.case = 'bufferAnyIsAlternative';
+  test.case = 'anyIsUsingInstanceOf';
   var took, time;
   var env = initializeVariables();
   time = _.time.now();
   for( let i = env.times; i > 0; i-- )
   {
-    env.name = 'bufferAnyIsAlternative';
+    env.name = 'anyIsUsingInstanceOf';
     run( env );
   }
   took = __.time.spent( time );

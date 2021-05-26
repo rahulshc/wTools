@@ -27,7 +27,7 @@ function anyIs( src )
 
 //
 
-function bufferAnyIsAlternative( src )
+function anyIsUsingInstanceOf( src )
 {
   if( src instanceof ArrayBuffer )
   return true;
@@ -951,7 +951,7 @@ let BufferExtension =
   // dichotomy
 
   anyIs,
-  bufferAnyIsAlternative,
+  anyIsUsingInstanceOf,
   is : anyIs,
   like : anyIs,
   IsResizable,
