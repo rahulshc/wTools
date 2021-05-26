@@ -26,138 +26,226 @@ const __ = _globals_.testing.wTools;
 /* qqq : for junior : extend. ask how to */
 function dichotomy( test )
 {
+  dichotomyTemplate( { method : 'like' } );
+  dichotomyTemplate( { method : 'likeUsingisUsingInstanceOf' } );
 
-  test.case = 'undefined';
-  var got = _.regexp.like( undefined );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'null';
-  var got = _.regexp.like( null );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'false';
-  var got = _.regexp.like( false );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'NaN';
-  var got = _.regexp.like( NaN );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'a boolean';
-  var got = _.regexp.like( true );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'a number';
-  var got = _.regexp.like( 13 );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'a function';
-  var got = _.regexp.like( function() {} );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'constructor';
-  function Constr( x )
+  function dichotomyTemplate( env )
   {
-    this.x = x;
-    return this;
+    test.case = 'undefined';
+    var got = _.regexp[ env.method ]( undefined );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'null';
+    var got = _.regexp[ env.method ]( null );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'false';
+    var got = _.regexp[ env.method ]( false );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'NaN';
+    var got = _.regexp[ env.method ]( NaN );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'a boolean';
+    var got = _.regexp[ env.method ]( true );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'a number';
+    var got = _.regexp[ env.method ]( 13 );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'a function';
+    var got = _.regexp[ env.method ]( function() {} );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'constructor';
+    function Constr( x )
+    {
+      this.x = x;
+      return this;
+    }
+    var got = _.regexp[ env.method ]( new Constr( 0 ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'BufferRaw';
+    var got = _.regexp[ env.method ]( new BufferRaw( 5 ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'BufferView';
+    var got = _.regexp[ env.method ]( new BufferView( new BufferRaw( 5 ) ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'Set';
+    var got = _.regexp[ env.method ]( new Set( [ 5 ] ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'Map';
+    var got = _.regexp[ env.method ]( new HashMap( [ [ 1, 2 ] ] ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'pure empty map';
+    var got = _.regexp[ env.method ]( Object.create( null ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'pure map';
+    var src = Object.create( null );
+    src.x = 1;
+    var got = _.regexp[ env.method ]( src );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'map from pure map';
+    var src = Object.create( Object.create( null ) );
+    var got = _.regexp[ env.method ]( src );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'an empty object';
+    var got = _.regexp[ env.method ]( {} );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'an object';
+    var got = _.regexp[ env.method ]( { a : 7, b : 13 } );
+    var expected = false;
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'regexp';
+    var got = _.regexp[ env.method ]( /a/ );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'regexp empty';
+    var got = _.regexp[ env.method ]( /(?:)/ );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'regexp with flags';
+    var got = _.regexp[ env.method ]( /a/g );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'regexp complex';
+    var got = _.regexp[ env.method ]( /(?:\d{3}|\(\d{3}\))([-\/\.])\d{3}\1\d{4}/ );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'empty string';
+    var got = _.regexp[ env.method ]( '' );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'a string';
+    var got = _.regexp[ env.method ]( 'str' );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'a string object';
+    var got = _.regexp[ env.method ]( new String( 'str' ) );
+    var expected = true;
+    test.identical( got, expected );
   }
-  var got = _.regexp.like( new Constr( 0 ) );
-  var expected = false;
-  test.identical( got, expected );
+}
 
-  test.case = 'BufferRaw';
-  var got = _.regexp.like( new BufferRaw( 5 ) );
-  var expected = false;
-  test.identical( got, expected );
+//
 
-  test.case = 'BufferView';
-  var got = _.regexp.like( new BufferView( new BufferRaw( 5 ) ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'Set';
-  var got = _.regexp.like( new Set( [ 5 ] ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'Map';
-  var got = _.regexp.like( new HashMap( [ [ 1, 2 ] ] ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'pure empty map';
-  var got = _.regexp.like( Object.create( null ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'pure map';
-  var src = Object.create( null );
-  src.x = 1;
-  var got = _.regexp.like( src );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'map from pure map';
-  var src = Object.create( Object.create( null ) );
-  var got = _.regexp.like( src );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'an empty object';
-  var got = _.regexp.like( {} );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'an object';
-  var got = _.regexp.like( { a : 7, b : 13 } );
-  var expected = false;
-  test.identical( got, expected );
+function isPerformance( test )
+{
+  debugger;
+  var debugFlag = Config.debug;
+  Config.debug = false;
 
   /* */
 
-  test.case = 'regexp';
-  var got = _.regexp.like( /a/ );
-  var expected = true;
-  test.identical( got, expected );
+  //isPerformanceTemplate( { method : 'like' } );
+  isPerformanceTemplate( { method : 'likeUsingisUsingInstanceOf' } );
 
-  test.case = 'regexp empty';
-  var got = _.regexp.like( /(?:)/ );
-  var expected = true;
-  test.identical( got, expected );
+  /* */
 
-  test.case = 'regexp with flags';
-  var got = _.regexp.like( /a/g );
-  var expected = true;
-  test.identical( got, expected );
+  Config.debug = debugFlag;
+  debugger;
 
-  test.case = 'regexp complex';
-  var got = _.regexp.like( /(?:\d{3}|\(\d{3}\))([-\/\.])\d{3}\1\d{4}/ );
-  var expected = true;
-  test.identical( got, expected );
+  /* */
 
-  test.case = 'empty string';
-  var got = _.regexp.like( '' );
-  var expected = true;
-  test.identical( got, expected );
+  function isPerformanceTemplate( data )
+  {
+    test.case = `${data.method}`;
+    var took, time;
+    var env = initializeVariables();
 
-  test.case = 'a string';
-  var got = _.regexp.like( 'str' );
-  var expected = true;
-  test.identical( got, expected );
+    time = _.time.now();
+    for( let i = env.times; i > 0; i-- )
+    {
+      env.name = data.method;
+      run( env );
+    }
+    took = __.time.spent( time );
 
-  test.case = 'a string object';
-  var got = _.regexp.like( new String( 'str' ) );
-  var expected = true;
-  test.identical( got, expected );
+    console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+    test.identical( true, true );
+  }
 
+  /* */
+
+  function initializeVariables()
+  {
+    var env = {};
+    env.times = 5000000;
+    env.aRegex = /a/;
+    env.anEmptyRegex = /(?:)/;
+    env.aRegexWithFlag = /a/g;
+    env.aComplexRegex = /(?:\d{3}|\(\d{3}\))([-\/\.])\d{3}\1\d{4}/ ;
+    env.anEmptyString = '';
+    env.aString = 'str';
+    env.stringObject = new String( 'str' );
+    env.aNumber = 2;
+    env.aBoolean = false;
+    env.anArray = [ 1, 2, 3 ];
+    env.aMap = { data : 5 };
+
+    return env;
+  }
+
+  /* */
+
+  function run( env )
+  {
+    _.regexp[ env.name ]( env.aRegex );
+    _.regexp[ env.name ]( env.anEmptyRegex );
+    _.regexp[ env.name ]( env.aRegexWithFlag );
+    _.regexp[ env.name ]( env.aComplexRegex );
+    _.regexp[ env.name ]( env.anEmptyString);
+    _.regexp[ env.name ]( env.aString );
+    _.regexp[ env.name ]( env.stringObject );
+
+    _.regexp[ env.name ]( env.aNumber );
+    _.regexp[ env.name ]( env.aBoolean );
+    _.regexp[ env.name ]( env.anArray );
+    _.regexp[ env.name ]( env.aMap );
+    _.regexp[ env.name ]( null );
+    _.regexp[ env.name ]( undefined );
+    _.regexp[ env.name ]();
+  }
 }
+
+isPerformance.timeOut = 1e7;
+isPerformance.experimental = true;
 
 // --
 // suite definition
@@ -173,6 +261,7 @@ const Proto =
   {
 
     dichotomy,
+    isPerformance
 
   }
 
