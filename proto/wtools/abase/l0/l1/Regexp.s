@@ -22,6 +22,13 @@ function is( src )
 
 //
 
+function isUsingInstanceOf( src )
+{
+  return src instanceof RegExp;
+}
+
+//
+
 function objectIs( src )
 {
   if( !_.RegexpObject )
@@ -34,6 +41,15 @@ function objectIs( src )
 function like( src )
 {
   if( _.regexp.is( src ) || _.strIs( src ) )
+  return true;
+  return false;
+}
+
+//
+
+function likeUsingisUsingInstanceOf( src )
+{
+  if( _.regexp.isUsingInstanceOf( src ) || _.strIs( src ) )
   return true;
   return false;
 }
@@ -115,6 +131,8 @@ let RegexpExtension =
   // regexp
 
   is,
+  isUsingInstanceOf,
+  likeUsingisUsingInstanceOf,
   objectIs,
   like,
 
