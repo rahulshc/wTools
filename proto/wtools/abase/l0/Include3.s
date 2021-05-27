@@ -1,5 +1,5 @@
 //#! /usr/bin/env node
-( function _Include3_s_()
+( function _l0_Include3_s_()
 {
 
 'use strict';
@@ -10,7 +10,6 @@ if( typeof module !== 'undefined' )
 
   require( './l3/1Wrap.s' );
   require( './l3/1LogicNode.s' );
-  require( './l3/1Looker.s' );
   require( './l3/2Props.s' );
   require( './l3/3Blank.s' );
   require( './l3/3Long.s' );
@@ -38,6 +37,7 @@ if( typeof module !== 'undefined' )
   require( './l3/Primitive.s' );
   require( './l3/Regexp.s' );
   require( './l3/Routine.s' );
+  require( './l3/Seeker.s' );
   require( './l3/Set.s' );
   require( './l3/Str.s' );
   require( './l3/Stringer.s' );

@@ -1,5 +1,5 @@
 //#! /usr/bin/env node
-( function _Include7_s_()
+( function _l0_Include7_s_()
 {
 
 'use strict';
@@ -43,7 +43,7 @@ if( typeof module !== 'undefined' )
   require( './l7/Intervalo.s' );
   require( './l7/Introspector.s' );
   require( './l7/Logic.s' );
-  require( './l7/Looker.s' );
+  require( './l7/Seeker.s' );
   require( './l7/Long.s' );
   require( './l7/Map.s' );
   require( './l7/Module.s' );

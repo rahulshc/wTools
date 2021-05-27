@@ -1,25 +1,25 @@
-( function _l1_Looker_s_()
+( function _l1_Seeker_s_()
 {
 
 'use strict';
 
 const _global = _global_;
 const _ = _global_.wTools;
-_.looker = _.looker || Object.create( null );
+_.seeker = _.seeker || Object.create( null );
 
 // --
 // implementation
 // --
 
 // --
-// looker extension
+// seeker extension
 // --
 
-let LookerExtension =
+let SeekerExtension =
 {
 }
 
-Object.assign( _.looker, LookerExtension );
+Object.assign( _.seeker, SeekerExtension );
 
 // --
 // tools extension

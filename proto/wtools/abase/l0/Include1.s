@@ -1,5 +1,5 @@
 //#! /usr/bin/env node
-( function _Include1_s_()
+( function _l0_Include1_s_()
 {
 
 'use strict';
@@ -53,7 +53,7 @@ if( typeof module !== 'undefined' )
   require( './l1/Logger.s' );
   require( './l1/Logic.s' );
   require( './l1/LogicNode.s' );
-  require( './l1/Looker.s' );
+  require( './l1/Seeker.s' );
   require( './l1/Map.s' );
   require( './l1/Module.s' );
   require( './l1/Number.s' );
