@@ -1,4 +1,4 @@
-( function _l1_BufferTyped_s_()
+( function _l1_5BufferTyped_s_()
 {
 
 'use strict';
