@@ -118,32 +118,33 @@ function isPerformance( test )
    /*
     Average of 10 runs of 1 million iteration of 24 _.long.is variations
     Values below are in seconds
-    ╔═══════════════════╤═════╤═════════╤══════════╗
-    ║                   │  is │isCompact│isUnfolded║
-    ╟───────────────────┼─────┼─────────┼──────────╢
-    ║ **Njs : v10.24.1**│3.662│  1.209  │   1.109  ║
-    ╟───────────────────┼─────┼─────────┼──────────╢
-    ║ **Njs : v14.17.0**│4.244│  1.263  │   1.156  ║
-    ╟───────────────────┼─────┼─────────┼──────────╢
-    ║ **Njs : v15.14.0**│4.092│  1.248  │   1.181  ║
-    ╟───────────────────┼─────┼─────────┼──────────╢
-    ║Kos : Njs : v12.9.1│     │         │          ║
-    ╚═══════════════════╧═════╧═════════╧══════════╝
+    ╔═══════════════════╤═════╤═════════╤══════════╤══════════╗
+    ║                   │  is │ isOld ? │ isCompact│isUnfolded│ isUnfoldedSmartOrder ║
+    ╟───────────────────┼─────┼─────────┼──────────┼──────────╢
+    ║ **Njs : v10.24.1**│3.662│  1.209  │   1.109  │   ?  ║
+    ╟───────────────────┼─────┼─────────┼──────────┼──────────╢
+    ║ **Njs : v14.17.0**│4.244│  1.263  │   1.156  │   ?  ║
+    ╟───────────────────┼─────┼─────────┼──────────┼──────────╢
+    ║Kos : Njs : v12.9.1│5.053│  2.008  │   1.976  │   1.600  ║
+    ╚═══════════════════╧═════╧═════════╧══════════╧══════════╝
+    qqq : for Rahul : update the table please
   */
-  debugger;
+  debugger; /* eslint-disable-line no-debugger */
   var debugFlag = Config.debug;
   Config.debug = false;
 
   /* */
 
   isPerformanceTemplate( { method : 'is' } );
+  isPerformanceTemplate( { method : 'isOld' } );
   isPerformanceTemplate( { method : 'isCompact' } );
   isPerformanceTemplate( { method : 'isUnfolded' } );
+  isPerformanceTemplate( { method : 'isUnfoldedSmartOrder' } );
 
   /* */
 
   Config.debug = debugFlag;
-  debugger;
+  debugger; /* eslint-disable-line no-debugger */
 
   /* */
 
@@ -152,6 +153,7 @@ function isPerformance( test )
     test.case = `${data.method}`;
     var took, time;
     var env = initializeVariables();
+    __.time.sleep( 100 );
 
     time = _.time.now();
     for( let i = env.times; i > 0; i-- )

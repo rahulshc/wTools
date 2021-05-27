@@ -49,6 +49,20 @@ _.withLong = _.long.toolsNamespacesByType;
 
 function is( src )
 {
+  if( Array.isArray( src ) )
+  return true
+  if( _.bufferTyped.is( src ) )
+  return true;
+  if( Object.prototype.toString.call( src ) === '[object Arguments]' )
+  return true;
+
+  return false;
+}
+
+//
+
+function isOld( src )
+{
 
   if( _.primitive.is( src ) )
   return false;
@@ -85,6 +99,21 @@ function isUnfolded( src )
   return true
   if( _.bufferTyped.is( src ) )
   return true;
+
+  return false;
+}
+
+//
+
+function isUnfoldedSmartOrder( src )
+{
+  if( Array.isArray( src ) )
+  return true
+  if( _.bufferTyped.is( src ) )
+  return true;
+  if( Object.prototype.toString.call( src ) === '[object Arguments]' )
+  return true;
+
   return false;
 }
 
@@ -1160,8 +1189,10 @@ let LongExtension =
   // dichotomy
 
   is,
+  isOld,
   isCompact,
   isUnfolded,
+  isUnfoldedSmartOrder,
   isEmpty,
   isPopulated,
   like,
