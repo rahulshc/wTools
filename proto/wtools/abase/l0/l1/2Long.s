@@ -47,17 +47,67 @@ _.withLong = _.long.toolsNamespacesByType;
  * @namespace Tools
  */
 
-function is( src )
-{
-  if( Array.isArray( src ) )
-  return true
-  if( _.bufferTyped.is( src ) )
-  return true;
-  if( Object.prototype.toString.call( src ) === '[object Arguments]' )
-  return true;
+// function is( src )
+// {
+//   if( Array.isArray( src ) )
+//   return true
+//   if( _.bufferTyped.is( src ) )
+//   return true;
+//   if( Object.prototype.toString.call( src ) === '[object Arguments]' )
+//   return true;
+//
+//   return false;
+// }
 
-  return false;
+function is_functor()
+{
+
+  const TypedArray = Object.getPrototypeOf( Int8Array );
+  const iteratorSymbol = Symbol.iterator;
+
+  if( _global_.BufferNode )
+  return isNjs;
+  return isBrowser;
+
+  function isNjs( src )
+  {
+    if( Array.isArray( src ) )
+    return true
+
+    if( src instanceof TypedArray )
+    {
+      if( src instanceof BufferNode )
+      return false;
+      return true;
+    }
+
+    // if( arguments[ iteratorSymbol ] === undefined )
+    // return false;
+    if( Object.prototype.toString.call( src ) === '[object Arguments]' )
+    return true;
+
+    return false;
+  }
+
+  function isNrowser( src )
+  {
+    if( Array.isArray( src ) )
+    return true
+
+    if( src instanceof TypedArray )
+    return true;
+
+    // if( arguments[ iteratorSymbol ] === undefined )
+    // return false;
+    if( Object.prototype.toString.call( src ) === '[object Arguments]' )
+    return true;
+
+    return false;
+  }
+
 }
+
+const is = is_functor();
 
 //
 
@@ -111,11 +161,65 @@ function isUnfoldedSmartOrder( src )
   return true
   if( _.bufferTyped.is( src ) )
   return true;
+  // if( !arguments[ Symbol.iterator ] )
+  // return false;
   if( Object.prototype.toString.call( src ) === '[object Arguments]' )
   return true;
 
   return false;
 }
+
+//
+
+function isUnfoldedSmarter_functor()
+{
+
+  const TypedArray = Object.getPrototypeOf( Int8Array );
+  const iteratorSymbol = Symbol.iterator;
+
+  if( _global_.BufferNode )
+  return isUnfoldedSmarterNjs;
+  return isUnfoldedSmarterBrowser;
+
+  function isUnfoldedSmarterNjs( src )
+  {
+    if( Array.isArray( src ) )
+    return true
+
+    if( src instanceof TypedArray )
+    {
+      if( src instanceof BufferNode )
+      return false;
+      return true;
+    }
+
+    // if( arguments[ iteratorSymbol ] === undefined )
+    // return false;
+    if( Object.prototype.toString.call( src ) === '[object Arguments]' )
+    return true;
+
+    return false;
+  }
+
+  function isUnfoldedSmarterNrowser( src )
+  {
+    if( Array.isArray( src ) )
+    return true
+
+    if( src instanceof TypedArray )
+    return true;
+
+    // if( arguments[ iteratorSymbol ] === undefined )
+    // return false;
+    if( Object.prototype.toString.call( src ) === '[object Arguments]' )
+    return true;
+
+    return false;
+  }
+
+}
+
+const isUnfoldedSmarter = isUnfoldedSmarter_functor();
 
 // function is( src )
 // {
@@ -1193,6 +1297,7 @@ let LongExtension =
   isCompact,
   isUnfolded,
   isUnfoldedSmartOrder,
+  isUnfoldedSmarter,
   isEmpty,
   isPopulated,
   like,

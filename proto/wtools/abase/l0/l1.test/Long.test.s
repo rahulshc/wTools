@@ -136,10 +136,11 @@ function isPerformance( test )
   /* */
 
   isPerformanceTemplate( { method : 'is' } );
-  isPerformanceTemplate( { method : 'isOld' } );
-  isPerformanceTemplate( { method : 'isCompact' } );
-  isPerformanceTemplate( { method : 'isUnfolded' } );
+  // isPerformanceTemplate( { method : 'isOld' } );
+  // isPerformanceTemplate( { method : 'isCompact' } );
+  // isPerformanceTemplate( { method : 'isUnfolded' } );
   isPerformanceTemplate( { method : 'isUnfoldedSmartOrder' } );
+  isPerformanceTemplate( { method : 'isUnfoldedSmarter' } );
 
   /* */
 
