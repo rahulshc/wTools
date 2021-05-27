@@ -47,10 +47,6 @@ _.withLong = _.long.toolsNamespacesByType;
  * @namespace Tools
  */
 
-/* xxx : optimize! */
-/* qqq2 : for junior : optimize. ask how to */
-/* qqq : check coverage */
-
 function is( src )
 {
 
@@ -89,7 +85,6 @@ function isUnfolded( src )
   return true
   if( _.bufferTyped.is( src ) )
   return true;
-
   return false;
 }
 

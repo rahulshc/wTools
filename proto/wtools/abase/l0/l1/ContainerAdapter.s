@@ -27,7 +27,6 @@ function is( src )
   return false;
   if( !_.containerAdapter.Abstract )
   return false;
-  debugger;
   return src instanceof _.containerAdapter.Abstract;
 }
 

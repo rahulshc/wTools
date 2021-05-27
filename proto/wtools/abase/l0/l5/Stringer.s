@@ -130,14 +130,14 @@ Iterator.result = '';
 Iterator.dtab = '  ';
 
 const Iteration = StringerClassExtension.Iteration = Object.create( null );
-Iteration.tab = '';
-Iteration.verbosity = 2;
-Iteration.tabLevel = 0;
+// Iteration.tab = '';
+// Iteration.verbosity = 2;
+// Iteration.tabLevel = 0;
 
 const IterationPreserve = StringerClassExtension.IterationPreserve = Object.create( null );
-IterationPreserve.tab = null;
-IterationPreserve.verbosity = null;
-IterationPreserve.tabLevel = null;
+IterationPreserve.tab = '';
+IterationPreserve.verbosity = 2;
+IterationPreserve.tabLevel = 0;
 
 const Prime = {};
 const Stringer = _.seeker.classDefine

@@ -299,11 +299,7 @@ function classDefine( o )
       })[ o.name ];
     })();
     seeker.constructor = CustomSeeker;
-    // seeker.constructor = ({
-    //   [ o.name ] : function(){},
-    // })[ o.name ];
     _.assert( seeker.constructor.name === o.name );
-    // debugger;
   }
 
   if( o.prime )
@@ -312,8 +308,13 @@ function classDefine( o )
   _.props.extend( seeker, o.seeker );
   if( o.iterator )
   _.props.extend( seeker, o.iterator );
+  // yyy
+  // if( o.iterationPreserve )
+  // _.props.supplement( seeker, o.iterationPreserve );
+  // if( o.iterationPreserve )
+  // debugger;
   if( o.iterationPreserve )
-  _.props.supplement( seeker, o.iterationPreserve );
+  o.iteration = _.props.supplement( o.iteration || Object.create( null ), o.iterationPreserve );
 
   seeker.Seeker = seeker;
   seeker.OriginalSeeker = seeker;
@@ -331,14 +332,18 @@ function classDefine( o )
   if( o.iterator )
   _.props.extend( iterator, o.iterator );
 
-  let iteration = seeker.Iteration = Object.assign( Object.create( null ), seeker.Iteration );
+  seeker.Iteration = Object.assign( Object.create( null ), seeker.Iteration );
   let iterationPreserve = seeker.IterationPreserve = Object.assign( Object.create( null ), seeker.IterationPreserve );
   if( o.iterationPreserve )
   {
     _.props.extend( iterationPreserve, o.iterationPreserve );
   }
   if( o.iteration )
-  _.props.extend( iteration, o.iteration );
+  _.props.extend( seeker.Iteration, o.iteration );
+
+  Object.freeze( seeker.Iterator );
+  Object.freeze( seeker.Iteration );
+  Object.freeze( seeker.IterationPreserve );
 
   validate();
 
@@ -370,14 +375,15 @@ function classDefine( o )
   {
     if( !Config.debug )
     return;
+
     /* qqq : add explanation for each assert */
     _.assert( seeker.Prime.Seeker === undefined );
     // _.assert( _.routineIs( seeker.iterableEval ) );
-    _.assert( !_.props.has( seeker.Iteration, 'src' ) && seeker.Iteration.src === undefined );
-    // _.assert( _.props.has( seeker.IterationPreserve, 'src' ) && seeker.IterationPreserve.src === undefined );
-    // _.assert( _.props.has( seeker, 'src' ) && seeker.src === undefined );
-    _.assert( !_.props.has( seeker.Iteration, 'root' ) && seeker.Iteration.root === undefined );
-    // _.assert( _.props.has( seeker, 'root' ) && seeker.root === undefined );
+    _.assert( !_.props.has( seeker.Iteration, 'src' ) || seeker.Iteration.src === undefined );
+    _.assert( !_.props.has( seeker.IterationPreserve, 'src' ) || seeker.IterationPreserve.src === undefined );
+    _.assert( !_.props.has( seeker, 'src' ) || seeker.src === undefined );
+    _.assert( !_.props.has( seeker.Iteration, 'root' ) || seeker.Iteration.root === undefined );
+    _.assert( !_.props.has( seeker, 'root' ) || seeker.root === undefined );
     if( _.props.has( seeker, 'dst' ) )
     {
       _.assert( _.props.has( seeker.Iteration, 'dst' ) && seeker.Iteration.dst === undefined );
@@ -388,6 +394,18 @@ function classDefine( o )
     //   _.assert( _.props.has( seeker.Iterator, 'result' ) && seeker.Iterator.result === undefined );
     //   _.assert( _.props.has( seeker, 'result' ) && seeker.result === undefined );
     // }
+
+    for( let k in seeker.Iteration )
+    if( _.props.has( seeker, k ) )
+    {
+      _.assert
+      (
+        seeker[ k ] === seeker.Iteration[ k ],
+        () => `Conflicting default value of field::${k} of Seeker::${o.name}`
+        + `\n${seeker[ k ]} <> ${seeker.Iteration[ k ]}`
+      );
+    }
+
   }
 
   /* - */
