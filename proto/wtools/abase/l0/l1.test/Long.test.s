@@ -20,11 +20,12 @@ const __ = _globals_.testing.wTools;
 /* qqq : for junior : merge routines is and like to routine dichotomy and extend */
 function dichotomy( test )
 {
-  isTemplate( { method : 'is' } );
-  isTemplate( { method : 'isCompact' } );
-  isTemplate( { method : 'isUnfolded' } );
+  dichotomyTemplate( { method : 'is' } );
+  dichotomyTemplate( { method : 'like' } );
+  dichotomyTemplate( { method : 'isCompact' } );
+  dichotomyTemplate( { method : 'isUnfolded' } );
 
-  function isTemplate( env )
+  function dichotomyTemplate( env )
   {
     test.case = `${__.entity.exportStringSolo( env )}, an empty array`;
     var got = _.long[ env.method ]( [] );
