@@ -67,6 +67,32 @@ function is( src )
   return false;
 }
 
+//
+
+function isCompact( src )
+{
+  if( _.argumentsArray.like( src ) )
+  return true;
+  if( _.bufferTyped.is( src ) )
+  return true;
+
+  return false;
+}
+
+//
+
+function isUnfolded( src )
+{
+  if( Object.prototype.toString.call( src ) === '[object Arguments]' )
+  return true;
+  if( Array.isArray( src ) )
+  return true
+  if( _.bufferTyped.is( src ) )
+  return true;
+
+  return false;
+}
+
 // function is( src )
 // {
 //
@@ -1139,6 +1165,8 @@ let LongExtension =
   // dichotomy
 
   is,
+  isCompact,
+  isUnfolded,
   isEmpty,
   isPopulated,
   like,
