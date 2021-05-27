@@ -175,16 +175,16 @@ function dichotomy( test )
 
 function likePerformance( test )
 {
-  /* Average of 5 million iterations of 14 input varaints
-  ╔═══════════════════╤═════╤══════════════════════════╗
-  ║                   │like │likeUsingisUsingInstanceOf╢
-  ╟───────────────────┼─────┼──────────────────────────╢
-  ║ **Njs : v10.24.1**│2.410│        1.913             ║
-  ╟───────────────────┼─────┼──────────────────────────╢
-  ║ **Njs : v14.17.0**│     │                          ║
-  ╟───────────────────┼─────┼──────────────────────────╢
-  ║Kos : Njs : v12.9.1│     │                          ║
-  ╚═══════════════════╧═════╧══════════════════════════╝
+  /* Average of 10 runs of 5 million iterations of 14 input varaints
+  ╔═══════════════════╤═════╤══════════════════════════╤═════╤═════════════════╗
+  ║                   │ like│likeUsingisUsingInstanceOf│  is │isUsingInstanceOf║
+  ╟───────────────────┼─────┼──────────────────────────┼─────┼─────────────────╢
+  ║ **Njs : v10.24.1**│2.410│           1.913          │1.267│      0.805      ║
+  ╟───────────────────┼─────┼──────────────────────────┼─────┼─────────────────╢
+  ║ **Njs : v14.17.0**│2.020│           2.004          │1.282│      0.869      ║
+  ╟───────────────────┼─────┼──────────────────────────┼─────┼─────────────────╢
+  ║Kos : Njs : v12.9.1│     │                          │     │                 ║
+  ╚═══════════════════╧═════╧══════════════════════════╧═════╧═════════════════╝
 
   */
   debugger;
@@ -194,7 +194,9 @@ function likePerformance( test )
   /* */
 
   likePerformanceTemplate( { method : 'like' } );
-  //likePerformanceTemplate( { method : 'likeUsingisUsingInstanceOf' } );
+  likePerformanceTemplate( { method : 'likeUsingisUsingInstanceOf' } );
+  likePerformanceTemplate( { method : 'is' } );
+  likePerformanceTemplate( { method : 'isUsingInstanceOf' } );
 
   /* */
 
@@ -250,7 +252,7 @@ function likePerformance( test )
     _.regexp[ env.name ]( env.anEmptyRegex );
     _.regexp[ env.name ]( env.aRegexWithFlag );
     _.regexp[ env.name ]( env.aComplexRegex );
-    _.regexp[ env.name ]( env.anEmptyString);
+    _.regexp[ env.name ]( env.anEmptyString );
     _.regexp[ env.name ]( env.aString );
     _.regexp[ env.name ]( env.stringObject );
 
