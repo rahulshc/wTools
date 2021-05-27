@@ -119,7 +119,7 @@ function isPerformance( test )
     Average of 10 runs of 1 million iteration of 24 _.long.is variations
     Values below are in seconds
     ╔═══════════════════╤═════╤═════════╤══════════╤══════════╗
-    ║                   │  is │ isOld ? │ isCompact│isUnfolded│ isUnfoldedSmartOrder ║
+    ║                   │  is │ isOld ? │ isCompact│ isUnfolded │ isUnfoldedSmartOrder │ isUnfoldedSmarter ║
     ╟───────────────────┼─────┼─────────┼──────────┼──────────╢
     ║ **Njs : v10.24.1**│3.662│  1.209  │   1.109  │   ?  ║
     ╟───────────────────┼─────┼─────────┼──────────┼──────────╢
@@ -136,9 +136,9 @@ function isPerformance( test )
   /* */
 
   isPerformanceTemplate( { method : 'is' } );
-  // isPerformanceTemplate( { method : 'isOld' } );
-  // isPerformanceTemplate( { method : 'isCompact' } );
-  // isPerformanceTemplate( { method : 'isUnfolded' } );
+  isPerformanceTemplate( { method : 'isOld' } );
+  isPerformanceTemplate( { method : 'isCompact' } );
+  isPerformanceTemplate( { method : 'isUnfolded' } );
   isPerformanceTemplate( { method : 'isUnfoldedSmartOrder' } );
   isPerformanceTemplate( { method : 'isUnfoldedSmarter' } );
 
