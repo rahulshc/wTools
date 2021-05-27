@@ -1,4 +1,4 @@
-( function _l0_l3_Looker_test_s_()
+( function _l0_l3_Class_test_s_()
 {
 
 'use strict';
@@ -19,17 +19,19 @@ const __ = _globals_.testing.wTools;
 
 function bulky( test )
 {
-  test.true( _.aux.is( _.looker ) );
+
+  test.true( _.symbol.is( _.class.iteratorSymbol ) )
+
 }
 
 // --
-// declaration
+//
 // --
 
 const Proto =
 {
 
-  name : 'Tools.Looker.l0.l3',
+  name : 'Tools.Class.l0.l3',
   silencing : 1,
 
   tests :
@@ -39,9 +41,7 @@ const Proto =
 
   }
 
-}
-
-//
+};
 
 const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )

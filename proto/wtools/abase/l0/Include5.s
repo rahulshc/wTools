@@ -1,5 +1,5 @@
 //#! /usr/bin/env node
-( function _Include5_s_()
+( function _l0_Include5_s_()
 {
 
 'use strict';
@@ -8,6 +8,7 @@ if( typeof module !== 'undefined' )
 {
   module[ 'exports' ] = require( './Include3.s' );
 
+  require( './l5/1Seeker.s' );
   require( './l5/ArgumentsArray.s' );
   require( './l5/Array.s' );
   require( './l5/ArraySet.s' );
@@ -36,7 +37,6 @@ if( typeof module !== 'undefined' )
   require( './l5/Introspector.s' );
   require( './l5/Itself.s' );
   require( './l5/Logic.s' );
-  require( './l5/Looker.s' );
   require( './l5/Long.s' );
   require( './l5/Map.s' );
   require( './l5/Module.s' );

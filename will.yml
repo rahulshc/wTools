@@ -179,7 +179,7 @@ path:
       raw: compiled
       content: prime
   npm.proto.entry:
-    - proto/wtools/abase/Layer1.s
+    - proto/wtools/abase/l1/Include.s
     - proto/node_modules/wTools
 reflector:
   reflect.proto:

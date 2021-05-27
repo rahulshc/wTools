@@ -1,16 +1,17 @@
-( function _l0_l9_Looker_test_s_()
+( function _l0_l3_Seeker_test_s_()
 {
 
 'use strict';
 
 if( typeof module !== 'undefined' )
 {
-  const _ = require( 'Tools' );
-  _.include( 'wTesting' );
+  const _ = require( '../Include1.s' );
+  require( 'wTesting' );
 }
 
 const _global = _global_;
 const _ = _global_.wTools;
+const __ = _globals_.testing.wTools;
 
 // --
 // tests
@@ -18,7 +19,7 @@ const _ = _global_.wTools;
 
 function bulky( test )
 {
-  test.true( _.aux.is( _.looker ) );
+  test.true( _.aux.is( _.seeker ) );
 }
 
 // --
@@ -28,12 +29,14 @@ function bulky( test )
 const Proto =
 {
 
-  name : 'Tools.Looker.l0.l9',
+  name : 'Tools.Seeker.l0.l3',
   silencing : 1,
 
   tests :
   {
+
     bulky,
+
   }
 
 }

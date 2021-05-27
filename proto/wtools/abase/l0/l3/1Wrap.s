@@ -89,7 +89,7 @@ function equalAre_functor( fo )
 
 //
 
-function iterate()
+function iterator()
 {
 
   let iterator = Object.create( null );
@@ -138,7 +138,7 @@ function declare( fo )
   _.class.declareBasic
   ({
     constructor : fo.class,
-    iterate,
+    iterator,
     equalAre : equalAre_functor( fo ),
     exportString,
     cloneShallow, /* xxx : implement */

@@ -87,7 +87,6 @@ function _cardinalWithKey( src, key )
 {
   if( !src.has( key ) )
   return -1;
-  debugger;
   let keys = this.keys( src );
   return keys.indexOf( key );
 }
