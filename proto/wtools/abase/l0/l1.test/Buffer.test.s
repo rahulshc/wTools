@@ -461,6 +461,12 @@ function bufferAnyIs( test )
   var got = _.buffer[ env.method ]( new U8x( [ 1, 2, 3 ] ), new BufferRaw( 5 ) );
   var expected = true;
   test.identical( got, expected );
+
+  /**/
+  test.case = `${__.entity.exportStringSolo( env )}, demonstrates a bug in is`;
+  var got = _.buffer[ env.method ]( { byteLength : 6 } );
+  var expected = false;
+  test.identical( got, expected );
   }
 }
 
