@@ -33,8 +33,6 @@
     "proto/wtools/abase/l0/Include5.s",
     "proto/wtools/abase/l0/Include7.s",
     "proto/wtools/abase/l1",
-    "proto/wtools/abase/Layer0.s",
-    "proto/wtools/abase/Layer1.s",
     "proto/node_modules",
     "out"
   ],

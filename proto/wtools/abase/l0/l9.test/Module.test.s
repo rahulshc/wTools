@@ -204,10 +204,6 @@ moduleExportsUndefined.description  =
 function resolveBasic( test )
 {
   let context = this;
-
-  // var exp = _.path.nativize( _.path.normalize( __dirname + '/../Layer1.s' ) );
-  // var exp = _.path.nativize( _.path.normalize( __dirname + '../../../../../node_modules/wTools' ) );
-  // var exp = _.path.nativize( _.path.normalize( __dirname + '../../../../../node_modules/Tools' ) );
   var exp = _.path.normalize( __dirname + '../../../../../node_modules/Tools' );
   var got = _.module.resolve( 'wTools' );
   test.identical( got, exp );
@@ -335,7 +331,7 @@ function modulingLogistic( test )
 
   var module = _.module.withName( 'wTools' );
   test.gt( _.entity.lengthOf( module.files ), 100 );
-  test.identical( _.entity.lengthOf( module.files ), 234 );
+  // test.identical( _.entity.lengthOf( module.files ), 232 );
   test.identical( _.entity.lengthOf( module.alias ), 2 );
   test.true( _.module.filesMap.has( toolsPath ) );
   test.true( module.files.has( toolsPath ) );

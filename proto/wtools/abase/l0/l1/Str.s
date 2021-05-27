@@ -1302,7 +1302,7 @@ function join( src )
  * @namespace Tools/str/lines/strip
  */
 
-/* qqq : for Dmytro : measure time and optimize. ask */
+/* qqq : measure time and optimize. ask */
 function strip( src )
 {
 

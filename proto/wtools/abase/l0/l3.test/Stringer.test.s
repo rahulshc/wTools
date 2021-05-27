@@ -5,7 +5,7 @@
 
 if( typeof module !== 'undefined' )
 {
-  const _ = require( '../Include3.s' );
+  const _ = require( '../Include1.s' );
   require( 'wTesting' );
 }
 
@@ -17,66 +17,9 @@ const __ = _globals_.testing.wTools;
 // tests
 // --
 
-function basic( test )
+function bulky( test )
 {
-
-  /* */
-
-  test.case = 'basic';
-  var it = _.stringer.it({ verbosity : 5 });
-  test.identical( it.tab, '' );
-  test.identical( it.dtab, '  ' );
-  test.identical( it.tabLevel, 0 );
-  test.identical( it.verbosity, 5 );
-  var exp = {}
-  test.identical( _.props.onlyOwn( _.prototype.each( it )[ 0 ] ), exp );
-  var exp =
-  {
-    'tab' : '',
-    'verbosity' : 5,
-    'tabLevel' : 0,
-  }
-  test.identical( _.props.onlyOwn( _.prototype.each( it )[ 1 ] ), exp );
-  var exp = new Set([ 'verbosity', 'Looker', 'iterator', 'iterationPrototype' ]);
-  test.identical( new Set( _.props.keys( _.props.onlyOwn( _.prototype.each( it )[ 2 ] ) ) ), exp );
-  var exp = new Set
-  ([
-    'OriginalLooker',
-    'constructor',
-    'optionsToIteration',
-    'iteratorRetype',
-    'iteratorInit',
-    'iteratorInitBegin',
-    'iteratorInitEnd',
-    'iteratorIterationMake',
-    'iterationMakeCommon',
-    'iterationMake',
-    'iterationProper',
-    'Iterator',
-    'Iteration',
-    'head',
-    'itUp',
-    'itDown',
-    'levelUp',
-    'levelDown',
-    'write',
-    'nlWrite',
-    'tabWrite',
-    'lineWrite',
-    'IterationPreserve',
-    'result',
-    'dtab',
-    'tab',
-    'verbosity',
-    'tabLevel',
-    'Looker',
-    'Prime'
-  ]);
-  test.identical( new Set( _.props.keys( _.props.onlyOwn( _.prototype.each( it )[ 3 ] ) ) ), exp );
-  test.identical( _.prototype.each( it ).length, 4 );
-
-  /* */
-
+  test.true( _.aux.is( _.stringer ) );
 }
 
 // --
@@ -92,7 +35,7 @@ const Proto =
   tests :
   {
 
-    basic,
+    bulky,
 
   }
 

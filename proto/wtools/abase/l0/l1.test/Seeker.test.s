@@ -1,4 +1,4 @@
-( function _l0_l1_Looker_test_s_()
+( function _l0_l1_Seeker_test_s_()
 {
 
 'use strict';
@@ -19,7 +19,7 @@ const __ = _globals_.testing.wTools;
 
 function bulky( test )
 {
-  test.true( _.aux.is( _.looker ) );
+  test.true( _.aux.is( _.seeker ) );
 }
 
 // --
@@ -29,7 +29,7 @@ function bulky( test )
 const Proto =
 {
 
-  name : 'Tools.Looker.l0.l1',
+  name : 'Tools.Seeker.l0.l1',
   silencing : 1,
 
   tests :
