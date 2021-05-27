@@ -132,9 +132,9 @@ let RegexpExtension =
 
   is,
   isUsingInstanceOf,
-  likeUsingisUsingInstanceOf,
   objectIs,
   like,
+  likeUsingisUsingInstanceOf,
 
   escape,
 

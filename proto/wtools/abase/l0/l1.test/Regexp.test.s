@@ -26,6 +26,8 @@ const __ = _globals_.testing.wTools;
 /* qqq : for junior : extend. ask how to */
 function dichotomy( test )
 {
+  dichotomyTemplate( { method : 'is' } );
+  dichotomyTemplate( { method : 'isUsingInstanceOf' } );
   dichotomyTemplate( { method : 'like' } );
   dichotomyTemplate( { method : 'likeUsingisUsingInstanceOf' } );
 
@@ -148,33 +150,51 @@ function dichotomy( test )
 
     test.case = 'empty string';
     var got = _.regexp[ env.method ]( '' );
-    var expected = true;
-    test.identical( got, expected );
+    if( env.method === 'is' || env.method === 'isUsingInstanceOf' )
+    test.identical( got, false );
+    else
+    test.identical( got, true );
 
     test.case = 'a string';
     var got = _.regexp[ env.method ]( 'str' );
-    var expected = true;
-    test.identical( got, expected );
+    if( env.method === 'is' || env.method === 'isUsingInstanceOf' )
+    test.identical( got, false );
+    else
+    test.identical( got, true );
 
     test.case = 'a string object';
     var got = _.regexp[ env.method ]( new String( 'str' ) );
-    var expected = true;
-    test.identical( got, expected );
+    if( env.method === 'is' || env.method === 'isUsingInstanceOf' )
+    test.identical( got, false );
+    else
+    test.identical( got, true );
   }
 }
 
 //
 
-function isPerformance( test )
+function likePerformance( test )
 {
+  /* Average of 5 million iterations of 14 input varaints
+  ╔═══════════════════╤═════╤══════════════════════════╗
+  ║                   │like │likeUsingisUsingInstanceOf╢
+  ╟───────────────────┼─────┼──────────────────────────╢
+  ║ **Njs : v10.24.1**│2.410│        1.913             ║
+  ╟───────────────────┼─────┼──────────────────────────╢
+  ║ **Njs : v14.17.0**│     │                          ║
+  ╟───────────────────┼─────┼──────────────────────────╢
+  ║Kos : Njs : v12.9.1│     │                          ║
+  ╚═══════════════════╧═════╧══════════════════════════╝
+
+  */
   debugger;
   var debugFlag = Config.debug;
   Config.debug = false;
 
   /* */
 
-  //isPerformanceTemplate( { method : 'like' } );
-  isPerformanceTemplate( { method : 'likeUsingisUsingInstanceOf' } );
+  likePerformanceTemplate( { method : 'like' } );
+  //likePerformanceTemplate( { method : 'likeUsingisUsingInstanceOf' } );
 
   /* */
 
@@ -183,7 +203,7 @@ function isPerformance( test )
 
   /* */
 
-  function isPerformanceTemplate( data )
+  function likePerformanceTemplate( data )
   {
     test.case = `${data.method}`;
     var took, time;
@@ -244,8 +264,8 @@ function isPerformance( test )
   }
 }
 
-isPerformance.timeOut = 1e7;
-isPerformance.experimental = true;
+likePerformance.timeOut = 1e7;
+likePerformance.experimental = true;
 
 // --
 // suite definition
@@ -261,7 +281,7 @@ const Proto =
   {
 
     dichotomy,
-    isPerformance
+    likePerformance
 
   }
 
