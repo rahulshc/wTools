@@ -275,8 +275,10 @@ function bufferNodeIs( test )
 
 function bufferAnyIs( test )
 {
-  bufferAnyIsTemplate( { method : 'anyIs' } );
-  bufferAnyIsTemplate( { method : 'anyIsUsingInstanceOf' } );
+
+  bufferAnyIsTemplate({ method : 'anyIs' });
+  // bufferAnyIsTemplate({ method : 'anyIsOld' });
+  // bufferAnyIsTemplate({ method : 'anyIsUsingInstanceOf' });
 
   function bufferAnyIsTemplate( env )
   {
@@ -325,7 +327,7 @@ function bufferAnyIs( test )
     var expected = false;
     test.identical( got, expected );
 
-  /* BufferTyped */
+    /* BufferTyped */
 
     test.case = `${__.entity.exportStringSolo( env )}, check U8x constructor`;
     var got = _.buffer[ env.method ]( U8x );
@@ -468,6 +470,7 @@ function bufferAnyIs( test )
 
 function bufferBytesIs( test )
 {
+
   test.case = 'check null';
   var got = _.bufferBytesIs( null );
   var expected = false;
@@ -645,6 +648,7 @@ function bufferBytesIs( test )
   var got = _.bufferBytesIs( new U8x( [ 1, 2, 3 ] ), new BufferRaw( 5 ) );
   var expected = true;
   test.identical( got, expected );
+
 }
 
 //
@@ -5839,31 +5843,31 @@ function isPerformance( test )
 {
   /* Average of 10 runs of 5 million iterations of 28 input variants
      Values below are in seconds
-  ╔═══════════════════╤═════╤════════════════════╗
-  ║                   │anyIs│anyIsUsingInstanceOf║
-  ╟───────────────────┼─────┼────────────────────╢
-  ║ **Njs : v10.24.1**│8.575│        6.500       ║
-  ╟───────────────────┼─────┼────────────────────╢
-  ║ **Njs : v14.17.0**│8.427│        5.661       ║
-  ╟───────────────────┼─────┼────────────────────╢
-  ║ **Njs : v15.14.0**│8.195│        5.763       ║
-  ╟───────────────────┼─────┼────────────────────╢
-  ║Kos : Njs : v12.9.1│     │                    ║
-  ╚═══════════════════╧═════╧════════════════════╝
+  ╔═══════════════════╤════════╤════════════════════╗
+  ║                   │anyIsOld│anyIsUsingInstanceOf║
+  ╟───────────────────┼────────┼────────────────────╢
+  ║ **Njs : v10.24.1**│8.575   │        6.500       ║
+  ╟───────────────────┼────────┼────────────────────╢
+  ║ **Njs : v14.17.0**│8.427   │        5.661       ║
+  ╟───────────────────┼────────┼────────────────────╢
+  ║Kos : Njs : v12.9.1│8.857   │        6.227       ║
+  ╚═══════════════════╧════════╧════════════════════╝
   */
-  debugger;
+
+  debugger; /* eslint-disable-line no-debugger */
   var debugFlag = Config.debug;
   Config.debug = false;
 
   /* */
 
   isPerformanceTemplate( { method : 'anyIs' } );
-  isPerformanceTemplate( { method : 'anyIsUsingInstanceOf' } );
+  // isPerformanceTemplate( { method : 'anyIsOld' } );
+  // isPerformanceTemplate( { method : 'anyIsUsingInstanceOf' } );
 
   /* */
 
   Config.debug = debugFlag;
-  debugger;
+  debugger; /* eslint-disable-line no-debugger */
 
   /* */
 
@@ -5884,36 +5888,6 @@ function isPerformance( test )
     console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
     test.identical( true, true );
   }
-
-  /* */
-
-  // test.case = 'anyIs';
-  // var took, time;
-  // var env = initializeVariables();
-  // time = _.time.now();
-  // for( let i = env.times; i > 0; i-- )
-  // {
-  //   env.name = 'anyIs';
-  //   run( env );
-  // }
-  // took = __.time.spent( time );
-  // console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  // test.identical( true, true );
-
-  /* */
-
-  // test.case = 'anyIsUsingInstanceOf';
-  // var took, time;
-  // var env = initializeVariables();
-  // time = _.time.now();
-  // for( let i = env.times; i > 0; i-- )
-  // {
-  //   env.name = 'anyIsUsingInstanceOf';
-  //   run( env );
-  // }
-  // took = __.time.spent( time );
-  // console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  // test.identical( true, true );
 
   /* */
 
@@ -5989,7 +5963,6 @@ function isPerformance( test )
 
 isPerformance.timeOut = 1e7;
 isPerformance.experimental = true;
-
 
 // --
 // declaration
