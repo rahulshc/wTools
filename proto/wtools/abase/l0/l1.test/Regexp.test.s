@@ -150,23 +150,23 @@ function dichotomy( test )
 
     test.case = 'empty string';
     var got = _.regexp[ env.method ]( '' );
-    if( env.method === 'is' || env.method === 'isUsingInstanceOf' )
+    if( env.method.startsWith( 'is' ) )
     test.identical( got, false );
-    else
+    if( env.method.startsWith( 'like' ) )
     test.identical( got, true );
 
     test.case = 'a string';
     var got = _.regexp[ env.method ]( 'str' );
-    if( env.method === 'is' || env.method === 'isUsingInstanceOf' )
+    if( env.method.startsWith( 'is' ) )
     test.identical( got, false );
-    else
+    if( env.method.startsWith( 'like' ) )
     test.identical( got, true );
 
     test.case = 'a string object';
     var got = _.regexp[ env.method ]( new String( 'str' ) );
-    if( env.method === 'is' || env.method === 'isUsingInstanceOf' )
+    if( env.method.startsWith( 'is' ) )
     test.identical( got, false );
-    else
+    if( env.method.startsWith( 'like' ) )
     test.identical( got, true );
   }
 }
@@ -176,15 +176,15 @@ function dichotomy( test )
 function likePerformance( test )
 {
   /* Average of 10 runs of 5 million iterations of 14 input varaints
-  ╔═══════════════════╤═════╤══════════════════════════╤═════╤═════════════════╗
-  ║                   │ like│likeUsingisUsingInstanceOf│  is │isUsingInstanceOf║
-  ╟───────────────────┼─────┼──────────────────────────┼─────┼─────────────────╢
-  ║ **Njs : v10.24.1**│2.410│           1.913          │1.267│      0.805      ║
-  ╟───────────────────┼─────┼──────────────────────────┼─────┼─────────────────╢
-  ║ **Njs : v14.17.0**│2.020│           2.004          │1.282│      0.869      ║
-  ╟───────────────────┼─────┼──────────────────────────┼─────┼─────────────────╢
-  ║Kos : Njs : v12.9.1│     │                          │     │                 ║
-  ╚═══════════════════╧═════╧══════════════════════════╧═════╧═════════════════╝
+  ╔═══════════════════╤═════╤═══════╤═══════════════════════════╤═════╤═════╤═════════════════╗
+  ║                   │ like│likeOld│ likeUsingisUsingInstanceOf│  is │isOld│isUsingInstanceOf║
+  ╟───────────────────┼─────┼───────│───────────────────────────┼─────┼─────│─────────────────╢
+  ║ **Njs : v10.24.1**│2.410│ 2.410 │    1.913                  │1.267│1.267│ 0.805           ║
+  ╟───────────────────┼─────┼───────│───────────────────────────┼─────┼─────│─────────────────╢
+  ║ **Njs : v14.17.0**│2.020│ 2.020 │    2.004                  │1.282│1.282│ 0.869           ║
+  ╟───────────────────┼─────┼───────│───────────────────────────┼─────┼─────│─────────────────╢
+  ║Kos : Njs : v12.9.1│     │       │                           │     │     │                 ║
+  ╚═══════════════════╧═════╧═══════╧───────────────────────────╧═════╧═════╧═════════════════╝
 
   */
   debugger;
