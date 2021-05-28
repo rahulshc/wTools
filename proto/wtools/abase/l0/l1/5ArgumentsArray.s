@@ -44,6 +44,17 @@ function like( src )
 
 //
 
+function likeUnfolded( src )
+{
+  if( Array.isArray( src ) )
+  return true;
+  if( Object.prototype.toString.call( src ) === '[object Arguments]' )
+  return true;
+  return false;
+}
+
+//
+
 function likeUsingIsFunctor( src )
 {
   if( _.argumentsArray.isUsingFunctor( src ) )
@@ -315,6 +326,7 @@ var ArgumentsArrayExtension =
   is, /* qqq : cover */
   isUsingFunctor,
   like, /* qqq : cover */
+  likeUnfolded,
   likeUsingIsFunctor,
   IsResizable,
 

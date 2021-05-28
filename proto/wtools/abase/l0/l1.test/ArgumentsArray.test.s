@@ -19,69 +19,62 @@ const __ = _globals_.testing.wTools;
 
 function dichotomy( test )
 {
+  dichotomyTemplate( { method : 'is' } );
+  dichotomyTemplate( { method : 'like' } );
+  dichotomyTemplate( { method : 'likeUnfolded' } );
+  dichotomyTemplate( { method : 'isUsingFunctor' } );
+  dichotomyTemplate( { method : 'likeUsingIsFunctor' } );
 
-  test.case = 'argumentsArray from empty array';
-  var src = _.argumentsArray.make( [] );
-  test.true( _.argumentsArray.is( src ) );
-  test.true( _.argumentsArray.like( src ) );
-  test.true( _.argumentsArray.isUsingFunctor( src ) );
-  test.true( _.argumentsArray.likeUsingIsFunctor( src ) );
-  test.true( !_.array.is( src ) );
-  test.true( !_.array.like( src ) );
+  function dichotomyTemplate( env )
+  {
+    test.case = `${__.entity.exportStringSolo( env )}, argumentsArray from empty array`;
+    var src = _.argumentsArray.make( [] );
+    test.true( _.argumentsArray[ env.method ]( src ) );
+    test.false( _.array.is( src ) );
+    test.false( _.array.like( src ) );
 
-  test.case = 'array';
-  var src = [ 1, 2, 3 ];
-  test.true( !_.argumentsArray.is( src ) );
-  test.true( !_.argumentsArray.isUsingFunctor( src ) );
-  test.true( _.argumentsArray.like( src ) );
-  test.true( _.argumentsArray.likeUsingIsFunctor( src ) );
-  test.true( _.array.is( src ) );
-  test.true( _.array.like( src ) );
+    test.case = `${__.entity.exportStringSolo( env )}, array`;
+    var src = [ 1, 2, 3 ];
+    if( env.method.startsWith( 'is' ) )
+    test.false( _.argumentsArray[ env.method ]( src ) );
+    if( env.method.startsWith( 'like' ) )
+    test.true( _.argumentsArray[ env.method ]( src ) );
+    test.true( _.array.is( src ) );
+    test.true( _.array.like( src ) );
 
-  test.case = 'argument object';
-  var src = arguments;
-  test.true( _.argumentsArray.is( src ) );
-  test.true( _.argumentsArray.isUsingFunctor( src ) );
-  test.true( _.argumentsArray.like( src ) );
-  test.true( _.argumentsArray.likeUsingIsFunctor( src ) );
-  test.true( !_.array.is( src ) );
-  test.true( !_.array.like( src ) );
+    test.case = `${__.entity.exportStringSolo( env )}, argument object`;
+    var src = arguments;
+    test.true( _.argumentsArray[ env.method ]( src ) );
+    test.false( _.array.is( src ) );
+    test.false( _.array.like( src ) );
 
-  test.case = 'array prototype';
-  var src = Array.prototype;
-  test.true( !_.argumentsArray.is( src ) );
-  test.true( !_.argumentsArray.isUsingFunctor( src ) );
-  test.true( _.argumentsArray.like( src ) );
-  test.true( _.argumentsArray.likeUsingIsFunctor( src ) );
-  test.true( _.array.is( src ) );
-  test.true( _.array.like( src ) );
+    test.case = `${__.entity.exportStringSolo( env )}, array prototype`;
+    var src = Array.prototype;
+    if( env.method.startsWith( 'is' ) )
+    test.false( _.argumentsArray[ env.method ]( src ) );
+    if( env.method.startsWith( 'like' ) )
+    test.true( _.argumentsArray[ env.method ]( src ) );
+    test.true( _.array.is( src ) );
+    test.true( _.array.like( src ) );
 
-  test.case = 'string';
-  var src = 'string';
-  test.false( _.argumentsArray.is( src ) );
-  test.false( _.argumentsArray.isUsingFunctor( src ) );
-  test.false( _.argumentsArray.like( src ) );
-  test.false( _.argumentsArray.likeUsingIsFunctor( src ) );
-  test.false( _.array.is( src ) );
-  test.false( _.array.like( src ) );
+    test.case = `${__.entity.exportStringSolo( env )}, string`;
+    var src = 'string';
+    test.false( _.argumentsArray[ env.method ]( src ) );
+    test.false( _.array.is( src ) );
+    test.false( _.array.like( src ) );
 
-  test.case = 'typed array';
-  var src = new U64x( 10 );
-  test.false( _.argumentsArray.is( src ) );
-  test.false( _.argumentsArray.isUsingFunctor( src ) );
-  test.false( _.argumentsArray.like( src ) );
-  test.false( _.argumentsArray.likeUsingIsFunctor( src ) );
-  test.false( _.array.is( src ) );
-  test.false( _.array.like( src ) );
+    test.case = `${__.entity.exportStringSolo( env )}, typed array`;
+    var src = new U64x( 10 );
+    test.false( _.argumentsArray[ env.method ]( src ) );
+    test.false( _.array.is( src ) );
+    test.false( _.array.like( src ) );
 
-  test.case = 'false array';
-  var src = { __proto__ : Array.prototype };
-  test.false( _.argumentsArray.is( src ) );
-  test.false( _.argumentsArray.isUsingFunctor( src ) );
-  test.false( _.argumentsArray.like( src ) );
-  test.false( _.argumentsArray.likeUsingIsFunctor( src ) );
-  test.false( _.array.is( src ) );
-  test.false( _.array.like( src ) );
+    test.case = `${__.entity.exportStringSolo( env )}, false array`;
+    var src = { __proto__ : Array.prototype };
+    test.false( _.argumentsArray[ env.method ]( src ) );
+    test.false( _.array.is( src ) );
+    test.false( _.array.like( src ) );
+  }
 }
 
 //
@@ -380,15 +373,15 @@ function from( test )
 function isPerformance( test )
 {
   /* Average of 10 runs of 5 million ierations of 8 input variants
-  ╔═══════════════════╤═════╤══════════════╤═════╤══════════════════╗
-  ║                   │  is │isUsingFunctor│ like│likeUsingIsFunctor║
-  ╟───────────────────┼─────┼──────────────┼─────┼──────────────────╢
-  ║ **Njs : v10.24.1**│0.594│     0.598    │0.767│       0.780      ║
-  ╟───────────────────┼─────┼──────────────┼─────┼──────────────────╢
-  ║ **Njs : v14.17.0**│0.552│     0.561    │0.665│       0.664      ║
-  ╟───────────────────┼─────┼──────────────┼─────┼──────────────────╢
-  ║Kos : Njs : v12.9.1│     │              │     │                  ║
-  ╚═══════════════════╧═════╧══════════════╧═════╧══════════════════╝
+  ╔═══════════════════╤═════╤═════╤══════════════╤═════╤═══════╤══════════════════╤════════════╗
+  ║                   │  is │isOld│isUsingFunctor│ like│likeOld│likeUsingIsFunctor│likeUnfolded║
+  ╟───────────────────┼─────┼─────┼──────────────┼─────┼───────┼──────────────────┼────────────╢
+  ║ **Njs : v10.24.1**│0.594│0.594│     0.598    │0.767│ 0.767 │       0.780      │    0.612   ║
+  ╟───────────────────┼─────┼─────┼──────────────┼─────┼───────┼──────────────────┼────────────╢
+  ║ **Njs : v14.17.0**│0.552│0.552│     0.561    │0.665│ 0.665 │       0.664      │    0.523   ║
+  ╟───────────────────┼─────┼─────┼──────────────┼─────┼───────┼──────────────────┼────────────╢
+  ║Kos : Njs : v12.9.1│     │     │              │     │       │                  │            ║
+  ╚═══════════════════╧═════╧═════╧══════════════╧═════╧═══════╧══════════════════╧════════════╝
   */
   debugger;
   var debugFlag = Config.debug;
@@ -399,6 +392,7 @@ function isPerformance( test )
   isPerformanceTemplate( { method : 'is' } );
   isPerformanceTemplate( { method : 'isUsingFunctor' } );
   isPerformanceTemplate( { method : 'like' } );
+  isPerformanceTemplate( { method : 'likeUnfolded' } );
   isPerformanceTemplate( { method : 'likeUsingIsFunctor' } );
 
   /* */
