@@ -383,7 +383,7 @@ function isPerformance( test )
   ║Kos : Njs : v12.9.1│     │     │              │     │       │                  │            ║
   ╚═══════════════════╧═════╧═════╧══════════════╧═════╧═══════╧══════════════════╧════════════╝
   */
-  debugger;
+  debugger; /* eslint-disable-line no-debugger */
   var debugFlag = Config.debug;
   Config.debug = false;
 
@@ -398,7 +398,7 @@ function isPerformance( test )
   /* */
 
   Config.debug = debugFlag;
-  debugger;
+  debugger; /* eslint-disable-line no-debugger */
 
   function isPerformanceTemplate( data )
   {
