@@ -54,6 +54,15 @@ function likeUsingisUsingInstanceOf( src )
   return false;
 }
 
+//
+
+function likeUnfolded( src )
+{
+  if( src instanceof RegExp || Object.prototype.toString.call( src ) === '[object String]' )
+  return true;
+  return false;
+}
+
 // //
 //
 // function regexpsLike( srcs )
@@ -135,6 +144,7 @@ let RegexpExtension =
   objectIs,
   like,
   likeUsingisUsingInstanceOf,
+  likeUnfolded,
 
   escape,
 

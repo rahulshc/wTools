@@ -29,6 +29,7 @@ function dichotomy( test )
   dichotomyTemplate( { method : 'is' } );
   dichotomyTemplate( { method : 'isUsingInstanceOf' } );
   dichotomyTemplate( { method : 'like' } );
+  dichotomyTemplate( { method : 'likeUnfolded' } );
   dichotomyTemplate( { method : 'likeUsingisUsingInstanceOf' } );
 
   function dichotomyTemplate( env )
@@ -173,39 +174,39 @@ function dichotomy( test )
 
 //
 
-function likePerformance( test )
+function isPerformance( test )
 {
   /* Average of 10 runs of 5 million iterations of 14 input varaints
-  ╔═══════════════════╤═════╤═══════╤═══════════════════════════╤═════╤═════╤═════════════════╗
-  ║                   │ like│likeOld│ likeUsingisUsingInstanceOf│  is │isOld│isUsingInstanceOf║
-  ╟───────────────────┼─────┼───────│───────────────────────────┼─────┼─────│─────────────────╢
-  ║ **Njs : v10.24.1**│2.410│ 2.410 │    1.913                  │1.267│1.267│ 0.805           ║
-  ╟───────────────────┼─────┼───────│───────────────────────────┼─────┼─────│─────────────────╢
-  ║ **Njs : v14.17.0**│2.020│ 2.020 │    2.004                  │1.282│1.282│ 0.869           ║
-  ╟───────────────────┼─────┼───────│───────────────────────────┼─────┼─────│─────────────────╢
-  ║Kos : Njs : v12.9.1│     │       │                           │     │     │                 ║
-  ╚═══════════════════╧═════╧═══════╧───────────────────────────╧═════╧═════╧═════════════════╝
-
+  ╔═══════════════════╤═════╤═════╤═════════════════╤═════╤═══════╤══════════════════════════╤════════════╗
+  ║                   │  is │isOld│isUsingInstanceOf│ like│likeOld│likeUsingisUsingInstanceOf│likeUnfolded║
+  ╟───────────────────┼─────┼─────┼─────────────────┼─────┼───────┼──────────────────────────┼────────────╢
+  ║ **Njs : v10.24.1**│1.267│1.267│      0.805      │2.410│ 2.410 │           1.913          │    1.285   ║
+  ╟───────────────────┼─────┼─────┼─────────────────┼─────┼───────┼──────────────────────────┼────────────╢
+  ║ **Njs : v14.17.0**│1.282│1.282│      0.869      │2.020│ 2.020 │           2.004          │    1.250   ║
+  ╟───────────────────┼─────┼─────┼─────────────────┼─────┼───────┼──────────────────────────┼────────────╢
+  ║Kos : Njs : v12.9.1│     │     │                 │     │       │                          │            ║
+  ╚═══════════════════╧═════╧═════╧═════════════════╧═════╧═══════╧══════════════════════════╧════════════╝
   */
-  debugger;
+  debugger; /* eslint-disable-line no-debugger */
   var debugFlag = Config.debug;
   Config.debug = false;
 
   /* */
 
-  likePerformanceTemplate( { method : 'like' } );
-  likePerformanceTemplate( { method : 'likeUsingisUsingInstanceOf' } );
-  likePerformanceTemplate( { method : 'is' } );
-  likePerformanceTemplate( { method : 'isUsingInstanceOf' } );
+  isPerformanceTemplate( { method : 'like' } );
+  isPerformanceTemplate( { method : 'likeUsingisUsingInstanceOf' } );
+  isPerformanceTemplate( { method : 'likeUnfolded' } );
+  isPerformanceTemplate( { method : 'is' } );
+  isPerformanceTemplate( { method : 'isUsingInstanceOf' } );
 
   /* */
 
   Config.debug = debugFlag;
-  debugger;
+  debugger; /* eslint-disable-line no-debugger */
 
   /* */
 
-  function likePerformanceTemplate( data )
+  function isPerformanceTemplate( data )
   {
     test.case = `${data.method}`;
     var took, time;
@@ -266,8 +267,8 @@ function likePerformance( test )
   }
 }
 
-likePerformance.timeOut = 1e7;
-likePerformance.experimental = true;
+isPerformance.timeOut = 1e7;
+isPerformance.experimental = true;
 
 // --
 // suite definition
@@ -283,7 +284,7 @@ const Proto =
   {
 
     dichotomy,
-    likePerformance
+    isPerformance
 
   }
 
