@@ -20,6 +20,15 @@ function nodeIs( src )
   return false;
 }
 
+//
+
+function nodeIsOLd( src )
+{
+  if( typeof BufferNode !== 'undefined' )
+  return src instanceof BufferNode;
+  return false;
+}
+
 // --
 // declaration
 // --
@@ -41,6 +50,7 @@ let BufferNodeExtension =
   // dichotomy
 
   nodeIs,
+  nodeIsOLd,
   is : nodeIs,
   like : nodeIs,
 
