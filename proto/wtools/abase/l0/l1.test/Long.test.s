@@ -22,6 +22,7 @@ function dichotomy( test )
 {
 
   dichotomyTemplate( { method : 'is' } );
+  dichotomyTemplate( { method : 'isOld' } );
   dichotomyTemplate( { method : 'like' } );
   dichotomyTemplate( { method : 'isCompact' } );
   dichotomyTemplate( { method : 'isUnfolded' } );
