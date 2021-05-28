@@ -25,6 +25,8 @@ function dichotomy( test )
   dichotomyTemplate( { method : 'like' } );
   dichotomyTemplate( { method : 'isCompact' } );
   dichotomyTemplate( { method : 'isUnfolded' } );
+  dichotomyTemplate( { method : 'isUnfoldedSmartOrder' } );
+  dichotomyTemplate( { method : 'isUnfoldedSmarter' } );
 
   function dichotomyTemplate( env )
   {
@@ -118,15 +120,15 @@ function isPerformance( test )
    /*
     Average of 10 runs of 1 million iteration of 24 _.long.is variations
     Values below are in seconds
-    ╔═══════════════════╤═════╤═════════╤══════════╤══════════╗
-    ║                   │  is │ isOld ? │ isCompact│ isUnfolded │ isUnfoldedSmartOrder │ isUnfoldedSmarter ║
-    ╟───────────────────┼─────┼─────────┼──────────┼──────────╢
-    ║ **Njs : v10.24.1**│3.662│  1.209  │   1.109  │   ?  ║
-    ╟───────────────────┼─────┼─────────┼──────────┼──────────╢
-    ║ **Njs : v14.17.0**│4.244│  1.263  │   1.156  │   ?  ║
-    ╟───────────────────┼─────┼─────────┼──────────┼──────────╢
-    ║Kos : Njs : v12.9.1│5.053│  2.008  │   1.976  │   1.600  ║
-    ╚═══════════════════╧═════╧═════════╧══════════╧══════════╝
+    ╔═══════════════════╤═════╤═════╤═════════╤══════════╤════════════════════╤═════════════════╗
+    ║                   │  is │isOld│isCompact│isUnfolded│isUnfoldedSmartOrder│isUnfoldedSmarter║
+    ╟───────────────────┼─────┼─────┼─────────┼──────────┼────────────────────┼─────────────────╢
+    ║ **Njs : v10.24.1**│0.598│3.592│  1.211  │  1.137   │      0.823         │    0.628        ║
+    ╟───────────────────┼─────┼─────┼─────────┼──────────┼────────────────────┼─────────────────╢
+    ║ **Njs : v14.17.0**│0.596│4.197│  1.275  │  1.217   │      0.863         │    0.590        ║
+    ╟───────────────────┼─────┼─────┼─────────┼──────────┼────────────────────┼─────────────────╢
+    ║Kos : Njs : v12.9.1│     │     │         │          │                    │                 ║
+    ╚═══════════════════╧═════╧═════╧═════════╧══════════╧════════════════════╧═════════════════╝
     qqq : for Rahul : update the table please
   */
   debugger; /* eslint-disable-line no-debugger */

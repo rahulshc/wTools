@@ -63,7 +63,7 @@ function is_functor()
 {
 
   const TypedArray = Object.getPrototypeOf( Int8Array );
-  const iteratorSymbol = Symbol.iterator;
+  //const iteratorSymbol = Symbol.iterator;
 
   if( _global_.BufferNode )
   return isNjs;
@@ -89,7 +89,7 @@ function is_functor()
     return false;
   }
 
-  function isNrowser( src )
+  function isBrowser( src )
   {
     if( Array.isArray( src ) )
     return true
@@ -175,7 +175,7 @@ function isUnfoldedSmarter_functor()
 {
 
   const TypedArray = Object.getPrototypeOf( Int8Array );
-  const iteratorSymbol = Symbol.iterator;
+  //const iteratorSymbol = Symbol.iterator;
 
   if( _global_.BufferNode )
   return isUnfoldedSmarterNjs;
@@ -201,7 +201,7 @@ function isUnfoldedSmarter_functor()
     return false;
   }
 
-  function isUnfoldedSmarterNrowser( src )
+  function isUnfoldedSmarterBrowser( src )
   {
     if( Array.isArray( src ) )
     return true
