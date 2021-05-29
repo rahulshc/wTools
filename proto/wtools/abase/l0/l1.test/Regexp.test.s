@@ -34,42 +34,42 @@ function dichotomy( test )
 
   function dichotomyTemplate( env )
   {
-    test.case = 'undefined';
+    test.case = `${__.entity.exportStringSolo( env )}, undefined`;
     var got = _.regexp[ env.method ]( undefined );
     var expected = false;
     test.identical( got, expected );
 
-    test.case = 'null';
+    test.case = `${__.entity.exportStringSolo( env )}, null`;
     var got = _.regexp[ env.method ]( null );
     var expected = false;
     test.identical( got, expected );
 
-    test.case = 'false';
+    test.case = `${__.entity.exportStringSolo( env )}, false`;
     var got = _.regexp[ env.method ]( false );
     var expected = false;
     test.identical( got, expected );
 
-    test.case = 'NaN';
+    test.case = `${__.entity.exportStringSolo( env )}, NaN`;
     var got = _.regexp[ env.method ]( NaN );
     var expected = false;
     test.identical( got, expected );
 
-    test.case = 'a boolean';
+    test.case = `${__.entity.exportStringSolo( env )}, a boolean`;
     var got = _.regexp[ env.method ]( true );
     var expected = false;
     test.identical( got, expected );
 
-    test.case = 'a number';
+    test.case = `${__.entity.exportStringSolo( env )}, a number`;
     var got = _.regexp[ env.method ]( 13 );
     var expected = false;
     test.identical( got, expected );
 
-    test.case = 'a function';
+    test.case = `${__.entity.exportStringSolo( env )}, a function`;
     var got = _.regexp[ env.method ]( function() {} );
     var expected = false;
     test.identical( got, expected );
 
-    test.case = 'constructor';
+    test.case = `${__.entity.exportStringSolo( env )}, constructor`;
     function Constr( x )
     {
       this.x = x;
@@ -79,91 +79,91 @@ function dichotomy( test )
     var expected = false;
     test.identical( got, expected );
 
-    test.case = 'BufferRaw';
+    test.case = `${__.entity.exportStringSolo( env )}, BufferRaw`;
     var got = _.regexp[ env.method ]( new BufferRaw( 5 ) );
     var expected = false;
     test.identical( got, expected );
 
-    test.case = 'BufferView';
+    test.case = `${__.entity.exportStringSolo( env )}, BufferView`;
     var got = _.regexp[ env.method ]( new BufferView( new BufferRaw( 5 ) ) );
     var expected = false;
     test.identical( got, expected );
 
-    test.case = 'Set';
+    test.case = `${__.entity.exportStringSolo( env )}, Set`;
     var got = _.regexp[ env.method ]( new Set( [ 5 ] ) );
     var expected = false;
     test.identical( got, expected );
 
-    test.case = 'Map';
+    test.case = `${__.entity.exportStringSolo( env )}, Map`;
     var got = _.regexp[ env.method ]( new HashMap( [ [ 1, 2 ] ] ) );
     var expected = false;
     test.identical( got, expected );
 
-    test.case = 'pure empty map';
+    test.case = `${__.entity.exportStringSolo( env )}, pure empty map`;
     var got = _.regexp[ env.method ]( Object.create( null ) );
     var expected = false;
     test.identical( got, expected );
 
-    test.case = 'pure map';
+    test.case = `${__.entity.exportStringSolo( env )}, pure map`;
     var src = Object.create( null );
     src.x = 1;
     var got = _.regexp[ env.method ]( src );
     var expected = false;
     test.identical( got, expected );
 
-    test.case = 'map from pure map';
+    test.case = `${__.entity.exportStringSolo( env )}, map from pure map`;
     var src = Object.create( Object.create( null ) );
     var got = _.regexp[ env.method ]( src );
     var expected = false;
     test.identical( got, expected );
 
-    test.case = 'an empty object';
+    test.case = `${__.entity.exportStringSolo( env )}, an empty object`;
     var got = _.regexp[ env.method ]( {} );
     var expected = false;
     test.identical( got, expected );
 
-    test.case = 'an object';
+    test.case = `${__.entity.exportStringSolo( env )}, an object`;
     var got = _.regexp[ env.method ]( { a : 7, b : 13 } );
     var expected = false;
     test.identical( got, expected );
 
     /* */
 
-    test.case = 'regexp';
+    test.case = `${__.entity.exportStringSolo( env )}, regexp`;
     var got = _.regexp[ env.method ]( /a/ );
     var expected = true;
     test.identical( got, expected );
 
-    test.case = 'regexp empty';
+    test.case = `${__.entity.exportStringSolo( env )}, regexp empty`;
     var got = _.regexp[ env.method ]( /(?:)/ );
     var expected = true;
     test.identical( got, expected );
 
-    test.case = 'regexp with flags';
+    test.case = `${__.entity.exportStringSolo( env )}, regexp with flags`;
     var got = _.regexp[ env.method ]( /a/g );
     var expected = true;
     test.identical( got, expected );
 
-    test.case = 'regexp complex';
+    test.case = `${__.entity.exportStringSolo( env )}, regexp complex`;
     var got = _.regexp[ env.method ]( /(?:\d{3}|\(\d{3}\))([-\/\.])\d{3}\1\d{4}/ );
     var expected = true;
     test.identical( got, expected );
 
-    test.case = 'empty string';
+    test.case = `${__.entity.exportStringSolo( env )}, empty string`;
     var got = _.regexp[ env.method ]( '' );
     if( env.method.startsWith( 'is' ) )
     test.identical( got, false );
     if( env.method.startsWith( 'like' ) )
     test.identical( got, true );
 
-    test.case = 'a string';
+    test.case = `${__.entity.exportStringSolo( env )}, a string`;
     var got = _.regexp[ env.method ]( 'str' );
     if( env.method.startsWith( 'is' ) )
     test.identical( got, false );
     if( env.method.startsWith( 'like' ) )
     test.identical( got, true );
 
-    test.case = 'a string object';
+    test.case = `${__.entity.exportStringSolo( env )}, a string object`;
     var got = _.regexp[ env.method ]( new String( 'str' ) );
     if( env.method.startsWith( 'is' ) )
     test.identical( got, false );
@@ -193,11 +193,11 @@ function isPerformance( test )
 
   /* */
 
-  isPerformanceTemplate( { method : 'like' } );
-  isPerformanceTemplate( { method : 'likeUsingisUsingInstanceOf' } );
+  //isPerformanceTemplate( { method : 'like' } );
+  //isPerformanceTemplate( { method : 'likeUsingisUsingInstanceOf' } );
   isPerformanceTemplate( { method : 'likeUnfolded' } );
-  isPerformanceTemplate( { method : 'is' } );
-  isPerformanceTemplate( { method : 'isUsingInstanceOf' } );
+  //isPerformanceTemplate( { method : 'is' } );
+  //isPerformanceTemplate( { method : 'isUsingInstanceOf' } );
 
   /* */
 
