@@ -27,67 +27,67 @@ function bufferNodeIs( test )
 
   function isTemplate ( env )
   {
-    test.case = 'node buffer';
+    test.case = `${__.entity.exportStringSolo( env )}, node buffer`;
     var src = BufferNode.alloc( 10 );
     var got =  _.bufferNode[ env.method ]( src );
     test.identical( got, true );
 
-    test.case = 'buffer node from array';
+    test.case = `${__.entity.exportStringSolo( env )}, buffer node from array`;
     var src = BufferNode.from( [ 2, 4 ] );
     var got = _.bufferNode[ env.method ]( src );
     test.identical( got, true );
 
-    test.case = 'extra arguments';
+    test.case = `${__.entity.exportStringSolo( env )}, extra arguments`;
     var src = BufferNode.from( [ 1, 2 ] );
     var got = _.bufferNode[ env.method ]( src, new SharedArrayBuffer( 1 ) );
     test.identical( got, true );
 
-    test.case = 'node buffer with chracter encoding';
+    test.case = `${__.entity.exportStringSolo( env )}, node buffer with chracter encoding`;
     var src = BufferNode.from( 'tést', 'latin1' );
     var got = _.bufferNode[ env.method ]( src );
     test.identical( got, true );
 
-    test.case = 'Uninitialized node buffer'
+    test.case = `${__.entity.exportStringSolo( env )}, Uninitialized node buffer`;
     var src = BufferNode.allocUnsafe( 10 );
     var got = _.bufferNode[ env.method ]( src );
     test.identical( got, true );
 
-    test.case = 'Node Buffer using truncated bytes'
+    test.case = `${__.entity.exportStringSolo( env )}, Node Buffer using truncated bytes`;
     var src = BufferNode.from( [ 257, 257.5, -255, '1' ] );
     var got = _.bufferNode[ env.method ]( src );
     test.identical( got, true );
 
-    test.case = 'typed array';
+    test.case = `${__.entity.exportStringSolo( env )}, typed array`;
     var src = new F32x( [ 1, 2 ] );
     var got = _.bufferNode[ env.method ]( src );
     test.identical( got, false );
 
-    test.case = 'U8xClamped Array';
+    test.case = `${__.entity.exportStringSolo( env )}, U8xClamped Array`;
     var src = new U8xClamped( 10*10*4 );
     var got = _.bufferNode[ env.method ]( src );
     test.identical( got, false );
 
-    test.case = 'array buffer';
+    test.case = `${__.entity.exportStringSolo( env )}, array buffer`;
     var src = new BufferRaw( [ 1, 2 ] );
     var got = _.bufferNode[ env.method ]( src );
     test.identical( got, false );
 
-    test.case = 'shared array buffer';
+    test.case = `${__.entity.exportStringSolo( env )}, shared array buffer`;
     var src = new SharedArrayBuffer( [ 1, 2 ] );
     var got = _.bufferNode[ env.method ]( src );
     test.identical( got, false );
 
-    test.case = 'view buffer, BufferRaw';
+    test.case = `${__.entity.exportStringSolo( env )}, view buffer, BufferRaw`;
     var src = new BufferView( new BufferRaw( [ 10 ] ) );
     var got = _.bufferNode[ env.method ]( src );
     test.identical( got, false );
 
-    test.case = 'view buffer, SharedArrayBuffer';
+    test.case = `${__.entity.exportStringSolo( env )}, view buffer, SharedArrayBuffer`;
     var src = new BufferView( new SharedArrayBuffer( [ 10 ] ) );
     var got = _.bufferNode[ env.method ]( src );
     test.identical( got, false );
 
-    test.case = 'no arguments';
+    test.case = `${__.entity.exportStringSolo( env )}, no arguments`;
     var got = _.bufferNode[ env.method ]();
     test.identical( got, false );
   }
