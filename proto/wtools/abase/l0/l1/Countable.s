@@ -20,7 +20,7 @@ function is( src )
 
   if( _.primitive.is( src ) )
   return false;
-
+  // [object GeneratorFunction] ?
   if( _.routineIs( _.class.methodIteratorOf( src ) ) ) /* qqq : for Junior : cover please */
   if( !_.mapIs( src ) )
   return true;

@@ -42,6 +42,152 @@ function dichotomy( test )
 
 }
 
+//
+
+function as( test )
+{
+  asTemplate( { method : 'as' } );
+
+  function asTemplate( env )
+  {
+    test.case = `${__.entity.exportStringSolo( env )}, null`;
+    var got = _.set[ env.method ]( null );
+    var expected = new Set;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, undefined`;
+    var got = _.set[ env.method ]( undefined );
+    var expected = new Set;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, no arguments`;
+    var got = _.set[ env.method ]();
+    var expected = new Set;
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, boolean false`;
+    var got = _.set[ env.method ]( false );
+    var expected = new Set( [ false ] );
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, boolean true`;
+    var got = _.set[ env.method ]( true );
+    var expected = new Set( [ true ] );
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, NaN`;
+    var got = _.set[ env.method ]( NaN );
+    var expected = new Set( [ NaN ] );
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a Date`;
+    var src = new Date();
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ src ] );
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a Symbol`;
+    var src = Symbol( 'a' );
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ src ] );
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a Function`;
+    var src = new function(){};
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ src ] );
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a pure Object`;
+    var src = Object.create( null );
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ src ] );
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, Object Prototype`;
+    var src = Object.prototype;
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ src ] );
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, argument object`;
+    var src = arguments;
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ ... src ] );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, a Set`;
+    var src = new Set( [ 1, 1, 2, 2 ] );
+    var got = _.set[ env.method ]( src );
+    var expected = src;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a WeakSet`;
+    var obj1 = { a : 1, b : 2 };
+    var obj2 = { a : 3, b : 4 }
+    var src = new WeakSet( [ obj1, obj2 ] );
+    var got = _.set[ env.method ]( src );
+    var expected = src;
+    test.identical( got, expected );
+
+    /* */
+    test.case = `${__.entity.exportStringSolo( env )}, an Array Prototype`;
+    var src = Array.prototype;
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ ... src ] );
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, an Array`;
+    var src = [ 1, 2, 3 ];
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ ... src ] );
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a typed Array`;
+    var src = new Uint8Array( 32 );
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ ... src ] );
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a string`;
+    var src = new Uint8Array( 32 );
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ ... src ] );
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a hash map`;
+    var src = new Map( [ [ 1, 'one' ], [ 2, 'two' ], [ 3, 'three' ] ] );
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ ... src ] );
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, set`;
+    var src = new Set([1, 2, 3, 4, 5]);
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ ... src ] );
+    test.identical( got, expected );
+
+    //does not pass the test. [object GeneratorFunction] is not covered
+    test.case = `${__.entity.exportStringSolo( env )}, an Iterable Object`;
+    var src = {};
+    src[ Symbol.iterator ] = function* ()
+    {
+      yield 1;
+      yield 2;
+      yield 3;
+    };
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ ... src ] );
+    test.identical( got, expected );
+
+  }
+
+}
+
 // --
 // declaration
 // --
@@ -56,7 +202,7 @@ const Proto =
   {
 
     dichotomy,
-
+    as
   }
 
 }
