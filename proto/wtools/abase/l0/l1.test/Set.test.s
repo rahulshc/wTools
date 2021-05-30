@@ -199,19 +199,6 @@ function as( test )
     var expected = new Set( [ ... src ] );
     test.identical( got, expected );
 
-    //Throws error: [object GeneratorFunction] is not covered
-    test.case = `${__.entity.exportStringSolo( env )}, an Object having a generator function as it's Symbol.iterator`;
-    var src = {};
-    src[ Symbol.iterator ] = function* ()
-    {
-      yield 1;
-      yield 2;
-      yield 3;
-    };
-    var got = _.set[ env.method ]( src );
-    var expected = new Set( [ ... src ] );
-    test.identical( got, expected );
-
     test.case = `${__.entity.exportStringSolo( env )}, a generator function`;
     var src = function* ( i ) 
     {
@@ -242,15 +229,43 @@ function as( test )
     var expected = new Set( [ ... src ]);
     test.identical( got, expected );
 
-    //Throws error: [object GeneratorFunction] is not covered
+    //Throws error. [object GeneratorFunction] is not covered
     test.case = `${__.entity.exportStringSolo( env )}, a set having generator function as it's Symbol.iterator`;
     var src = new Set;
+    src[ Symbol.iterator ] = function* ()
+    {
+      yield 1;
+      yield 1;
+      yield 3;
+    };
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ ... src ]);
+    test.identical( got, expected );
+
+    //Throws error. [object GeneratorFunction] is not covered
+    test.case = `${__.entity.exportStringSolo( env )}, an Object having a generator function as it's Symbol.iterator`;
+    var src = {};
     src[ Symbol.iterator ] = function* ()
     {
       yield 1;
       yield 2;
       yield 3;
     };
+    var got = _.set[ env.method ]( new src );
+    var expected = new Set( [ ... src ]);
+    test.identical( got, expected );
+
+    //Throws error. [object GeneratorFunction] is not covered
+    test.case = `${__.entity.exportStringSolo( env )}, an iterable defined inside a class`;
+    class srcTemplate
+    {
+      *[Symbol.iterator] () 
+      {
+        yield 'a';
+        yield 'b';
+      }
+    }
+    var src = new srcTemplate;
     var got = _.set[ env.method ]( src );
     var expected = new Set( [ ... src ]);
     test.identical( got, expected );
