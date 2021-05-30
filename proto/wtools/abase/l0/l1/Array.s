@@ -164,6 +164,7 @@ function as( src )
   _.assert( arguments.length === 1 );
   _.assert( src !== undefined );
 
+  //src === undefined check below conflicts with above assert
   if( src === null || src === undefined )
   return [];
   else if( _.array.like( src ) )

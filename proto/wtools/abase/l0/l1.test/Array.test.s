@@ -1665,36 +1665,69 @@ function from( test )
 
 function as( test )
 {
-  test.case = 'an empty array';
-  var got = _.array.as( [] );
-  var expected = [];
-  test.identical( got, expected );
+  asTemplate( { method : 'as' } );
 
-  test.case = 'null';
-  var got = _.array.as( null );
-  var expected = [];
-  test.identical( got, expected );
+  function asTemplate( env )
+  {
+    test.case = `${__.entity.exportStringSolo( env )}, an empty array`;
+    var got = _.array[ env.method ]( [] );
+    var expected = [];
+    test.identical( got, expected );
 
-  test.case = 'array contains an object';
-  var got = _.array.as( { a : 1, b : 2 } );
-  var expected = [ { a : 1, b : 2 } ];
-  test.identical( got, expected );
+    test.case = `${__.entity.exportStringSolo( env )}, an array`;
+    var src = [ 1, 2, 3 ]
+    var got = _.array[ env.method ]( src );
+    var expected = src;
+    test.identical( got, expected );
 
-  test.case = 'array contains boolean';
-  var got = _.array.as( true );
-  var expected = [ true ];
-  test.identical( got, expected );
+    test.case = `${__.entity.exportStringSolo( env )}, a string primitive`;
+    var src = 'string';
+    var got = _.array[ env.method ]( src );
+    var expected =  [ src ];
+    test.identical( got, expected );
 
-  /**/
+    test.case = `${__.entity.exportStringSolo( env )}, a string object`;
+    var src = new String( 'string' );
+    var got = _.array[ env.method ]( src );
+    var expected =  [ src ];
+    test.identical( got, expected );
 
-  if( !Config.debug )
-  return;
+    test.case = `${__.entity.exportStringSolo( env )}, argument object`;
+    var src = arguments;
+    var got = _.array[ env.method ]( src );
+    var expected =[ ... src ];
+    test.identical( got, expected );
 
-  test.case = 'nothing';
-  test.shouldThrowErrorSync( () => _.array.as() );
 
-  test.case = 'undefined';
-  test.shouldThrowErrorSync( () => _.array.as( undefined ) );
+    test.case = `${__.entity.exportStringSolo( env )}, null`;
+    var got = _.array[ env.method ]( null );
+    var expected = [];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, array contains an object`;
+    var got = _.array[ env.method ]( { a : 1, b : 2 } );
+    var expected = [ { a : 1, b : 2 } ];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, array contains boolean`;
+    var got = _.array[ env.method ]( true );
+    var expected = [ true ];
+    test.identical( got, expected );
+
+    /**/
+
+    if( !Config.debug )
+    return;
+
+    test.case = `${__.entity.exportStringSolo( env )}, nothing`;
+    test.shouldThrowErrorSync( () => _.array[ env.method ]() );
+
+    test.case = `${__.entity.exportStringSolo( env )}, undefined`;
+    test.shouldThrowErrorSync( () => _.array[ env.method ]( undefined ) );
+
+    test.case = `${__.entity.exportStringSolo( env )}, multiple arguments`;
+    test.shouldThrowErrorSync( () => _.array[ env.method ]( 1, 2 ) );
+  }
 };
 
 // --
