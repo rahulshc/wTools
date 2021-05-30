@@ -47,11 +47,17 @@ function dichotomy( test )
 function as( test )
 {
   asTemplate( { method : 'as' } );
+  asTemplate( { method : 'asTest' } );
 
   function asTemplate( env )
   {
     test.case = `${__.entity.exportStringSolo( env )}, null`;
     var got = _.set[ env.method ]( null );
+    var expected = new Set;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, two arguments`;
+    var got = _.set[ env.method ]( null, [ 1, 2, 3] );
     var expected = new Set;
     test.identical( got, expected );
 
@@ -94,7 +100,6 @@ function as( test )
     var expected = new Set( [ src ] );
     test.identical( got, expected );
 
-    //String object has a Symbol.iterator property. should we cover this case in countable?
     test.case = `${__.entity.exportStringSolo( env )}, a string object`;
     var src = new String( 'string' );
     var got = _.set[ env.method ]( src );
@@ -137,10 +142,13 @@ function as( test )
     var expected = new Set( [ src ] );
     test.identical( got, expected );
 
-    test.case = `${__.entity.exportStringSolo( env )}, argument object`;
-    var src = arguments;
+    test.case = `${__.entity.exportStringSolo( env )}, a weak map`;
+    var obj1 = {};
+    var obj2 = {};
+    var obj3 = {};
+    var src = new WeakMap( [ [ obj1, 'one' ], [ obj2, 'two' ], [ obj3, 'three' ] ] );
     var got = _.set[ env.method ]( src );
-    var expected = new Set( [ ... src ] );
+    var expected = new Set( [ src ] );
     test.identical( got, expected );
 
     /* */
@@ -159,7 +167,21 @@ function as( test )
     var expected = src;
     test.identical( got, expected );
 
+    test.case = `${__.entity.exportStringSolo( env )}, a WeakSet with user defined iterable at initialization`;
+    var obj1 = { a : 1, b : 2 };
+    var obj2 = { a : 3, b : 4 }
+    var src = new WeakSet( function* () { yield obj1, yield obj2 }() );
+    var got = _.set[ env.method ]( src );
+    var expected = src;
+    test.identical( got, expected );
+
     /* */
+    test.case = `${__.entity.exportStringSolo( env )}, argument object`;
+    var src = arguments;
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ ... src ] );
+    test.identical( got, expected );
+
     test.case = `${__.entity.exportStringSolo( env )}, an Array Prototype`;
     var src = Array.prototype;
     var got = _.set[ env.method ]( src );
@@ -169,6 +191,12 @@ function as( test )
     test.case = `${__.entity.exportStringSolo( env )}, an Array`;
     var src = [ 1, 2, 3 ];
     var got = _.set[ env.method ]( src );
+    var expected = new Set( [ ... src ] );
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, two array arguments`;
+    var src = [ 1, 2, 3 ];
+    var got = _.set[ env.method ]( src, src );
     var expected = new Set( [ ... src ] );
     test.identical( got, expected );
 
@@ -184,15 +212,6 @@ function as( test )
     var expected = new Set( [ ... src ] );
     test.identical( got, expected );
 
-    test.case = `${__.entity.exportStringSolo( env )}, a weak map`;
-    var obj1 = {};
-    var obj2 = {};
-    var obj3 = {};
-    var src = new WeakMap( [ [ obj1, 'one' ], [ obj2, 'two' ], [ obj3, 'three' ] ] );
-    var got = _.set[ env.method ]( src );
-    var expected = new Set( [ src ] );
-    test.identical( got, expected );
-
     test.case = `${__.entity.exportStringSolo( env )}, a generator function`;
     var src = function* ( i ) 
     {
@@ -201,14 +220,6 @@ function as( test )
     }
     var got = _.set[ env.method ]( src( 10 ) );
     var expected = new Set( [ ... src( 10 ) ] );
-    test.identical( got, expected );
-
-    test.case = `${__.entity.exportStringSolo( env )}, a WeakSet with user defined iterable at initialization`;
-    var obj1 = { a : 1, b : 2 };
-    var obj2 = { a : 3, b : 4 }
-    var src = new WeakSet( function* () { yield obj1, yield obj2 }() );
-    var got = _.set[ env.method ]( src );
-    var expected = src;
     test.identical( got, expected );
 
     test.case = `${__.entity.exportStringSolo( env )}, an array having generator function as it's Symbol.iterator`;
@@ -263,9 +274,7 @@ function as( test )
     var got = _.set[ env.method ]( src );
     var expected = new Set( [ ... src ]);
     test.identical( got, expected );
-
   }
-
 }
 
 // --
