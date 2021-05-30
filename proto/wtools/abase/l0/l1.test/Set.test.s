@@ -230,9 +230,8 @@ function as( test )
     var expected = src;
     test.identical( got, expected );
 
-    //Throws error
-    test.case = `${__.entity.exportStringSolo( env )}, a set having generator function as it's Symbol.iterator`;
-    var src = new Set;
+    test.case = `${__.entity.exportStringSolo( env )}, an array having generator function as it's Symbol.iterator`;
+    var src = [];
     src[ Symbol.iterator ] = function* ()
     {
       yield 1;
@@ -243,8 +242,9 @@ function as( test )
     var expected = new Set( [ ... src ]);
     test.identical( got, expected );
 
-    test.case = `${__.entity.exportStringSolo( env )}, an array having generator function as it's Symbol.iterator`;
-    var src = [];
+    //Throws error: [object GeneratorFunction] is not covered
+    test.case = `${__.entity.exportStringSolo( env )}, a set having generator function as it's Symbol.iterator`;
+    var src = new Set;
     src[ Symbol.iterator ] = function* ()
     {
       yield 1;
