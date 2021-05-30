@@ -82,6 +82,25 @@ function as( test )
     var expected = new Set( [ NaN ] );
     test.identical( got, expected );
 
+    test.case = `${__.entity.exportStringSolo( env )}, a Number`;
+    var src = 123;
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ src ] );
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a string primitive`;
+    var src = 'string';
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ src ] );
+    test.identical( got, expected );
+
+    //String object has a Symbol.iterator property. should we cover this case in countable?
+    test.case = `${__.entity.exportStringSolo( env )}, a string object`;
+    var src = new String( 'string' );
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ src ] );
+    test.identical( got, expected );
+
     test.case = `${__.entity.exportStringSolo( env )}, a Date`;
     var src = new Date();
     var got = _.set[ env.method ]( src );
@@ -100,8 +119,14 @@ function as( test )
     var expected = new Set( [ src ] );
     test.identical( got, expected );
 
-    test.case = `${__.entity.exportStringSolo( env )}, a pure Object`;
+    test.case = `${__.entity.exportStringSolo( env )}, a pure map`;
     var src = Object.create( null );
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ src ] );
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a map`;
+    var src = { a : 1, b : 2 };
     var got = _.set[ env.method ]( src );
     var expected = new Set( [ src ] );
     test.identical( got, expected );
@@ -153,12 +178,6 @@ function as( test )
     var expected = new Set( [ ... src ] );
     test.identical( got, expected );
 
-    test.case = `${__.entity.exportStringSolo( env )}, a string`;
-    var src = new Uint8Array( 32 );
-    var got = _.set[ env.method ]( src );
-    var expected = new Set( [ ... src ] );
-    test.identical( got, expected );
-
     test.case = `${__.entity.exportStringSolo( env )}, a hash map`;
     var src = new Map( [ [ 1, 'one' ], [ 2, 'two' ], [ 3, 'three' ] ] );
     var got = _.set[ env.method ]( src );
@@ -171,8 +190,8 @@ function as( test )
     var expected = new Set( [ ... src ] );
     test.identical( got, expected );
 
-    //does not pass the test. [object GeneratorFunction] is not covered
-    test.case = `${__.entity.exportStringSolo( env )}, an Iterable Object`;
+    //Throws error, does not pass the test. [object GeneratorFunction] as the Symbol.iterator is not covered
+    test.case = `${__.entity.exportStringSolo( env )}, an Object having a generator function as it's Symbol.iterator`;
     var src = {};
     src[ Symbol.iterator ] = function* ()
     {
@@ -182,6 +201,49 @@ function as( test )
     };
     var got = _.set[ env.method ]( src );
     var expected = new Set( [ ... src ] );
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a generator function`;
+    var src = function* ( i ) 
+    {
+      yield i;
+      yield i + 10;
+    }
+    var got = _.set[ env.method ]( src( 10 ) );
+    var expected = new Set( [ ... src( 10 ) ] );
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a WeakSet with user defined iterable at initialization`;
+    var obj1 = { a : 1, b : 2 };
+    var obj2 = { a : 3, b : 4 }
+    var src = new WeakSet( function* () { yield obj1, yield obj2 }() );
+    var got = _.set[ env.method ]( src );
+    var expected = src;
+    test.identical( got, expected );
+
+    //Throws error: What should be the expected? new Set( [ ... src ]) or src?
+    test.case = `${__.entity.exportStringSolo( env )}, a set having generator function as it's Symbol.iterator`;
+    var src = new Set;
+    src[ Symbol.iterator ] = function* ()
+    {
+      yield 1;
+      yield 2;
+      yield 3;
+    };
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ ... src ]);
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, an array having generator function as it's Symbol.iterator`;
+    var src = [];
+    src[ Symbol.iterator ] = function* ()
+    {
+      yield 1;
+      yield 2;
+      yield 3;
+    };
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ ... src ]);
     test.identical( got, expected );
 
   }

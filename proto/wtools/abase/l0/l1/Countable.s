@@ -20,7 +20,9 @@ function is( src )
 
   if( _.primitive.is( src ) )
   return false;
-  // [object GeneratorFunction] ?
+  /* _.class.methodIteratorOf( src ) has already a check, asserting src is a routine; _.routineIs wrapper is redundant.
+     [object GeneratorFunction] is not being covered
+  */
   if( _.routineIs( _.class.methodIteratorOf( src ) ) ) /* qqq : for Junior : cover please */
   if( !_.mapIs( src ) )
   return true;
