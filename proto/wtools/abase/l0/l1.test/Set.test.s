@@ -193,12 +193,6 @@ function as( test )
     var expected = new Set( [ src ] );
     test.identical( got, expected );
 
-    test.case = `${__.entity.exportStringSolo( env )}, set`;
-    var src = new Set([1, 2, 3, 4, 5]);
-    var got = _.set[ env.method ]( src );
-    var expected = new Set( [ ... src ] );
-    test.identical( got, expected );
-
     test.case = `${__.entity.exportStringSolo( env )}, a generator function`;
     var src = function* ( i ) 
     {
@@ -251,7 +245,7 @@ function as( test )
       yield 2;
       yield 3;
     };
-    var got = _.set[ env.method ]( new src );
+    var got = _.set[ env.method ]( src );
     var expected = new Set( [ ... src ]);
     test.identical( got, expected );
 
