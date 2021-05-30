@@ -184,13 +184,22 @@ function as( test )
     var expected = new Set( [ ... src ] );
     test.identical( got, expected );
 
+    test.case = `${__.entity.exportStringSolo( env )}, a weak map`;
+    var obj1 = {};
+    var obj2 = {};
+    var obj3 = {};
+    var src = new WeakMap( [ [ obj1, 'one' ], [ obj2, 'two' ], [ obj3, 'three' ] ] );
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ src ] );
+    test.identical( got, expected );
+
     test.case = `${__.entity.exportStringSolo( env )}, set`;
     var src = new Set([1, 2, 3, 4, 5]);
     var got = _.set[ env.method ]( src );
     var expected = new Set( [ ... src ] );
     test.identical( got, expected );
 
-    //Throws error, does not pass the test. [object GeneratorFunction] as the Symbol.iterator is not covered
+    //Throws error: [object GeneratorFunction] is not covered
     test.case = `${__.entity.exportStringSolo( env )}, an Object having a generator function as it's Symbol.iterator`;
     var src = {};
     src[ Symbol.iterator ] = function* ()
@@ -221,7 +230,7 @@ function as( test )
     var expected = src;
     test.identical( got, expected );
 
-    //Throws error: What should be the expected? new Set( [ ... src ]) or src?
+    //Throws error
     test.case = `${__.entity.exportStringSolo( env )}, a set having generator function as it's Symbol.iterator`;
     var src = new Set;
     src[ Symbol.iterator ] = function* ()
