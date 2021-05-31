@@ -46,7 +46,7 @@ function dichotomy( test )
 
 function as( test )
 {
-  asTemplate( { method : 'as' } );
+  //asTemplate( { method : 'as' } );
   asTemplate( { method : 'asTest' } );
 
   function asTemplate( env )
@@ -234,7 +234,7 @@ function as( test )
     var expected = new Set( [ ... src ]);
     test.identical( got, expected );
 
-    //Throws error. [object GeneratorFunction] is not covered
+    //Throws error. [object GeneratorFunction] is not covered as a Symbol.iterator
     test.case = `${__.entity.exportStringSolo( env )}, a set having generator function as it's Symbol.iterator`;
     var src = new Set;
     src[ Symbol.iterator ] = function* ()
@@ -247,7 +247,7 @@ function as( test )
     var expected = new Set( [ ... src ]);
     test.identical( got, expected );
 
-    //Throws error. [object GeneratorFunction] is not covered
+    //Throws error. [object GeneratorFunction] is not covered as a Symbol.iterator
     test.case = `${__.entity.exportStringSolo( env )}, an Object having a generator function as it's Symbol.iterator`;
     var src = {};
     src[ Symbol.iterator ] = function* ()
@@ -260,7 +260,7 @@ function as( test )
     var expected = new Set( [ ... src ]);
     test.identical( got, expected );
 
-    //Throws error. [object GeneratorFunction] is not covered
+    //Throws error. [object GeneratorFunction] is not covered as a Symbol.iterator
     test.case = `${__.entity.exportStringSolo( env )}, an iterable defined inside a class`;
     class srcTemplate
     {
