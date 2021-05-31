@@ -1693,9 +1693,9 @@ function as( test )
     var src = Array.prototype;
     var got = _.array[ env.method ]( src );
     var expected = [ ... src ];
-    console.log(expected);
     test.identical( got, expected );
 
+    //Fails test. [object GeneratorFunction] is not covered as a Symbol.iterator
     test.case = `${__.entity.exportStringSolo( env )}, an array having generator function as it's Symbol.iterator`;
     var src = [];
     src[ Symbol.iterator ] = function* ()
@@ -1706,12 +1706,6 @@ function as( test )
     };
     var got =_.array[ env.method ]( src );
     var expected = [ ... src ];
-    test.identical( got, expected );
-
-    test.case = `${__.entity.exportStringSolo( env )}, an array with user defined iterable at initialization`;
-    var src = [ ( function* () { yield obj1, yield obj2 }() ) ];
-    var got = _.array[ env.method ]( src );
-    var expected = src;
     test.identical( got, expected );
 
     /* */
@@ -1833,6 +1827,12 @@ function as( test )
 
     test.case = `${__.entity.exportStringSolo( env )}, a Set`;
     var src = new Set( [ 1, 1, 2, 2 ] );
+    var got = _.array[ env.method ]( src );
+    var expected = [ ... src ];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, an set with user defined iterable at initialization`;
+    var src = new Set( function* () { yield 1, yield 1 }() );
     var got = _.array[ env.method ]( src );
     var expected = [ ... src ];
     test.identical( got, expected );
