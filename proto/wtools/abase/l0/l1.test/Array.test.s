@@ -1666,6 +1666,7 @@ function from( test )
 function as( test )
 {
   asTemplate( { method : 'as' } );
+  asTemplate( { method : 'asTest' } );
 
   function asTemplate( env )
   {
@@ -1691,7 +1692,8 @@ function as( test )
     test.case = `${__.entity.exportStringSolo( env )}, an Array Prototype`;
     var src = Array.prototype;
     var got = _.array[ env.method ]( src );
-    var expected = src;
+    var expected = [ ... src ];
+    console.log(expected);
     test.identical( got, expected );
 
     test.case = `${__.entity.exportStringSolo( env )}, an array having generator function as it's Symbol.iterator`;
@@ -1704,6 +1706,12 @@ function as( test )
     };
     var got =_.array[ env.method ]( src );
     var expected = [ ... src ];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, an array with user defined iterable at initialization`;
+    var src = [ ( function* () { yield obj1, yield obj2 }() ) ];
+    var got = _.array[ env.method ]( src );
+    var expected = src;
     test.identical( got, expected );
 
     /* */
@@ -1825,6 +1833,49 @@ function as( test )
 
     test.case = `${__.entity.exportStringSolo( env )}, a Set`;
     var src = new Set( [ 1, 1, 2, 2 ] );
+    var got = _.array[ env.method ]( src );
+    var expected = [ ... src ];
+    test.identical( got, expected );
+
+    /**/
+
+     //Throws error. [object GeneratorFunction] is not covered as a Symbol.iterator
+    test.case = `${__.entity.exportStringSolo( env )}, a set having generator function as it's Symbol.iterator`;
+    var src = new Set();
+    src[ Symbol.iterator ] = function* ()
+    {
+      yield 1;
+      yield 1;
+      yield 3;
+    };
+    var got = _.array[ env.method ]( src );
+    var expected = [ ... src ];
+    test.identical( got, expected );
+
+    //Throws error. [object GeneratorFunction] is not covered as a Symbol.iterator
+    test.case = `${__.entity.exportStringSolo( env )}, an Object having a generator function as it's Symbol.iterator`;
+    var src = {};
+    src[ Symbol.iterator ] = function* ()
+    {
+      yield 1;
+      yield 2;
+      yield 3;
+    };
+    var got = _.array[ env.method ]( src );
+    var expected = [ ... src ];
+    test.identical( got, expected );
+
+    //Throws error. [object GeneratorFunction] is not covered as a Symbol.iterator
+    test.case = `${__.entity.exportStringSolo( env )}, an iterable defined inside a class`;
+    class srcTemplate
+    {
+      *[Symbol.iterator] () 
+      {
+        yield 'a';
+        yield 'b';
+      }
+    }
+    var src = new srcTemplate;
     var got = _.array[ env.method ]( src );
     var expected = [ ... src ];
     test.identical( got, expected );

@@ -178,6 +178,21 @@ function as( src )
 
 //
 
+function asTest( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( src !== undefined );
+
+  if( src === null )
+  return [];
+  if( src[ Symbol.iterator ] && !_.str.is( src ) )
+  return [ ... src ];
+
+  return [ src ];
+}
+
+//
+
 function asShallow( src )
 {
   _.assert( arguments.length === 1 );
@@ -237,6 +252,7 @@ let ArrayExtension =
   cloneShallow : _.argumentsArray.cloneShallow, /* qqq : for junior : cover */
   from : _.argumentsArray.from, /* qqq : for junior : cover */
   as,
+  asTest,
   asShallow,
 
   // meta
