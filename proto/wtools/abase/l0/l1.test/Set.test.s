@@ -236,7 +236,7 @@ function as( test )
 
     //Throws error. [object GeneratorFunction] is not covered as a Symbol.iterator
     test.case = `${__.entity.exportStringSolo( env )}, a set having generator function as it's Symbol.iterator`;
-    var src = new Set;
+    var src = new Set();
     src[ Symbol.iterator ] = function* ()
     {
       yield 1;
