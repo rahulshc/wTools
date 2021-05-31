@@ -46,7 +46,7 @@ function dichotomy( test )
 
 function as( test )
 {
-  //asTemplate( { method : 'as' } );
+  asTemplate( { method : 'as' } );
   asTemplate( { method : 'asTest' } );
 
   function asTemplate( env )
