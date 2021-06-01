@@ -1692,10 +1692,12 @@ function as( test )
     test.case = `${__.entity.exportStringSolo( env )}, an Array Prototype`;
     var src = Array.prototype;
     var got = _.array[ env.method ]( src );
+    if( env.method === 'asTest')
     var expected = [ ... src ];
+    if( env.method === 'as')
+    var expected = src;
     test.identical( got, expected );
 
-    //Fails test. [object GeneratorFunction] is not covered as a Symbol.iterator
     test.case = `${__.entity.exportStringSolo( env )}, an array having generator function as it's Symbol.iterator`;
     var src = [];
     src[ Symbol.iterator ] = function* ()
@@ -1705,7 +1707,10 @@ function as( test )
       yield 3;
     };
     var got =_.array[ env.method ]( src );
+    if( env.method === 'asTest')
     var expected = [ ... src ];
+    if( env.method === 'as')
+    var expected = src;
     test.identical( got, expected );
 
     /* */
