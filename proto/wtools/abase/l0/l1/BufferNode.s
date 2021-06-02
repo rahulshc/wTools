@@ -22,6 +22,23 @@ function nodeIs( src )
 
 //
 
+function nodeIsUsingFunctor_functor()
+{
+  let isBufferNode = 'undefined';
+  return nodeIsUsingFunctor;
+
+  function nodeIsUsingFunctor( src )
+  {
+    if( typeof BufferNode !== isBufferNode )
+    return src instanceof BufferNode;
+    return false;
+  }
+}
+
+let nodeIsUsingFunctor = nodeIsUsingFunctor_functor();
+
+//
+
 function nodeIsOLd( src )
 {
   if( typeof BufferNode !== 'undefined' )
@@ -51,6 +68,7 @@ let BufferNodeExtension =
 
   nodeIs,
   nodeIsOLd,
+  nodeIsUsingFunctor,
   is : nodeIs,
   like : nodeIs,
 

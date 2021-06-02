@@ -23,7 +23,8 @@ function bufferNodeIs( test )
   return;
 
   isTemplate( { method : 'nodeIs' } );
-  isTemplate( { method : 'nodeIsOLd' } )
+  isTemplate( { method : 'nodeIsOLd' } );
+  isTemplate( { method : 'nodeIsUsingFunctor' } );
 
   function isTemplate ( env )
   {
@@ -99,15 +100,15 @@ function isPerformance( test )
 {
   /* Average of 10 runs of 5 million iterations of 14 input variants
      Values below are in seconds
-  ╔═══════════════════╤══════╤═════════╗
-  ║                   │nodeIs│nodeIsOld║
-  ╟───────────────────┼──────┼─────────╢
-  ║ **Njs : v10.24.1**│0.883 │  0.839  ║
-  ╟───────────────────┼──────┼─────────╢
-  ║ **Njs : v14.17.0**│1.057 │  0.989  ║
-  ╟───────────────────┼──────┼─────────╢
-  ║Kos : Njs : v12.9.1│      │         ║
-  ╚═══════════════════╧══════╧═════════╝
+  ╔══════════════╤══════╤═════════╤══════════════════╗
+  ║              │nodeIs│nodeIsOld│nodeIsUsingFunctor║
+  ╟──────────────┼──────┼─────────┼──────────────────╢
+  ║Njs : v10.24.1│0.883 │0.839    │0.843             ║
+  ╟──────────────┼──────┼─────────┼──────────────────╢
+  ║Njs : v14.17.0│1.057 │0.989    │0.971             ║
+  ╟──────────────┼──────┼─────────┼──────────────────╢
+  ║ Njs : v12.9.1│      │         │                  ║
+  ╚══════════════╧══════╧═════════╧══════════════════╝
   */
 
   if( !Config.interpreter === 'njs' )
@@ -121,7 +122,7 @@ function isPerformance( test )
 
   isPerformanceTemplate( { method : 'nodeIs' } );
   isPerformanceTemplate( { method : 'nodeIsOLd' } );
-
+  isPerformanceTemplate( { method : 'nodeIsUsingFunctor' } );
   /* */
 
   Config.debug = debugFlag;
