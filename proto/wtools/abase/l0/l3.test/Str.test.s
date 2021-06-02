@@ -378,33 +378,33 @@ function strConcat( test )
   var got = _.strConcat( srcs, o );
   test.identical( got, '\na\n ... \nb\n ... \nc\n' );
 
-  test.case = 'onPairWithDelimeter - not default, use options map, lines without lineDelimter';
-  var srcs = [ 'a', 'b', 'c', 'd' ];
-  var onPairWithDelimeter = ( src1, src2, o ) => src1 + o.optionsForToStr.prefix + src2;
-  var o = { onPairWithDelimeter, optionsForToStr : { prefix : ' .. ' } };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, 'a b c d' );
-
-  test.case = 'onPairWithDelimeter - not default, use options map, lines with lineDelimter at the end of line';
-  var srcs = [ 'a\n', 'b\n', 'c' ];
-  var onPairWithDelimeter = ( src1, src2, o ) => src1 + o.optionsForToStr.prefix + src2;
-  var o = { onPairWithDelimeter, optionsForToStr : { prefix : ' .. ' } };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, 'a\n .. b\n .. c' );
-
-  test.case = 'onPairWithDelimeter - not default, use options map, lines with lineDelimter at the begin of line';
-  var srcs = [ '\na', '\nb', '\nc' ];
-  var onPairWithDelimeter = ( src1, src2, o ) => src1 + o.optionsForToStr.prefix + src2;
-  var o = { onPairWithDelimeter, optionsForToStr : { prefix : ' .. ' } };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, '\na .. \nb .. \nc' );
-
-  test.case = 'onPairWithDelimeter - not default, use options map, lines with lineDelimter at the begin and the end of line';
-  var srcs = [ '\na\n', '\nb\n', '\nc\n' ];
-  var onPairWithDelimeter = ( src1, src2, o ) => src1 + o.optionsForToStr.prefix + src2;
-  var o = { onPairWithDelimeter, optionsForToStr : { prefix : ' .. ' } };
-  var got = _.strConcat( srcs, o );
-  test.identical( got, '\na\n .. \nb\n .. \nc\n' );
+  // test.case = 'onPairWithDelimeter - not default, use options map, lines without lineDelimter';
+  // var srcs = [ 'a', 'b', 'c', 'd' ];
+  // var onPairWithDelimeter = ( src1, src2, o ) => src1 + o.optionsForToStr.prefix + src2;
+  // var o = { onPairWithDelimeter, optionsForToStr : { prefix : ' .. ' } };
+  // var got = _.strConcat( srcs, o );
+  // test.identical( got, 'a b c d' );
+  //
+  // test.case = 'onPairWithDelimeter - not default, use options map, lines with lineDelimter at the end of line';
+  // var srcs = [ 'a\n', 'b\n', 'c' ];
+  // var onPairWithDelimeter = ( src1, src2, o ) => src1 + o.optionsForToStr.prefix + src2;
+  // var o = { onPairWithDelimeter, optionsForToStr : { prefix : ' .. ' } };
+  // var got = _.strConcat( srcs, o );
+  // test.identical( got, 'a\n .. b\n .. c' );
+  //
+  // test.case = 'onPairWithDelimeter - not default, use options map, lines with lineDelimter at the begin of line';
+  // var srcs = [ '\na', '\nb', '\nc' ];
+  // var onPairWithDelimeter = ( src1, src2, o ) => src1 + o.optionsForToStr.prefix + src2;
+  // var o = { onPairWithDelimeter, optionsForToStr : { prefix : ' .. ' } };
+  // var got = _.strConcat( srcs, o );
+  // test.identical( got, '\na .. \nb .. \nc' );
+  //
+  // test.case = 'onPairWithDelimeter - not default, use options map, lines with lineDelimter at the begin and the end of line';
+  // var srcs = [ '\na\n', '\nb\n', '\nc\n' ];
+  // var onPairWithDelimeter = ( src1, src2, o ) => src1 + o.optionsForToStr.prefix + src2;
+  // var o = { onPairWithDelimeter, optionsForToStr : { prefix : ' .. ' } };
+  // var got = _.strConcat( srcs, o );
+  // test.identical( got, '\na\n .. \nb\n .. \nc\n' );
 
   /* - */
 
