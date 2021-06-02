@@ -1105,10 +1105,10 @@ function strEscape( o )
         result += '\\t';
         break;
 
-      /* qqq : for Rahul : extend coverage of routine _.strEscape. don't forget this test case */
-      case 0x0b /* '\v' */ :
-        result += '\\v';
-        break;
+      // /* xxx : extend coverage of routine _.strEscape. don't forget this test case */
+      // case 0x0b /* '\v' */ :
+      //   result += '\\v';
+      //   break;
 
       default :
         if( code < 32 )
@@ -1131,6 +1131,7 @@ strEscape.defaults =
 {
   src : null,
   stringWrapper : '\'',
+  charsToEscape : null, /* xxx : qqq : implement */
 }
 
 //
