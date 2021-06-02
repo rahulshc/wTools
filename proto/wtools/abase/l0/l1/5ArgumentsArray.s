@@ -18,6 +18,13 @@ function is( src )
 
 //
 
+function isOld( src )
+{
+  return Object.prototype.toString.call( src ) === '[object Arguments]';
+}
+
+//
+
 function isUsingFunctor_functor( src )
 {
   let argumentObject = '[object Arguments]';
@@ -34,6 +41,17 @@ let isUsingFunctor = isUsingFunctor_functor();
 //
 
 function like( src )
+{
+  if( _.argumentsArray.is( src ) )
+  return true;
+  if( _.array.is( src ) )
+  return true;
+  return false;
+}
+
+//
+
+function likeOld( src )
 {
   if( _.argumentsArray.is( src ) )
   return true;
@@ -324,8 +342,10 @@ var ArgumentsArrayExtension =
   // dichotomy
 
   is, /* qqq : cover */
+  isOld,
   isUsingFunctor,
   like, /* qqq : cover */
+  likeOld,
   likeUnfolded,
   likeUsingIsFunctor,
   IsResizable,

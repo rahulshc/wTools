@@ -20,7 +20,9 @@ const __ = _globals_.testing.wTools;
 function dichotomy( test )
 {
   dichotomyTemplate( { method : 'is' } );
+  dichotomyTemplate( { method : 'isOld' } );
   dichotomyTemplate( { method : 'like' } );
+  dichotomyTemplate( { method : 'likeOld' } );
   dichotomyTemplate( { method : 'likeUnfolded' } );
   dichotomyTemplate( { method : 'isUsingFunctor' } );
   dichotomyTemplate( { method : 'likeUsingIsFunctor' } );
@@ -373,15 +375,15 @@ function from( test )
 function isPerformance( test )
 {
   /* Average of 10 runs of 5 million ierations of 8 input variants
-  ╔═══════════════════╤═════╤═════╤══════════════╤═════╤═══════╤══════════════════╤════════════╗
-  ║                   │  is │isOld│isUsingFunctor│ like│likeOld│likeUsingIsFunctor│likeUnfolded║
-  ╟───────────────────┼─────┼─────┼──────────────┼─────┼───────┼──────────────────┼────────────╢
-  ║ **Njs : v10.24.1**│0.594│0.594│     0.598    │0.767│ 0.767 │       0.780      │    0.612   ║
-  ╟───────────────────┼─────┼─────┼──────────────┼─────┼───────┼──────────────────┼────────────╢
-  ║ **Njs : v14.17.0**│0.552│0.552│     0.561    │0.665│ 0.665 │       0.664      │    0.523   ║
-  ╟───────────────────┼─────┼─────┼──────────────┼─────┼───────┼──────────────────┼────────────╢
-  ║Kos : Njs : v12.9.1│     │     │              │     │       │                  │            ║
-  ╚═══════════════════╧═════╧═════╧══════════════╧═════╧═══════╧══════════════════╧════════════╝
+  ╔════════════════════════╤═════╤═════╤══════════════╤═════╤═══════╤══════════════════╤════════════╗
+  ║                        │  is │isOld│isUsingFunctor│ like│likeOld│likeUsingIsFunctor│likeUnfolded║
+  ╟────────────────────────┼─────┼─────┼──────────────┼─────┼───────┼──────────────────┼────────────╢
+  ║Windows-10-20H2, 10.24.1│0.594│0.594│  0.598       │0.767│0.767  │     0.780        │  0.612     ║
+  ╟────────────────────────┼─────┼─────┼──────────────┼─────┼───────┼──────────────────┼────────────╢
+  ║Windows-10-20H2, 14.17.0│0.592│0.552│  0.561       │0.767│0.665  │     0.664        │  0.523     ║
+  ╟────────────────────────┼─────┼─────┼──────────────┼─────┼───────┼──────────────────┼────────────╢
+  ║   Linux-Kos, 12.9.1    │     │     │              │     │       │                  │            ║
+  ╚════════════════════════╧═════╧═════╧══════════════╧═════╧═══════╧══════════════════╧════════════╝
   */
   debugger; /* eslint-disable-line no-debugger */
   var debugFlag = Config.debug;
@@ -390,8 +392,10 @@ function isPerformance( test )
   /* */
 
   isPerformanceTemplate( { method : 'is' } );
+  isPerformanceTemplate( { method : 'isOld' } );
   isPerformanceTemplate( { method : 'isUsingFunctor' } );
   isPerformanceTemplate( { method : 'like' } );
+  isPerformanceTemplate( { method : 'likeOld' } );
   isPerformanceTemplate( { method : 'likeUnfolded' } );
   isPerformanceTemplate( { method : 'likeUsingIsFunctor' } );
 
