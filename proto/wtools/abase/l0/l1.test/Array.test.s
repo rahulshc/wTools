@@ -1662,12 +1662,12 @@ function from( test )
 }
 
 //
-function asTestRoutine( test )
+function asWithCasesNotImplemented( test )
 {
-  asTestRoutineTemplate( { method : 'as' } );
-  asTestRoutineTemplate( { method : 'asTest' } );
+  asWithCasesNotImplementedTemplate( { method : 'as' } );
+  asWithCasesNotImplementedTemplate( { method : 'asTest' } );
 
-  function asTestRoutineTemplate( env )
+  function asWithCasesNotImplementedTemplate( env )
   {
     //Throws error. [object GeneratorFunction] is not covered as a Symbol.iterator
     test.case = `${__.entity.exportStringSolo( env )}, a set having generator function as it's Symbol.iterator`;
@@ -1931,7 +1931,7 @@ const Proto =
     makeUndefined,
     from,
     as,
-    asTestRoutine,
+    asWithCasesNotImplemented,
 
   }
 
