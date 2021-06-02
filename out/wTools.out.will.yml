@@ -264,7 +264,9 @@ module:
           - ../proto/wtools/abase/l0/l1.test/Container.test.s
           - ../proto/wtools/abase/l0/l1.test/ContainerAdapter.test.s
           - ../proto/wtools/abase/l0/l1.test/Countable.test.s
+          - ../proto/wtools/abase/l0/l1.test/Diagnostic.test.s
           - ../proto/wtools/abase/l0/l1.test/Entity.test.s
+          - ../proto/wtools/abase/l0/l1.test/Err.test.s
           - ../proto/wtools/abase/l0/l1.test/HashMap.test.s
           - ../proto/wtools/abase/l0/l1.test/Itself.test.s
           - ../proto/wtools/abase/l0/l1.test/Logic.test.s
@@ -320,6 +322,7 @@ module:
           - ../proto/wtools/abase/l0/l3/Time.s
           - ../proto/wtools/abase/l0/l3/Unroll.s
           - ../proto/wtools/abase/l0/l3/Vector.s
+          - ../proto/wtools/abase/l0/l3/zErr.s
           - ../proto/wtools/abase/l0/l3.test
           - ../proto/wtools/abase/l0/l3.test/ArgumentsArray.test.s
           - ../proto/wtools/abase/l0/l3.test/Array.test.s
@@ -331,6 +334,7 @@ module:
           - ../proto/wtools/abase/l0/l3.test/Container.test.s
           - ../proto/wtools/abase/l0/l3.test/Countable.test.s
           - ../proto/wtools/abase/l0/l3.test/Entity.test.s
+          - ../proto/wtools/abase/l0/l3.test/Err.test.s
           - ../proto/wtools/abase/l0/l3.test/HashMap.test.s
           - ../proto/wtools/abase/l0/l3.test/Itself.test.s
           - ../proto/wtools/abase/l0/l3.test/Logic.test.s
