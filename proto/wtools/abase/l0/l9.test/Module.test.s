@@ -4865,7 +4865,7 @@ requireSameModuleTwice.description =
 - Module moduleA is cached using lowercase name of the module
 - Module moduleA includes moduleB via _.include( 'moduleB' )
 - Module moduleB includes moduleA via _.include( 'moduleA' )
-- Module moduleA should not be included for the second time
+- Module moduleA should not be included for the second time, cached version should be used instead
 `
 
 // --
