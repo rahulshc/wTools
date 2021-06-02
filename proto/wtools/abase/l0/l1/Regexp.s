@@ -22,6 +22,13 @@ function is( src )
 
 //
 
+function isOld( src )
+{
+  return Object.prototype.toString.call( src ) === '[object RegExp]';
+}
+
+//
+
 function isUsingInstanceOf( src )
 {
   return src instanceof RegExp;
@@ -39,6 +46,15 @@ function objectIs( src )
 //
 
 function like( src )
+{
+  if( _.regexp.is( src ) || _.strIs( src ) )
+  return true;
+  return false;
+}
+
+//
+
+function likeOld( src )
 {
   if( _.regexp.is( src ) || _.strIs( src ) )
   return true;
@@ -148,9 +164,11 @@ let RegexpExtension =
   // regexp
 
   is,
+  isOld,
   isUsingInstanceOf,
   objectIs,
   like,
+  likeOld,
   likeUsingisUsingInstanceOf,
   likeUnfolded,
 

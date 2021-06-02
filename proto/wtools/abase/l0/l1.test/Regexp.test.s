@@ -27,8 +27,10 @@ const __ = _globals_.testing.wTools;
 function dichotomy( test )
 {
   dichotomyTemplate( { method : 'is' } );
+  dichotomyTemplate( { method : 'isOld' } );
   dichotomyTemplate( { method : 'isUsingInstanceOf' } );
   dichotomyTemplate( { method : 'like' } );
+  dichotomyTemplate( { method : 'likeOld' } );
   dichotomyTemplate( { method : 'likeUnfolded' } );
   dichotomyTemplate( { method : 'likeUsingisUsingInstanceOf' } );
 
@@ -177,15 +179,15 @@ function dichotomy( test )
 function isPerformance( test )
 {
   /* Average of 10 runs of 5 million iterations of 14 input varaints
-  ╔═══════════════════╤═════╤═════╤═════════════════╤═════╤═══════╤══════════════════════════╤════════════╗
-  ║                   │  is │isOld│isUsingInstanceOf│ like│likeOld│likeUsingisUsingInstanceOf│likeUnfolded║
-  ╟───────────────────┼─────┼─────┼─────────────────┼─────┼───────┼──────────────────────────┼────────────╢
-  ║ **Njs : v10.24.1**│1.267│1.267│      0.805      │2.410│ 2.410 │           1.913          │    1.285   ║
-  ╟───────────────────┼─────┼─────┼─────────────────┼─────┼───────┼──────────────────────────┼────────────╢
-  ║ **Njs : v14.17.0**│1.282│1.282│      0.869      │2.020│ 2.020 │           2.004          │    1.250   ║
-  ╟───────────────────┼─────┼─────┼─────────────────┼─────┼───────┼──────────────────────────┼────────────╢
-  ║Kos : Njs : v12.9.1│     │     │                 │     │       │                          │            ║
-  ╚═══════════════════╧═════╧═════╧═════════════════╧═════╧═══════╧══════════════════════════╧════════════╝
+  ╔════════════════════════╤═════╤═════╤═════════════════╤═════╤═══════╤══════════════════════════╤════════════╗
+  ║                        │  is │isOld│isUsingInstanceOf│ like│likeOld│likeUsingisUsingInstanceOf│likeUnfolded║
+  ╟────────────────────────┼─────┼─────┼─────────────────┼─────┼───────┼──────────────────────────┼────────────╢
+  ║Windows-10-20H2, 10.24.1│1.267│1.267│      0.805      │2.410│ 2.410 │           1.913          │    1.285   ║
+  ╟────────────────────────┼─────┼─────┼─────────────────┼─────┼───────┼──────────────────────────┼────────────╢
+  ║Windows-10-20H2, 14.17.0│1.282│1.282│      0.869      │2.020│ 2.020 │           2.004          │    1.250   ║
+  ╟────────────────────────┼─────┼─────┼─────────────────┼─────┼───────┼──────────────────────────┼────────────╢
+  ║    Linux-Kos, 12.9.1   │     │     │                 │     │       │                          │            ║
+  ╚════════════════════════╧═════╧═════╧═════════════════╧═════╧═══════╧══════════════════════════╧════════════╝
   */
   debugger; /* eslint-disable-line no-debugger */
   var debugFlag = Config.debug;
@@ -193,11 +195,13 @@ function isPerformance( test )
 
   /* */
 
-  //isPerformanceTemplate( { method : 'like' } );
-  //isPerformanceTemplate( { method : 'likeUsingisUsingInstanceOf' } );
+  isPerformanceTemplate( { method : 'like' } );
+  isPerformanceTemplate( { method : 'likeOld' } );
+  isPerformanceTemplate( { method : 'likeUsingisUsingInstanceOf' } );
   isPerformanceTemplate( { method : 'likeUnfolded' } );
-  //isPerformanceTemplate( { method : 'is' } );
-  //isPerformanceTemplate( { method : 'isUsingInstanceOf' } );
+  isPerformanceTemplate( { method : 'is' } );
+  isPerformanceTemplate( { method : 'isOld' } );
+  isPerformanceTemplate( { method : 'isUsingInstanceOf' } );
 
   /* */
 
