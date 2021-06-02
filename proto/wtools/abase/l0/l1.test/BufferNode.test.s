@@ -103,9 +103,9 @@ function isPerformance( test )
   ╔══════════════╤══════╤═════════╤══════════════════╗
   ║              │nodeIs│nodeIsOld│nodeIsUsingFunctor║
   ╟──────────────┼──────┼─────────┼──────────────────╢
-  ║Njs : v10.24.1│0.883 │0.839    │0.843             ║
+  ║Njs : v10.24.1│0.883 │0.839    │0.854             ║
   ╟──────────────┼──────┼─────────┼──────────────────╢
-  ║Njs : v14.17.0│1.057 │0.989    │0.971             ║
+  ║Njs : v14.17.0│1.057 │0.989    │0.965             ║
   ╟──────────────┼──────┼─────────┼──────────────────╢
   ║ Njs : v12.9.1│      │         │                  ║
   ╚══════════════╧══════╧═════════╧══════════════════╝
@@ -120,8 +120,8 @@ function isPerformance( test )
 
   /* */
 
-  isPerformanceTemplate( { method : 'nodeIs' } );
-  isPerformanceTemplate( { method : 'nodeIsOLd' } );
+  //isPerformanceTemplate( { method : 'nodeIs' } );
+  //isPerformanceTemplate( { method : 'nodeIsOLd' } );
   isPerformanceTemplate( { method : 'nodeIsUsingFunctor' } );
   /* */
 

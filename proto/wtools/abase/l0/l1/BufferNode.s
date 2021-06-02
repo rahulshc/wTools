@@ -24,12 +24,12 @@ function nodeIs( src )
 
 function nodeIsUsingFunctor_functor()
 {
-  let isBufferNode = 'undefined';
+  let isBufferNode = !!_global_.BufferNode;
   return nodeIsUsingFunctor;
 
   function nodeIsUsingFunctor( src )
   {
-    if( typeof BufferNode !== isBufferNode )
+    if( isBufferNode )
     return src instanceof BufferNode;
     return false;
   }
