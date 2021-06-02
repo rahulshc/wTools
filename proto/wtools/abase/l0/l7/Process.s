@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _.process = _.process || Object.create( null );
+_.process = _.process || Object.create( null );
 
 // --
 // implementation
@@ -124,6 +124,6 @@ let Extension =
   ready,
 }
 
-_.props.extend( Self, Extension );
+/* _.props.extend */Object.assign( _.process, Extension );
 
 })();

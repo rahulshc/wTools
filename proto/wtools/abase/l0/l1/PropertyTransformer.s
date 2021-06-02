@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.props = _global_.wTools.props || Object.create( null );
+const Self = _.props = _.props || Object.create( null );
 
 // --
 //

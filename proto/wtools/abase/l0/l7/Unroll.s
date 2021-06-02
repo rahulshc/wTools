@@ -5,7 +5,6 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools;
 
 // --
 //
@@ -15,12 +14,12 @@ const Self = _global_.wTools;
 //
 // --
 
-let Routines =
+let Extension =
 {
 };
 
 //
 
-_.props.supplement( Self, Routines );
+_.props.supplement( _, Extension );
 
 })();

@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _.event = _.event || Object.create( null );
+_.event = _.event || Object.create( null );
 
 // --
 // implementation
@@ -780,6 +780,6 @@ let Extension =
 
 }
 
-_.props.supplement( Self, Extension );
+_.props.supplement( _.event, Extension );
 
 })();

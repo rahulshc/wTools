@@ -11,7 +11,6 @@ qqq : write article "strIsolate* difference"
 
 //
 
-const Self = _global_.wTools;
 const _global = _global_;
 const _ = _global_.wTools;
 
@@ -1004,6 +1003,8 @@ function strIsSigned( src, prefix )
 
 }
 
+//
+
 /**
  * Disables escaped characters in source string( src ).
  * Example: '\n' -> '\\n', '\u001b' -> '\\u001b' etc.
@@ -1104,7 +1105,7 @@ function strEscape( o )
         result += '\\t';
         break;
 
-      /* qqq : cover the case, please */
+      /* qqq : for Rahul : extend coverage of routine _.strEscape. don't forget this test case */
       case 0x0b /* '\v' */ :
         result += '\\v';
         break;
@@ -3601,13 +3602,6 @@ let Proto =
 
 }
 
-_.props.extend( Self, Proto );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+_.props.extend( _, Proto );
 
 })();

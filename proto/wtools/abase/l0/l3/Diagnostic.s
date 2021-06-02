@@ -63,7 +63,7 @@ function objectMake( o )
     if( o.withConstructor )
     {
       countableConstructorPure.prototype.constructor = countableConstructorPure;
-      _.assert( countableConstructorPolluted.prototype.constructor = countableConstructorPolluted );
+      _.assert( countableConstructorPolluted.prototype.constructor === countableConstructorPolluted );
     }
     else
     {

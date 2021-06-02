@@ -416,7 +416,7 @@ function locationNormalize( o )
     if( path )
     {
       let fileName = path;
-      _.assert( fileName.lastIndexOf );
+      _.assert( _.routine.is( fileName.lastIndexOf ) );
       let i1 = fileName.lastIndexOf( '/' );
       let i2 = fileName.lastIndexOf( '\\' );
       let i = Math.max( i1, i2 );

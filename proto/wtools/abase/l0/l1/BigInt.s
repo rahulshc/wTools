@@ -6,6 +6,7 @@
 const _global = _global_;
 const _ = _global_.wTools;
 _.bigInt = _.bigInt || Object.create( null );
+_.bigInts = _.bigInt.s = _.bigInts || _.bigInt.s || Object.create( null );
 
 // --
 // implementation
@@ -28,19 +29,8 @@ function exportStringCodeShallow( src )
 }
 
 // --
-// extension
+// big int extension
 // --
-
-let ToolsExtension =
-{
-
-  bigIntIs : is,
-
-}
-
-Object.assign( _, ToolsExtension );
-
-//
 
 let BigIntExtension =
 {
@@ -52,14 +42,24 @@ let BigIntExtension =
   // exporter
 
   exportString : exportStringCodeShallow,
-  // exportStringDiagnosticShallow : exportStringCodeShallow,
   exportStringCodeShallow,
   exportStringDiagnosticShallow : exportStringCodeShallow,
-  // // exportStringDiagnostic : exportStringCodeShallow,
-  // exportStringCode : exportStringCodeShallow,
 
 }
 
 Object.assign( _.bigInt, BigIntExtension );
+
+// --
+// extension
+// --
+
+let ToolsExtension =
+{
+
+  bigIntIs : is,
+
+}
+
+Object.assign( _, ToolsExtension );
 
 })();

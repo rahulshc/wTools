@@ -44,6 +44,7 @@ if( typeof module !== 'undefined' )
   require( './l3/Time.s' );
   require( './l3/Unroll.s' );
   require( './l3/Vector.s' );
+  require( './l3/zErr.s' );
 
 }
 

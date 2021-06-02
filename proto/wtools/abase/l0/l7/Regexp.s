@@ -5,8 +5,6 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Regexp = _global_.wTools.regexp = _global_.wTools.regexp || Object.create( null );
-const Regexps = _global_.wTools.regexp.s = _global_.wTools.regexp.s || Object.create( null );
 
 const _ArrayIndexOf = Array.prototype.indexOf;
 const _ArrayLastIndexOf = Array.prototype.lastIndexOf;
@@ -632,7 +630,55 @@ function arrayNone( arr, ins, ifEmpty )
 }
 
 // --
-// extension
+// regexp extension
+// --
+
+let RegexpExtension =
+{
+
+  // regexp
+
+  from,
+
+  maybeFrom,
+
+  arrayMake,
+  arrayIndex,
+  arrayAny,
+  arrayAll,
+  arrayNone,
+
+}
+
+Object.assign( _.regexp, RegexpExtension );
+
+// --
+// regexps extension
+// --
+
+let RegexpsExtension =
+{
+
+  // regexps
+
+  maybeFrom : regexpsMaybeFrom,
+
+  sources : regexpsSources,
+  join : regexpsJoin,
+  joinEscaping : regexpsJoinEscaping,
+  atLeastFirst : regexpsAtLeastFirst,
+  atLeastFirstOnly : regexpsAtLeastFirstOnly,
+
+  none : regexpsNone,
+  any : regexpsAny,
+  all : regexpsAll,
+
+}
+
+Object.assign( _.regexps, RegexpsExtension );
+
+// --
+// tools extension
 // --
 
 let ToolsExtension =
@@ -661,48 +707,8 @@ let ToolsExtension =
 
 }
 
-//
-
-let Extension =
-{
-
-  // regexp
-
-  from,
-
-  maybeFrom,
-
-  arrayMake,
-  arrayIndex,
-  arrayAny,
-  arrayAll,
-  arrayNone,
-
-}
-
-//
-
-let ExtensionS =
-{
-
-  // regexps
-
-  maybeFrom : regexpsMaybeFrom,
-
-  sources : regexpsSources,
-  join : regexpsJoin,
-  joinEscaping : regexpsJoinEscaping,
-  atLeastFirst : regexpsAtLeastFirst,
-  atLeastFirstOnly : regexpsAtLeastFirstOnly,
-
-  none : regexpsNone,
-  any : regexpsAny,
-  all : regexpsAll,
-
-}
-
 Object.assign( _, ToolsExtension );
-Object.assign( Regexp, Extension );
-Object.assign( Regexps, ExtensionS );
+
+//
 
 })();

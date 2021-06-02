@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.ointerval = _global_.wTools.ointerval || Object.create( null );
+_.ointerval = _.ointerval || Object.create( null );
 
 // --
 //
@@ -21,6 +21,6 @@ let Extension =
 
 //
 
-Object.assign( Self, Extension );
+Object.assign( _.ointerval, Extension );
 
 })();

@@ -5,7 +5,6 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-_.set.s = _.set.s || Object.create( null );
 
 // --
 // implementation

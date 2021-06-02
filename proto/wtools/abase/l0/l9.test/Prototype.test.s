@@ -223,7 +223,7 @@ function prototypeOf( test )
 {
   test.open( 'subPrototype === superPrototype' );
 
-  var prototypeOf = _.prototype.isPrototypeFor;
+  const prototypeOf = _.prototype.isPrototypeFor;
 
   test.case = 'check null';
   var src = null;

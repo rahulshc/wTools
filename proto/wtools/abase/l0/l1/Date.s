@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.date = _global_.wTools.date || Object.create( null );
+_.date = _.date || Object.create( null );
 
 // --
 // dichotomy
@@ -21,7 +21,7 @@ function is( src )
 function identicalShallow( src1, src2, o )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 );
-  
+
 
   if( !_.date.is( src1 ) )
   return false;
@@ -94,6 +94,6 @@ let Extension =
 //
 
 Object.assign( _, ToolsExtension );
-Object.assign( Self, Extension );
+Object.assign( _.date, Extension );
 
 })();

@@ -7,7 +7,7 @@ const _global = _global_;
 const _ = _global_.wTools;
 const Self = _global_.wTools;
 
-_global.wTools.error = _global.wTools.error || Object.create( null );
+_.error = _.error || Object.create( null );
 
 // --
 // dichotomy
@@ -286,6 +286,7 @@ _sectionAdd.defaults =
 
 function _sectionExposedAdd( o )
 {
+  const exportString = _.entity.exportString ? _.entity.exportString.bind( _.entity ) : String;
   // _.map.assertHasAll( o, _sectionExposedAdd.defaults );
 
   if( Config.debug )
@@ -307,7 +308,8 @@ function _sectionExposedAdd( o )
   {
     if( i > 0 )
     body += `\n`;
-    body += `${k} : ${_.entity.exportString( o.exposed[ k ] )}`;
+    body += `${k} : ${exportString( o.exposed[ k ] )}`;
+    // body += `${k} : ${_.entity.exportString( o.exposed[ k ] )}`;
     i += 1;
   }
 
@@ -450,6 +452,7 @@ function _inStr( errStr )
 
 function _make( o )
 {
+  const logger = _global_.logger || _global_.console;
 
   if( arguments.length !== 1 )
   throw Error( 'Expects single argument : options map' );
@@ -752,6 +755,7 @@ _make.defaults =
 
 function _err( o )
 {
+  const exportString = _.entity.exportString ? _.entity.exportString.bind( _.entity ) : String;
   let error;
 
   if( arguments.length !== 1 )
@@ -878,7 +882,9 @@ function _err( o )
         }
         if( _.unrollIs( arg ) )
         {
-          o.args = _.longBut_( null, o.args, [ a, a ], arg );
+          debugger;
+          o.args = [ ... Array.prototype.slice.call( o.args, 0, a ), ... arg, ... Array.prototype.slice.call( o.args, a+1, o.args.length ) ];
+          // o.args = _.longBut_( null, o.args, [ a, a ], arg );
           // o.args = _.longBut( o.args, [ a, a+1 ], arg );
           a -= 1;
           continue;
@@ -1207,11 +1213,11 @@ function _err( o )
           if( _.strIs( arg.message ) )
           str = arg.message;
           else
-          str = _.entity.exportString( arg );
+          str = exportString( arg );
         }
         else
         {
-          str = _.entity.exportString( arg, { levels : 2 } );
+          str = exportString( arg, { levels : 2 } );
         }
       }
       else if( arg === undefined )

@@ -1293,7 +1293,7 @@ let LongExtension =
   // dichotomy
 
   is,
-  isOld,
+  isOld, /* xxx : remove later */
   isCompact,
   isUnfolded,
   isUnfoldedSmartOrder,

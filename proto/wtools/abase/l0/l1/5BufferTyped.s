@@ -458,7 +458,7 @@ let BufferTypedExtension =
   is : is,
   like : is,
   IsResizable,
-  isSlow,
+  isSlow, /* xxx : remove later */
   isUsingGetPrototype,
   isUsingGetPrototypeWithFunctor,
   isUsingExistenceOfField,
