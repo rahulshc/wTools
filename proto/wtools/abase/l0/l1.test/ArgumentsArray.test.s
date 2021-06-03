@@ -19,21 +19,64 @@ const __ = _globals_.testing.wTools;
 
 function dichotomy( test )
 {
+  dichotomyTemplate( { method : 'is' } );
+  dichotomyTemplate( { method : 'isOld' } );
+  dichotomyTemplate( { method : 'like' } );
+  dichotomyTemplate( { method : 'likeOld' } );
+  dichotomyTemplate( { method : 'likeUnfolded' } );
+  dichotomyTemplate( { method : 'isUsingFunctor' } );
+  dichotomyTemplate( { method : 'likeUsingIsFunctor' } );
 
-  test.case = 'argumentsArray from empty array';
-  var src = _.argumentsArray.make( [] );
-  test.true( _.argumentsArray.is( src ) );
-  test.true( _.argumentsArray.like( src ) );
-  test.true( !_.array.is( src ) );
-  test.true( !_.array.like( src ) );
+  function dichotomyTemplate( env )
+  {
+    test.case = `${__.entity.exportStringSolo( env )}, argumentsArray from empty array`;
+    var src = _.argumentsArray.make( [] );
+    test.true( _.argumentsArray[ env.method ]( src ) );
+    test.false( _.array.is( src ) );
+    test.false( _.array.like( src ) );
 
-  test.case = 'array';
-  var src = [ 1, 2, 3 ];
-  test.true( !_.argumentsArray.is( src ) );
-  test.true( _.argumentsArray.like( src ) );
-  test.true( _.array.is( src ) );
-  test.true( _.array.like( src ) );
+    test.case = `${__.entity.exportStringSolo( env )}, array`;
+    var src = [ 1, 2, 3 ];
+    if( env.method.startsWith( 'is' ) )
+    test.false( _.argumentsArray[ env.method ]( src ) );
+    if( env.method.startsWith( 'like' ) )
+    test.true( _.argumentsArray[ env.method ]( src ) );
+    test.true( _.array.is( src ) );
+    test.true( _.array.like( src ) );
 
+    test.case = `${__.entity.exportStringSolo( env )}, argument object`;
+    var src = arguments;
+    test.true( _.argumentsArray[ env.method ]( src ) );
+    test.false( _.array.is( src ) );
+    test.false( _.array.like( src ) );
+
+    test.case = `${__.entity.exportStringSolo( env )}, array prototype`;
+    var src = Array.prototype;
+    if( env.method.startsWith( 'is' ) )
+    test.false( _.argumentsArray[ env.method ]( src ) );
+    if( env.method.startsWith( 'like' ) )
+    test.true( _.argumentsArray[ env.method ]( src ) );
+    test.true( _.array.is( src ) );
+    test.true( _.array.like( src ) );
+
+    test.case = `${__.entity.exportStringSolo( env )}, string`;
+    var src = 'string';
+    test.false( _.argumentsArray[ env.method ]( src ) );
+    test.false( _.array.is( src ) );
+    test.false( _.array.like( src ) );
+
+    test.case = `${__.entity.exportStringSolo( env )}, typed array`;
+    var src = new U64x( 10 );
+    test.false( _.argumentsArray[ env.method ]( src ) );
+    test.false( _.array.is( src ) );
+    test.false( _.array.like( src ) );
+
+    test.case = `${__.entity.exportStringSolo( env )}, false array`;
+    var src = { __proto__ : Array.prototype };
+    test.false( _.argumentsArray[ env.method ]( src ) );
+    test.false( _.array.is( src ) );
+    test.false( _.array.like( src ) );
+  }
 }
 
 //
@@ -327,6 +370,128 @@ function from( test )
   test.shouldThrowErrorSync( () => _.argumentsArray.from( {} ) );
   test.shouldThrowErrorSync( () => _.argumentsArray.from( 'wrong' ) );
 }
+//
+
+function isPerformance( test )
+{
+  /* Average of 10 runs of 5 million ierations of 8 input variants
+  ╔════════════════════════╤═════╤═════╤══════════════╤═════╤═══════╤══════════════════╤════════════╗
+  ║                        │  is │isOld│isUsingFunctor│ like│likeOld│likeUsingIsFunctor│likeUnfolded║
+  ╟────────────────────────┼─────┼─────┼──────────────┼─────┼───────┼──────────────────┼────────────╢
+  ║Windows-10-20H2, 10.24.1│0.594│0.594│  0.598       │0.767│0.767  │     0.780        │  0.612     ║
+  ╟────────────────────────┼─────┼─────┼──────────────┼─────┼───────┼──────────────────┼────────────╢
+  ║Windows-10-20H2, 14.17.0│0.592│0.552│  0.561       │0.767│0.665  │     0.664        │  0.523     ║
+  ╟────────────────────────┼─────┼─────┼──────────────┼─────┼───────┼──────────────────┼────────────╢
+  ║   Linux-Kos, 12.9.1    │     │     │              │     │       │                  │            ║
+  ╚════════════════════════╧═════╧═════╧══════════════╧═════╧═══════╧══════════════════╧════════════╝
+  */
+  debugger; /* eslint-disable-line no-debugger */
+  var debugFlag = Config.debug;
+  Config.debug = false;
+
+  /* */
+
+  isPerformanceTemplate( { method : 'is' } );
+  isPerformanceTemplate( { method : 'isOld' } );
+  isPerformanceTemplate( { method : 'isUsingFunctor' } );
+  isPerformanceTemplate( { method : 'like' } );
+  isPerformanceTemplate( { method : 'likeOld' } );
+  isPerformanceTemplate( { method : 'likeUnfolded' } );
+  isPerformanceTemplate( { method : 'likeUsingIsFunctor' } );
+
+  /* */
+
+  Config.debug = debugFlag;
+  debugger; /* eslint-disable-line no-debugger */
+
+  function isPerformanceTemplate( data )
+  {
+
+    test.case = `${data.method}`;
+    var took, time;
+    var env = initializeVariables();
+
+    time = _.time.now();
+    for( let i = env.times; i > 0; i-- )
+    {
+      env.name = data.method;
+      run( env );
+    }
+    took = __.time.spent( time );
+
+    console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+    test.identical( true, true );
+  }
+
+  /* */
+
+  // test.case = 'is';
+  // var took, time;
+  // var env = initializeVariables();
+
+  // time = _.time.now();
+  // for( let i = env.times; i > 0; i-- )
+  // {
+  //   env.name = 'is';
+  //   run( env );
+  // }
+  // took = __.time.spent( time );
+
+  // console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  // test.identical( true, true );
+
+  /* */
+
+  // test.case = 'isUsingFunctor';
+  // var took, time;
+  // var env = initializeVariables();
+
+  // time = _.time.now();
+  // for( let i = env.times; i > 0; i-- )
+  // {
+  //   env.name = 'isUsingFunctor';
+  //   run( env );
+  // }
+  // took = __.time.spent( time );
+
+  // console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+  // test.identical( true, true );
+
+  /* */
+
+  function initializeVariables()
+  {
+    var env = {};
+    env.times = 5000000;
+    env.argumentArray = arguments;
+    env.madeArgumentArray = _.argumentsArray.make( [] );
+    env.anArray = [ 1, 2, 3 ];
+    env.arrayProtoType = Array.prototype;
+    env.aString = 'string';
+    env.aTypedArray = new U64x( 10 );
+    env.falseArray = { __proto__ : Array.prototype }
+
+    return env;
+  }
+
+  /* */
+
+  function run( env )
+  {
+    _.argumentsArray[ env.name ]( env.argumentArray );
+    _.argumentsArray[ env.name ]( env.madeArgumentArray );
+    _.argumentsArray[ env.name ]( env.anArray );
+    _.argumentsArray[ env.name ]( env.arrayProtoType );
+    _.argumentsArray[ env.name ]( env.aString );
+    _.argumentsArray[ env.name ]( env.aTypedArray );
+    _.argumentsArray[ env.name ]( env.falseArray );
+    _.argumentsArray[ env.name ]();
+  }
+
+}
+
+isPerformance.timeOut = 1e7;
+isPerformance.experimental = true;
 
 // --
 //
@@ -344,6 +509,7 @@ const Proto =
     dichotomy,
     make,
     from,
+    isPerformance
   }
 
 }
