@@ -67,7 +67,7 @@ function _errArgsWithMap( test )
   test.identical( err.location.line, 10 );
   test.identical( err.location.col, 5 );
   var errStr = String( err );
-  test.identical( __.strCount( errStr, 'Error' ), 0 );
+  test.identical( __.strCount( errStr, 'Error' ), 1 );
   test.identical( __.strCount( errStr, 'Object._errArgsWithMap' ), 2 );
 
   test.case = 'map in args, with Error';

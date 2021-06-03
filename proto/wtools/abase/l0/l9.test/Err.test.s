@@ -65,7 +65,7 @@ function errFromStringedError( test )
 
   var msg =
 `
-Uncaught Error:  = Message of error#1
+Uncaught Error:  = Message of Error#1
 No source file found for "W1.js"
 Error including source file /workerEnvironment/Worker.js
 
@@ -98,7 +98,7 @@ thrown at Object._sourceIncludeAct @ http://127.0.0.1:15000/.starter:6538:15
   test.true( _.error.is( err ) );
   var got = String( err );
 
-  test.identical( _.strCount( got, `= Message of error#${err.id}` ), 1 );
+  test.identical( _.strCount( got, `= Message of Error#${err.id}` ), 1 );
   test.identical( _.strCount( got, 'Uncaught Error:' ), 1 );
   test.identical( _.strCount( got, 'No source file found for "W1.js"' ), 1 );
   test.identical( _.strCount( got, 'Error including source file /workerEnvironment/Worker.js' ), 1 );
@@ -238,7 +238,7 @@ function _errArgsHasError( test )
   var err = _._err( { args : [ new Error() ], catchCallsStack : 'at program\nat _errTrowsError' } );
   test.true( _.error.is( err ) );
   var errStr = String( err );
-  test.identical( _.strCount( errStr, 'Error' ), 4 );
+  test.identical( _.strCount( errStr, 'Error' ), 5 );
   test.identical( _.strCount( errStr, 'at program' ), 1 );
   test.identical( _.strCount( errStr, 'at _errTrowsError' ), 1 );
 
@@ -258,7 +258,7 @@ function _errArgsHasRoutine( test )
   test.identical( _.strCount( errStr, 'routine unroll' ), 2 );
   test.identical( _.strCount( errStr, 'Sample' ), 2 );
   test.identical( _.strCount( errStr, 'next' ), 2 );
-  test.identical( _.strCount( errStr, 'Error' ), 2 );
+  test.identical( _.strCount( errStr, 'Error' ), 3 );
   test.identical( _.strCount( errStr, 'Object._errArgsHasRoutine' ), 2 );
 
   test.case = 'empty args, throwCallsStack - undefined, catchCallsStack - undefined, level - 2';
@@ -270,7 +270,7 @@ function _errArgsHasRoutine( test )
   test.identical( _.strCount( errStr, 'routine unroll' ), 2 );
   test.identical( _.strCount( errStr, 'Sample' ), 2 );
   test.identical( _.strCount( errStr, 'next' ), 2 );
-  test.identical( _.strCount( errStr, 'Error' ), 2 );
+  test.identical( _.strCount( errStr, 'Error' ), 3 );
   test.identical( _.strCount( errStr, 'Object._errArgsHasRoutine' ), 1 );
 
   test.case = 'empty args, throwCallsStack - string';
@@ -282,7 +282,7 @@ function _errArgsHasRoutine( test )
   test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( _.strCount( errStr, 'Sample' ), 1 );
   test.identical( _.strCount( errStr, 'next' ), 1 );
-  test.identical( _.strCount( errStr, 'Error' ), 1 );
+  test.identical( _.strCount( errStr, 'Error' ), 2 );
   test.identical( _.strCount( errStr, 'at program' ), 1 );
   test.identical( _.strCount( errStr, 'at _errTrowsError' ), 1 );
 
@@ -295,7 +295,7 @@ function _errArgsHasRoutine( test )
   test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( _.strCount( errStr, 'Sample' ), 1 );
   test.identical( _.strCount( errStr, 'next' ), 1 );
-  test.identical( _.strCount( errStr, 'Error' ), 0 );
+  test.identical( _.strCount( errStr, 'Error' ), 1 );
   test.identical( _.strCount( errStr, 'at program' ), 0 );
   test.identical( _.strCount( errStr, 'at _errTrowsError' ), 0 );
 
@@ -309,7 +309,7 @@ function _errArgsHasRoutine( test )
   test.identical( _.strCount( errStr, 'routine unroll' ), 2 );
   test.identical( _.strCount( errStr, 'Sample' ), 2 );
   test.identical( _.strCount( errStr, 'next' ), 2 );
-  test.identical( _.strCount( errStr, 'Error' ), 2 );
+  test.identical( _.strCount( errStr, 'Error' ), 3 );
   test.identical( _.strCount( err.stack, 'Object._errArgsHasRoutine' ), 2 );
 
 }
@@ -330,7 +330,7 @@ function _errLocation( test )
   test.identical( _.strCount( err.throwsStack, 'at @605' ), 1 );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'Sample' ), 2 );
-  test.identical( _.strCount( errStr, 'Error' ), 2 );
+  test.identical( _.strCount( errStr, 'Error' ), 3 );
   test.identical( _.strCount( errStr, 'at Err.test.s *' ), 0 );
 
 }
@@ -945,7 +945,7 @@ function uncaughtError( test )
     test.identical( _.strCount( op.output, '= Process' ), 1 );
     test.identical( _.strCount( op.output, 'Current path :' ), 1 );
     test.identical( _.strCount( op.output, 'Exec path :' ), 1 );
-    test.identical( _.strCount( op.output, '= Message of error#' ), 1 );
+    test.identical( _.strCount( op.output, '= Message of Error#' ), 1 );
     test.identical( _.strCount( op.output, '= Beautified calls stack' ), 1 );
     test.identical( _.strCount( op.output, '= Throws stack' ), 1 );
     return null;
@@ -991,6 +991,92 @@ function sourceCode( test )
     const _ = require( toolsPath );
     _.include( 'wFiles' );
     throw Error( 'Uncaught error' );
+  }
+
+}
+
+//
+
+function errorFunctorBasic( test )
+{
+  let context = this;
+
+  var SomeError = _.error.error_functor( 'SomeError' );
+  var error1 = SomeError( 'abc' );
+  test.true( error1 instanceof SomeError );
+  test.true( error1 instanceof Error );
+  test.identical( error1.originalMessage, 'abc' );
+  test.identical( error1.name, 'SomeError' );
+
+}
+
+//
+
+function errorFunctorAttended( test )
+{
+  let context = this;
+  let visited = [];
+  let a = test.assetFor( false );
+  let programPath = a.program( program );
+
+  /* */
+
+  a.appStartNonThrowing({ execPath : programPath })
+  .then( ( op ) =>
+  {
+    test.notIdentical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, '- uncaught error -' ), 2 );
+    test.identical( _.strCount( op.output, 'Error1' ), 1 );
+    return null;
+  });
+
+  /* */
+
+  return a.ready;
+
+  function program()
+  {
+    const _ = require( toolsPath );
+    let SomeError = _.error.error_functor( 'SomeError' );
+    throw SomeError( 'Error1' );
+  }
+
+}
+
+errorFunctorAttended.description =
+`
+Njs stingify inherited error
+so error handling mechanism has workaround to avoid setting "attended" and "logged" into true in such case
+`
+
+//
+
+function uncaughtErrorBasic( test )
+{
+  let context = this;
+  let visited = [];
+  let a = test.assetFor( false );
+  let programPath = a.program( program );
+
+  /* */
+
+  a.appStartNonThrowing({ execPath : programPath })
+  .then( ( op ) =>
+  {
+    test.notIdentical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, '- uncaught error -' ), 2 );
+    test.identical( _.strCount( op.output, 'Error1' ), 1 );
+    return null;
+  });
+
+  /* */
+
+  return a.ready;
+
+  function program()
+  {
+    const _ = require( toolsPath );
+    throw new Error( 'Error1' );
   }
 
 }
@@ -1365,7 +1451,6 @@ const Proto =
 
   context :
   {
-    // nameOfFile : _.introspector.location().fileName, /* yyy : introduce field in utility::Testing */
     suiteTempPath : null,
     assetsOriginalPath : null,
     appJsPath : null,
@@ -1380,38 +1465,25 @@ const Proto =
     _errArgsHasError,
     _errArgsHasRoutine,
     _errLocation,
-    // _errOptionBrief,
-    // _errOptionReason,
     _errOptionSections,
-    // _errOptionId,
-    // _errCatchesForm,
     _errSourceCodeForm,
     _originalMessage,
     // _errMessageForm,
     // _errOptionConcealedBasic,
     errWithExpoesedBasic,
-    // errCatchStackAndMessage,
-    // errErrorWithoutStack,
-    // errCustomError,
-
-    // _inStr,
-    // errWithMultilineMessage,
-    // errMessageWithSpacesAndNewLines,
-    // errMessageSecondLineHasNewLineSymbol,
-
-    // errBriefFromStrings,
-    // errBriefFromErr,
 
     sectionAdd,
     sectionAddToBrief,
 
-    // errorFunctorBasic,
+    // errorFunctorAttended,
     errorFunctorExternal,
 
     uncaughtError,
     sourceCode,
-    // assert,
 
+    errorFunctorBasic,
+    errorFunctorAttended,
+    uncaughtErrorBasic,
     eventUncaughtErrorBasic,
     eventUncaughtErrorOnce,
     entryProcedureStack,

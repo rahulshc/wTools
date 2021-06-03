@@ -381,7 +381,7 @@ function _errArgsHasError( test )
   var err = _._err( { args : [ new Error() ], throwCallsStack : 'at program1\nat _errTrowsError', stackRemovingBeginIncluding : /program1/ } );
   test.true( _.error.is( err ) );
   var errStr = String( err );
-  test.identical( __.strCount( errStr, 'Error' ), 3 );
+  test.identical( __.strCount( errStr, 'Error' ), 4 );
   test.identical( __.strCount( errStr, 'at program1' ), 0 );
   test.identical( __.strCount( errStr, 'at _errTrowsError' ), 1 );
 
@@ -389,7 +389,7 @@ function _errArgsHasError( test )
   var err = _._err( { args : [ new Error() ], throwCallsStack : 'at program1\nat _errTrowsError', stackRemovingBeginExcluding : /_errTrowsError/ } );
   test.true( _.error.is( err ) );
   var errStr = String( err );
-  test.identical( __.strCount( errStr, 'Error' ), 2 );
+  test.identical( __.strCount( errStr, 'Error' ), 3 );
   test.identical( __.strCount( errStr, 'at program1' ), 1 );
   test.identical( __.strCount( errStr, 'at _errTrowsError' ), 0 );
 
@@ -404,7 +404,7 @@ function _errArgsHasError( test )
   });
   test.true( _.error.is( err ) );
   var errStr = String( err );
-  test.identical( __.strCount( errStr, 'Error' ), 2 );
+  test.identical( __.strCount( errStr, 'Error' ), 3 );
   test.identical( __.strCount( errStr, 'at program1' ), 0 );
   test.identical( __.strCount( errStr, 'at _errTrowsError' ), 0 );
 
@@ -414,7 +414,7 @@ function _errArgsHasError( test )
   var err = _._err( { args : [ new Error() ], throwCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at asyncCallsStack', 'at @2' ] } );
   test.true( _.error.is( err ) );
   var errStr = String( err );
-  test.identical( __.strCount( errStr, 'Error' ), 3 );
+  test.identical( __.strCount( errStr, 'Error' ), 4 );
   test.identical( __.strCount( errStr, 'at asyncCallsStack' ), 1 );
   test.identical( __.strCount( errStr, 'at @2' ), 1 );
 
@@ -422,7 +422,7 @@ function _errArgsHasError( test )
   var err = _._err( { args : [ new Error() ], throwCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at asyncCallsStack', '__dirname' ] } );
   test.true( _.error.is( err ) );
   var errStr = String( err );
-  test.identical( __.strCount( errStr, 'Error' ), 3 );
+  test.identical( __.strCount( errStr, 'Error' ), 4 );
   test.identical( __.strCount( errStr, 'at asyncCallsStack' ), 1 );
   test.identical( __.strCount( errStr, '__dirname' ), 0 );
 
@@ -430,7 +430,7 @@ function _errArgsHasError( test )
   var err = _._err( { args : [ new Error() ], throwCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at asyncCallsStack', '*__dirname' ] } );
   test.true( _.error.is( err ) );
   var errStr = String( err );
-  test.identical( __.strCount( errStr, 'Error' ), 3 );
+  test.identical( __.strCount( errStr, 'Error' ), 4 );
   test.identical( __.strCount( errStr, 'at asyncCallsStack' ), 1 );
   test.identical( __.strCount( errStr, '*__dirname' ), 0 );
 
@@ -438,7 +438,7 @@ function _errArgsHasError( test )
   var err = _._err( { args : [ new Error() ], throwCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at Err.test.s', '*__dirname' ] } );
   test.true( _.error.is( err ) );
   var errStr = String( err );
-  test.identical( __.strCount( errStr, 'Error' ), 3 );
+  test.identical( __.strCount( errStr, 'Error' ), 4 );
   test.identical( __.strCount( errStr, 'at Err.test.s *' ), 1 );
   test.identical( __.strCount( errStr, '*__dirname' ), 0 );
 
@@ -453,7 +453,7 @@ function _errArgsHasError( test )
   test.true( _.error.is( err ) );
   var errStr = String( err );
   console.log( errStr );
-  test.identical( __.strCount( errStr, 'Error' ), 3 );
+  test.identical( __.strCount( errStr, 'Error' ), 4 );
   test.identical( __.strCount( errStr, 'at Err.test.s *' ), 0 );
   test.identical( __.strCount( errStr, '*__dirname' ), 1 );
 }
@@ -479,7 +479,7 @@ function _errArgsHasRoutine( test )
   test.identical( __.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( __.strCount( errStr, 'Sample' ), 1 );
   test.identical( __.strCount( errStr, 'next' ), 1 );
-  test.identical( __.strCount( errStr, 'Error' ), 1 );
+  test.identical( __.strCount( errStr, 'Error' ), 2 );
   test.identical( __.strCount( errStr, 'at program1' ), 0 );
   test.identical( __.strCount( errStr, 'at _errTrowsError' ), 1 );
 
@@ -497,7 +497,7 @@ function _errArgsHasRoutine( test )
   test.identical( __.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( __.strCount( errStr, 'Sample' ), 1 );
   test.identical( __.strCount( errStr, 'next' ), 1 );
-  test.identical( __.strCount( errStr, 'Error' ), 0 );
+  test.identical( __.strCount( errStr, 'Error' ), 1 );
   test.identical( __.strCount( errStr, 'at program1' ), 1 );
   test.identical( __.strCount( errStr, 'at _errTrowsError' ), 0 );
 
@@ -517,7 +517,7 @@ function _errArgsHasRoutine( test )
   test.identical( __.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( __.strCount( errStr, 'Sample' ), 1 );
   test.identical( __.strCount( errStr, 'next' ), 1 );
-  test.identical( __.strCount( errStr, 'Error' ), 0 );
+  test.identical( __.strCount( errStr, 'Error' ), 1 );
   test.identical( __.strCount( errStr, 'at program1' ), 0 );
   test.identical( __.strCount( errStr, 'at _errTrowsError' ), 0 );
 
@@ -537,7 +537,7 @@ function _errArgsHasRoutine( test )
   test.identical( __.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( __.strCount( errStr, 'Sample' ), 1 );
   test.identical( __.strCount( errStr, 'next' ), 1 );
-  test.identical( __.strCount( errStr, 'Error' ), 1 );
+  test.identical( __.strCount( errStr, 'Error' ), 2 );
   test.identical( __.strCount( errStr, 'at asyncCallsStack' ), 1 );
   test.identical( __.strCount( errStr, 'at @2' ), 1 );
 
@@ -555,7 +555,7 @@ function _errArgsHasRoutine( test )
   test.identical( __.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( __.strCount( errStr, 'Sample' ), 1 );
   test.identical( __.strCount( errStr, 'next' ), 1 );
-  test.identical( __.strCount( errStr, 'Error' ), 1 );
+  test.identical( __.strCount( errStr, 'Error' ), 2 );
   test.identical( __.strCount( errStr, 'at asyncCallsStack' ), 1 );
   test.identical( __.strCount( errStr, '__dirname' ), 0 );
 
@@ -573,7 +573,7 @@ function _errArgsHasRoutine( test )
   test.identical( __.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( __.strCount( errStr, 'Sample' ), 1 );
   test.identical( __.strCount( errStr, 'next' ), 1 );
-  test.identical( __.strCount( errStr, 'Error' ), 1 );
+  test.identical( __.strCount( errStr, 'Error' ), 2 );
   test.identical( __.strCount( errStr, 'at asyncCallsStack' ), 1 );
   test.identical( __.strCount( errStr, '*__dirname' ), 0 );
 
@@ -591,7 +591,7 @@ function _errArgsHasRoutine( test )
   test.identical( __.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( __.strCount( errStr, 'Sample' ), 1 );
   test.identical( __.strCount( errStr, 'next' ), 1 );
-  test.identical( __.strCount( errStr, 'Error' ), 1 );
+  test.identical( __.strCount( errStr, 'Error' ), 2 );
   test.identical( __.strCount( errStr, 'at Err.test.s *' ), 1 );
   test.identical( __.strCount( errStr, '*__dirname' ), 0 );
 
@@ -610,7 +610,7 @@ function _errArgsHasRoutine( test )
   test.identical( __.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( __.strCount( errStr, 'Sample' ), 1 );
   test.identical( __.strCount( errStr, 'next' ), 1 );
-  test.identical( __.strCount( errStr, 'Error' ), 1 );
+  test.identical( __.strCount( errStr, 'Error' ), 2 );
   test.identical( __.strCount( errStr, 'at Err.test.s *' ), 0 );
   test.identical( __.strCount( errStr, '*__dirname' ), 1 );
 }
@@ -633,7 +633,7 @@ function _errLocation( test )
   test.identical( err.location.line, null );
   var errStr = String( err );
   test.identical( __.strCount( errStr, 'Sample' ), 1 );
-  test.identical( __.strCount( errStr, 'Error' ), 1 );
+  test.identical( __.strCount( errStr, 'Error' ), 2 );
   test.identical( __.strCount( errStr, 'at Err.test.s *' ), 0 );
 
   test.case = 'args - Error, catchCallsStack, catchLocation,throwCallsStack, throwLocation';
@@ -652,7 +652,7 @@ function _errLocation( test )
   test.identical( err.location.line, null );
   var errStr = String( err );
   test.identical( __.strCount( errStr, 'Sample' ), 1 );
-  test.identical( __.strCount( errStr, 'Error' ), 1 );
+  test.identical( __.strCount( errStr, 'Error' ), 2 );
   test.identical( __.strCount( errStr, 'at Err.test.s *' ), 0 );
 }
 
@@ -868,7 +868,7 @@ function _errMessageForm( test )
   });
   test.true( _.error.is( err ) );
   test.gt( __.strLinesCount( err.message ), 10 );
-  test.identical( __.strCount( err.message, 'Message of error#' ), 1 );
+  test.identical( __.strCount( err.message, 'Message of Error#' ), 1 );
   test.identical( __.strCount( err.message, 'Beautified calls stack' ), 1 );
   test.identical( __.strCount( err.message, 'Throws stack' ), 1 );
   test.identical( __.strCount( err.message, 'Sample str' ), 1 );
@@ -882,7 +882,7 @@ function _errMessageForm( test )
   });
   test.true( _.error.is( err ) );
   test.gt( __.strLinesCount( err.message ), 10 );
-  test.identical( __.strCount( err.message, 'Message of error#' ), 1 );
+  test.identical( __.strCount( err.message, 'Message of Error#' ), 1 );
   test.identical( __.strCount( err.message, 'Calls stack' ), 1 );
   test.identical( __.strCount( err.message, 'Throws stack' ), 1 );
   test.identical( __.strCount( err.message, 'Sample str' ), 1 );
@@ -896,7 +896,7 @@ function _errMessageForm( test )
   });
   test.true( _.error.is( err ) );
   test.identical( __.strLinesCount( err.message ), 3 );
-  test.identical( __.strCount( err.message, 'Message of error#' ), 0 );
+  test.identical( __.strCount( err.message, 'Message of Error#' ), 0 );
   test.identical( __.strCount( err.message, 'Beautified calls stack' ), 0 );
   test.identical( __.strCount( err.message, 'Throws stack' ), 0 );
   test.identical( __.strCount( err.message, 'Sample str' ), 1 );
@@ -1070,7 +1070,7 @@ function _inStr( test )
  -> Stderr
  -  err.logged : false
  -  err.attended : false
- -   = Message of error#1
+ -   = Message of Error#1
  -      Routine storageTerminalDel does not expect options: "selector", "locking"
  -      Failed to delete storage::null at null
  -
@@ -1086,7 +1086,7 @@ function _inStr( test )
   test.case = 'non-standard prolog';
   var src =
 `
-Uncaught Error:  = Message of error#1
+Uncaught Error:  = Message of Error#1
 No source file found for "W1.js"
 Error including source file /workerEnvironment/Worker.js
 

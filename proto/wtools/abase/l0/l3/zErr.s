@@ -30,7 +30,6 @@ function _handleUncaught2( o )
   if( _.error.isAttended( o.err ) )
   return;
 
-  debugger;
   consoleUnbar();
 
   console.error( o.prefix );
@@ -368,7 +367,7 @@ function _setupUncaughtErrorHandler9()
 
 //
 
-/* qqq : for junior : implement performance test */
+/* qqq : for junior : for Rahul : implement performance test */
 /* xxx : optimize */
 function error_functor( name, onErrorMake )
 {
@@ -404,9 +403,7 @@ function error_functor( name, onErrorMake )
         let args1 = onErrorMake.apply( err1, arguments );
         _.assert( _.argumentsArray.like( args1 ) );
         let args2 = args1;
-        debugger;
 
-        // if( !_.longHas( args2, err1 ) )
         if( !Array.prototype.includes.call( args2, err1 ) )
         args2 = [ err1, ... args1 ];
         let err2 = _._err({ args : args2, level : 2, concealed : { [ name ] : true } });
@@ -439,11 +436,17 @@ function error_functor( name, onErrorMake )
 
   let ErrorConstructor = Error[ name ];
 
-  _.assert( ErrorConstructor.name === name, 'Looks like your interpreter does not support dynamice naming of functions. Please use ES2015 or later interpreter.' );
+  _.assert
+  (
+    ErrorConstructor.name === name,
+    'Looks like your interpreter does not support dynamice naming of functions. Please use ES2015 or later interpreter.'
+  );
 
   ErrorConstructor.prototype = Object.create( _global.Error.prototype );
   ErrorConstructor.prototype.constructor = ErrorConstructor;
   // ErrorConstructor.constructor = ErrorConstructor;
+  // ErrorConstructor.constructor = Object.create( _global.Error.constructor );
+  Object.setPrototypeOf( ErrorConstructor, _global.Error );
 
   return ErrorConstructor;
 }

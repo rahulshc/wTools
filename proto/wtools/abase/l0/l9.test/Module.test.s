@@ -596,7 +596,7 @@ throwing1`
 `main
 --------------- uncaught error --------------->
 
- = Message of error#1
+ = Message of SyntaxError#1
     missing ) after argument list
     Module file "${__.path.nativize( a.abs( './mainSyntax' ) )}" failed to include "./syntax1"`
       test.true( _.strHas( op.output, exp ) );
@@ -638,7 +638,7 @@ fileNativeWith( syntax1 ) : undefined
 fileWith( syntax1 ) : undefined
 --------------- uncaught error --------------->
 
- = Message of error#2
+ = Message of SyntaxError#2
     missing ) after argument list
     Module file "${__.path.nativize( a.abs( './mainSyntaxCatching' ) )}" failed to include "./syntax1"`
       test.true( _.strHas( op.output, exp ) );
@@ -3221,7 +3221,7 @@ file1
     .then( ( op ) =>
     {
       var exp =
-`= Message of error#1
+`= Message of Error#1
     Cant resolve module::MOD1.
     Looked at:
      - MOD1`
@@ -3252,7 +3252,7 @@ file1
     .then( ( op ) =>
     {
       var exp =
-`= Message of error#1
+`= Message of Error#1
     Cant resolve module::mod1.
     Looked at:
      - mod1`
