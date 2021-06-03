@@ -370,6 +370,7 @@ function from( test )
   test.shouldThrowErrorSync( () => _.argumentsArray.from( {} ) );
   test.shouldThrowErrorSync( () => _.argumentsArray.from( 'wrong' ) );
 }
+
 //
 
 function isPerformance( test )
