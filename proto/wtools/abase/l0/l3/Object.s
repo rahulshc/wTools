@@ -89,7 +89,7 @@ function _lengthOf( src )
 function _hasKey( src, key )
 {
   // if( _.number.is( key ) )
-  if( _.countable.is( src ) )
+  if( _.countable.is( src ) && _.number.is( key ) )
   return _.countable._hasKey( src, key );
   return _.props._hasKey( src, key );
 }
@@ -128,7 +128,7 @@ function _cardinalWithKey( src, key )
 function _elementWithKey( src, key )
 {
   // if( _.number.is( key ) )
-  if( _.countable.is( src ) )
+  if( _.countable.is( src ) && _.number.is( key ) )
   return _.countable._elementWithKey( src, key );
   return _.props._elementWithKey( src, key );
 }
@@ -147,7 +147,7 @@ function _elementWithCardinal( src, cardinal )
 function _elementWithKeySet( dst, key, val )
 {
   // if( _.number.is( key ) )
-  if( _.countable.is( src ) )
+  if( _.countable.is( src ) && _.number.is( key ) )
   return _.countable._elementWithKeySet( dst, key, val );
   return _.props._elementWithKeySet( dst, key, val );
 }
@@ -166,7 +166,7 @@ function _elementWithCardinalSet( dst, cardinal, val )
 function _elementWithKeyDel( dst, key )
 {
   // if( _.number.is( key ) )
-  if( _.countable.is( src ) )
+  if( _.countable.is( src ) && _.number.is( key ) )
   return _.countable._elementWithKeyDel( dst, key );
   return _.props._elementWithKeyDel( dst, key );
 }
