@@ -18,9 +18,64 @@ function is( src )
 
 //
 
+function isOld( src )
+{
+  return Object.prototype.toString.call( src ) === '[object Arguments]';
+}
+
+//
+
+function isUsingFunctor_functor( src )
+{
+  let argumentObject = '[object Arguments]';
+  return isUsingFunctor;
+
+  function isUsingFunctor( src )
+  {
+    return Object.prototype.toString.call( src ) === argumentObject;
+  }
+}
+
+let isUsingFunctor = isUsingFunctor_functor();
+
+//
+
 function like( src )
 {
   if( _.argumentsArray.is( src ) )
+  return true;
+  if( _.array.is( src ) )
+  return true;
+  return false;
+}
+
+//
+
+function likeOld( src )
+{
+  if( _.argumentsArray.is( src ) )
+  return true;
+  if( _.array.is( src ) )
+  return true;
+  return false;
+}
+
+//
+
+function likeUnfolded( src )
+{
+  if( Array.isArray( src ) )
+  return true;
+  if( Object.prototype.toString.call( src ) === '[object Arguments]' )
+  return true;
+  return false;
+}
+
+//
+
+function likeUsingIsFunctor( src )
+{
+  if( _.argumentsArray.isUsingFunctor( src ) )
   return true;
   if( _.array.is( src ) )
   return true;
@@ -287,7 +342,12 @@ var ArgumentsArrayExtension =
   // dichotomy
 
   is, /* qqq : cover */
+  isOld,
+  isUsingFunctor,
   like, /* qqq : cover */
+  likeOld,
+  likeUnfolded,
+  likeUsingIsFunctor,
   IsResizable,
 
   // maker
