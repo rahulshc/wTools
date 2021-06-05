@@ -5,6 +5,7 @@
 
 if( typeof module !== 'undefined' )
 {
+  // const _ = require( 'Tools' );
   require( '../Include1.s' );
   require( 'wTesting' );
 }
@@ -19,13 +20,16 @@ const __ = _globals_.testing.wTools;
 
 function dichotomy( test )
 {
+
   dichotomyTemplate( { method : 'is' } );
   dichotomyTemplate( { method : 'isOld' } );
+  dichotomyTemplate( { method : 'isIterator' } );
+
   dichotomyTemplate( { method : 'like' } );
   dichotomyTemplate( { method : 'likeOld' } );
-  dichotomyTemplate( { method : 'likeUnfolded' } );
-  dichotomyTemplate( { method : 'isUsingFunctor' } );
-  dichotomyTemplate( { method : 'likeUsingIsFunctor' } );
+  dichotomyTemplate( { method : 'likeUnfolded' } ); /* qqq : for Rahul : bad : order of routines should be the same in all files */
+  // dichotomyTemplate( { method : 'likeUsingIsFunctor' } );
+
 
   function dichotomyTemplate( env )
   {
@@ -78,6 +82,106 @@ function dichotomy( test )
     test.false( _.array.like( src ) );
   }
 }
+
+//
+
+function dichotomyPerformance( test )
+{
+  /* Average of 10 runs of 5 million ierations of 8 input variants
+  ╔════════════════════════╤═════╤═════╤══════════════╤═════╤═══════╤══════════════════╤════════════╗
+  ║                        │  is │isOld│   isIterator │ like│likeOld│       x          │likeUnfolded║
+  ╟────────────────────────┼─────┼─────┼──────────────┼─────┼───────┼──────────────────┼────────────╢
+  ║Windows-10-20H2, 10.24.1│0.594│0.594│              │0.767│0.767  │     0.780        │  0.612     ║
+  ╟────────────────────────┼─────┼─────┼──────────────┼─────┼───────┼──────────────────┼────────────╢
+  ║Windows-10-20H2, 14.17.0│0.592│0.552│              │0.767│0.665  │     0.664        │  0.523     ║
+  ╟────────────────────────┼─────┼─────┼──────────────┼─────┼───────┼──────────────────┼────────────╢
+  ║   Linux-Kos, 12.9.1    │1.227│1.218│    3.040     │1.174│ 1.891 │     1.695        │  1.226     ║
+  ╚════════════════════════╧═════╧═════╧══════════════╧═════╧═══════╧══════════════════╧════════════╝
+  qqq : for Rahul : update the table
+  */
+
+  let a = test.assetFor( false );
+  test.identical( true, true );
+  programRoutine.meta = {}
+  programRoutine.meta.locals = { methodMeasure, varsInit, run };
+  let program = a.program( programRoutine );
+
+  program.start({ args : [ 'is' ] });
+  program.start({ args : [ 'isOld' ] });
+  program.start({ args : [ 'isIterator' ] });
+  program.start({ args : [ 'like' ] });
+  program.start({ args : [ 'likeOld' ] });
+  program.start({ args : [ 'likeUnfolded' ] });
+
+  return a.ready;
+
+  /* */
+
+  function methodMeasure( env )
+  {
+    let _ = wTools;
+    let __ = wTools;
+    let took, time;
+    Config.debug = false;
+    env = varsInit( env );
+
+    debugger; /* eslint-disable-line no-debugger */
+    time = _.time.now();
+    for( let i = env.times; i > 0; i-- )
+    run( env );
+    took = __.time.spent( time );
+    console.log( `${env.times} iterations of ${env.method} took : ${took} on ${process.version}` );
+    debugger; /* eslint-disable-line no-debugger */
+  }
+
+  /* */
+
+  function varsInit( env )
+  {
+    let _ = wTools;
+    let __ = wTools;
+    env.times = 5000000;
+    env.argumentArray = arguments;
+    env.madeArgumentArray = _.argumentsArray.make( [] );
+    env.anArray = [ 1, 2, 3 ];
+    env.arrayProtoType = Array.prototype;
+    env.aString = 'string';
+    env.aTypedArray = new U64x( 10 );
+    env.falseArray = { __proto__ : Array.prototype }
+    return env;
+  }
+
+  /* */
+
+  function run( env )
+  {
+    let _ = wTools;
+    let __ = wTools;
+    let r = [];
+    r.push( _.argumentsArray[ env.method ]( env.argumentArray ) );
+    r.push( _.argumentsArray[ env.method ]( env.madeArgumentArray ) );
+    r.push( _.argumentsArray[ env.method ]( env.anArray ) );
+    r.push( _.argumentsArray[ env.method ]( env.arrayProtoType ) );
+    r.push( _.argumentsArray[ env.method ]( env.aString ) );
+    r.push( _.argumentsArray[ env.method ]( env.aTypedArray ) );
+    r.push( _.argumentsArray[ env.method ]( env.falseArray ) );
+    r.push( _.argumentsArray[ env.method ]() );
+    /* qqq : for Rahul : result should not be discarded. it distorts result of measurements */
+    return r;
+  }
+
+  /* */
+
+  function programRoutine()
+  {
+    const _ = require( toolsPath );
+    methodMeasure({ method : process.argv[ 2 ] });
+  }
+
+}
+
+dichotomyPerformance.timeOut = 1e7;
+dichotomyPerformance.experimental = true;
 
 //
 
@@ -371,129 +475,6 @@ function from( test )
   test.shouldThrowErrorSync( () => _.argumentsArray.from( 'wrong' ) );
 }
 
-//
-
-function isPerformance( test )
-{
-  /* Average of 10 runs of 5 million ierations of 8 input variants
-  ╔════════════════════════╤═════╤═════╤══════════════╤═════╤═══════╤══════════════════╤════════════╗
-  ║                        │  is │isOld│isUsingFunctor│ like│likeOld│likeUsingIsFunctor│likeUnfolded║
-  ╟────────────────────────┼─────┼─────┼──────────────┼─────┼───────┼──────────────────┼────────────╢
-  ║Windows-10-20H2, 10.24.1│0.594│0.594│  0.598       │0.767│0.767  │     0.780        │  0.612     ║
-  ╟────────────────────────┼─────┼─────┼──────────────┼─────┼───────┼──────────────────┼────────────╢
-  ║Windows-10-20H2, 14.17.0│0.592│0.552│  0.561       │0.767│0.665  │     0.664        │  0.523     ║
-  ╟────────────────────────┼─────┼─────┼──────────────┼─────┼───────┼──────────────────┼────────────╢
-  ║   Linux-Kos, 12.9.1    │0.665│2.074│  2.404       │     │       │                  │            ║
-  ╚════════════════════════╧═════╧═════╧══════════════╧═════╧═══════╧══════════════════╧════════════╝
-  */
-  debugger; /* eslint-disable-line no-debugger */
-  var debugFlag = Config.debug;
-  Config.debug = false;
-
-  /* */
-
-  isPerformanceTemplate( { method : 'is' } );
-  isPerformanceTemplate( { method : 'isOld' } );
-  isPerformanceTemplate( { method : 'isUsingFunctor' } );
-  isPerformanceTemplate( { method : 'like' } );
-  isPerformanceTemplate( { method : 'likeOld' } );
-  isPerformanceTemplate( { method : 'likeUnfolded' } );
-  isPerformanceTemplate( { method : 'likeUsingIsFunctor' } );
-
-  /* */
-
-  Config.debug = debugFlag;
-  debugger; /* eslint-disable-line no-debugger */
-
-  function isPerformanceTemplate( data )
-  {
-
-    test.case = `${data.method}`;
-    var took, time;
-    var env = initializeVariables();
-
-    time = _.time.now();
-    for( let i = env.times; i > 0; i-- )
-    {
-      env.name = data.method;
-      run( env );
-    }
-    took = __.time.spent( time );
-
-    console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-    test.identical( true, true );
-  }
-
-  /* */
-
-  // test.case = 'is';
-  // var took, time;
-  // var env = initializeVariables();
-
-  // time = _.time.now();
-  // for( let i = env.times; i > 0; i-- )
-  // {
-  //   env.name = 'is';
-  //   run( env );
-  // }
-  // took = __.time.spent( time );
-
-  // console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  // test.identical( true, true );
-
-  /* */
-
-  // test.case = 'isUsingFunctor';
-  // var took, time;
-  // var env = initializeVariables();
-
-  // time = _.time.now();
-  // for( let i = env.times; i > 0; i-- )
-  // {
-  //   env.name = 'isUsingFunctor';
-  //   run( env );
-  // }
-  // took = __.time.spent( time );
-
-  // console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  // test.identical( true, true );
-
-  /* */
-
-  function initializeVariables()
-  {
-    var env = {};
-    env.times = 5000000;
-    env.argumentArray = arguments;
-    env.madeArgumentArray = _.argumentsArray.make( [] );
-    env.anArray = [ 1, 2, 3 ];
-    env.arrayProtoType = Array.prototype;
-    env.aString = 'string';
-    env.aTypedArray = new U64x( 10 );
-    env.falseArray = { __proto__ : Array.prototype }
-
-    return env;
-  }
-
-  /* */
-
-  function run( env )
-  {
-    _.argumentsArray[ env.name ]( env.argumentArray );
-    _.argumentsArray[ env.name ]( env.madeArgumentArray );
-    _.argumentsArray[ env.name ]( env.anArray );
-    _.argumentsArray[ env.name ]( env.arrayProtoType );
-    _.argumentsArray[ env.name ]( env.aString );
-    _.argumentsArray[ env.name ]( env.aTypedArray );
-    _.argumentsArray[ env.name ]( env.falseArray );
-    _.argumentsArray[ env.name ]();
-  }
-
-}
-
-isPerformance.timeOut = 1e7;
-isPerformance.experimental = true;
-
 // --
 //
 // --
@@ -507,10 +488,13 @@ const Proto =
 
   tests :
   {
+
     dichotomy,
+    dichotomyPerformance,
+
     make,
     from,
-    isPerformance
+
   }
 
 }
