@@ -83,6 +83,7 @@ function is_functor()
       return false;
       return true;
     }
+    isNjs.functor = is_functor;
 
     // if( arguments[ iteratorSymbol ] === undefined )
     // return false;
@@ -107,6 +108,7 @@ function is_functor()
 
     return false;
   }
+  isBrowser.functor = is_functor;
 
 }
 
