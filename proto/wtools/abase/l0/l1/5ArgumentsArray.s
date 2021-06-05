@@ -25,26 +25,36 @@ function isOld( src )
 
 //
 
-function isUsingFunctor_functor( src )
+function isIterator( src )
 {
-  let argumentObject = '[object Arguments]';
-  return isUsingFunctor;
-
-  function isUsingFunctor( src )
-  {
-    return Object.prototype.toString.call( src ) === argumentObject;
-  }
+  if( !src || !src[ Symbol.iterator ] )
+  return false;
+  return Object.prototype.toString.call( src ) === '[object Arguments]';
 }
 
-let isUsingFunctor = isUsingFunctor_functor();
+//
+
+/* qqq : for Rahul : bad : useless variant */
+// function isUsingFunctor_functor( src )
+// {
+//   let argumentObject = '[object Arguments]';
+//   return isUsingFunctor;
+//
+//   function isUsingFunctor( src )
+//   {
+//     return Object.prototype.toString.call( src ) === argumentObject;
+//   }
+// }
+//
+// let isUsingFunctor = isUsingFunctor_functor();
 
 //
 
 function like( src )
 {
-  if( _.argumentsArray.is( src ) )
+  if( Array.isArray( src ) )
   return true;
-  if( _.array.is( src ) )
+  if( Object.prototype.toString.call( src ) === '[object Arguments]' )
   return true;
   return false;
 }
@@ -53,9 +63,9 @@ function like( src )
 
 function likeOld( src )
 {
-  if( _.argumentsArray.is( src ) )
-  return true;
   if( _.array.is( src ) )
+  return true;
+  if( _.argumentsArray.is( src ) )
   return true;
   return false;
 }
@@ -73,14 +83,15 @@ function likeUnfolded( src )
 
 //
 
-function likeUsingIsFunctor( src )
-{
-  if( _.argumentsArray.isUsingFunctor( src ) )
-  return true;
-  if( _.array.is( src ) )
-  return true;
-  return false;
-}
+/* qqq : for Rahul : bad : misleading name, this is not functor! */
+// function likeUsingIsFunctor( src )
+// {
+//   if( _.argumentsArray.isUsingFunctor( src ) )
+//   return true;
+//   if( _.array.is( src ) )
+//   return true;
+//   return false;
+// }
 
 //
 
@@ -343,11 +354,12 @@ var ArgumentsArrayExtension =
 
   is, /* qqq : cover */
   isOld,
-  isUsingFunctor,
+  isIterator,
+  // isUsingFunctor,
   like, /* qqq : cover */
   likeOld,
   likeUnfolded,
-  likeUsingIsFunctor,
+  // likeUsingIsFunctor,
   IsResizable,
 
   // maker

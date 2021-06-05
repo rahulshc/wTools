@@ -61,13 +61,16 @@ _.withLong = _.long.toolsNamespacesByType;
 
 function is_functor()
 {
-
+  let result;
   const TypedArray = Object.getPrototypeOf( Int8Array );
   const iteratorSymbol = Symbol.iterator;
 
   if( _global_.BufferNode )
-  return isNjs;
-  return isBrowser;
+  result = isNjs;
+  else
+  result = isBrowser;
+  result.functor = is_functor;
+  return result;
 
   function isNjs( src )
   {
@@ -89,7 +92,7 @@ function is_functor()
     return false;
   }
 
-  function isNrowser( src )
+  function isBrowser( src )
   {
     if( Array.isArray( src ) )
     return true
@@ -305,7 +308,6 @@ function _makeEmpty( src )
 
 //
 
-/* qqq2 : for junior : cover please */
 function makeEmpty( src )
 {
   _.assert( arguments.length === 0 || arguments.length === 1 );
@@ -371,7 +373,6 @@ function _makeUndefined( src, length )
 
 //
 
-/* qqq2 : for junior : cover please */
 function makeUndefined( src, length )
 {
   // _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
@@ -450,8 +451,6 @@ function _makeZeroed( src, length )
 
 //
 
-/* qqq2 : for junior : cover please */
-/* qqq : for junior : extend with test cases with countable in 2nd arg */
 function makeZeroed( src, length )
 {
   // _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
@@ -596,8 +595,6 @@ function _make( src, length )
 
 //
 
-/* qqq2 : for junior : full implementation and coverage are required */
-/* qqq : for junior : extend with test cases with countable in 2nd arg */
 function make( src, length )
 {
   _.assert( arguments.length <= 2 );
@@ -615,7 +612,6 @@ function make( src, length )
 
 //
 
-/* qqq2 : for junior : full implementation and coverage are required */
 function _cloneShallow( src )
 {
   if( _.argumentsArray.is( src ) )

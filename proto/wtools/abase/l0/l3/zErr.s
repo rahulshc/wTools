@@ -184,13 +184,16 @@ function _handleUncaught2( o )
     {
       // if( process0.eventGive ) /* xxx : cover in starter not catching uncaught error */
       if( process0 && process0.eventGive )
-      process0.eventGive({ event : 'uncaughtError', args : [ o ] });
+      // process0.eventGive({ event : 'uncaughtError', args : [ o ] });
+      /* xxx : move to namespace app? */
+      process0.eventGive({ event : 'uncaughtError', origination : o.origination, err : o.err });
       for( let g in _realGlobal_._globals_ )
       {
         const _global = _realGlobal_._globals_[ g ];
         if( _global.wTools && _global.wTools.process && _global.wTools.process.eventGive )
         if( _global.wTools.process !== process0 )
-        _global.wTools.process.eventGive({ event : 'uncaughtError', args : [ o ] });
+        _global.wTools.process.eventGive({ event : 'uncaughtError', origination : o.origination, err : o.err });
+        // _global.wTools.process.eventGive({ event : 'uncaughtError', args : [ o ] });
       }
     }
     catch( err2 )

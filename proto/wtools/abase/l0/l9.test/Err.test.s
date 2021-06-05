@@ -137,8 +137,8 @@ function _errWithArgsIncludedRoutine( test )
   let a = test.assetFor( false );
   a.fileProvider.dirMake( a.abs( '.' ) );
   let locals = { toolsPath : _.module.resolve( 'wTools' ) };
-  let programPath1 = a.path.nativize( a.program( testRoutineWithStrLinesSelect ) );
-  let programPath2 = a.path.nativize( a.program( testRoutineWithoutStrLinesSelect ) );
+  let programPath1 = a.path.nativize( a.program( testRoutineWithStrLinesSelect ).programPath );
+  let programPath2 = a.path.nativize( a.program( testRoutineWithoutStrLinesSelect ).programPath );
 
   a.shellNonThrowing( `node ${ programPath1 }` );
   a.ready.then( ( op ) =>
@@ -876,7 +876,7 @@ function errorFunctorExternal( test )
   let context = this;
   let visited = [];
   let a = test.assetFor( false );
-  let programPath = a.program( program );
+  let programPath = a.program( program ).programPath;
 
   /* */
 
@@ -930,7 +930,7 @@ function uncaughtError( test )
   let context = this;
   let visited = [];
   let a = test.assetFor( false );
-  let programPath = a.program( program );
+  let programPath = a.program( program ).programPath;
 
   /* */
 
@@ -970,7 +970,7 @@ function sourceCode( test )
   let context = this;
   let visited = [];
   let a = test.assetFor( false );
-  let programPath = a.program( program );
+  let programPath = a.program( program ).programPath;
 
   /* */
 
@@ -1017,7 +1017,7 @@ function errorFunctorAttended( test )
   let context = this;
   let visited = [];
   let a = test.assetFor( false );
-  let programPath = a.program( program );
+  let programPath = a.program( program ).programPath;
 
   /* */
 
@@ -1056,7 +1056,7 @@ function uncaughtErrorBasic( test )
   let context = this;
   let visited = [];
   let a = test.assetFor( false );
-  let programPath = a.program( program );
+  let programPath = a.program( program ).programPath;
 
   /* */
 
@@ -1087,7 +1087,7 @@ function eventUncaughtErrorBasic( test )
 {
   let context = this;
   let a = test.assetFor( false );
-  let programPath = a.program( program );
+  let programPath = a.program( program ).programPath;
   let ready = __.take( null );
 
   ready.then( () => run( 'sync' ) );
@@ -1303,10 +1303,10 @@ function eventUncaughtErrorOnce( test )
 {
   let context = this;
   let a = test.assetFor( false );
-  let programPath = a.program( program );
+  let programPath = a.program( program ).programPath;
   let ready = __.take( null );
 
-  // ready.then( () => run( 'once' ) ); /* qqq : for Dmytro : switch on later */
+  // ready.then( () => run( 'once' ) ); /* qqq2 : for Dmytro : switch on later */
   ready.then( () => run( 'off' ) );
 
   return ready;
@@ -1386,7 +1386,7 @@ function entryProcedureStack( test )
 {
   let context = this;
   let a = test.assetFor( false );
-  let programPath = a.program( program );
+  let programPath = a.program( program ).programPath;
   let ready = __.take( null );
   ready.then( () => run() );
   return ready;

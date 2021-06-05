@@ -11,18 +11,6 @@ _.process = _.process || Object.create( null );
 // implementation
 // --
 
-function eventGive()
-{
-  return _.event.eventGive( _.process._ehandler, ... arguments );
-}
-
-eventGive.defaults =
-{
-  ... _.event.eventGive.defaults,
-}
-
-//
-
 /**
  * The routine ready() delays execution of code to moment when web-page ( or program itself ) is loaded.
  * Optionally routine accept additional time out {-timeOut-} and callback {-onReady-} to execute after
@@ -119,11 +107,11 @@ let ready = _.routine.unite( ready_head, ready_body );
 
 let Extension =
 {
-  eventGive,
 
   ready,
+
 }
 
-/* _.props.extend */Object.assign( _.process, Extension );
+Object.assign( _.process, Extension );
 
 })();
