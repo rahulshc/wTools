@@ -88,15 +88,15 @@ function dichotomy( test )
 function dichotomyPerformance( test )
 {
   /* Average of 10 runs of 5 million ierations of 8 input variants
-  ╔════════════════════════╤═════╤═════╤══════════════╤═════╤═══════╤══════════════════╤════════════╗
-  ║                        │  is │isOld│   isIterator │ like│likeOld│       x          │likeUnfolded║
-  ╟────────────────────────┼─────┼─────┼──────────────┼─────┼───────┼──────────────────┼────────────╢
-  ║Windows-10-20H2, 10.24.1│0.594│0.594│              │0.767│0.767  │     0.780        │  0.612     ║
-  ╟────────────────────────┼─────┼─────┼──────────────┼─────┼───────┼──────────────────┼────────────╢
-  ║Windows-10-20H2, 14.17.0│0.592│0.552│              │0.767│0.665  │     0.664        │  0.523     ║
-  ╟────────────────────────┼─────┼─────┼──────────────┼─────┼───────┼──────────────────┼────────────╢
-  ║   Linux-Kos, 12.9.1    │1.227│1.218│    3.040     │1.174│ 1.891 │     1.695        │  1.226     ║
-  ╚════════════════════════╧═════╧═════╧══════════════╧═════╧═══════╧══════════════════╧════════════╝
+  ╔════════════════════════╤═════╤═════╤══════════════╤═════╤═══════╤════════════╗
+  ║                        │  is │isOld│   isIterator │ like│likeOld│likeUnfolded║
+  ╟────────────────────────┼─────┼─────┼──────────────┼─────┼───────┼────────────╢
+  ║Windows-10-20H2, 10.24.1│1.191│1.191│    2.962     │1.113│1.629  │  1.109     ║
+  ╟────────────────────────┼─────┼─────┼──────────────┼─────┼───────┼────────────╢
+  ║Windows-10-20H2, 14.17.0│1.066│1.066│    2.849     │1.053│1.660  │  1.041     ║
+  ╟────────────────────────┼─────┼─────┼──────────────┼─────┼───────┼────────────╢
+  ║   Linux-Kos, 12.9.1    │1.227│1.218│    3.040     │1.174│ 1.891 │  1.226     ║
+  ╚════════════════════════╧═════╧═════╧══════════════╧═════╧═══════╧════════════╝
   qqq : for Rahul : update the table
   */
 
@@ -106,12 +106,12 @@ function dichotomyPerformance( test )
   programRoutine.meta.locals = { methodMeasure, varsInit, run };
   let program = a.program( programRoutine );
 
-  program.start({ args : [ 'is' ] });
-  program.start({ args : [ 'isOld' ] });
-  program.start({ args : [ 'isIterator' ] });
-  program.start({ args : [ 'like' ] });
-  program.start({ args : [ 'likeOld' ] });
-  program.start({ args : [ 'likeUnfolded' ] });
+  program.start( { args : [ 'is' ] } );
+  program.start( { args : [ 'isOld' ] } );
+  program.start( { args : [ 'isIterator' ] } );
+  program.start( { args : [ 'like' ] } );
+  program.start( { args : [ 'likeOld' ] } );
+  program.start( { args : [ 'likeUnfolded' ] } );
 
   return a.ready;
 
