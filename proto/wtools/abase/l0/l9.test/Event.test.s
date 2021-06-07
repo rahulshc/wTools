@@ -150,9 +150,9 @@ function on( test )
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.eventGive( edispatcher, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [] );
-  _.event.eventGive( edispatcher, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
 
   /* */
@@ -166,9 +166,9 @@ function on( test )
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
   _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( edispatcher, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( edispatcher, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0 ] );
   test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
   test.false( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
@@ -184,11 +184,11 @@ function on( test )
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
   _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( edispatcher, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( edispatcher, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, 1 ] );
-  _.event.eventGive( edispatcher, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0, 1 ] );
   test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
   test.false( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
@@ -204,12 +204,12 @@ function on( test )
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
   var got = _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } } );
-  _.event.eventGive( edispatcher, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( edispatcher, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, 1 ] );
-  _.event.eventGive( edispatcher, 'event2' );
-  _.event.eventGive( edispatcher, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0, 1, -2, -3 ] );
   test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
   test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
@@ -229,11 +229,11 @@ function on( test )
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
   _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } } );
-  _.event.eventGive( ehandler2, 'event' );
-  _.event.eventGive( ehandler2, 'event' );
+  _.event.eventGive( ehandler2, { event : 'event', args : [] } );
+  _.event.eventGive( ehandler2, { event : 'event', args : [] } );
   test.identical( result, [] );
-  _.event.eventGive( ehandler2, 'event2' );
-  _.event.eventGive( ehandler2, 'event2' );
+  _.event.eventGive( ehandler2, { event : 'event2', args : [] } );
+  _.event.eventGive( ehandler2, { event : 'event2', args : [] } );
   test.identical( result, [] );
 
   /* */
@@ -248,12 +248,13 @@ function on( test )
   var onEvent2 = () => result.push( -1 * result.length );
   _.event.once( edispatcher, { 'callbackMap' : { 'event2' : onEvent2 } } );
   _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( edispatcher, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( edispatcher, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, 1 ] );
-  _.event.eventGive( edispatcher, 'event2' );
-  _.event.eventGive( edispatcher, 'event2' );
+  debugger;
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0, 1, -2 ] );
 
   test.case = 'event handler has a few handlers for single event - once and regular';
@@ -266,9 +267,9 @@ function on( test )
   var onEvent2 = () => result.push( -1 * result.length );
   _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
   _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent2 } } );
-  _.event.eventGive( edispatcher, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, -1 ] );
-  _.event.eventGive( edispatcher, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, -1, 2 ] );
 
   test.close( 'option first - 0' );
@@ -287,9 +288,9 @@ function on( test )
   var onEvent2 = () => result.push( -1 * result.length );
   _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
   _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent2 }, 'first' : 1 } );
-  _.event.eventGive( edispatcher, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ -0, 1 ] );
-  _.event.eventGive( edispatcher, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ -0, 1, 2 ] );
 
   /* */
@@ -304,9 +305,9 @@ function on( test )
   var onEvent2 = () => result.push( -1 * result.length );
   _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent2 }, 'first' : 1 } );
   _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( edispatcher, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ -0, 1 ] );
-  _.event.eventGive( edispatcher, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ -0, 1, -2 ] );
 
   test.close( 'option first - 1' );
@@ -1846,7 +1847,7 @@ const Proto =
 
     // event
 
-    // on,
+    on,
     // onCheckDescriptor,
     // onWithChain,
     // onCallWithHeadRoutine,
