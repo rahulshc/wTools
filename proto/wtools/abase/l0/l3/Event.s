@@ -347,7 +347,6 @@ function _on( edispatcher, o )
       if( self.enabled )
       {
         result = callback.apply( this, arguments );
-        debugger;
         if( once === true )
         _.event.off( edispatcher, { callbackMap : { [ name ] : callbackOn } } );
         // _.event.off( edispatcher, { callbackMap : { [ name ] : callbackOnce } } ); /* Dmytro : callbackOnce does not exist */

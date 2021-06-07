@@ -252,7 +252,6 @@ function on( test )
   test.identical( result, [ 0 ] );
   _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, 1 ] );
-  debugger;
   _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0, 1, -2 ] );
@@ -1035,12 +1034,9 @@ function onceWithChain( test )
   _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
   test.identical( edispatcher.events.event2, [] );
-  debugger;
   _.event.eventGive( edispatcher, { event : 'event', args : [] } );
-  debugger;
   test.identical( result, [] );
   test.true( _.routine.is( edispatcher.events.event2[ 0 ] ) );
-  debugger;
   _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0 ] );
   test.identical( edispatcher.events.event2, [] );
