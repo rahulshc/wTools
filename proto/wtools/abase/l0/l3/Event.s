@@ -52,8 +52,10 @@ function _chainGenerate( args )
       else
       {
         let o = _.event.onHead( _.event.on, next );
-        _.event.on( self, o );
+        o.once = on.once;
+        _.event._on( self, o );
 
+        if( !on.once )
         if( _.event.eventHasHandler( self, { eventName : e1, eventHandler : on } ) )
         _.event.off( self, { callbackMap : { [ e1 ] : on } } );
       }
@@ -345,6 +347,7 @@ function _on( edispatcher, o )
       if( self.enabled )
       {
         result = callback.apply( this, arguments );
+        debugger;
         if( once === true )
         _.event.off( edispatcher, { callbackMap : { [ name ] : callbackOn } } );
         // _.event.off( edispatcher, { callbackMap : { [ name ] : callbackOnce } } ); /* Dmytro : callbackOnce does not exist */
@@ -352,6 +355,7 @@ function _on( edispatcher, o )
       return result;
     }
     callbackOn.native = callback;
+    callbackOn.native.once = once;
 
     return callbackOn;
   }
