@@ -29,6 +29,7 @@ function dichotomy( test )
   dichotomyTemplate( { method : 'is' } );
   dichotomyTemplate( { method : 'isOld' } );
   dichotomyTemplate( { method : 'isUsingInstanceOf' } );
+
   dichotomyTemplate( { method : 'like' } );
   dichotomyTemplate( { method : 'likeOld' } );
   dichotomyTemplate( { method : 'likeUnfolded' } );
@@ -176,63 +177,61 @@ function dichotomy( test )
 
 //
 
-function isPerformance( test )
+function dichotomyPerformance( test )
 {
   /* Average of 10 runs of 5 million iterations of 14 input varaints
   ╔════════════════════════╤═════╤═════╤═════════════════╤═════╤═══════╤══════════════════════════╤════════════╗
   ║                        │  is │isOld│isUsingInstanceOf│ like│likeOld│likeUsingisUsingInstanceOf│likeUnfolded║
   ╟────────────────────────┼─────┼─────┼─────────────────┼─────┼───────┼──────────────────────────┼────────────╢
-  ║Windows-10-20H2, 10.24.1│1.267│1.267│      0.805      │2.410│ 2.410 │           1.913          │    1.285   ║
+  ║Windows-10-20H2, 10.24.1│     │     │                 │     │       │                          │            ║
   ╟────────────────────────┼─────┼─────┼─────────────────┼─────┼───────┼──────────────────────────┼────────────╢
-  ║Windows-10-20H2, 14.17.0│1.282│1.282│      0.869      │2.020│ 2.020 │           2.004          │    1.250   ║
+  ║Windows-10-20H2, 14.17.0│     │     │                 │     │       │                          │            ║
   ╟────────────────────────┼─────┼─────┼─────────────────┼─────┼───────┼──────────────────────────┼────────────╢
   ║    Linux-Kos, 12.9.1   │     │     │                 │     │       │                          │            ║
   ╚════════════════════════╧═════╧═════╧═════════════════╧═════╧═══════╧══════════════════════════╧════════════╝
   */
-  debugger; /* eslint-disable-line no-debugger */
-  var debugFlag = Config.debug;
-  Config.debug = false;
+
+  let a = test.assetFor( false );
+  test.identical( true, true );
+  programRoutine.meta = {}
+  programRoutine.meta.locals = { methodMeasure, varsInit, run };
+  let program = a.program( programRoutine );
+
+  program.start( { args : [ 'is' ] } );
+  program.start( { args : [ 'isOld' ] } );
+  program.start( { args : [ 'isUsingInstanceOf' ] } );
+  program.start( { args : [ 'like' ] } );
+  program.start( { args : [ 'likeOld' ] } );
+  program.start( { args : [ 'likeUsingisUsingInstanceOf' ] } );
+  program.start( { args : [ 'likeUnfolded' ] } );
+
+  return a.ready;
 
   /* */
 
-  isPerformanceTemplate( { method : 'like' } );
-  isPerformanceTemplate( { method : 'likeOld' } );
-  isPerformanceTemplate( { method : 'likeUsingisUsingInstanceOf' } );
-  isPerformanceTemplate( { method : 'likeUnfolded' } );
-  isPerformanceTemplate( { method : 'is' } );
-  isPerformanceTemplate( { method : 'isOld' } );
-  isPerformanceTemplate( { method : 'isUsingInstanceOf' } );
-
-  /* */
-
-  Config.debug = debugFlag;
-  debugger; /* eslint-disable-line no-debugger */
-
-  /* */
-
-  function isPerformanceTemplate( data )
+  function methodMeasure( env )
   {
-    test.case = `${data.method}`;
-    var took, time;
-    var env = initializeVariables();
+    let _ = wTools;
+    let __ = wTools;
+    let took, time;
+    Config.debug = false;
+    env = varsInit( env );
 
+    debugger; /* eslint-disable-line no-debugger */
     time = _.time.now();
     for( let i = env.times; i > 0; i-- )
-    {
-      env.name = data.method;
-      run( env );
-    }
+    run( env );
     took = __.time.spent( time );
-
-    console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-    test.identical( true, true );
+    console.log( `${env.times} iterations of ${env.method} took : ${took} on ${process.version}` );
+    debugger; /* eslint-disable-line no-debugger */
   }
 
   /* */
 
-  function initializeVariables()
+  function varsInit( env )
   {
-    var env = {};
+    let _ = wTools;
+    let __ = wTools;
     env.times = 5000000;
     env.aRegex = /a/;
     env.anEmptyRegex = /(?:)/;
@@ -253,26 +252,37 @@ function isPerformance( test )
 
   function run( env )
   {
-    _.regexp[ env.name ]( env.aRegex );
-    _.regexp[ env.name ]( env.anEmptyRegex );
-    _.regexp[ env.name ]( env.aRegexWithFlag );
-    _.regexp[ env.name ]( env.aComplexRegex );
-    _.regexp[ env.name ]( env.anEmptyString );
-    _.regexp[ env.name ]( env.aString );
-    _.regexp[ env.name ]( env.stringObject );
+    let _ = wTools;
+    let __ = wTools;
+    let r = [];
+    r.push( _.regexp[ env.method ]( env.aRegex ) );
+    r.push( _.regexp[ env.method ]( env.anEmptyRegex ) );
+    r.push( _.regexp[ env.method ]( env.aRegexWithFlag ) );
+    r.push( _.regexp[ env.method ]( env.aComplexRegex ) );
+    r.push( _.regexp[ env.method ]( env.anEmptyString ) );
+    r.push( _.regexp[ env.method ]( env.aString ) );
+    r.push( _.regexp[ env.method ]( env.stringObject ) );
 
-    _.regexp[ env.name ]( env.aNumber );
-    _.regexp[ env.name ]( env.aBoolean );
-    _.regexp[ env.name ]( env.anArray );
-    _.regexp[ env.name ]( env.aMap );
-    _.regexp[ env.name ]( null );
-    _.regexp[ env.name ]( undefined );
-    _.regexp[ env.name ]();
+    r.push( _.regexp[ env.method ]( env.aNumber ) );
+    r.push( _.regexp[ env.method ]( env.aBoolean ) );
+    r.push( _.regexp[ env.method ]( env.anArray ) );
+    r.push( _.regexp[ env.method ]( env.aMap ) );
+    r.push( _.regexp[ env.method ]( null ) );
+    r.push( _.regexp[ env.method ]( undefined ) );
+    r.push( _.regexp[ env.method ]() );
+
+    return r;
+  }
+
+  function programRoutine()
+  {
+    const _ = require( toolsPath );
+    methodMeasure( { method : process.argv[ 2 ] } );
   }
 }
 
-isPerformance.timeOut = 1e7;
-isPerformance.experimental = true;
+dichotomyPerformance.timeOut = 1e7;
+dichotomyPerformance.experimental = true;
 
 // --
 // suite definition
@@ -288,7 +298,7 @@ const Proto =
   {
 
     dichotomy,
-    isPerformance
+    dichotomyPerformance
 
   }
 

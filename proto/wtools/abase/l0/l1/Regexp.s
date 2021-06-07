@@ -72,20 +72,12 @@ function likeUsingisUsingInstanceOf( src )
 
 //
 
-function likeUnfolded_functor()
+function likeUnfolded( src )
 {
-  let stringType = '[object String]';
-  return likeUnfolded;
-
-  function likeUnfolded( src )
-  {
-    if( src instanceof RegExp || Object.prototype.toString.call( src ) === stringType )
+    if( src instanceof RegExp || Object.prototype.toString.call( src ) === '[object String]' )
     return true;
     return false;
-  }
 }
-
-let likeUnfolded = likeUnfolded_functor();
 
 // //
 //
