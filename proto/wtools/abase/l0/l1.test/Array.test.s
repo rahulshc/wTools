@@ -1699,7 +1699,7 @@ function asWithCasesNotImplemented( test )
     test.case = `${__.entity.exportStringSolo( env )}, an iterable defined inside a class`;
     class srcTemplate
     {
-      *[Symbol.iterator] () 
+      *[Symbol.iterator] ()
       {
         yield 'a';
         yield 'b';

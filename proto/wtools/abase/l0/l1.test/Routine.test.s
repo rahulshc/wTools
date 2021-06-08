@@ -17,6 +17,32 @@ const __ = _globals_.testing.wTools;
 // dichotomy
 // --
 
+/* qqq : for Rahul
+
+first rewrite using example
+
+  test.case = 'check null';
+  var src = null;
+  test.identical( _.routine.is( src ), false );
+  test.identical( _.routine.like( src ), false );
+  test.identical( _.routine.isSync( src ), false );
+  test.identical( _.routine.isAsync( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.withName( src ), false );
+  test.identical( _.routine.isGenerator( src ), false );
+  test.identical( _.routine.isSyncGenerator( src ), false );
+  test.identical( _.routine.isAsyncGenerator( src ), false );
+
+join into single test routine::dichotomy
+
+  is,
+  like,
+  isSync,
+  isAsync,
+  isTrivial,
+
+*/
+
 function is( test )
 {
 
@@ -25,8 +51,16 @@ function is( test )
   test.identical( got, false );
 
   test.case = 'check null';
-  var got = _.routine.is( null );
-  test.identical( got, false );
+  var src = null;
+  test.identical( _.routine.is( src ), false );
+  test.identical( _.routine.like( src ), false );
+  test.identical( _.routine.isSync( src ), false );
+  test.identical( _.routine.isAsync( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.withName( src ), false );
+  test.identical( _.routine.isGenerator( src ), false );
+  test.identical( _.routine.isSyncGenerator( src ), false );
+  test.identical( _.routine.isAsyncGenerator( src ), false );
 
   test.case = 'check undefined';
   var got = _.routine.is( undefined );
@@ -139,12 +173,48 @@ function is( test )
   test.case = 'async named routine';
   var got = _.routine.is( async function a(){} );
   test.identical( got, true )
+
+  test.case = `generator`;
+  var src = function* abc()
+  {
+    yield 1;
+    yield 2;
+    yield 3;
+  };
+  test.identical( _.routine.is( src ), false );
+  test.identical( _.routine.like( src ), true );
+  test.identical( _.routine.isSync( src ), false );
+  test.identical( _.routine.isAsync( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.withName( src ), true );
+  test.identical( _.routine.isGenerator( src ), true );
+  test.identical( _.routine.isSyncGenerator( src ), true );
+  test.identical( _.routine.isAsyncGenerator( src ), false );
+
+  test.case = `async generator`;
+  var src = async function* abc()
+  {
+    yield 1;
+    yield 2;
+    yield 3;
+  };
+  test.identical( _.routine.is( src ), false );
+  test.identical( _.routine.like( src ), true );
+  test.identical( _.routine.isSync( src ), false );
+  test.identical( _.routine.isAsync( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.withName( src ), true );
+  test.identical( _.routine.isGenerator( src ), true );
+  test.identical( _.routine.isSyncGenerator( src ), false );
+  test.identical( _.routine.isAsyncGenerator( src ), true );
+
 }
 
 //
 
 function like( test )
 {
+
   test.case = 'without argument';
   var got = _.routine.like();
   test.identical( got, false );

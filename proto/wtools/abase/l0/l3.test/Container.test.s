@@ -52,12 +52,12 @@ function exportStringDiagnosticShallow( test )
 
   test.case = `object countable - empty, non-vector`;
   var src = __.diagnostic.objectMake({ elements : [], countable : 1, new : 0 });
-  var expected = '{- Map.polluted with 8 elements -}';
+  var expected = '{- Map.polluted with 9 elements -}';
   test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = `object countable - non empty, non-vector`;
   var src = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1, new : 0 });
-  var expected = '{- Map.polluted with 8 elements -}';
+  var expected = '{- Map.polluted with 9 elements -}';
   test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Global & GlobalReal';

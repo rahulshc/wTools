@@ -152,6 +152,8 @@ function _make( src, length )
 
 function make( src, length )
 {
+  // if( !( arguments.length === 0 || src === null || _.countable.is( src ) || _.numberIs( src ) ) )
+  // debugger;
   _.assert( arguments.length === 0 || src === null || _.countable.is( src ) || _.numberIs( src ) );
   _.assert( length === undefined || !_.number.is( src ) || !_.number.is( length ) );
   _.assert( arguments.length < 2 || _.number.is( length ) || _.countable.is( length ) );

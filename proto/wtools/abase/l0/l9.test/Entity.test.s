@@ -94,7 +94,7 @@ function exportStringDiagnosticShallow( test )
 
   test.case = `object countable - empty, non-vector`;
   var src = __.diagnostic.objectMake({ new : 0, elements : [], countable : 1 } );
-  var expected = '{- Map.polluted with 8 elements -}';
+  var expected = '{- Map.polluted with 9 elements -}';
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Global & GlobalReal';
@@ -473,7 +473,7 @@ function exportStringCodeShallow( test )
 
   test.case = `object countable - empty, non-vector`;
   var src = __.diagnostic.objectMake({ new : 0, elements : [], countable : 1 } );
-  var expected = '{- Map.polluted with 8 elements -}';
+  var expected = '{- Map.polluted with 9 elements -}';
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'Global & GlobalReal';
@@ -1305,7 +1305,7 @@ const Proto =
   tests :
   {
 
-    exportStringDiagnosticShallow,
+    exportStringDiagnosticShallow, /* qqq : for Rahul : join test routines exportStringDiagnosticShallow and exportStringCodeShallow into test routine exportStringShallow */
     exportStringCodeShallow,
 
     assign,
