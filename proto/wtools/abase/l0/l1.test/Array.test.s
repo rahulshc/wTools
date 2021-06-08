@@ -1662,71 +1662,93 @@ function from( test )
 }
 
 //
-function asWithCasesNotImplemented( test )
-{
-  asWithCasesNotImplementedTemplate( { method : 'as' } );
-  asWithCasesNotImplementedTemplate( { method : 'asTest' } );
 
-  function asWithCasesNotImplementedTemplate( env )
-  {
-    //Throws error. [object GeneratorFunction] is not covered as a Symbol.iterator
-    test.case = `${__.entity.exportStringSolo( env )}, a set having generator function as it's Symbol.iterator`;
-    var src = new Set();
-    src[ Symbol.iterator ] = function* ()
-    {
-      yield 1;
-      yield 1;
-      yield 3;
-    };
-    var got = _.array[ env.method ]( src );
-    var expected = [ ... src ];
-    test.identical( got, expected );
-
-    //Throws error. [object GeneratorFunction] is not covered as a Symbol.iterator
-    test.case = `${__.entity.exportStringSolo( env )}, an Object having a generator function as it's Symbol.iterator`;
-    var src = {};
-    src[ Symbol.iterator ] = function* ()
-    {
-      yield 1;
-      yield 2;
-      yield 3;
-    };
-    var got = _.array[ env.method ]( src );
-    var expected = [ ... src ];
-    test.identical( got, expected );
-
-    //Throws error. [object GeneratorFunction] is not covered as a Symbol.iterator
-    test.case = `${__.entity.exportStringSolo( env )}, an iterable defined inside a class`;
-    class srcTemplate
-    {
-      *[Symbol.iterator] ()
-      {
-        yield 'a';
-        yield 'b';
-      }
-    }
-    var src = new srcTemplate;
-    var got = _.array[ env.method ]( src );
-    var expected = [ ... src ];
-    test.identical( got, expected );
-  }
-}
+/* qqq : for Rahul : bad : order or routines does not match */
+// function asWithCasesNotImplemented( test )
+// {
+//
+//   act({ method : 'as' });
+//   act({ method : 'asTest' });
+//
+//   function act( env )
+//   {
+//
+//     //Throws error. [object GeneratorFunction] is not covered as a Symbol.iterator
+//     test.case = `${__.entity.exportStringSolo( env )}, a set having generator function as it's Symbol.iterator`;
+//     var src = new Set();
+//     src[ Symbol.iterator ] = function* ()
+//     {
+//       yield 1;
+//       yield 1;
+//       yield 3;
+//     };
+//     var got = _.array[ env.method ]( src );
+//     var expected = [ ... src ];
+//     test.identical( got, expected );
+//
+//     //Throws error. [object GeneratorFunction] is not covered as a Symbol.iterator
+//     test.case = `${__.entity.exportStringSolo( env )}, an Object having a generator function as it's Symbol.iterator`;
+//     var src = {};
+//     src[ Symbol.iterator ] = function* ()
+//     {
+//       yield 1;
+//       yield 2;
+//       yield 3;
+//     };
+//     var got = _.array[ env.method ]( src );
+//     var expected = [ ... src ];
+//     test.identical( got, expected );
+//
+//     //Throws error. [object GeneratorFunction] is not covered as a Symbol.iterator
+//     test.case = `${__.entity.exportStringSolo( env )}, an iterable defined inside a class`;
+//     class srcTemplate
+//     {
+//       *[Symbol.iterator] ()
+//       {
+//         yield 'a';
+//         yield 'b';
+//       }
+//     }
+//     var src = new srcTemplate;
+//     var got = _.array[ env.method ]( src );
+//     var expected = [ ... src ];
+//     test.identical( got, expected );
+//
+//   }
+//
+// }
 
 //
 
 function as( test )
 {
-  asTemplate( { method : 'as' } );
-  asTemplate( { method : 'asTest' } );
 
-  function asTemplate( env )
+  test.case = 'assumption';
+  var src = {};
+  src[ Symbol.iterator ] = function* ()
   {
+    yield 1;
+    yield 2;
+    yield 3;
+  };
+  var got = [ ... src ];
+  var exp = [ 1, 2, 3 ]
+  test.identical( got, exp );
+
+  act({ method : 'as' });
+  // act({ method : 'asTest' });
+
+  function act( env )
+  {
+
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, null`;
     var got = _.array[ env.method ]( null );
     var expected = [];
     test.identical( got, expected );
 
-    /* */
+    /* */ /* qqq : for Rahul : split all cases by "/\* *\/" uniformally */
 
     test.case = `${__.entity.exportStringSolo( env )}, an empty array`;
     var src = [];
@@ -1893,7 +1915,51 @@ function as( test )
     var expected = [ ... src ];
     test.identical( got, expected );
 
-    /**/
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, a set having generator function as it's Symbol.iterator`;
+    var src = new Set();
+    src[ Symbol.iterator ] = function* ()
+    {
+      yield 1;
+      yield 1;
+      yield 3;
+    };
+    var got = _.array[ env.method ]( src );
+    var expected = [ ... src ];
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, an Object having a generator function as it's Symbol.iterator`;
+    var src = {};
+    src[ Symbol.iterator ] = function* ()
+    {
+      yield 1;
+      yield 2;
+      yield 3;
+    };
+    var got = _.array[ env.method ]( src );
+    var expected = [ ... src ];
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, an iterable defined inside a class`;
+    class srcTemplate
+    {
+      *[Symbol.iterator] ()
+      {
+        yield 'a';
+        yield 'b';
+      }
+    }
+    var src = new srcTemplate;
+    var got = _.array[ env.method ]( src );
+    var expected = [ ... src ];
+    test.identical( got, expected );
+
+    /* */
 
     if( !Config.debug )
     return;
@@ -1906,6 +1972,7 @@ function as( test )
 
     test.case = `${__.entity.exportStringSolo( env )}, multiple arguments`;
     test.shouldThrowErrorSync( () => _.array[ env.method ]( 1, 2 ) );
+
   }
 };
 
@@ -1930,8 +1997,10 @@ const Proto =
     make,
     makeUndefined,
     from,
+
+    /* qqq : for Rahul : bad : order or routines does not match */
     as,
-    asWithCasesNotImplemented,
+    // asWithCasesNotImplemented,
 
   }
 

@@ -158,16 +158,16 @@ function _cloneShallow( srcArray )
  * @namespace Tools/array
  */
 
-/* xxx : review */
 function as( src )
 {
   _.assert( arguments.length === 1 );
   _.assert( src !== undefined );
 
   //src === undefined check below conflicts with above assert
-  if( src === null || src === undefined )
+  // if( src === null || src === undefined )
+  if( src === null )
   return [];
-  else if( _.array.like( src ) )
+  else if( _.array.is( src ) )
   return src;
   else if( _.countable.like( src ) )
   return [ ... src ];
@@ -176,20 +176,20 @@ function as( src )
 
 }
 
+// //
 //
-
-function asTest( src )
-{
-  _.assert( arguments.length === 1 );
-  _.assert( src !== undefined );
-
-  if( src === null )
-  return [];
-  if( src[ Symbol.iterator ] && !_.str.is( src ) )
-  return [ ... src ];
-
-  return [ src ];
-}
+// function asTest( src )
+// {
+//   _.assert( arguments.length === 1 );
+//   _.assert( src !== undefined );
+//
+//   if( src === null )
+//   return [];
+//   if( src[ Symbol.iterator ] && !_.str.is( src ) )
+//   return [ ... src ];
+//
+//   return [ src ];
+// }
 
 //
 
@@ -252,7 +252,7 @@ let ArrayExtension =
   cloneShallow : _.argumentsArray.cloneShallow, /* qqq : for junior : cover */
   from : _.argumentsArray.from, /* qqq : for junior : cover */
   as,
-  asTest,
+  // asTest,
   asShallow,
 
   // meta
