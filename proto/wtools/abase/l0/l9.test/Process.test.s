@@ -799,35 +799,105 @@ function onWithChain( test )
 
 function onCheckDescriptor( test )
 {
-  var self = this;
+  const self = this;
+  const a = test.assetFor( false );
+  a.fileProvider.dirMake( a.abs( '.' ) );
+
+  /* - */
+
+  a.ready.then( () =>
+  {
+    test.case = 'from arguments';
+    return null;
+  });
+  var program = a.program( callbackInArgs );
+  program.start();
+  a.ready.then( ( op ) =>
+  {
+    test.identical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, '[ \'available\' ]' ), 1 );
+    test.identical( _.strCount( op.output, '[ \'off\', \'enabled\', \'first\', \'callbackMap\' ]' ), 1 );
+    test.identical( _.strCount( op.output, 'descriptor.enabled : true' ), 1 );
+    test.identical( _.strCount( op.output, 'descriptor.first : false' ), 1 );
+    test.identical( _.strCount( op.output, 'descriptor.callbackMap : available' ), 1 );
+    return null;
+  });
 
   /* */
 
-  test.case = 'call with arguments';
-  var result = [];
-  var onEvent = () => result.push( result.length );
-  var descriptor = _.process.on( 'event1', onEvent );
-  test.identical( _.props.keys( descriptor ), [ 'event1' ] );
-  test.identical( _.props.keys( descriptor.event1 ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
-  test.identical( descriptor.event1.enabled, true );
-  test.identical( descriptor.event1.first, 0 );
-  test.equivalent( descriptor.event1.callbackMap, { event1 : onEvent } );
-  test.true( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event1', eventHandler : onEvent } ) );
-  descriptor.event1.off();
+  a.ready.then( () =>
+  {
+    test.case = 'from map';
+    return null;
+  });
+  var program = a.program( callbackInMap );
+  program.start();
+  a.ready.then( ( op ) =>
+  {
+    test.identical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, '[ \'available\' ]' ), 1 );
+    test.identical( _.strCount( op.output, '[ \'off\', \'enabled\', \'first\', \'callbackMap\' ]' ), 1 );
+    test.identical( _.strCount( op.output, 'descriptor.enabled : true' ), 1 );
+    test.identical( _.strCount( op.output, 'descriptor.first : true' ), 1 );
+    test.identical( _.strCount( op.output, 'descriptor.callbackMap : available' ), 1 );
+    return null;
+  });
+
+  // test.case = 'call with arguments';
+  // var result = [];
+  // var onEvent = () => result.push( result.length );
+  // var descriptor = _.process.on( 'event1', onEvent );
+  // test.identical( _.props.keys( descriptor ), [ 'event1' ] );
+  // test.identical( _.props.keys( descriptor.event1 ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
+  // test.identical( descriptor.event1.enabled, true );
+  // test.identical( descriptor.event1.first, 0 );
+  // test.equivalent( descriptor.event1.callbackMap, { event1 : onEvent } );
+  // test.true( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event1', eventHandler : onEvent } ) );
+  // descriptor.event1.off();
+  //
+  // /* */
+  //
+  // test.case = 'call with arguments';
+  // var result = [];
+  // var onEvent = () => result.push( result.length );
+  // var descriptor = _.process.on({ callbackMap : { 'event1' : onEvent } });
+  // test.identical( _.props.keys( descriptor ), [ 'event1' ] );
+  // test.identical( _.props.keys( descriptor.event1 ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
+  // test.identical( descriptor.event1.enabled, true );
+  // test.identical( descriptor.event1.first, 0 );
+  // test.equivalent( descriptor.event1.callbackMap, { event1 : onEvent } );
+  // test.true( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event1', eventHandler : onEvent } ) );
+  // descriptor.event1.off();
+
+  /* - */
+
+  return a.ready;
 
   /* */
 
-  test.case = 'call with arguments';
-  var result = [];
-  var onEvent = () => result.push( result.length );
-  var descriptor = _.process.on({ callbackMap : { 'event1' : onEvent } });
-  test.identical( _.props.keys( descriptor ), [ 'event1' ] );
-  test.identical( _.props.keys( descriptor.event1 ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
-  test.identical( descriptor.event1.enabled, true );
-  test.identical( descriptor.event1.first, 0 );
-  test.equivalent( descriptor.event1.callbackMap, { event1 : onEvent } );
-  test.true( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event1', eventHandler : onEvent } ) );
-  descriptor.event1.off();
+  function callbackInArgs()
+  {
+    const _ = require( toolsPath );
+    const descriptor = _.process.on( 'available', ( ... args ) => result.push( args ) );
+    console.log( _.props.keys( descriptor ) );
+    console.log( _.props.keys( descriptor.available ) );
+    console.log( `descriptor.enabled : ${ descriptor.available.enabled }` );
+    console.log( `descriptor.first : ${ descriptor.available.first }` );
+    console.log( `descriptor.callbackMap : ${ _.props.keys( descriptor.available.callbackMap ) }` );
+  }
+
+  /* */
+
+  function callbackInMap()
+  {
+    const _ = require( toolsPath );
+    const descriptor = _.process.on({ callbackMap : { 'available' : ( ... args ) => result.push( args ) }, first : true });
+    console.log( _.props.keys( descriptor ) );
+    console.log( _.props.keys( descriptor.available ) );
+    console.log( `descriptor.enabled : ${ descriptor.available.enabled }` );
+    console.log( `descriptor.first : ${ descriptor.available.first }` );
+    console.log( `descriptor.callbackMap : ${ _.props.keys( descriptor.available.callbackMap ) }` );
+  }
 }
 
 //
@@ -967,7 +1037,7 @@ const Proto =
     onWithArguments,
     onWithOptionsMap,
     onWithChain,
-    // onCheckDescriptor,
+    onCheckDescriptor,
 
     //
 
