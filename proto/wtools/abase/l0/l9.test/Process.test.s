@@ -14,21 +14,21 @@ const __ = _globals_.testing.wTools;
 
 //
 
-function onSuiteBegin( test )
-{
-  let context = this;
-  _.process._edispatcher.events.event1 = [];
-  _.process._edispatcher.events.event2 = [];
-  /* qqq : for Dmytro : ? */
-}
-
+// function onSuiteBegin( test )
+// {
+//   let context = this;
+//   _.process._edispatcher.events.event1 = [];
+//   _.process._edispatcher.events.event2 = [];
+//   /* aaa : for Dmytro : ? */ /* Dmytro : fixed */
+// }
 //
-
-function onSuiteEnd( test )
-{
-  delete _.process._edispatcher.events.event1;
-  delete _.process._edispatcher.events.event2;
-}
+// //
+//
+// function onSuiteEnd( test )
+// {
+//   delete _.process._edispatcher.events.event1;
+//   delete _.process._edispatcher.events.event2;
+// }
 
 // --
 // events
@@ -136,11 +136,12 @@ function onWithArguments( test )
   // var result = [];
   // var onEvent = () => result.push( result.length );
   // var onEvent2 = () => result.push( -1 * result.length );
-  // /* qqq : for Dmytro : bad : ??
+  // /* aaa : for Dmytro : bad : ??
   // bad!
   // rewrite
   // discuss first
   // */
+  // /* Dmytro : fixed */
   // _.event.eventGive( _.process._edispatcher, 'event1' );
   // test.identical( result, [] );
   // _.event.eventGive( _.process._edispatcher, 'event2' );
@@ -1025,15 +1026,15 @@ const Proto =
   silencing : 1,
   enabled : 1,
 
-  onSuiteBegin,
-  onSuiteEnd,
+  // onSuiteBegin,
+  // onSuiteEnd,
 
   tests :
   {
 
     // events
 
-    /* qqq2 : for Dmytro : bad : rewrite */
+    /* aaa2 : for Dmytro : bad : rewrite */ /* Dmytro : fixed, programs is used */
     onWithArguments,
     onWithOptionsMap,
     onWithChain,

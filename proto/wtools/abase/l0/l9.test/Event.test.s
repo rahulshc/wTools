@@ -1828,7 +1828,7 @@ function eventGive( test )
 // declare
 // --
 
-/* qqq2 : for Dmytro : repair */
+/* aaa2 : for Dmytro : repair */ /* Dmytro : regressions is fixed */
 const Proto =
 {
 
