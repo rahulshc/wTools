@@ -55,9 +55,15 @@ function countablesAreIdenticalShallow( test )
   var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, true );
 
-  test.case = `strange map`;
+  test.case = `map with iterator, same elements`;
   var src1 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1, new : 0 });
   var src2 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1, new : 0 });
+  var got = _.countable.identicalShallow( src1, src2 );
+  test.identical( got, true );
+
+  test.case = `map with iterator, not same elements`;
+  var src1 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1, new : 0 });
+  var src2 = __.diagnostic.objectMake({ elements : [ '1', '2', '4' ], countable : 1, new : 0 });
   var got = _.countable.identicalShallow( src1, src2 );
   test.identical( got, false );
 
@@ -260,9 +266,15 @@ function countablesAreEquivalentShallow( test )
   var got = _.countable.equivalentShallow( src1, src2 );
   test.identical( got, true );
 
-  test.case = `object countable - non empty, non-vector, not same array`;
+  test.case = `object countable - non empty, non-vector, same elements`;
   var src1 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 });
   var src2 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 });
+  var got = _.countable.equivalentShallow( src1, src2 );
+  test.identical( got, true );
+
+  test.case = `object countable - non empty, non-vector, not same elements`;
+  var src1 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 });
+  var src2 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '4' ], countable : 1 });
   var got = _.countable.equivalentShallow( src1, src2 );
   test.identical( got, false );
 
@@ -513,7 +525,7 @@ function exportStringDiagnosticShallow( test )
 
   test.case = 'wrong type';
   test.shouldThrowErrorSync( () => _.countable.exportStringDiagnosticShallow( {} ) );
-  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], new : 0 });
+  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], new : 0, countable : 0 });
   test.shouldThrowErrorSync( () => _.countable.exportStringDiagnosticShallow( src ) );
 
   /* - */
@@ -924,7 +936,7 @@ const Proto =
   tests :
   {
 
-    countablesAreIdenticalShallow,
+    countablesAreIdenticalShallow, /* qqq : for Rahul : merge test routines countablesAreIdenticalShallow and countablesAreEquivalentShallow into single test routine countablesAreEqShallow */
     countablesAreEquivalentShallow,
     exportStringDiagnosticShallow,
 

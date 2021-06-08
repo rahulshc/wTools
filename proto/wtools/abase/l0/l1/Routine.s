@@ -189,7 +189,7 @@ function like( src )
 
 function _like( src, typeStr )
 {
-  return typeStr === '[object Function]' || typeStr === '[object AsyncFunction]';
+  return typeStr === '[object Function]' || typeStr === '[object AsyncFunction]' || typeStr === '[object GeneratorFunction]' || typeStr === '[object AsyncGeneratorFunction]';
 }
 
 //
@@ -221,36 +221,41 @@ function routineIsTrivial_functor()
 
 let isTrivial = routineIsTrivial_functor();
 isTrivial.functor = routineIsTrivial_functor;
-// function routineIsTrivial( src )
-// {
-//   if( !src )
-//   return false;
-//   let proto = Object.getPrototypeOf( src );
-//   if( proto === Object.getPrototypeOf( Function ) )
-//   debugger;
-//   if( proto === Object.getPrototypeOf( Function ) )
-//   return true;
-//   if( !proto )
-//   return false;
-//   if( !proto.constructor )
-//   return false;
-//   if( proto.constructor.name !== 'AsyncFunction' )
-//   return false;
-//   return true;
-// }
 
 //
 
 function isSync( src )
 {
-  return Object.prototype.toString.call( src ) === '[object Function]'
+  return Object.prototype.toString.call( src ) === '[object Function]';
 }
 
 //
 
 function isAsync( src )
 {
-  return Object.prototype.toString.call( src ) === '[object AsyncFunction]'
+  return Object.prototype.toString.call( src ) === '[object AsyncFunction]';
+}
+
+//
+
+function isGenerator( src )
+{
+  let typeStr = Object.prototype.toString.call( src );
+  return typeStr === '[object GeneratorFunction]' || typeStr === '[object AsyncGeneratorFunction]';
+}
+
+//
+
+function isSyncGenerator( src )
+{
+  return Object.prototype.toString.call( src ) === '[object GeneratorFunction]';
+}
+
+//
+
+function isAsyncGenerator( src )
+{
+  return Object.prototype.toString.call( src ) === '[object AsyncGeneratorFunction]';
 }
 
 //
@@ -274,7 +279,7 @@ function are( src )
 
 function withName( src )
 {
-  if( !routine.is( src ) )
+  if( !_.routine.like( src ) )
   return false;
   if( !src.name )
   return false;
@@ -2107,6 +2112,9 @@ let RoutineExtension =
   isTrivial,
   isSync,
   isAsync,
+  isGenerator,
+  isSyncGenerator,
+  isAsyncGenerator,
   withName,
 
   // joiner
@@ -2188,6 +2196,10 @@ let ToolsExtension =
   routineIsAsync : isAsync.bind( _.routine ),
   routinesAre : are.bind( _.routine ),
   routineWithName : withName.bind( _.routine ),
+
+  routineIsGenerator : isGenerator.bind( _.routine ),
+  routineIsSyncGenerator : isSyncGenerator.bind( _.routine ),
+  routineIsAsyncGenerator : isAsyncGenerator.bind( _.routine ),
 
   _routineJoin : _join.bind( _.routine ),
   constructorJoin : constructorJoin.bind( _.routine ),
