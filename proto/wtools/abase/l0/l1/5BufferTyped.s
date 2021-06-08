@@ -1,4 +1,4 @@
-( function _l1_BufferTyped_s_()
+( function _l1_5BufferTyped_s_()
 {
 
 'use strict';
@@ -38,6 +38,7 @@ function isSlow( src )
 
 //
 
+// /*qqq: Same as is. Should We Keep it?
 function isUsingGetPrototype( src )
 {
   if( !( src instanceof Object.getPrototypeOf( Int8Array ) ) )
@@ -87,56 +88,6 @@ function isUsingExistenceOfField_functor()
 
 let isUsingExistenceOfField = isUsingExistenceOfField_functor();
 
-// //
-//
-// function isUsingGetPrototypeAndFunctor( src )
-// {
-//   return alternateX( src );
-// }
-//
-// //
-// /* qqq : for Rahul : it is not simplification */
-// function isUsingGetPrototypeSimplified( src )
-// {
-//   if( src instanceof Object.getPrototypeOf( Int8Array ) )
-//   return !_.buffer.nodeIs( src );
-//   return false;
-// }
-//
-// //
-// /* qqq : for Rahul : pointless */
-// function isUsingGetPrototypeAndEquality( src )
-// {
-//   if( !( src && Object.getPrototypeOf( src.constructor ).name === 'TypedArray' ) )
-//   return false;
-//   if( _.buffer.nodeIs( src ) )
-//   return false;
-//   return true;
-// }
-
-//
-
-function isUsingSet( src )
-{
-  return alternateSet( src );
-}
-
-// //
-//
-// function isUsingHashMap( src )
-// {
-//   return alternateMap( src );
-// }
-//
-// //
-//
-// function isUsingExistenceOfField( src )
-// {
-//   if( !( src && src.buffer ) )
-//   return false;
-//   return isUsingExistenceOfField( src );
-// }
-
 //
 
 function alternateSet_functor()
@@ -165,7 +116,7 @@ function alternateSet_functor()
   }
 }
 
-let alternateSet = alternateSet_functor();
+let isUsingSet = alternateSet_functor();
 
 //
 
@@ -462,13 +413,10 @@ let BufferTypedExtension =
   is : is,
   like : is,
   IsResizable,
-  isSlow,
+  isSlow, /* xxx : remove later */
   isUsingGetPrototype,
   isUsingGetPrototypeWithFunctor,
   isUsingExistenceOfField,
-  // isUsingGetPrototypeAndFunctor,
-  // isUsingGetPrototypeSimplified,
-  // isUsingGetPrototypeAndEquality,
   isUsingSet,
   isUsingHashMap,
   isUsingMap,

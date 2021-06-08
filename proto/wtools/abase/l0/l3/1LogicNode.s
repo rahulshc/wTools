@@ -94,7 +94,7 @@ function equalAre_functor( fo )
 
 //
 
-function iterate()
+function iterator()
 {
 
   let iterator = Object.create( null );
@@ -142,7 +142,6 @@ function lengthGet()
 
 function exec( o )
 {
-
   o = _.routine.options( exec, arguments );
   o.onEach = o.onEach || defaultOnEach;
   let r = this._exec( o );
@@ -310,7 +309,7 @@ function DeclareAbstract( fo )
   _.class.declareBasic
   ({
     constructor : fo.class,
-    iterate,
+    iterator,
     equalAre : equalAre_functor( fo ),
     exportString,
     cloneShallow, /* xxx : implement */

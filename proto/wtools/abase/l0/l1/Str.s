@@ -811,8 +811,7 @@ function strConcat( srcs, o )
     stringWrapper : '',
   };
 
-  o.optionsForToStr = _.props.supplement( o.optionsForToStr, defaultOptionsForToStr, strConcat.defaults.optionsForToStr );
-  // o.optionsForToStr.format = o.optionsForToStr.format || 'string.code';
+  o.optionsForToStr = _.props.supplement( o.optionsForToStr, defaultOptionsForToStr );
   o.optionsForToStr.format = o.optionsForToStr.format || 'string.diagnostic';
 
   if( _.routine.is( srcs ) )
@@ -1302,7 +1301,7 @@ function join( src )
  * @namespace Tools/str/lines/strip
  */
 
-/* qqq : for Dmytro : measure time and optimize. ask */
+/* qqq : measure time and optimize. ask */
 function strip( src )
 {
 

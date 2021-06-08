@@ -1,5 +1,5 @@
 //#! /usr/bin/env node
-( function _Include3_s_()
+( function _l0_Include3_s_()
 {
 
 'use strict';
@@ -10,7 +10,6 @@ if( typeof module !== 'undefined' )
 
   require( './l3/1Wrap.s' );
   require( './l3/1LogicNode.s' );
-  require( './l3/1Looker.s' );
   require( './l3/2Props.s' );
   require( './l3/3Blank.s' );
   require( './l3/3Long.s' );
@@ -27,6 +26,7 @@ if( typeof module !== 'undefined' )
   require( './l3/Countable.s' );
   require( './l3/Diagnostic.s' );
   require( './l3/Entity.s' );
+  require( './l3/Event.s' );
   require( './l3/Escape.s' );
   require( './l3/HashMap.s' );
   require( './l3/Itself.s' );
@@ -36,14 +36,17 @@ if( typeof module !== 'undefined' )
   require( './l3/Number.s' );
   require( './l3/Object.s' );
   require( './l3/Primitive.s' );
+  require( './l3/Process.s' );
   require( './l3/Regexp.s' );
   require( './l3/Routine.s' );
+  require( './l3/Seeker.s' );
   require( './l3/Set.s' );
   require( './l3/Str.s' );
   require( './l3/Stringer.s' );
   require( './l3/Time.s' );
   require( './l3/Unroll.s' );
   require( './l3/Vector.s' );
+  require( './l3/zErr.s' );
 
 }
 

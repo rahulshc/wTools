@@ -14,10 +14,10 @@ _.class = _.class || Object.create( null );
 function methodIteratorOf( src )
 {
   if( !src )
-  return false;
-  if( _.routine.is( src[ iteratorSymbol ] ) )
+  return;
+  if( _.routine.like( src[ iteratorSymbol ] ) )
   return src[ iteratorSymbol ];
-  return false;
+  return;
 }
 
 //
@@ -26,12 +26,12 @@ function methodIteratorOf( src )
 function methodEqualOf( src )
 {
   if( !src )
-  return false;
+  return;
   if( _.routine.is( src[ equalAreSymbol ] ) )
   return src[ equalAreSymbol ];
   if( _.routine.is( src.equalAre ) )
   return src.equalAre;
-  return false;
+  return;
 }
 
 //
@@ -40,12 +40,25 @@ function methodEqualOf( src )
 function methodExportStringOf( src )
 {
   if( !src )
-  return false;
+  return;
   if( _.routine.is( src[ exportStringSymbol ] ) )
   return src[ exportStringSymbol ];
   if( _.routine.is( src.exportString ) )
   return src.exportString;
-  return false; /* xxx : undefined? */
+  return;
+}
+
+//
+
+function methodAscendOf( src )
+{
+  if( !src )
+  return;
+  if( _.routine.is( src[ ascendSymbol ] ) )
+  return src[ ascendSymbol ];
+  if( _.routine.is( src.ascend ) )
+  return src.ascend;
+  return;
 }
 
 //
@@ -144,6 +157,7 @@ function declareBasic( o )
   _.assert( routineIs( o.constructor ) && o.constructor !== Object.constructor && o.constructor !== Object );
   _.assert( strDefined( o.constructor.name ) && o.constructor.name !== 'Object' );
   _.assert( arguments.length === 1 );
+  _.assert( o.iterate === undefined );
 
   o.exportString = o.exportString || exportString;
   o.cloneShallow = o.cloneShallow || cloneShallow;
@@ -153,8 +167,8 @@ function declareBasic( o )
   // debugger;
   // Object.setPrototypeOf( o.constructor.prototype, null );
   o.constructor.prototype = Object.create( o.prototype );
-  if( o.iterate )
-  o.constructor.prototype[ iteratorSymbol ] = o.iterate;
+  if( o.iterator )
+  o.constructor.prototype[ iteratorSymbol ] = o.iterator;
   o.constructor.prototype[ exportPrimitiveSymbol ] = exportStringIgnoringArgs;
   o.constructor.prototype[ exportStringNjsSymbol ] = exportStringIgnoringArgs;
   o.constructor.prototype[ exportStringSymbol ] = o.exportString;
@@ -215,7 +229,7 @@ function declareBasic( o )
   function strDefined( src )
   {
     if( !src )
-    return false;
+    return;
     let result = Object.prototype.toString.call( src ) === '[object String]';
     return result;
   }
@@ -241,7 +255,7 @@ declareBasic.defaults =
   cloneShallow : null,
   cloneDeep : null,
   equalAre : null,
-  iterate : null,
+  iterator : null,
 }
 
 // --
@@ -265,6 +279,7 @@ const exportTypeNameGetterSymbol = Symbol.toStringTag;
 const exportPrimitiveSymbol = Symbol.toPrimitive;
 const exportStringNjsSymbol = Symbol.for( 'nodejs.util.inspect.custom' );
 const exportStringSymbol = Symbol.for( 'exportString' );
+const ascendSymbol = Symbol.for( 'ascend' );
 const equalAreSymbol = Symbol.for( 'equalAre' );
 const cloneShallowSymbol = Symbol.for( 'cloneShallow' );
 const cloneDeepSymbol = Symbol.for( 'cloneDeep' );
@@ -279,6 +294,7 @@ let ClassExtension =
   methodIteratorOf,
   methodEqualOf, /* xxx : qqq : add other similar routines */
   methodExportStringOf,
+  methodAscendOf,
   methodCloneShallowOf,
   methodCloneDeepOf,
   methodElementWithKeySetOf,
@@ -296,6 +312,7 @@ let ClassExtension =
   exportPrimitiveSymbol,
   exportStringNjsSymbol,
   exportStringSymbol,
+  ascendSymbol,
   equalAreSymbol,
   cloneShallowSymbol,
   cloneDeepSymbol,

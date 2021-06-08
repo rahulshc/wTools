@@ -87,7 +87,7 @@ function typing( test ) /* qqq for junior : extend for like. first discuss ( fil
 
   /* */
 
-  test.case = `countable`;
+  test.case = `countable object`;
   var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1, new : 1 });
   test.true( _.countable.like( src ) );
   test.true( _.countable.is( src ) );
@@ -100,10 +100,23 @@ function typing( test ) /* qqq for junior : extend for like. first discuss ( fil
 
   /* */
 
-  test.case = `countable made`;
+  test.case = `countable map`;
   var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1, new : 0 });
-  test.true( !_.countable.like( src ) );
-  test.true( !_.countable.is( src ) );
+  test.true( _.countable.like( src ) );
+  test.true( _.countable.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.argumentsArray.like( src ) );
+  test.true( !_.arrayIs( src ) );
+
+  /* */
+
+  test.case = `countable map with generator`;
+  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1, new : 0, iteratorIsGenerator : 1 });
+  test.true( _.countable.like( src ) );
+  test.true( _.countable.is( src ) );
   test.true( !_.vector.like( src ) );
   test.true( !_.vector.is( src ) );
   test.true( !_.longLike( src ) );

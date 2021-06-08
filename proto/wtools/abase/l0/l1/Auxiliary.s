@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-_global_.wTools.aux = _global_.wTools.aux || Object.create( null );
+_.aux = _.aux || Object.create( null );
 
 _.assert( !!_.props.keys, 'Expects routine _.props.keys' );
 _.assert( !!_.props._extendWithHashmap, 'Expects routine _.props._extendWithHashmap' );

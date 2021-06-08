@@ -5,8 +5,6 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-_.bool = _.bool || Object.create( null );
-_.bool.s = _.bool.s || Object.create( null );
 
 // --
 // bool
@@ -155,22 +153,8 @@ function equivalentShallow( src1, src2, o )
 }
 
 // --
-// extension
+// bool extension
 // --
-
-let ToolsExtension =
-{
-
-  boolsAre : are,
-  boolsAllAre : allAre,
-  boolsAnyAre : anyAre,
-  boolsNoneAre : noneAre,
-
-}
-
-Object.assign( _, ToolsExtension );
-
-//
 
 let BoolExtension =
 {
@@ -188,7 +172,9 @@ let BoolExtension =
 
 Object.assign( _.bool, BoolExtension );
 
-//
+// --
+// bools
+// --
 
 let BoolsExtension =
 {
@@ -200,6 +186,24 @@ let BoolsExtension =
 
 }
 
-Object.assign( _.bool.s, BoolsExtension );
+Object.assign( _.bools, BoolsExtension );
+
+// --
+// tools extension
+// --
+
+let ToolsExtension =
+{
+
+  boolsAre : are,
+  boolsAllAre : allAre,
+  boolsAnyAre : anyAre,
+  boolsNoneAre : noneAre,
+
+}
+
+Object.assign( _, ToolsExtension );
+
+//
 
 })();

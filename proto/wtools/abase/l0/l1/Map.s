@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-_global_.wTools.map = _global_.wTools.map || Object.create( null );
+_.map = _.map || Object.create( null );
 
 _.assert( !!_.props.extend, 'Expects routine _.props.exportString' );
 

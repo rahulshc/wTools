@@ -11,9 +11,11 @@ _.bufferNode = _.bufferNode || Object.create( null );
 // implementation
 // --
 
+/* qqq : for Rahul : write performance test and optimize */
 function nodeIs( src )
 {
-  if( typeof BufferNode !== 'undefined' )
+  // if( typeof BufferNode !== 'undefined' )
+  if( _global_.BufferNode )
   return src instanceof BufferNode;
   return false;
 }

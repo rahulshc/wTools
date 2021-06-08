@@ -9,7 +9,7 @@
 */
 
 const _ = _global_.wTools;
-const Self = _.trie = _.trie || Object.create( null );
+_.trie = _.trie || Object.create( null );
 
 // --
 // dichotomy
@@ -710,7 +710,7 @@ let Proto =
 
 //
 
-_.props.extend( Self, Proto );
+/* _.props.extend */Object.assign( _.trie, Proto );
 
 // --
 // export

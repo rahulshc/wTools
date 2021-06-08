@@ -55,6 +55,20 @@ function objectMake( test )
   test.true( !_.object.isBasic( got ) );
   test.true( _.object.is( got ) );
 
+  debugger;
+  var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1, new : 0, iteratorIsGenerator : 1 });
+  debugger;
+  test.true( _.countable.like( src ) );
+  test.true( _.countable.is( src ) );
+  test.true( !_.vector.like( src ) );
+  test.true( !_.vector.is( src ) );
+  test.true( !_.longLike( src ) );
+  test.true( !_.longIs( src ) );
+  test.true( !_.argumentsArray.like( src ) );
+  test.true( !_.arrayIs( src ) );
+  test.true( _.routine.like( src[ Symbol.iterator ] ) );
+  test.true( _.routine.isGenerator( src[ Symbol.iterator ] ) );
+
   act({ countable : 1, vector : 1, basic : 1 });
   act({ countable : 1, vector : 1, basic : 0 });
   act({ countable : 1, vector : 0, basic : 1 });

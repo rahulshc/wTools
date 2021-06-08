@@ -6,7 +6,7 @@
 if( typeof module !== 'undefined' )
 {
   const _ = require( 'Tools' );
-  require( '../l1/Trie.s' );
+  require( '../l1/l1/Trie.s' );
   _.include( 'wTesting' );
 }
 

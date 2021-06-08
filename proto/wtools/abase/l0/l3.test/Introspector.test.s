@@ -1,16 +1,19 @@
-( function _l0_l9_Looker_test_s_()
+( function _l0_l3_Introspector_test_s_()
 {
 
 'use strict';
 
 if( typeof module !== 'undefined' )
 {
-  const _ = require( 'Tools' );
-  _.include( 'wTesting' );
+  require( '../Include3.s' );
+  require( 'wTesting' );
 }
 
 const _global = _global_;
 const _ = _global_.wTools;
+const __ = _globals_.testing.wTools;
+const fileProvider = __.fileProvider;
+const path = fileProvider.path;
 
 // --
 // tests
@@ -18,18 +21,22 @@ const _ = _global_.wTools;
 
 function bulky( test )
 {
-  test.true( _.aux.is( _.looker ) );
+  test.true( _.aux.is( _.introspector ) );
 }
 
 // --
-// declaration
+// declare
 // --
 
 const Proto =
 {
 
-  name : 'Tools.Looker.l0.l9',
+  name : 'Tools.Introspector.l0.l3',
   silencing : 1,
+
+  context :
+  {
+  },
 
   tests :
   {
@@ -37,8 +44,6 @@ const Proto =
   }
 
 }
-
-//
 
 const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )

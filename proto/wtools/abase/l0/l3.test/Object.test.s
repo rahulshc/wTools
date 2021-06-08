@@ -65,7 +65,7 @@ function exportStringDiagnosticShallow( test )
 
   test.case = `strange map`;
   var src = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
-  var expected = '{- Map.polluted -}';
+  var expected = '{- Map.polluted with 3 elements -}';
   var got = _.object.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 
@@ -264,20 +264,20 @@ function aptRightBlankNonCountable( test )
     if( val === 1 )
     return val + 10;
   });
-  var exp = [ 11, 'withConstructor', 9, true ];
+  var exp = [ 11, 'withConstructor', 10, true ];
   test.identical( got, exp );
   var exp =
   [
     [
       null,
       'elements',
-      10,
+      11,
       src,
     ],
     [
       1,
       'withConstructor',
-      9,
+      10,
       src,
     ],
   ]
@@ -305,10 +305,10 @@ function aptRightBlankNonCountable( test )
 
   test.case = 'without callback';
   var src = _.diagnostic.objectMake({ countable : 0, a : 1, b : 2, c : 3 });
-  var exp = [ null, 'elements', 10, true ];
+  var exp = [ null, 'elements', 11, true ];
   var got = _.object.aptRight( src );
   test.identical( got, exp );
-  var exp = [ null, 'elements', 10, true ];
+  var exp = [ null, 'elements', 11, true ];
   var got = _.object.last( src );
   test.identical( got, exp );
 

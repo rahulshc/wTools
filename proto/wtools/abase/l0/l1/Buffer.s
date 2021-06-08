@@ -13,16 +13,43 @@ _.buffer = _.buffer || Object.create( null );
 
 function anyIs( src )
 {
-  if( !src )
-  return false;
-  if( typeof src !== 'object' )
-  return false;
-  if( !Reflect.has( src, 'byteLength' ) )
-  return false;
-  // return src.byteLength >= 0;
-  // return typedIs( src ) || viewIs( src )  || rawIs( src ) || nodeIs( src );
+  if( src instanceof ArrayBuffer )
   return true;
+  if( src instanceof SharedArrayBuffer )
+  return true;
+  if( ArrayBuffer.isView( src ) )
+  return true;
+  return false;
 }
+
+// //
+//
+// function anyIsOld( src )
+// {
+//   if( !src )
+//   return false;
+//   if( typeof src !== 'object' )
+//   return false;
+//   //{ byteLength: 6 } will pass the below check
+//   if( !Reflect.has( src, 'byteLength' ) )
+//   return false;
+//   // return src.byteLength >= 0;
+//   // return typedIs( src ) || viewIs( src )  || rawIs( src ) || nodeIs( src );
+//   return true;
+// }
+//
+// //
+//
+// function anyIsUsingInstanceOf( src )
+// {
+//   if( src instanceof ArrayBuffer )
+//   return true;
+//   if( src instanceof SharedArrayBuffer )
+//   return true;
+//   if( ArrayBuffer.isView( src ) )
+//   return true;
+//   return false;
+// }
 
 //
 
@@ -935,6 +962,8 @@ let BufferExtension =
   // dichotomy
 
   anyIs,
+  // anyIsOld,
+  // anyIsUsingInstanceOf,
   is : anyIs,
   like : anyIs,
   IsResizable,

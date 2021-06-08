@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.date = _global_.wTools.date || Object.create( null );
+const Self = _.date = _.date || Object.create( null );
 
 // --
 // dichotomy

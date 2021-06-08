@@ -18,175 +18,222 @@ const __ = _globals_.testing.wTools;
 //--
 
 /* qqq : for junior : merge routines is and like to routine dichotomy and extend */
-function is( test )
+function dichotomy( test )
 {
-  test.case = 'an empty array';
-  var got = _.long.is( [] );
-  var expected = true;
-  test.identical( got, expected );
 
-  test.case = 'an array';
-  var got = _.long.is( [ 1, 2, 3 ] );
-  var expected  = true;
-  test.identical( got, expected );
+  dichotomyTemplate( { method : 'is' } );
+  dichotomyTemplate( { method : 'like' } );
+  dichotomyTemplate( { method : 'isCompact' } );
+  dichotomyTemplate( { method : 'isUnfolded' } );
 
-  test.case = 'a pseudo array';
-  var got = _.long.is( arguments );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'raw array buffer';
-  var got = _.long.is( new BufferRaw( 10 ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'typed array buffer';
-  var got = _.long.is( new F32x( 10 ) );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'no argument';
-  var got = _.long.is();
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'null';
-  var got = _.long.is( null );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'function';
-  var got = _.long.is( function() {} );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'string';
-  var got = _.long.is( 'x' );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'number';
-  var got = _.long.is( 1 );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'boolean';
-  var got = _.long.is( true );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'object';
-  var got = _.long.is( {} );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'object with fields and iteraor method';
-  var src = new function()
+  function dichotomyTemplate( env )
   {
-    this[ Symbol.iterator ] = function ()
+    test.case = `${__.entity.exportStringSolo( env )}, an empty array`;
+    var got = _.long[ env.method ]( [] );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, an array`;
+    var got = _.long[ env.method ]( [ 1, 2, 3 ] );
+    var expected  = true;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a pseudo array`;
+    var got = _.long[ env.method ]( arguments );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, raw array buffer`;
+    var got = _.long[ env.method ]( new BufferRaw( 10 ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, typed array buffer`;
+    var got = _.long[ env.method ]( new F32x( 10 ) );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, no arguments`;
+    var got = _.long[ env.method ]();
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, null`;
+    var got = _.long[ env.method ]( null );
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, function`;
+    var got = _.long[ env.method ]( function() {} );
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, string`;
+    var got = _.long[ env.method ]( 'x' );
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, number`;
+    var got = _.long[ env.method ]( 1 );
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, boolean`;
+    var got = _.long[ env.method ]( true );
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, empty map`;
+    var got = _.long[ env.method ]( {} );
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, object with fields and iteraor method`;
+    var src = new function()
     {
-      return { next() { return { done : true } } }
+      this[ Symbol.iterator ] = function ()
+      {
+        return { next() { return { done : true } } }
+      }
     }
+    var got = _.long[ env.method ]( src );
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.case = 'Testing for overlaps';
+    test.identical( _.arrayIs( src ), false );
+    test.identical( _.argumentsArray.like( src ), false );
+    test.identical( _.long.like( src ), false );
+    test.identical( _.vector.is( src ), false );
+    test.identical( _.vector.like( src ), false );
+    test.identical( _.countable.is( src ), true );
+    test.identical( _.countable.like( src ), true );
   }
-  var got = _.long.is( src );
-  var expected  = false;
-  test.identical( got, expected );
 }
 
 //
 
-function like( test )
+function isPerformance( test )
 {
-  test.case = 'an empty array';
-  var got = _.long.like( [] );
-  var expected = true;
-  test.identical( got, expected );
+   /*
+    Average of 10 runs of 1 million iteration of 24 _.long.is variations
+    Values below are in seconds
+    ╔═══════════════════╤═════╤═════════╤══════════╤══════════╗
+    ║                   │  is │ isOld ? │ isCompact│ isUnfolded │ isUnfoldedSmartOrder │ isUnfoldedSmarter ║
+    ╟───────────────────┼─────┼─────────┼──────────┼──────────╢
+    ║ **Njs : v10.24.1**│3.662│  1.209  │   1.109  │   ?  ║
+    ╟───────────────────┼─────┼─────────┼──────────┼──────────╢
+    ║ **Njs : v14.17.0**│4.244│  1.263  │   1.156  │   ?  ║
+    ╟───────────────────┼─────┼─────────┼──────────┼──────────╢
+    ║Kos : Njs : v12.9.1│5.053│  2.008  │   1.976  │   1.600  ║
+    ╚═══════════════════╧═════╧═════════╧══════════╧══════════╝
+    qqq : for Rahul : update the table please
+  */
+  debugger; /* eslint-disable-line no-debugger */
+  var debugFlag = Config.debug;
+  Config.debug = false;
 
-  test.case = 'an array';
-  var got = _.long.like( [ 1, 2, 3 ] );
-  var expected  = true;
-  test.identical( got, expected );
+  /* */
 
-  test.case = 'a pseudo array';
-  var got = _.long.like( arguments );
-  var expected = true;
-  test.identical( got, expected );
+  isPerformanceTemplate( { method : 'is' } );
+  isPerformanceTemplate( { method : 'isOld' } );
+  isPerformanceTemplate( { method : 'isCompact' } );
+  isPerformanceTemplate( { method : 'isUnfolded' } );
+  isPerformanceTemplate( { method : 'isUnfoldedSmartOrder' } );
+  isPerformanceTemplate( { method : 'isUnfoldedSmarter' } );
 
-  test.case = 'raw array buffer';
-  var got = _.long.like( new BufferRaw( 10 ) );
-  var expected = false;
-  test.identical( got, expected );
+  /* */
 
-  test.case = 'typed array buffer';
-  var got = _.long.like( new F32x( 10 ) );
-  var expected = true;
-  test.identical( got, expected );
+  Config.debug = debugFlag;
+  debugger; /* eslint-disable-line no-debugger */
 
-  test.case = 'no argument';
-  var got = _.long.like();
-  var expected  = false;
-  test.identical( got, expected );
+  /* */
 
-  test.case = 'null';
-  var got = _.long.like( null );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'function';
-  var got = _.long.like( function() {} );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'string';
-  var got = _.long.like( 'x' );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'number';
-  var got = _.long.like( 1 );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'boolean';
-  var got = _.long.like( true );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'empty object';
-  var got = _.long.like( {} );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'object with fields';
-  var got = _.long.like( { 0 : 1, 1 : 2, length : 2 } );
-  var expected  = false;
-  test.identical( got, expected );
-
-  test.case = 'object with fields and iteraor method';
-  var src = new function()
+  function isPerformanceTemplate( data )
   {
-    this[ Symbol.iterator ] = function ()
+    test.case = `${data.method}`;
+    var took, time;
+    var env = initializeVariables();
+    __.time.sleep( 100 );
+
+    time = _.time.now();
+    for( let i = env.times; i > 0; i-- )
     {
-      return { next() { return { done : true } } }
+      env.name = data.method;
+      run( env );
     }
+    took = __.time.spent( time );
+
+    console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+    test.identical( true, true );
   }
-
-  test.identical( _.arrayIs( src ), false );
-  test.identical( _.argumentsArray.like( src ), false );
-  test.identical( _.long.is( src ), false );
-  test.identical( _.long.like( src ), false );
-  test.identical( _.vector.is( src ), false );
-  test.identical( _.vector.like( src ), false );
-  test.identical( _.countable.is( src ), true );
-  test.identical( _.countable.like( src ), true );
-
-  /* qqq for junior : write very good test "typing" testing routines which check 'countable', 'vector', 'long', 'array' */
 
   /* - */
 
-  if( !Config.debug )
-  return;
+  function initializeVariables()
+  {
+    var env = {};
+    env.times = 1000000;
+    env.nonEmptyArray = [ 1, 2, 3 ];
+    env.rawBuffer = new BufferRaw( 10 );
+    env.float32Array = new F32x( 10 );
+    env.int32Array = new I32x( 10 );
+    env.uint16Array = new U16x( 10 );
+    env.uint8Array = new U8x( 10 );
+    env.uint8ClampedArray = new U8xClamped( 10 );
+    env.derivedArray = 'abc'.match( /[a-z]/g );
+    env.arrayProtoType = Array.prototype;
+    env.multiDimensionalArray = [ [ 'Divyanshu', '32' ], [ 'Shankar', '34' ], [ 'Rahul', '29' ] ];
+    env.constructedArray = new Array( 3 );
+    env.anEmptyRoutine = new function() {};
+    env.aSymbol = Symbol( 'a' );
+    env.aString = 'x';
+    env.aNumber = 1;
+    env.aBoolean = false;
+    env.anEmptyObject = {};
+    env.routine = new function()
+    {
+      this[ Symbol.iterator ] = function ()
+      {
+        return { next() { return { done : true } } }
+      }
+    }
+
+    return env;
+  }
+
+  function run( env )
+  {
+    _.long[ env.name ]( [] );
+    _.long[ env.name ]( env.nonEmptyArray );
+    _.long[ env.name ]( arguments );
+    _.long[ env.name ]( env.float32Array );
+    _.long[ env.name ]( env.int32Array );
+    _.long[ env.name ]( env.uint16Array );
+    _.long[ env.name ]( env.uint8Array );
+    _.long[ env.name ]( env.uint8ClampedArray );
+    _.long[ env.name ]( env.derivedArray );
+    _.long[ env.name ]( env.arrayProtoType );
+    _.long[ env.name ]( env.multiDimensionalArray );
+    _.long[ env.name ]( env.constructedArray );
+    _.long[ env.name ]( env.rawBuffer );
+    _.long[ env.name ]();
+    _.long[ env.name ]( null );
+    _.long[ env.name ]( undefined );
+    _.long[ env.name ]( NaN );
+    _.long[ env.name ]( new Date() );
+    _.long[ env.name ]( env.anEmptyRoutine );
+    _.long[ env.name ]( env.aString );
+    _.long[ env.name ]( env.aNumber );
+    _.long[ env.name ]( env.aBoolean );
+    _.long[ env.name ]( env.anEmptyObject );
+    _.long[ env.name ]( env.routine );
+  }
+
 }
+
+isPerformance.timeOut = 1e7;
+isPerformance.experimental = true;
 
 // --
 //
@@ -194,6 +241,7 @@ function like( test )
 
 function makeCommon( test )
 {
+
   methodEach({ tools : 'default', type : 'Array' });
   methodEach({ tools : 'Array', type : 'Array' });
   methodEach({ tools : 'F32x', type : 'F32x' });
@@ -800,6 +848,8 @@ function makeCommonWithLongDescriptor( test )
     return _.withLong[ env.type ].long.default.InstanceConstructor;
   }
 }
+
+makeCommonWithLongDescriptor.timeOut = 30000;
 
 //
 
@@ -8754,92 +8804,6 @@ function longRight( test )
   test.shouldThrowErrorSync( () => _.longRight( [ 1, 2 ], 1, 0, ( e ) => e, () => 1 ) );
 }
 
-//
-
-function isPerformance( test )
-{
-   /*
-    Average of 10 runs of 5 million iteration of 13 _.long.is variations
-    Values below are in seconds
-    |-------------------|-------------------|
-    |                   |                   |
-    | :---------------: |:---------------:  |
-    | **Njs : v10.24.1**|    8.3735         |
-    |-------------------|-------------------|
-    | **Njs : v14.17.0**|    12.3397        |
-    |-------------------|-------------------|
-    | **Njs : v15.14.0**|    10.3089        |
-    |-------------------|-------------------|
-    | Kos . Njs:v12.9.1 |    11.046s        |
-    |-------------------|-------------------|
-  */
-
-  var debugFlag = Config.debug;
-  Config.debug = false;
-
-  test.case = '_.long.is performance test';
-  var took, time;
-  var env = initializeVariables();
-
-  time = _.time.now();
-  for( let i = env.times; i > 0; i-- )
-  {
-    runVariations( env );
-  }
-  took = __.time.spent( time );
-
-  console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-  test.identical( true, true );
-
-  Config.debug = debugFlag;
-
-  /* - */
-
-  function initializeVariables()
-  {
-    var env = {};
-    env.times = 5000000;
-    env.nonEmptyArray = [ 1, 2, 3 ];
-    env.rawBuffer = new BufferRaw( 10 );
-    env.float32Array = new F32x( 10 );
-    env.anEmptyRoutine = new function() {};
-    env.aString = 'x';
-    env.aNumber = 1;
-    env.aBoolean = false;
-    env.anEmptyObject = {};
-    env.routine = new function()
-    {
-      this[ Symbol.iterator ] = function ()
-      {
-        return { next() { return { done : true } } }
-      }
-    }
-
-    return env;
-  }
-
-  /* qqq : for Rahul : lets add more typed buffers and non-longs */
-  function runVariations( env )
-  {
-    _.long.is( [] );
-    _.long.is( env.nonEmptyArray );
-    _.long.is( arguments );
-    _.long.is( env.rawBuffer );
-    _.long.is( env.float32Array );
-    _.long.is();
-    _.long.is( null );
-    _.long.is( env.anEmptyRoutine );
-    _.long.is( env.aString );
-    _.long.is( env.aNumber );
-    _.long.is( env.aBoolean );
-    _.long.is( env.anEmptyObject );
-    _.long.is( env.routine );
-  }
-}
-
-isPerformance.timeOut = 1e7;
-isPerformance.experimental = true;
-
 // --
 //
 // --
@@ -8850,16 +8814,17 @@ const Proto =
   name : 'Tools.Long.l0.l1',
   silencing : 1,
   enabled : 1,
+  routineTimeOut : 10000,
 
   tests :
   {
 
-    // long l0/l3
+    // dichotomy
 
-    is,
-    like,
+    dichotomy,
+    isPerformance,
 
-    // long, l0/l5
+    // make
 
     makeCommon,
     makeCommonWithLongDescriptor,
@@ -8935,7 +8900,6 @@ const Proto =
 
     longLeft,
     longRight,
-    isPerformance
 
   }
 

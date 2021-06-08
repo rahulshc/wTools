@@ -3266,7 +3266,7 @@ function map_( dst, src, onEach )
 {
   if( arguments.length === 2 )
   {
-    _.assert( arguments.length === 3, 'Expects three arguments' );
+    _.assert( arguments.length === 2, 'Expects three arguments' );
     onEach = src;
     src = dst;
   }

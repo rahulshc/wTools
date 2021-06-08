@@ -47,11 +47,76 @@ _.withLong = _.long.toolsNamespacesByType;
  * @namespace Tools
  */
 
-/* xxx : optimize! */
-/* qqq2 : for junior : optimize. ask how to */
-/* qqq : check coverage */
+// function is( src )
+// {
+//   if( Array.isArray( src ) )
+//   return true
+//   if( _.bufferTyped.is( src ) )
+//   return true;
+//   if( Object.prototype.toString.call( src ) === '[object Arguments]' )
+//   return true;
+//
+//   return false;
+// }
 
-function is( src )
+function is_functor()
+{
+  let result;
+  const TypedArray = Object.getPrototypeOf( Int8Array );
+  const iteratorSymbol = Symbol.iterator;
+
+  if( _global_.BufferNode )
+  result = isNjs;
+  else
+  result = isBrowser;
+  result.functor = is_functor;
+  return result;
+
+  function isNjs( src )
+  {
+    if( Array.isArray( src ) )
+    return true
+
+    if( src instanceof TypedArray )
+    {
+      if( src instanceof BufferNode )
+      return false;
+      return true;
+    }
+    isNjs.functor = is_functor;
+
+    // if( arguments[ iteratorSymbol ] === undefined )
+    // return false;
+    if( Object.prototype.toString.call( src ) === '[object Arguments]' )
+    return true;
+
+    return false;
+  }
+
+  function isBrowser( src )
+  {
+    if( Array.isArray( src ) )
+    return true
+
+    if( src instanceof TypedArray )
+    return true;
+
+    // if( arguments[ iteratorSymbol ] === undefined )
+    // return false;
+    if( Object.prototype.toString.call( src ) === '[object Arguments]' )
+    return true;
+
+    return false;
+  }
+  isBrowser.functor = is_functor;
+
+}
+
+const is = is_functor();
+
+//
+
+function isOld( src )
 {
 
   if( _.primitive.is( src ) )
@@ -66,6 +131,100 @@ function is( src )
 
   return false;
 }
+
+//
+
+function isCompact( src )
+{
+  if( _.argumentsArray.like( src ) )
+  return true;
+  if( _.bufferTyped.is( src ) )
+  return true;
+
+  return false;
+}
+
+//
+
+function isUnfolded( src )
+{
+  if( Object.prototype.toString.call( src ) === '[object Arguments]' )
+  return true;
+  if( Array.isArray( src ) )
+  return true
+  if( _.bufferTyped.is( src ) )
+  return true;
+
+  return false;
+}
+
+//
+
+function isUnfoldedSmartOrder( src )
+{
+  if( Array.isArray( src ) )
+  return true
+  if( _.bufferTyped.is( src ) )
+  return true;
+  // if( !arguments[ Symbol.iterator ] )
+  // return false;
+  if( Object.prototype.toString.call( src ) === '[object Arguments]' )
+  return true;
+
+  return false;
+}
+
+//
+
+function isUnfoldedSmarter_functor()
+{
+
+  const TypedArray = Object.getPrototypeOf( Int8Array );
+  const iteratorSymbol = Symbol.iterator;
+
+  if( _global_.BufferNode )
+  return isUnfoldedSmarterNjs;
+  return isUnfoldedSmarterBrowser;
+
+  function isUnfoldedSmarterNjs( src )
+  {
+    if( Array.isArray( src ) )
+    return true
+
+    if( src instanceof TypedArray )
+    {
+      if( src instanceof BufferNode )
+      return false;
+      return true;
+    }
+
+    // if( arguments[ iteratorSymbol ] === undefined )
+    // return false;
+    if( Object.prototype.toString.call( src ) === '[object Arguments]' )
+    return true;
+
+    return false;
+  }
+
+  function isUnfoldedSmarterNrowser( src )
+  {
+    if( Array.isArray( src ) )
+    return true
+
+    if( src instanceof TypedArray )
+    return true;
+
+    // if( arguments[ iteratorSymbol ] === undefined )
+    // return false;
+    if( Object.prototype.toString.call( src ) === '[object Arguments]' )
+    return true;
+
+    return false;
+  }
+
+}
+
+const isUnfoldedSmarter = isUnfoldedSmarter_functor();
 
 // function is( src )
 // {
@@ -151,7 +310,6 @@ function _makeEmpty( src )
 
 //
 
-/* qqq2 : for junior : cover please */
 function makeEmpty( src )
 {
   _.assert( arguments.length === 0 || arguments.length === 1 );
@@ -217,7 +375,6 @@ function _makeUndefined( src, length )
 
 //
 
-/* qqq2 : for junior : cover please */
 function makeUndefined( src, length )
 {
   // _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
@@ -296,8 +453,6 @@ function _makeZeroed( src, length )
 
 //
 
-/* qqq2 : for junior : cover please */
-/* qqq : for junior : extend with test cases with countable in 2nd arg */
 function makeZeroed( src, length )
 {
   // _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
@@ -442,8 +597,6 @@ function _make( src, length )
 
 //
 
-/* qqq2 : for junior : full implementation and coverage are required */
-/* qqq : for junior : extend with test cases with countable in 2nd arg */
 function make( src, length )
 {
   _.assert( arguments.length <= 2 );
@@ -461,7 +614,6 @@ function make( src, length )
 
 //
 
-/* qqq2 : for junior : full implementation and coverage are required */
 function _cloneShallow( src )
 {
   if( _.argumentsArray.is( src ) )
@@ -1139,6 +1291,11 @@ let LongExtension =
   // dichotomy
 
   is,
+  isOld, /* xxx : remove later */
+  isCompact,
+  isUnfolded,
+  isUnfoldedSmartOrder,
+  isUnfoldedSmarter,
   isEmpty,
   isPopulated,
   like,

@@ -7,7 +7,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _.ct = _.ct || Object.create( null );
+_.ct = _.ct || Object.create( null );
 
 // --
 // implementation
@@ -21,6 +21,6 @@ let Extension =
 {
 }
 
-Object.assign( Self, Extension );
+Object.assign( _.ct, Extension );
 
 })();

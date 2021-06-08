@@ -210,7 +210,8 @@ function cloneDeep( src )
   }
   else if( _.replicate )
   {
-    return _.replicate( src );
+    debugger;
+    return _.replicate({ src });
   }
   else if( _.routine.is( src[ _.class.cloneDeepSymbol ] ) ) /* aaa2 : cover */ /* Dmytro : coverage extended for objects with method under symbol cloneShallowSymbol */
   {

@@ -1,4 +1,4 @@
-( function _l7_Looker_s_()
+( function _l7_Seeker_s_()
 {
 
 'use strict';
@@ -11,15 +11,15 @@ const _ = _global_.wTools;
 // --
 
 // --
-// looker extension
+// seeker extension
 // --
 
-let LookerExtension =
+let SeekerExtension =
 {
 
 }
 
-Object.assign( _.looker, LookerExtension );
+Object.assign( _.seeker, SeekerExtension );
 
 // --
 // tools extension
