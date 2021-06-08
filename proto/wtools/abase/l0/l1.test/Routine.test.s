@@ -119,6 +119,177 @@ function dichotomy( test )
   test.identical( _.routine.isAsyncGenerator( src ), false );
   test.identical( _.routine.withName( src ), false );
 
+  test.case = 'empty array';
+  var src = [];
+  test.identical( _.routine.is( src ), false );
+  test.identical( _.routine.like( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isSync( src ), false );
+  test.identical( _.routine.isAsync( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isGenerator( src ), false );
+  test.identical( _.routine.isSyncGenerator( src ), false );
+  test.identical( _.routine.isAsyncGenerator( src ), false );
+  test.identical( _.routine.withName( src ), false );
+
+  test.case = 'arguments array';
+  var src = _.argumentsArray.make( [] );
+  test.identical( _.routine.is( src ), false );
+  test.identical( _.routine.like( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isSync( src ), false );
+  test.identical( _.routine.isAsync( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isGenerator( src ), false );
+  test.identical( _.routine.isSyncGenerator( src ), false );
+  test.identical( _.routine.isAsyncGenerator( src ), false );
+  test.identical( _.routine.withName( src ), false );
+
+
+  test.case = 'unroll';
+  var src = _.unroll.make( [] );
+  test.identical( _.routine.is( src ), false );
+  test.identical( _.routine.like( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isSync( src ), false );
+  test.identical( _.routine.isAsync( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isGenerator( src ), false );
+  test.identical( _.routine.isSyncGenerator( src ), false );
+  test.identical( _.routine.isAsyncGenerator( src ), false );
+  test.identical( _.routine.withName( src ), false );
+
+
+  test.case = 'pure map';
+  var src = Object.create( null );
+  test.identical( _.routine.is( src ), false );
+  test.identical( _.routine.like( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isSync( src ), false );
+  test.identical( _.routine.isAsync( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isGenerator( src ), false );
+  test.identical( _.routine.isSyncGenerator( src ), false );
+  test.identical( _.routine.isAsyncGenerator( src ), false );
+  test.identical( _.routine.withName( src ), false );
+
+  test.case = 'Set';
+  var src = new Set( [ 1, 1, 2] );
+  test.identical( _.routine.is( src ), false );
+  test.identical( _.routine.like( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isSync( src ), false );
+  test.identical( _.routine.isAsync( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isGenerator( src ), false );
+  test.identical( _.routine.isSyncGenerator( src ), false );
+  test.identical( _.routine.isAsyncGenerator( src ), false );
+  test.identical( _.routine.withName( src ), false );
+
+  test.case = 'Map';
+  var src = { a : 'a' };
+  test.identical( _.routine.is( src ), false );
+  test.identical( _.routine.like( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isSync( src ), false );
+  test.identical( _.routine.isAsync( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isGenerator( src ), false );
+  test.identical( _.routine.isSyncGenerator( src ), false );
+  test.identical( _.routine.isAsyncGenerator( src ), false );
+  test.identical( _.routine.withName( src ), false );
+
+  test.case = 'check BufferRaw';
+  var src = new BufferRaw();
+  test.identical( _.routine.is( src ), false );
+  test.identical( _.routine.like( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isSync( src ), false );
+  test.identical( _.routine.isAsync( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isGenerator( src ), false );
+  test.identical( _.routine.isSyncGenerator( src ), false );
+  test.identical( _.routine.isAsyncGenerator( src ), false );
+  test.identical( _.routine.withName( src ), false );
+
+  test.case = 'check BufferTyped';
+  var src = new U8x();
+  test.identical( _.routine.is( src ), false );
+  test.identical( _.routine.like( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isSync( src ), false );
+  test.identical( _.routine.isAsync( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isGenerator( src ), false );
+  test.identical( _.routine.isSyncGenerator( src ), false );
+  test.identical( _.routine.isAsyncGenerator( src ), false );
+  test.identical( _.routine.withName( src ), false );
+
+  test.case = 'number';
+  var src = 123;
+  test.identical( _.routine.is( src ), false );
+  test.identical( _.routine.like( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isSync( src ), false );
+  test.identical( _.routine.isAsync( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isGenerator( src ), false );
+  test.identical( _.routine.isSyncGenerator( src ), false );
+  test.identical( _.routine.isAsyncGenerator( src ), false );
+  test.identical( _.routine.withName( src ), false );
+
+  test.case = 'bigInt';
+  var src = 1n;
+  test.identical( _.routine.is( src ), false );
+  test.identical( _.routine.like( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isSync( src ), false );
+  test.identical( _.routine.isAsync( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isGenerator( src ), false );
+  test.identical( _.routine.isSyncGenerator( src ), false );
+  test.identical( _.routine.isAsyncGenerator( src ), false );
+  test.identical( _.routine.withName( src ), false );
+
+  test.case = 'string';
+  var src = 'str';
+  test.identical( _.routine.is( src ), false );
+  test.identical( _.routine.like( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isSync( src ), false );
+  test.identical( _.routine.isAsync( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isGenerator( src ), false );
+  test.identical( _.routine.isSyncGenerator( src ), false );
+  test.identical( _.routine.isAsyncGenerator( src ), false );
+  test.identical( _.routine.withName( src ), false );
+
+  test.case = 'array';
+  var src = [ 1, 2, 3 ];
+  test.identical( _.routine.is( src ), false );
+  test.identical( _.routine.like( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isSync( src ), false );
+  test.identical( _.routine.isAsync( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isGenerator( src ), false );
+  test.identical( _.routine.isSyncGenerator( src ), false );
+  test.identical( _.routine.isAsyncGenerator( src ), false );
+  test.identical( _.routine.withName( src ), false );
+
+  test.case = 'map';
+  var src = { 'a' : null };
+  test.identical( _.routine.is( src ), false );
+  test.identical( _.routine.like( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isSync( src ), false );
+  test.identical( _.routine.isAsync( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isGenerator( src ), false );
+  test.identical( _.routine.isSyncGenerator( src ), false );
+  test.identical( _.routine.isAsyncGenerator( src ), false );
+  test.identical( _.routine.withName( src ), false );
+
   test.case = 'Object';
   var src = Object;
   test.identical( _.routine.is( src ), true );
@@ -157,7 +328,108 @@ function dichotomy( test )
   test.identical( _.routine.isAsyncGenerator( src ), false );
   test.identical( _.routine.withName( src ), true );
 
-  test.case = `generator`;
+  test.case = 'unnamed arrow routine';
+  test.identical( _.routine.is( () => {} ), true );
+  test.identical( _.routine.like( () => {} ), true );
+  test.identical( _.routine.isTrivial( () => {} ), true );
+  test.identical( _.routine.isSync( () => {} ), true );
+  test.identical( _.routine.isAsync( () => {} ), false );
+  test.identical( _.routine.isGenerator( () => {} ), false );
+  test.identical( _.routine.isSyncGenerator( () => {} ), false );
+  test.identical( _.routine.isAsyncGenerator( () => {} ), false );
+  test.identical( _.routine.withName( () => {} ), false );
+
+  test.case = 'named arrow routine';
+  var src = () => {};
+  test.identical( _.routine.is( src ), true );
+  test.identical( _.routine.like( src ), true );
+  test.identical( _.routine.isTrivial( src ), true );
+  test.identical( _.routine.isSync( src ), true );
+  test.identical( _.routine.isAsync( src ), false );
+  test.identical( _.routine.isGenerator( src ), false );
+  test.identical( _.routine.isSyncGenerator( src ), false );
+  test.identical( _.routine.isAsyncGenerator( src ), false );
+  test.identical( _.routine.withName( src ), true );
+
+  test.case = 'unnamed routine';
+  test.identical( _.routine.is( function (){} ), true );
+  test.identical( _.routine.like( function (){} ), true );
+  test.identical( _.routine.isTrivial( function (){} ), true );
+  test.identical( _.routine.isSync( function (){} ), true );
+  test.identical( _.routine.isAsync( function (){} ), false );
+  test.identical( _.routine.isGenerator( function (){} ), false );
+  test.identical( _.routine.isSyncGenerator( function (){} ), false );
+  test.identical( _.routine.isAsyncGenerator( function (){} ), false );
+  test.identical( _.routine.withName( function (){} ), false );
+
+  test.case = 'named routine';
+  test.identical( _.routine.is( function a(){} ), true );
+  test.identical( _.routine.like( function a(){} ), true );
+  test.identical( _.routine.isTrivial( function a(){} ), true );
+  test.identical( _.routine.isSync( function a(){} ), true );
+  test.identical( _.routine.isAsync( function a(){} ), false );
+  test.identical( _.routine.isGenerator( function a(){} ), false );
+  test.identical( _.routine.isSyncGenerator( function a(){} ), false );
+  test.identical( _.routine.isAsyncGenerator( function a(){} ), false );
+  test.identical( _.routine.withName( function a(){} ), true );
+
+  test.case = 'async unnamed arrow routine';
+  test.identical( _.routine.is( async () => {} ), true );
+  test.identical( _.routine.like( async () => {} ), true );
+  test.identical( _.routine.isTrivial( async () => {} ), true );
+  test.identical( _.routine.isSync( async () => {} ), false );
+  test.identical( _.routine.isAsync( async () => {} ), true );
+  test.identical( _.routine.isGenerator( async () => {} ), false );
+  test.identical( _.routine.isSyncGenerator( async () => {} ), false );
+  test.identical( _.routine.isAsyncGenerator( async () => {} ), false );
+  test.identical( _.routine.withName( async () => {} ), false );
+
+  test.case = 'async named arrow routine';
+  var src = async() => {};
+  test.identical( _.routine.is( src ), true );
+  test.identical( _.routine.like( src ), true );
+  test.identical( _.routine.isTrivial( src ), true );
+  test.identical( _.routine.isSync( src ), false );
+  test.identical( _.routine.isAsync( src ), true );
+  test.identical( _.routine.isGenerator( src ), false );
+  test.identical( _.routine.isSyncGenerator( src ), false );
+  test.identical( _.routine.isAsyncGenerator( src ), false );
+  test.identical( _.routine.withName( src ), true );
+
+  test.case = 'async unnamed routine';
+  test.identical( _.routine.is( async function (){} ), true );
+  test.identical( _.routine.like( async function (){} ), true );
+  test.identical( _.routine.isTrivial( async function (){} ), true );
+  test.identical( _.routine.isSync( async function (){} ), false );
+  test.identical( _.routine.isAsync( async function (){} ), true );
+  test.identical( _.routine.isGenerator( async function (){} ), false );
+  test.identical( _.routine.isSyncGenerator( async function (){} ), false );
+  test.identical( _.routine.isAsyncGenerator(async function (){} ), false );
+  test.identical( _.routine.withName( async function (){} ), false );
+
+  test.case = 'async named routine';
+  test.identical( _.routine.is( async function a(){} ), true );
+  test.identical( _.routine.like( async function a(){} ), true );
+  test.identical( _.routine.isTrivial( async function a(){} ), true );
+  test.identical( _.routine.isSync( async function a(){} ), false );
+  test.identical( _.routine.isAsync( async function a(){} ), true );
+  test.identical( _.routine.isGenerator( async function a(){} ), false );
+  test.identical( _.routine.isSyncGenerator( async function a(){} ), false );
+  test.identical( _.routine.isAsyncGenerator(async function a(){} ), false );
+  test.identical( _.routine.withName( async function a(){} ), true );
+
+  test.case = `unnamed generator`;
+  test.identical( _.routine.is( function* () { yield 1; yield 2; yield 3; } ), false );
+  test.identical( _.routine.like( function* () { yield 1; yield 2; yield 3; } ), true );
+  test.identical( _.routine.isTrivial( function* () { yield 1; yield 2; yield 3; } ), false );
+  test.identical( _.routine.isSync( function* () { yield 1; yield 2; yield 3; } ), false );
+  test.identical( _.routine.isAsync( function* () { yield 1; yield 2; yield 3; } ), false );
+  test.identical( _.routine.isGenerator( function* () { yield 1; yield 2; yield 3; } ), true );
+  test.identical( _.routine.isSyncGenerator( function* () { yield 1; yield 2; yield 3; } ), true );
+  test.identical( _.routine.isAsyncGenerator( function* () { yield 1; yield 2; yield 3; } ), false );
+  test.identical( _.routine.withName( function* () { yield 1; yield 2; yield 3; } ), false );
+  
+  test.case = `named generator`;
   var src = function* abc()
   {
     yield 1;
@@ -174,7 +446,18 @@ function dichotomy( test )
   test.identical( _.routine.isAsyncGenerator( src ), false );
   test.identical( _.routine.withName( src ), true );
 
-  test.case = `async generator`;
+  test.case = `unnamed async generator`;
+  test.identical( _.routine.is( async function* () { yield 1; yield 2; yield 3; } ), false );
+  test.identical( _.routine.like( async function* () { yield 1; yield 2; yield 3; } ), true );
+  test.identical( _.routine.isTrivial( async function* () { yield 1; yield 2; yield 3; } ), false );
+  test.identical( _.routine.isSync( async function* () { yield 1; yield 2; yield 3; } ), false );
+  test.identical( _.routine.isAsync( async function* () { yield 1; yield 2; yield 3; } ), false );
+  test.identical( _.routine.isGenerator( async function* () { yield 1; yield 2; yield 3; } ), true );
+  test.identical( _.routine.isSyncGenerator( async function* () { yield 1; yield 2; yield 3; } ), false );
+  test.identical( _.routine.isAsyncGenerator( async function* () { yield 1; yield 2; yield 3; } ), true );
+  test.identical( _.routine.withName( async function* () { yield 1; yield 2; yield 3; } ), false );
+
+  test.case = `named async generator`;
   var src = async function* abc()
   {
     yield 1;
