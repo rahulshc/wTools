@@ -312,8 +312,6 @@ function dichotomy( test )
     test.true( _.routine[ env.method ]( src ) );
     else
     test.false( _.routine[ env.method ]( src ) );
-
-
   }
 }
 
