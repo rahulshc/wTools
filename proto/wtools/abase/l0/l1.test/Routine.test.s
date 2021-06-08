@@ -4745,13 +4745,12 @@ const Proto =
   {
 
     // dichotomy
-
+    dichotomy,
     is,
     like,
     isSync,
     isAsync,
     isTrivial,
-    dichotomy,
 
     // joiner
 
