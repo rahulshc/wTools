@@ -18,14 +18,80 @@ function is( src )
 
 //
 
+function isOld( src )
+{
+  return Object.prototype.toString.call( src ) === '[object Arguments]';
+}
+
+//
+
+function isIterator( src )
+{
+  if( !src || !src[ Symbol.iterator ] )
+  return false;
+  return Object.prototype.toString.call( src ) === '[object Arguments]';
+}
+
+//
+
+/* qqq : for Rahul : bad : useless variant */
+// function isUsingFunctor_functor( src )
+// {
+//   let argumentObject = '[object Arguments]';
+//   return isUsingFunctor;
+//
+//   function isUsingFunctor( src )
+//   {
+//     return Object.prototype.toString.call( src ) === argumentObject;
+//   }
+// }
+//
+// let isUsingFunctor = isUsingFunctor_functor();
+
+//
+
 function like( src )
 {
-  if( _.argumentsArray.is( src ) )
+  if( Array.isArray( src ) )
   return true;
-  if( _.array.is( src ) )
+  if( Object.prototype.toString.call( src ) === '[object Arguments]' )
   return true;
   return false;
 }
+
+//
+
+function likeOld( src )
+{
+  if( _.array.is( src ) )
+  return true;
+  if( _.argumentsArray.is( src ) )
+  return true;
+  return false;
+}
+
+//
+
+function likeUnfolded( src )
+{
+  if( Array.isArray( src ) )
+  return true;
+  if( Object.prototype.toString.call( src ) === '[object Arguments]' )
+  return true;
+  return false;
+}
+
+//
+
+/* qqq : for Rahul : bad : misleading name, this is not functor! */
+// function likeUsingIsFunctor( src )
+// {
+//   if( _.argumentsArray.isUsingFunctor( src ) )
+//   return true;
+//   if( _.array.is( src ) )
+//   return true;
+//   return false;
+// }
 
 //
 
@@ -86,6 +152,8 @@ function _make( src, length )
 
 function make( src, length )
 {
+  // if( !( arguments.length === 0 || src === null || _.countable.is( src ) || _.numberIs( src ) ) )
+  // debugger;
   _.assert( arguments.length === 0 || src === null || _.countable.is( src ) || _.numberIs( src ) );
   _.assert( length === undefined || !_.number.is( src ) || !_.number.is( length ) );
   _.assert( arguments.length < 2 || _.number.is( length ) || _.countable.is( length ) );
@@ -287,7 +355,13 @@ var ArgumentsArrayExtension =
   // dichotomy
 
   is, /* qqq : cover */
+  isOld,
+  isIterator,
+  // isUsingFunctor,
   like, /* qqq : cover */
+  likeOld,
+  likeUnfolded,
+  // likeUsingIsFunctor,
   IsResizable,
 
   // maker

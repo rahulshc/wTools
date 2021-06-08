@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-_global_.wTools.props = _global_.wTools.props || Object.create( null );
+_.props = _.props || Object.create( null );
 
 // --
 // implementation

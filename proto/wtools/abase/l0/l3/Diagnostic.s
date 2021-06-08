@@ -63,7 +63,7 @@ function objectMake( o )
     if( o.withConstructor )
     {
       countableConstructorPure.prototype.constructor = countableConstructorPure;
-      _.assert( countableConstructorPolluted.prototype.constructor = countableConstructorPolluted );
+      _.assert( countableConstructorPolluted.prototype.constructor === countableConstructorPolluted );
     }
     else
     {
@@ -102,6 +102,15 @@ function objectMake( o )
   function TypeNameGet()
   {
     return 'Custom1';
+  }
+
+  /* */
+
+  function* _iterateGenerator()
+  {
+    yield 1;
+    yield 2;
+    yield 3;
   }
 
   /* */
@@ -167,8 +176,14 @@ function objectMake( o )
     else
     dst = {};
     _.props.extend( dst, o );
+
     if( o.countable )
-    dst[ Symbol.iterator ] = _iterate;
+    {
+      if( o.iteratorIsGenerator )
+      dst[ Symbol.iterator ] = _iterateGenerator;
+      else
+      dst[ Symbol.iterator ] = _iterate;
+    }
 
     if( o.withOwnConstructor )
     dst.constructor = constructor;
@@ -244,6 +259,7 @@ objectMake.defaults =
   pure : 0,
   basic : 1,
   countable : null,
+  iteratorIsGenerator : 0,
   vector : null,
   withOwnConstructor : 0,
   withConstructor : 1,

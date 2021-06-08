@@ -142,7 +142,6 @@ function lengthGet()
 
 function exec( o )
 {
-
   o = _.routine.options( exec, arguments );
   o.onEach = o.onEach || defaultOnEach;
   let r = this._exec( o );

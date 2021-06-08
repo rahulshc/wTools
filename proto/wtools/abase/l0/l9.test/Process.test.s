@@ -17,16 +17,17 @@ const __ = _globals_.testing.wTools;
 function onSuiteBegin( test )
 {
   let context = this;
-  _.process._ehandler.events.event1 = [];
-  _.process._ehandler.events.event2 = [];
+  _.process._edispatcher.events.event1 = [];
+  _.process._edispatcher.events.event2 = [];
+  /* qqq : for Dmytro : ? */
 }
 
 //
 
 function onSuiteEnd( test )
 {
-  delete _.process._ehandler.events.event1;
-  delete _.process._ehandler.events.event2;
+  delete _.process._edispatcher.events.event1;
+  delete _.process._edispatcher.events.event2;
 }
 
 // --
@@ -43,9 +44,14 @@ function onWithArguments( test )
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.eventGive( _.process._ehandler, 'event1' );
+  /* qqq : for Dmytro : bad : ??
+  bad!
+  rewrite
+  discuss first
+  */
+  _.event.eventGive( _.process._edispatcher, 'event1' );
   test.identical( result, [] );
-  _.event.eventGive( _.process._ehandler, 'event2' );
+  _.event.eventGive( _.process._edispatcher, 'event2' );
   test.identical( result, [] );
 
   /* */
@@ -54,14 +60,13 @@ function onWithArguments( test )
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  debugger;
   var got = _.process.on( 'event1', onEvent );
-  _.event.eventGive( _.process._ehandler, 'event1' );
+  _.event.eventGive( _.process._edispatcher, 'event1' );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( _.process._ehandler, 'event2' );
+  _.event.eventGive( _.process._edispatcher, 'event2' );
   test.identical( result, [ 0 ] );
-  test.true( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event1', eventHandler : onEvent } ) );
-  test.false( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.true( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event1', eventHandler : onEvent } ) );
+  test.false( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
   got.event1.off();
 
   /* */
@@ -71,14 +76,14 @@ function onWithArguments( test )
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
   var got = _.process.on( 'event1', onEvent );
-  _.event.eventGive( _.process._ehandler, 'event1' );
+  _.event.eventGive( _.process._edispatcher, 'event1' );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( _.process._ehandler, 'event1' );
+  _.event.eventGive( _.process._edispatcher, 'event1' );
   test.identical( result, [ 0, 1 ] );
-  _.event.eventGive( _.process._ehandler, 'event2' );
+  _.event.eventGive( _.process._edispatcher, 'event2' );
   test.identical( result, [ 0, 1 ] );
-  test.true( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event1', eventHandler : onEvent } ) );
-  test.false( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.true( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event1', eventHandler : onEvent } ) );
+  test.false( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
   got.event1.off();
 
   /* */
@@ -89,15 +94,15 @@ function onWithArguments( test )
   var onEvent2 = () => result.push( -1 * result.length );
   var got = _.process.on( 'event1', onEvent );
   var got2 = _.process.on( 'event2', onEvent2 );
-  _.event.eventGive( _.process._ehandler, 'event1' );
+  _.event.eventGive( _.process._edispatcher, 'event1' );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( _.process._ehandler, 'event1' );
+  _.event.eventGive( _.process._edispatcher, 'event1' );
   test.identical( result, [ 0, 1 ] );
-  _.event.eventGive( _.process._ehandler, 'event2' );
-  _.event.eventGive( _.process._ehandler, 'event2' );
+  _.event.eventGive( _.process._edispatcher, 'event2' );
+  _.event.eventGive( _.process._edispatcher, 'event2' );
   test.identical( result, [ 0, 1, -2, -3 ] );
-  test.true( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event1', eventHandler : onEvent } ) );
-  test.true( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.true( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event1', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
   got.event1.off();
   got2.event2.off();
 }
@@ -116,9 +121,9 @@ function onWithOptionsMap( test )
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.eventGive( _.process._ehandler, 'event1' );
+  _.event.eventGive( _.process._edispatcher, 'event1' );
   test.identical( result, [] );
-  _.event.eventGive( _.process._ehandler, 'event2' );
+  _.event.eventGive( _.process._edispatcher, 'event2' );
   test.identical( result, [] );
 
   /* */
@@ -128,12 +133,12 @@ function onWithOptionsMap( test )
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
   var got = _.process.on({ 'callbackMap' : { 'event1' : onEvent } });
-  _.event.eventGive( _.process._ehandler, 'event1' );
+  _.event.eventGive( _.process._edispatcher, 'event1' );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( _.process._ehandler, 'event2' );
+  _.event.eventGive( _.process._edispatcher, 'event2' );
   test.identical( result, [ 0 ] );
-  test.true( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event1', eventHandler : onEvent } ) );
-  test.false( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.true( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event1', eventHandler : onEvent } ) );
+  test.false( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
   got.event1.off();
 
   /* */
@@ -143,14 +148,14 @@ function onWithOptionsMap( test )
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
   var got = _.process.on({ 'callbackMap' : { 'event1' : onEvent } } );
-  _.event.eventGive( _.process._ehandler, 'event1' );
+  _.event.eventGive( _.process._edispatcher, 'event1' );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( _.process._ehandler, 'event1' );
+  _.event.eventGive( _.process._edispatcher, 'event1' );
   test.identical( result, [ 0, 1 ] );
-  _.event.eventGive( _.process._ehandler, 'event2' );
+  _.event.eventGive( _.process._edispatcher, 'event2' );
   test.identical( result, [ 0, 1 ] );
-  test.true( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event1', eventHandler : onEvent } ) );
-  test.false( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.true( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event1', eventHandler : onEvent } ) );
+  test.false( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
   got.event1.off();
 
   /* */
@@ -160,15 +165,15 @@ function onWithOptionsMap( test )
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
   var got = _.process.on({ 'callbackMap' : { 'event1' : onEvent, 'event2' : onEvent2 } });
-  _.event.eventGive( _.process._ehandler, 'event1' );
+  _.event.eventGive( _.process._edispatcher, 'event1' );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( _.process._ehandler, 'event1' );
+  _.event.eventGive( _.process._edispatcher, 'event1' );
   test.identical( result, [ 0, 1 ] );
-  _.event.eventGive( _.process._ehandler, 'event2' );
-  _.event.eventGive( _.process._ehandler, 'event2' );
+  _.event.eventGive( _.process._edispatcher, 'event2' );
+  _.event.eventGive( _.process._edispatcher, 'event2' );
   test.identical( result, [ 0, 1, -2, -3 ] );
-  test.true( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event1', eventHandler : onEvent } ) );
-  test.true( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.true( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event1', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
   got.event1.off();
   got.event2.off();
 
@@ -184,9 +189,9 @@ function onWithOptionsMap( test )
   var onEvent2 = () => result.push( -1 * result.length );
   var got = _.process.on({ 'callbackMap' : { 'event1' : onEvent } });
   var got2 = _.process.on({ 'callbackMap' : { 'event1' : onEvent2 }, 'first' : 1 });
-  _.event.eventGive( _.process._ehandler, 'event1' );
+  _.event.eventGive( _.process._edispatcher, 'event1' );
   test.identical( result, [ -0, 1 ] );
-  _.event.eventGive( _.process._ehandler, 'event1' );
+  _.event.eventGive( _.process._edispatcher, 'event1' );
   test.identical( result, [ -0, 1, -2, 3 ] );
   got.event1.off();
   got2.event1.off();
@@ -200,9 +205,9 @@ function onWithOptionsMap( test )
   var onEvent2 = () => result.push( -1 * result.length );
   var got = _.process.on({ 'callbackMap' : { 'event1' : onEvent2 }, 'first' : 1 });
   var got2 = _.process.on({ 'callbackMap' : { 'event1' : onEvent } });
-  _.event.eventGive( _.process._ehandler, 'event1' );
+  _.event.eventGive( _.process._edispatcher, 'event1' );
   test.identical( result, [ -0, 1 ] );
-  _.event.eventGive( _.process._ehandler, 'event1' );
+  _.event.eventGive( _.process._edispatcher, 'event1' );
   test.identical( result, [ -0, 1, -2, 3 ] );
 
   test.close( 'option first - 1' );
@@ -243,15 +248,15 @@ function onWithChain( test )
   var result = [];
   var onEvent = () => result.push( result.length );
   var got = _.process.on( _.event.Chain( 'event1', 'event2' ), onEvent );
-  test.false( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event1', eventHandler : onEvent } ) );
-  test.false( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event2', eventHandler : onEvent } ) );
-  _.event.eventGive( _.process._ehandler, 'event1' );
+  test.false( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event1', eventHandler : onEvent } ) );
+  test.false( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event2', eventHandler : onEvent } ) );
+  _.event.eventGive( _.process._edispatcher, 'event1' );
   test.identical( result, [] );
-  _.event.eventGive( _.process._ehandler, 'event2' );
+  _.event.eventGive( _.process._edispatcher, 'event2' );
   test.identical( result, [ 0 ] );
-  test.false( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event1', eventHandler : onEvent } ) );
-  test.true( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event2', eventHandler : onEvent } ) );
-  _.event.off( _.process._ehandler, { callbackMap : { event2 : null } } );
+  test.false( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event1', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event2', eventHandler : onEvent } ) );
+  _.event.off( _.process._edispatcher, { callbackMap : { event2 : null } } );
 
   /* */
 
@@ -259,15 +264,16 @@ function onWithChain( test )
   var result = [];
   var onEvent = () => result.push( result.length );
   var got = _.process.on({ callbackMap : { event1 : [ _.event.Name( 'event2' ), onEvent ] } });
-  test.false( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event1', eventHandler : onEvent } ) );
-  test.false( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event2', eventHandler : onEvent } ) );
-  _.event.eventGive( _.process._ehandler, 'event1' );
+  test.false( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event1', eventHandler : onEvent } ) );
+  test.false( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event2', eventHandler : onEvent } ) );
+  _.event.eventGive( _.process._edispatcher, 'event1' );
   test.identical( result, [] );
-  _.event.eventGive( _.process._ehandler, 'event2' );
+  _.event.eventGive( _.process._edispatcher, 'event2' );
   test.identical( result, [ 0 ] );
-  test.false( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event1', eventHandler : onEvent } ) );
-  test.true( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event2', eventHandler : onEvent } ) );
-  _.event.off( _.process._ehandler, { callbackMap : { event2 : null } } );
+  test.false( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event1', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event2', eventHandler : onEvent } ) );
+  _.event.off( _.process._edispatcher, { callbackMap : { event2 : null } } );
+
 }
 
 //
@@ -287,7 +293,7 @@ function onCheckDescriptor( test )
   test.identical( descriptor.event1.enabled, true );
   test.identical( descriptor.event1.first, 0 );
   test.equivalent( descriptor.event1.callbackMap, { event1 : onEvent } );
-  test.true( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event1', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event1', eventHandler : onEvent } ) );
   descriptor.event1.off();
 
   /* */
@@ -301,7 +307,7 @@ function onCheckDescriptor( test )
   test.identical( descriptor.event1.enabled, true );
   test.identical( descriptor.event1.first, 0 );
   test.equivalent( descriptor.event1.callbackMap, { event1 : onEvent } );
-  test.true( _.event.eventHasHandler( _.process._ehandler, { eventName : 'event1', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( _.process._edispatcher, { eventName : 'event1', eventHandler : onEvent } ) );
   descriptor.event1.off();
 }
 
@@ -438,10 +444,11 @@ const Proto =
 
     // events
 
-    onWithArguments,
-    onWithOptionsMap,
-    onWithChain,
-    onCheckDescriptor,
+    /* qqq2 : for Dmytro : bad : rewrite */
+    // onWithArguments,
+    // onWithOptionsMap,
+    // onWithChain,
+    // onCheckDescriptor,
 
     //
 

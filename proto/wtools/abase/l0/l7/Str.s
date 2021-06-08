@@ -5,7 +5,6 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools;
 
 const _ArraySlice = Array.prototype.slice;
 const _FunctionBind = Function.prototype.bind;
@@ -832,6 +831,6 @@ let Extension =
 
 }
 
-Object.assign( Self, Extension );
+Object.assign( _, Extension );
 
 })();

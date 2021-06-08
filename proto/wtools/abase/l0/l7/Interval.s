@@ -5,7 +5,6 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools;
 
 // --
 // implementation
@@ -22,6 +21,6 @@ let Extension =
 
 //
 
-_.props.supplement( Self, Extension );
+_.props.supplement( _, Extension );
 
 })();

@@ -6,10 +6,8 @@
 const _global = _global_;
 const _ = _global_.wTools;
 
-_.assert( _.regexp === undefined );
-_.regexp = Object.create( null );
-_.assert( _.regexp.s === undefined );
-_.regexp.s = Object.create( null );
+_.regexp = _.regexp || Object.create( null );
+_.regexps = _.regexp.s = _.regexps || _.regexp.s || Object.create( null );
 
 // --
 // regexp

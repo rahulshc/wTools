@@ -9,7 +9,7 @@
 */
 
 const _ = _global_.wTools;
-const Self = _.treeMap = _.treeMap || Object.create( null );
+_.treeMap = _.treeMap || Object.create( null );
 
 // --
 // dichotomy
@@ -51,7 +51,7 @@ let NamespaceExtension =
 
 //
 
-_.props.extend( Self, NamespaceExtension );
+/* _.props.extend */Object.assign( _.treeMap, NamespaceExtension );
 
 // _.class.declareBasic
 // ({

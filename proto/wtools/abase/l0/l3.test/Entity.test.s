@@ -104,12 +104,12 @@ function exportStringDiagnosticShallow( test )
 
   test.case = `object countable - empty, non-vector`;
   var src = __.diagnostic.objectMake({ new : 0, elements : [], countable : 1 } );
-  var expected = '{- Map.polluted with 8 elements -}';
+  var expected = '{- Map.polluted with 9 elements -}';
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = `object countable - non empty, non-vector`;
   var src = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
-  var expected = '{- Map.polluted with 8 elements -}';
+  var expected = '{- Map.polluted with 9 elements -}';
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Global & GlobalReal';
@@ -2050,9 +2050,15 @@ function identicalShallowAllTypes( test )
 
   test.case = `object countable - non empty, non-vector, not same array`;
   var src1 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
-  var src2 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
+  var src2 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '4' ], countable : 1 } );
   var got = _.entity.identicalShallow( src1, src2 );
   test.identical( got, false );
+
+  test.case = `object countable - non empty, non-vector, same array`;
+  var src1 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
+  var src2 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
+  var got = _.entity.identicalShallow( src1, src2 );
+  test.identical( got, true );
 
   test.case = 'vector & vectorLike';
   var src1 = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1, length : 2 });
@@ -2065,12 +2071,6 @@ function identicalShallowAllTypes( test )
   var src2 = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   var got = _.entity.identicalShallow( src1, src2 );
   test.identical( got, true );
-
-  test.case = `object countable - non empty, non-vector`;
-  var src1 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
-  var src2 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
-  var got = _.entity.identicalShallow( src1, src2 );
-  test.identical( got, false );
 
   test.case = `object countable - non empty, non-vector, no iterator`;
   var src1 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 0 } );
@@ -3492,9 +3492,15 @@ function equivalentShallowAllTypes( test )
 
   test.case = `object countable - non empty, non-vector, not same array`;
   var src1 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
-  var src2 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
+  var src2 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '4' ], countable : 1 } );
   var got = _.entity.equivalentShallow( src1, src2 );
   test.identical( got, false );
+
+  test.case = `object countable - non empty, non-vector, same array`;
+  var src1 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
+  var src2 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
+  var got = _.entity.equivalentShallow( src1, src2 );
+  test.identical( got, true );
 
   test.case = 'vector & vectorLike';
   var src1 = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1, length : 2 });
@@ -3507,12 +3513,6 @@ function equivalentShallowAllTypes( test )
   var src2 = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   var got = _.entity.equivalentShallow( src1, src2 );
   test.identical( got, true );
-
-  test.case = `object countable - non empty, non-vector`;
-  var src1 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
-  var src2 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
-  var got = _.entity.equivalentShallow( src1, src2 );
-  test.identical( got, false );
 
   test.case = `object countable - non empty, non-vector, no iterator`;
   var src1 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 0 } );
@@ -4084,7 +4084,6 @@ function equivalentNotIdentical( test )
   var src1 = new Set([ 1, 2, 3 ]);
   var src2 = [ 1, 2, 3 ];
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
-  debugger
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
 
   test.case = 'buffer typed and array';
@@ -4109,7 +4108,7 @@ function equivalentNotIdentical( test )
   var src1 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '10' ], countable : 1 } );
   var src2 = [ '1', '10' ];
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
-  test.identical( _.entity.equivalentShallow( src1, src2 ), false );
+  test.identical( _.entity.equivalentShallow( src1, src2 ), true );
 
   test.case = `vector and array`;
   var src1 = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1, length : 2 });
@@ -6148,7 +6147,7 @@ function lengthOf( test )
 
   test.case = 'non-countable object';
   var src = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 0 });
-  test.identical( _.entity.lengthOf( src ), 8 );
+  test.identical( _.entity.lengthOf( src ), 9 );
 
   test.case = 'object';
   var obj1 = new Obj1({});
@@ -7844,8 +7843,8 @@ const Proto =
 
     // equaler
 
-    identicalShallowBasic,
-    identicalShallowAllTypes,
+    identicalShallowBasic, /* qqq : for Rahul : merge test routines identicalShallowBasic and equivalentShallowBasic into single test routine eqShallowBasic */
+    identicalShallowAllTypes, /* qqq : for Rahul : merge test routines identicalShallowAllTypes and equivalentShallowAllTypes into single test routine eqShallowAllTypes */
     equivalentShallowBasic,
     equivalentShallowAllTypes,
     equivalentNotIdentical,

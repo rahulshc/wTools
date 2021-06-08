@@ -1016,8 +1016,8 @@ function longSwapElements( dst, index1, index2 )
 
   _.assert( arguments.length === 1 || arguments.length === 3 );
   _.assert( _.longIs( dst ), 'Expects long' );
-  _.assert( 0 <= index1 && index1 < dst.length, 'index1 is out of bound' );
-  _.assert( 0 <= index2 && index2 < dst.length, 'index2 is out of bound' );
+  _.assert( 0 <= index1 && index1 < dst.length > 0, 'index1 is out of bound' );
+  _.assert( 0 <= index2 && index2 < dst.length > 0, 'index2 is out of bound' );
 
   let e = dst[ index1 ];
   dst[ index1 ] = dst[ index2 ];
@@ -1203,10 +1203,13 @@ function longExtendScreening( screenArray, dstArray )
   if( result === null )
   result = [];
 
-  _.assert( _.longIs( screenArray ), 'Expects object as screenArray' );
-  _.assert( _.longIs( result ), 'Expects object as argument' );
-  for( let a = arguments.length-1 ; a >= 2 ; a-- )
-  _.assert( arguments[ a ], 'Argument is not defined :', a );
+  if( Config.debug )
+  {
+    _.assert( _.longIs( screenArray ), 'Expects object as screenArray' );
+    _.assert( _.longIs( result ), 'Expects object as argument' );
+    for( let a = arguments.length-1 ; a >= 2 ; a-- )
+    _.assert( !!arguments[ a ], () => `Argument #${a} is not defined` );
+  }
 
   for( let k = 0 ; k < screenArray.length ; k++ )
   {

@@ -15,7 +15,7 @@ function methodIteratorOf( src )
 {
   if( !src )
   return;
-  if( _.routine.is( src[ iteratorSymbol ] ) )
+  if( _.routine.like( src[ iteratorSymbol ] ) )
   return src[ iteratorSymbol ];
   return;
 }

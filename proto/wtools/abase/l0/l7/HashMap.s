@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.hashMap = _global_.wTools.hashMap || Object.create( null );
+const Self = _.hashMap = _.hashMap || Object.create( null );
 
 // --
 // implementation

@@ -16,7 +16,7 @@
 
 const _global = _global_;
 const _ = _global.wTools;
-const Self = _global.wTools.setup = _global.wTools.setup || Object.create( null );
+const Self = _.setup = _.setup || Object.create( null );
 
 _.error = _.error || Object.create( null );
 _.process = _.process || Object.create( null );

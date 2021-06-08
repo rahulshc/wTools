@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.escape = _global_.wTools.escape || Object.create( null );
+_.escape = _.escape || Object.create( null );
 
 // --
 // implementation
@@ -21,6 +21,6 @@ var Extension =
 
 //
 
-_.props.supplement( Self, Extension );
+_.props.supplement( _.escape, Extension );
 
 })();

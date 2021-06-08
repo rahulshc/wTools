@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.collection = _global_.wTools.collection || Object.create( null );
+const Self = _.collection = _.collection || Object.create( null );
 
 // --
 // implementation

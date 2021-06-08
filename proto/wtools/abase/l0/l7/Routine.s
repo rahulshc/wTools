@@ -5,10 +5,6 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools;
-let Routine = _global_.wTools.routine = _global_.wTools.routine || Object.create( null );
-let RoutineS = _global_.wTools.routine.s = _global_.wTools.routine.s || Object.create( null );
-/* qqq : for junior : remove similar vars from all files */
 
 // --
 // routine
@@ -186,7 +182,39 @@ function _comparatorFromEvaluator( evaluator )
 }
 
 // --
-// extension
+// routine extension
+// --
+
+let RoutineExtension =
+{
+
+  callButOnly : routineCallButOnly, /* qqq : cover please */
+
+  _equalizerFromMapper,
+  _comparatorFromEvaluator, /* xxx : move out */
+
+}
+
+Object.assign( _.routine, RoutineExtension );
+
+// --
+// routines extension
+// --
+
+let RoutinesExtension =
+{
+
+  composeReturningLast : routinesComposeReturningLast,
+  composeAll : routinesComposeAll,
+  composeAllReturningLast : routinesComposeAllReturningLast, /* xxx */
+  chain : routinesChain,
+
+}
+
+Object.assign( _.routines, RoutinesExtension );
+
+// --
+// tools extension
 // --
 
 let ToolsExtension =
@@ -204,32 +232,6 @@ let ToolsExtension =
 
 }
 
-//
-
-let Extension =
-{
-
-  callButOnly : routineCallButOnly, /* qqq : cover please */
-
-  _equalizerFromMapper,
-  _comparatorFromEvaluator, /* xxx : move out */
-
-}
-
-//
-
-let ExtensionS =
-{
-
-  composeReturningLast : routinesComposeReturningLast,
-  composeAll : routinesComposeAll,
-  composeAllReturningLast : routinesComposeAllReturningLast, /* xxx */
-  chain : routinesChain,
-
-}
-
-Object.assign( Self, ToolsExtension );
-Object.assign( Routine, Extension );
-Object.assign( RoutineS, ExtensionS );
+Object.assign( _, ToolsExtension );
 
 })();
