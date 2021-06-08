@@ -166,7 +166,8 @@ function from( src )
 /* qqq : for junior : cover please */
 function as( src )
 {
-  if( src === null || src === undefined )
+  _.assert( src !== undefined );
+  if( src === null )
   return new Set;
   else if( _.set.is( src ) )
   return src;
@@ -176,19 +177,19 @@ function as( src )
   return new Set([ src ]);
 }
 
+// //
 //
-
-function asTest( src )
-{
-  if( src === null || src === undefined )
-  return new Set;
-  if( src[ Symbol.iterator ] && !_.str.is( src ) )
-  return new Set( [ ... src ] );
-  if( src instanceof WeakSet )
-  return src;
-
-  return new Set( [ src ] );
-}
+// function asTest( src )
+// {
+//   if( src === null || src === undefined )
+//   return new Set;
+//   if( src[ Symbol.iterator ] && !_.str.is( src ) )
+//   return new Set( [ ... src ] );
+//   if( src instanceof WeakSet )
+//   return src;
+//
+//   return new Set( [ src ] );
+// }
 
 // //
 //
@@ -289,7 +290,7 @@ let SetExtension =
   cloneShallow, /* qqq : for junior : cover */
   from,
   as,
-  asTest,
+  // asTest,
 
   // properties
 

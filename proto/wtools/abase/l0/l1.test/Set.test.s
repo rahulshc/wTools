@@ -44,82 +44,25 @@ function dichotomy( test )
 
 //
 
-function asWithCasesNotImplemented( test )
-{
-  asWithCasesNotImplementedTemplate( { method : 'as' } );
-  asWithCasesNotImplementedTemplate( { method : 'asTest' } );
-
-  function asWithCasesNotImplementedTemplate( env )
-  {
-    //Throws error. [object GeneratorFunction] is not covered as a Symbol.iterator
-    test.case = `${__.entity.exportStringSolo( env )}, a set having generator function as it's Symbol.iterator`;
-    var src = new Set();
-    src[ Symbol.iterator ] = function* ()
-    {
-      yield 1;
-      yield 2;
-      yield 3;
-    };
-    var got = _.set[ env.method ]( src );
-    var expected = new Set( [ ... src ]);
-    test.identical( got, expected );
-
-    //Throws error. [object GeneratorFunction] is not covered as a Symbol.iterator
-    test.case = `${__.entity.exportStringSolo( env )}, an Object having a generator function as it's Symbol.iterator`;
-    var src = {};
-    src[ Symbol.iterator ] = function* ()
-    {
-      yield 1;
-      yield 2;
-      yield 3;
-    };
-    var got = _.set[ env.method ]( src );
-    var expected = new Set( [ ... src ]);
-    test.identical( got, expected );
-
-    //Throws error. [object GeneratorFunction] is not covered as a Symbol.iterator
-    test.case = `${__.entity.exportStringSolo( env )}, an iterable defined inside a class`;
-    class srcTemplate
-    {
-      *[ Symbol.iterator ] ()
-      {
-        yield 'a';
-        yield 'b';
-      }
-    }
-    var src = new srcTemplate;
-    var got = _.set[ env.method ]( src );
-    var expected = new Set( [ ... src ]);
-    test.identical( got, expected );
-  }
-}
-
-//
-
 function as( test )
 {
   asTemplate( { method : 'as' } );
-  asTemplate( { method : 'asTest' } );
+  // asTemplate( { method : 'asTest' } );
 
   function asTemplate( env )
   {
+
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, null`;
     var got = _.set[ env.method ]( null );
     var expected = new Set;
     test.identical( got, expected );
 
+    /* */ /* qqq : for Rahul : improve style of test */
+
     test.case = `${__.entity.exportStringSolo( env )}, two arguments`;
     var got = _.set[ env.method ]( null, [ 1, 2, 3] );
-    var expected = new Set;
-    test.identical( got, expected );
-
-    test.case = `${__.entity.exportStringSolo( env )}, undefined`;
-    var got = _.set[ env.method ]( undefined );
-    var expected = new Set;
-    test.identical( got, expected );
-
-    test.case = `${__.entity.exportStringSolo( env )}, no arguments`;
-    var got = _.set[ env.method ]();
     var expected = new Set;
     test.identical( got, expected );
 
@@ -265,7 +208,7 @@ function as( test )
     test.identical( got, expected );
 
     test.case = `${__.entity.exportStringSolo( env )}, a generator function`;
-    var src = function* ( i ) 
+    var src = function* ( i )
     {
       yield i;
       yield i + 10;
@@ -285,6 +228,60 @@ function as( test )
     var got = _.set[ env.method ]( src );
     var expected = new Set( [ ... src ]);
     test.identical( got, expected );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, a set having generator function as it's Symbol.iterator`;
+    var src = new Set();
+    src[ Symbol.iterator ] = function* ()
+    {
+      yield 1;
+      yield 2;
+      yield 3;
+    };
+    var got = _.set[ env.method ]( src );
+    var expected = new Set([ ... src ]);
+    test.notIdentical( got, expected );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, an Object having a generator function as it's Symbol.iterator`;
+    var src = {};
+    src[ Symbol.iterator ] = function* ()
+    {
+      yield 1;
+      yield 2;
+      yield 3;
+    };
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ ... src ]);
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, an iterable defined inside a class`;
+    class srcTemplate
+    {
+      *[ Symbol.iterator ] ()
+      {
+        yield 'a';
+        yield 'b';
+      }
+    }
+    var src = new srcTemplate;
+    var got = _.set[ env.method ]( src );
+    var expected = new Set( [ ... src ]);
+    test.identical( got, expected );
+
+    /* */
+
+    if( Config.debug )
+    return;
+
+    test.case = `${__.entity.exportStringSolo( env )}, undefined`;
+    test.shouldThrowSync( () => _.set[ env.method ]( undefined ) );
+    test.shouldThrowSync( () => _.set[ env.method ]() );
+
   }
 }
 
@@ -303,7 +300,6 @@ const Proto =
 
     dichotomy,
     as,
-    asWithCasesNotImplemented
 
   }
 
