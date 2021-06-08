@@ -131,6 +131,32 @@ function dichotomy( test )
   test.identical( _.routine.isAsyncGenerator( src ), false );
   test.identical( _.routine.withName( src ), true );
 
+  test.case = 'check instance of constructor';
+  function Constr(){ this.x = 1; return this };
+  var src = new Constr();
+  test.identical( _.routine.is( src ), false );
+  test.identical( _.routine.like( src ), false );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isSync( src ), false );
+  test.identical( _.routine.isAsync( src ), false );
+  test.identical( _.routine.isGenerator( src ), false );
+  test.identical( _.routine.isSyncGenerator( src ), false );
+  test.identical( _.routine.isAsyncGenerator( src ), false );
+  test.identical( _.routine.withName( src ), false );
+
+  test.case = 'check instance constructor';
+  function Constr1(){ this.x = 1; return this };
+  var src = ( new Constr1() ).constructor;
+  test.identical( _.routine.is( src ), true );
+  test.identical( _.routine.like( src ), true );
+  test.identical( _.routine.isTrivial( src ), true );
+  test.identical( _.routine.isSync( src ), true );
+  test.identical( _.routine.isAsync( src ), false );
+  test.identical( _.routine.isGenerator( src ), false );
+  test.identical( _.routine.isSyncGenerator( src ), false );
+  test.identical( _.routine.isAsyncGenerator( src ), false );
+  test.identical( _.routine.withName( src ), true );
+
   test.case = `generator`;
   var src = function* abc()
   {
@@ -147,6 +173,24 @@ function dichotomy( test )
   test.identical( _.routine.isSyncGenerator( src ), true );
   test.identical( _.routine.isAsyncGenerator( src ), false );
   test.identical( _.routine.withName( src ), true );
+
+  test.case = `async generator`;
+  var src = async function* abc()
+  {
+    yield 1;
+    yield 2;
+    yield 3;
+  };
+  test.identical( _.routine.is( src ), false );
+  test.identical( _.routine.like( src ), true );
+  test.identical( _.routine.isTrivial( src ), false );
+  test.identical( _.routine.isSync( src ), false );
+  test.identical( _.routine.isAsync( src ), false );
+  test.identical( _.routine.isGenerator( src ), true );
+  test.identical( _.routine.isSyncGenerator( src ), false );
+  test.identical( _.routine.isAsyncGenerator( src ), true );
+  test.identical( _.routine.withName( src ), true );
+
 }
 
 function is( test )
