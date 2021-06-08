@@ -39,6 +39,8 @@ function dichotomy( test )
     test.false( _.array.is( src ) );
     test.false( _.array.like( src ) );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, array`;
     var src = [ 1, 2, 3 ];
     if( env.method.startsWith( 'is' ) )
@@ -48,11 +50,15 @@ function dichotomy( test )
     test.true( _.array.is( src ) );
     test.true( _.array.like( src ) );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, argument object`;
     var src = arguments;
     test.true( _.argumentsArray[ env.method ]( src ) );
     test.false( _.array.is( src ) );
     test.false( _.array.like( src ) );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, array prototype`;
     var src = Array.prototype;
@@ -63,17 +69,23 @@ function dichotomy( test )
     test.true( _.array.is( src ) );
     test.true( _.array.like( src ) );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, string`;
     var src = 'string';
     test.false( _.argumentsArray[ env.method ]( src ) );
     test.false( _.array.is( src ) );
     test.false( _.array.like( src ) );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, typed array`;
     var src = new U64x( 10 );
     test.false( _.argumentsArray[ env.method ]( src ) );
     test.false( _.array.is( src ) );
     test.false( _.array.like( src ) );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, false array`;
     var src = { __proto__ : Array.prototype };
