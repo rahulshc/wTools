@@ -1662,39 +1662,251 @@ function from( test )
 }
 
 //
+function asWithCasesNotImplemented( test )
+{
+  asWithCasesNotImplementedTemplate( { method : 'as' } );
+  asWithCasesNotImplementedTemplate( { method : 'asTest' } );
+
+  function asWithCasesNotImplementedTemplate( env )
+  {
+    //Throws error. [object GeneratorFunction] is not covered as a Symbol.iterator
+    test.case = `${__.entity.exportStringSolo( env )}, a set having generator function as it's Symbol.iterator`;
+    var src = new Set();
+    src[ Symbol.iterator ] = function* ()
+    {
+      yield 1;
+      yield 1;
+      yield 3;
+    };
+    var got = _.array[ env.method ]( src );
+    var expected = [ ... src ];
+    test.identical( got, expected );
+
+    //Throws error. [object GeneratorFunction] is not covered as a Symbol.iterator
+    test.case = `${__.entity.exportStringSolo( env )}, an Object having a generator function as it's Symbol.iterator`;
+    var src = {};
+    src[ Symbol.iterator ] = function* ()
+    {
+      yield 1;
+      yield 2;
+      yield 3;
+    };
+    var got = _.array[ env.method ]( src );
+    var expected = [ ... src ];
+    test.identical( got, expected );
+
+    //Throws error. [object GeneratorFunction] is not covered as a Symbol.iterator
+    test.case = `${__.entity.exportStringSolo( env )}, an iterable defined inside a class`;
+    class srcTemplate
+    {
+      *[Symbol.iterator] () 
+      {
+        yield 'a';
+        yield 'b';
+      }
+    }
+    var src = new srcTemplate;
+    var got = _.array[ env.method ]( src );
+    var expected = [ ... src ];
+    test.identical( got, expected );
+  }
+}
+
+//
 
 function as( test )
 {
-  test.case = 'an empty array';
-  var got = _.array.as( [] );
-  var expected = [];
-  test.identical( got, expected );
+  asTemplate( { method : 'as' } );
+  asTemplate( { method : 'asTest' } );
 
-  test.case = 'null';
-  var got = _.array.as( null );
-  var expected = [];
-  test.identical( got, expected );
+  function asTemplate( env )
+  {
+    test.case = `${__.entity.exportStringSolo( env )}, null`;
+    var got = _.array[ env.method ]( null );
+    var expected = [];
+    test.identical( got, expected );
 
-  test.case = 'array contains an object';
-  var got = _.array.as( { a : 1, b : 2 } );
-  var expected = [ { a : 1, b : 2 } ];
-  test.identical( got, expected );
+    /* */
 
-  test.case = 'array contains boolean';
-  var got = _.array.as( true );
-  var expected = [ true ];
-  test.identical( got, expected );
+    test.case = `${__.entity.exportStringSolo( env )}, an empty array`;
+    var src = [];
+    var got = _.array[ env.method ]( src );
+    var expected = src;
+    test.identical( got, expected );
 
-  /**/
+    test.case = `${__.entity.exportStringSolo( env )}, an array`;
+    var src = [ 1, 2, 3 ]
+    var got = _.array[ env.method ]( src );
+    var expected = src;
+    test.identical( got, expected );
 
-  if( !Config.debug )
-  return;
+    test.case = `${__.entity.exportStringSolo( env )}, an Array Prototype`;
+    var src = Array.prototype;
+    var got = _.array[ env.method ]( src );
+    if( env.method === 'asTest')
+    var expected = [ ... src ];
+    if( env.method === 'as')
+    var expected = src;
+    test.identical( got, expected );
 
-  test.case = 'nothing';
-  test.shouldThrowErrorSync( () => _.array.as() );
+    test.case = `${__.entity.exportStringSolo( env )}, an array having generator function as it's Symbol.iterator`;
+    var src = [];
+    src[ Symbol.iterator ] = function* ()
+    {
+      yield 1;
+      yield 2;
+      yield 3;
+    };
+    var got =_.array[ env.method ]( src );
+    if( env.method === 'asTest')
+    var expected = [ ... src ];
+    if( env.method === 'as')
+    var expected = src;
+    test.identical( got, expected );
 
-  test.case = 'undefined';
-  test.shouldThrowErrorSync( () => _.array.as( undefined ) );
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, a string primitive`;
+    var src = 'string';
+    var got = _.array[ env.method ]( src );
+    var expected =  [ src ];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a string object`;
+    var src = new String( 'string' );
+    var got = _.array[ env.method ]( src );
+    var expected =  [ src ];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, boolean false`;
+    var src = false;
+    var got = _.array[ env.method ]( src );
+    var expected = [ src ];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, boolean true`;
+    var src = true;
+    var got = _.array[ env.method ]( src );
+    var expected = [ src ];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, NaN`;
+    var src = NaN;
+    var got = _.array[ env.method ]( src );
+    var expected =[ src ];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a Number`;
+    var src = 123;
+    var got = _.array[ env.method ]( src );
+    var expected = [ src ];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a Date`;
+    var src = new Date();
+    var got = _.array[ env.method ]( src );
+    var expected = [ src ];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a Symbol`;
+    var src = Symbol( 'a' );
+    var got = _.array[ env.method ]( src );
+    var expected =[ src ];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a Function`;
+    var src = new function(){};
+    var got = _.array[ env.method ]( src );
+    var expected = [ src ];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a pure map`;
+    var src = Object.create( null );
+    var got = _.array[ env.method ]( src );
+    var expected = [ src ];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a map`;
+    var src = { a : 1, b : 2 };
+    var got = _.array[ env.method ]( src );
+    var expected = [ src ];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, Object Prototype`;
+    var src = Object.prototype;
+    var got = _.array[ env.method ]( src );
+    var expected = [ src ];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a weak map`;
+    var obj1 = {};
+    var obj2 = {};
+    var obj3 = {};
+    var src = new WeakMap( [ [ obj1, 'one' ], [ obj2, 'two' ], [ obj3, 'three' ] ] );
+    var got = _.array[ env.method ]( src );
+    var expected = [ src ];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a WeakSet`;
+    var obj1 = { a : 1, b : 2 };
+    var obj2 = { a : 3, b : 4 }
+    var src = new WeakSet( [ obj1, obj2 ] );
+    var got =_.array[ env.method ]( src );
+    var expected = [ src ];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a regular expression`;
+    var src = /ab+c/i;
+    var got = _.array[ env.method ]( src );
+    var expected = [ src ];
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = `${__.entity.exportStringSolo( env )}, argument object`;
+    var src = arguments;
+    var got = _.array[ env.method ]( src );
+    var expected =[ ... src ];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a typed Array`;
+    var src = new Uint8Array( 32 );
+    var got = _.array[ env.method ]( src );
+    var expected =  [ ... src ];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a hash map`;
+    var src = new Map( [ [ 1, 'one' ], [ 2, 'two' ], [ 3, 'three' ] ] );
+    var got = _.array[ env.method ]( src );
+    var expected = [ ... src ];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, a Set`;
+    var src = new Set( [ 1, 1, 2, 2 ] );
+    var got = _.array[ env.method ]( src );
+    var expected = [ ... src ];
+    test.identical( got, expected );
+
+    test.case = `${__.entity.exportStringSolo( env )}, an set with user defined iterable at initialization`;
+    var src = new Set( function* () { yield 1, yield 1 }() );
+    var got = _.array[ env.method ]( src );
+    var expected = [ ... src ];
+    test.identical( got, expected );
+
+    /**/
+
+    if( !Config.debug )
+    return;
+
+    test.case = `${__.entity.exportStringSolo( env )}, nothing`;
+    test.shouldThrowErrorSync( () => _.array[ env.method ]() );
+
+    test.case = `${__.entity.exportStringSolo( env )}, undefined`;
+    test.shouldThrowErrorSync( () => _.array[ env.method ]( undefined ) );
+
+    test.case = `${__.entity.exportStringSolo( env )}, multiple arguments`;
+    test.shouldThrowErrorSync( () => _.array[ env.method ]( 1, 2 ) );
+  }
 };
 
 // --
@@ -1719,6 +1931,7 @@ const Proto =
     makeUndefined,
     from,
     as,
+    asWithCasesNotImplemented,
 
   }
 
