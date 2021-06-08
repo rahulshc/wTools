@@ -238,16 +238,16 @@ function conditionIs( transformer )
 let PropsExtension =
 {
 
-  mapperFromCondition, /* qqq : light coverage required | aaa : Done. Yevhen S. */
-  mapperFrom, /* qqq : light coverage required | aaa : Done. Yevhen S. */
-  conditionFrom, /* qqq : light coverage required | aaa : Done. Yevhen S. */
-  transformerRegister, /* qqq : light coverage required | aaa : Done. Yevhen S.*/
-  transformersRegister, /* qqq : light coverage required | aaa : Done. Yevhen S.*/
+  mapperFromCondition,
+  mapperFrom,
+  conditionFrom,
+  transformerRegister, 
+  transformersRegister,
   transformerUnregister,
   transformersUnregister,
   transformerIs,
-  mapperIs, /* qqq : light coverage required | aaa : Done. Yevhen S. */
-  conditionIs, /* qqq : light coverage required | aaa : Done. Yevhen S. */
+  mapperIs,
+  conditionIs,
 
 }
 
