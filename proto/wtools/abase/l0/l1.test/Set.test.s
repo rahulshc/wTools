@@ -47,7 +47,7 @@ function dichotomy( test )
 function as( test )
 {
 
-  act({ method : 'as' });
+  act( { method : 'as' } );
   // act({ method : 'asTest' });
 
   function act( env )
@@ -74,15 +74,21 @@ function as( test )
     var expected = new Set( [ false ] );
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, boolean true`;
     var got = _.set[ env.method ]( true );
     var expected = new Set( [ true ] );
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, NaN`;
     var got = _.set[ env.method ]( NaN );
     var expected = new Set( [ NaN ] );
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, a Number`;
     var src = 123;
@@ -90,11 +96,15 @@ function as( test )
     var expected = new Set( [ src ] );
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, a string primitive`;
     var src = 'string';
     var got = _.set[ env.method ]( src );
     var expected = new Set( [ src ] );
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, a string object`;
     var src = new String( 'string' );
@@ -102,11 +112,15 @@ function as( test )
     var expected = new Set( [ src ] );
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, a Date`;
     var src = new Date();
     var got = _.set[ env.method ]( src );
     var expected = new Set( [ src ] );
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, a Symbol`;
     var src = Symbol( 'a' );
@@ -114,11 +128,15 @@ function as( test )
     var expected = new Set( [ src ] );
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, a Function`;
     var src = new function(){};
     var got = _.set[ env.method ]( src );
     var expected = new Set( [ src ] );
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, a pure map`;
     var src = Object.create( null );
@@ -126,17 +144,23 @@ function as( test )
     var expected = new Set( [ src ] );
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, a map`;
     var src = { a : 1, b : 2 };
     var got = _.set[ env.method ]( src );
     var expected = new Set( [ src ] );
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, Object Prototype`;
     var src = Object.prototype;
     var got = _.set[ env.method ]( src );
     var expected = new Set( [ src ] );
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, a weak map`;
     var obj1 = {};
@@ -155,6 +179,8 @@ function as( test )
     var expected = src;
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, a WeakSet`;
     var obj1 = { a : 1, b : 2 };
     var obj2 = { a : 3, b : 4 }
@@ -162,6 +188,8 @@ function as( test )
     var got = _.set[ env.method ]( src );
     var expected = src;
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, a WeakSet with user defined iterable at initialization`;
     var obj1 = { a : 1, b : 2 };
@@ -178,11 +206,15 @@ function as( test )
     var expected = new Set( [ ... src ] );
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, an Array Prototype`;
     var src = Array.prototype;
     var got = _.set[ env.method ]( src );
     var expected = new Set( [ ... src ] );
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, an Array`;
     var src = [ 1, 2, 3 ];
@@ -190,11 +222,15 @@ function as( test )
     var expected = new Set( [ ... src ] );
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, two array arguments`;
     var src = [ 1, 2, 3 ];
     var got = _.set[ env.method ]( src, src );
     var expected = new Set( [ ... src ] );
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, a typed Array`;
     var src = new Uint8Array( 32 );
@@ -202,11 +238,15 @@ function as( test )
     var expected = new Set( [ ... src ] );
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, a hash map`;
     var src = new Map( [ [ 1, 'one' ], [ 2, 'two' ], [ 3, 'three' ] ] );
     var got = _.set[ env.method ]( src );
     var expected = new Set( [ ... src ] );
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, a generator function`;
     var src = function* ( i )
@@ -217,6 +257,8 @@ function as( test )
     var got = _.set[ env.method ]( src( 10 ) );
     var expected = new Set( [ ... src( 10 ) ] );
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, an array having generator function as it's Symbol.iterator`;
     var src = [];
@@ -279,10 +321,17 @@ function as( test )
     if( Config.debug )
     return;
 
-    test.case = `${__.entity.exportStringSolo( env )}, undefined`;
-    test.shouldThrowSync( () => _.set[ env.method ]( undefined ) );
-    test.shouldThrowSync( () => _.set[ env.method ]() );
+    /* */
 
+    test.case = `${__.entity.exportStringSolo( env )}, undefined`;
+
+    /* */
+
+    test.shouldThrowSync( () => _.set[ env.method ]( undefined ) );
+
+    /* */
+
+    test.shouldThrowSync( () => _.set[ env.method ]() );
   }
 }
 
