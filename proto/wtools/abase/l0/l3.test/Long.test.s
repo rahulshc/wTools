@@ -977,50 +977,7 @@ function filterMapCommonEscaping( test )
 
     /* fixed */
 
-
     env.namespace = 'argumentsArray';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'bufferTyped';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'bufferBytes';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'f32x';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'f64x';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'fx';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'i32x';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'i16x';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'i8x';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'ix';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'u32x';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'u16x';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'u8x';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'u8xClamped';
-    env.isResizable = false;
-    caseEach( env );
-    env.namespace = 'ux';
     env.isResizable = false;
     caseEach( env );
 
@@ -1036,10 +993,12 @@ function filterMapCommonEscaping( test )
 
     test.case = `${__.entity.exportStringSolo( env )}, pass, dst <> src`;
     var src = [ 1, 2, 3 ];
-    var dst = _[ env.namespace ].make([ 4 ]);
+    var dst = _[ env.namespace ].make([ 4, 5, 6 ]);
     var got = _[ env.namespace ][ env.method ]( dst, src, f1 );
     test.true( got === dst );
-    var exp = { d : 4, a : 11, b : escape( undefined ), c : 13 }
+    var exp = _[ env.namespace ].make([ 11, _.undefined, 13 ]);
+    if( env.escaping )
+    exp = _[ env.namespace ].make([ 11, undefined, 13 ]);
     test.identical( got, exp );
     var exp = [ 1, 2, 3 ];
     test.identical( src, exp );
@@ -1051,7 +1010,9 @@ function filterMapCommonEscaping( test )
     var got = _[ env.namespace ][ env.method ]( null, src, f1 );
     test.true( got !== src );
     test.true( _[ env.namespace ].is( got ) );
-    var exp = { a : 11, b : escape( undefined ), c : 13 }
+    var exp = _[ env.namespace ].make([ 11, _.undefined, 13 ]);
+    if( env.escaping )
+    exp = _[ env.namespace ].make([ 11, undefined, 13 ]);
     test.identical( got, exp );
     var exp = [ 1, 2, 3 ]
     test.identical( src, exp );
@@ -1059,19 +1020,23 @@ function filterMapCommonEscaping( test )
     /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, pass, dst === src`;
-    var src = [ 1, 2, 3 ];
+    var src = _[ env.namespace ].make([ 1, 2, 3 ]);
     var got = _[ env.namespace ][ env.method ]( src, src, f1 );
     test.true( got === src );
-    var exp = { a : 11, b : escape( undefined ), c : 13 }
+    var exp = _[ env.namespace ].make([ 11, _.undefined, 13 ]);
+    if( env.escaping )
+    exp = _[ env.namespace ].make([ 11, undefined, 13 ]);
     test.identical( got, exp );
 
     /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, pass, dst === self`;
-    var src = [ 1, 2, 3 ];
+    var src = _[ env.namespace ].make([ 1, 2, 3 ]);
     var got = _[ env.namespace ][ env.method ]( _.self, src, f1 );
     test.true( got === src );
-    var exp = { a : 11, b : escape( undefined ), c : 13 }
+    var exp = _[ env.namespace ].make([ 11, _.undefined, 13 ]);
+    if( env.escaping )
+    exp = _[ env.namespace ].make([ 11, undefined, 13 ]);
     test.identical( got, exp );
 
     /* */
@@ -1124,7 +1089,7 @@ const Proto =
     filterMapCommonPass,
     filterCommonDropping,
     mapCommonReturningUndefined,
-    // filterMapCommonEscaping,
+    filterMapCommonEscaping,
 
   }
 

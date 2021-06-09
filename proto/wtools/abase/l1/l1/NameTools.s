@@ -3,15 +3,13 @@
 
 'use strict';
 
-const Self = _global_.wTools;
 const _global = _global_;
 const _ = _global_.wTools;
 
-var _ArraySlice = Array.prototype.slice;
-var _FunctionBind = Function.prototype.bind;
-var _ObjectToString = Object.prototype.toString;
+const _ArraySlice = Array.prototype.slice;
+const _FunctionBind = Function.prototype.bind;
+const _ObjectToString = Object.prototype.toString;
 const _ObjectHasOwnProperty = Object.hasOwnProperty;
-var _arraySlice = _.longSlice;
 
 // --
 // name and symbol
@@ -301,13 +299,6 @@ const Proto =
 
 }
 
-_.props.extend( Self, Proto );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+_.props.extend( _, Proto );
 
 })();

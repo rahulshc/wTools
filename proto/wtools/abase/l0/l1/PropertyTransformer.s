@@ -5,7 +5,9 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.props = _global_.wTools.props || Object.create( null );
+_.props = _.props || Object.create( null );
+_.props.mapper = _.props.mapper || Object.create( null );
+_.props.condition = _.props.condition || Object.create( null );
 
 // --
 //

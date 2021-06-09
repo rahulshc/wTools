@@ -1078,7 +1078,7 @@ function bufferResize_( dst, srcBuffer, size )
 function bufferReusing4Arguments_head( routine, args )
 {
   _.assert( arguments.length === 2 );
-  _.assert( args.length, 'Expects arguments' );
+  _.assert( args.length > 0, 'Expects arguments' );
 
   /* qqq : for Dmytro : use switch here and in similar code */
   let o = Object.create( null );
@@ -2977,8 +2977,8 @@ function bufferLeft( src, ins )
   if( !_.bufferRawIs( ins ) )
   ins = _.bufferBytesGet( ins );
 
-  _.assert( src.indexOf );
-  _.assert( ins.indexOf );
+  _.assert( _.routine.is( src.indexOf ) );
+  _.assert( _.routine.is( ins.indexOf ) );
 
   let index = src.indexOf( ins[ 0 ] );
   while( index !== -1 )
@@ -3010,8 +3010,8 @@ function bufferRight( src, ins )
   if( !_.bufferRawIs( ins ) )
   ins = _.bufferBytesGet( ins );
 
-  _.assert( src.indexOf );
-  _.assert( ins.indexOf );
+  _.assert( _.routine.is( src.indexOf ) );
+  _.assert( _.routine.is( ins.indexOf ) );
 
   let index = src.lastIndexOf( ins[ 0 ] );
   while( index !== -1 )
@@ -3044,8 +3044,8 @@ function bufferSplit( src, del )
   if( !_.bufferRawIs( del ) )
   del = _.bufferBytesGet( del );
 
-  _.assert( src.indexOf );
-  _.assert( del.indexOf );
+  _.assert( _.routine.is( src.indexOf ) );
+  _.assert( _.routine.is( del.indexOf ) );
 
   let result = [];
   let begin = 0;
@@ -3091,8 +3091,8 @@ function bufferCutOffLeft( src, del )
   if( !_.bufferRawIs( del ) )
   del = _.bufferBytesGet( del );
 
-  _.assert( src.indexOf );
-  _.assert( del.indexOf );
+  _.assert( _.routine.is( src.indexOf ) );
+  _.assert( _.routine.is( del.indexOf ) );
 
   let result = [];
   let index = src.indexOf( del[ 0 ] );
@@ -3175,8 +3175,8 @@ function bufferIsolate_body( o )
 
   delimeter = _.bufferRetype( delimeter, src.constructor );
 
-  _.assert( src.indexOf );
-  _.assert( delimeter.indexOf );
+  _.assert( _.routine.is( src.indexOf ) );
+  _.assert( _.routine.is( delimeter.indexOf ) );
 
   let result = [];
   let times = o.times;

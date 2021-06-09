@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _.printer = _.printer || Object.create( null );
+_.printer = _.printer || Object.create( null );
 
 // --
 // printer
@@ -67,7 +67,7 @@ let Extension =
   like,
 }
 
-Object.assign( Self, Extension );
+Object.assign( _.printer, Extension );
 Object.assign( _, ToolsExtension );
 
 })();

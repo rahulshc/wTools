@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.cinterval = _global_.wTools.cinterval || Object.create( null );
+_.cinterval = _.cinterval || Object.create( null );
 
 // --
 //
@@ -21,6 +21,6 @@ let Extension =
 
 //
 
-_.props.supplement( Self, Extension );
+_.props.supplement( _.cinterval, Extension );
 
 })();

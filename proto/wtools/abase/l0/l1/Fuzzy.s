@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _.fuzzy = _.fuzzy || Object.create( null );
+_.fuzzy = _.fuzzy || Object.create( null );
 
 // --
 // fuzzy
@@ -200,6 +200,6 @@ let Extension =
 }
 
 Object.assign( _, ToolsExtension );
-Object.assign( Self, Extension );
+Object.assign( _.fuzzy, Extension );
 
 })();

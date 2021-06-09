@@ -5,13 +5,10 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _.bigInt = _.bigInt || Object.create( null );
-_.bigInt.s = _.bigInt.s || Object.create( null );
 
 // --
 // implementation
 // --
-
 
 function from( src )
 {
@@ -47,7 +44,29 @@ function bigIntsFrom( src )
 }
 
 // --
-// extension
+// bigInt extension
+// --
+
+let BigIntExtension =
+{
+  from,
+}
+
+Object.assign( _.bigInt, BigIntExtension );
+
+// --
+// bigInts extension
+// --
+
+let BigIntsExtension =
+{
+  from : bigIntsFrom
+}
+
+Object.assign( _.bigInts, BigIntsExtension );
+
+// --
+// tools extension
 // --
 
 let ToolsExtension =
@@ -56,22 +75,8 @@ let ToolsExtension =
   bigIntsFrom,
 }
 
-//
-
-let Extension =
-{
-  from,
-}
-
-//
-
-let ExtensionS =
-{
-  from : bigIntsFrom
-}
-
-Object.assign( Self, Extension );
-Object.assign( _.bigInt.s, ExtensionS );
 Object.assign( _, ToolsExtension );
+
+//
 
 })();

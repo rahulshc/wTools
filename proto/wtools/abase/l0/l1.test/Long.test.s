@@ -205,7 +205,6 @@ function isPerformance( test )
     return env;
   }
 
-  /* qqq : for Rahul : lets add more typed buffers and non-longs Rahul: Done */
   function run( env )
   {
     _.long[ env.name ]( [] );

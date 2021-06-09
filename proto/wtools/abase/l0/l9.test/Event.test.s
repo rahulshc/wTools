@@ -143,81 +143,81 @@ function on( test )
   test.open( 'option first - 0' );
 
   test.case = 'no callback for events';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [] );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
 
   /* */
 
   test.case = 'single callback for single event, single event is given';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0 ] );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.false( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
 
   /* */
 
   test.case = 'single callback for single event, a few events are given';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, 1 ] );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0, 1 ] );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.false( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
 
   /* */
 
   test.case = 'single callback for each events in event handler, a few events are given';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  var got = _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } } );
-  _.event.eventGive( ehandler, 'event' );
+  var got = _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, 1 ] );
-  _.event.eventGive( ehandler, 'event2' );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0, 1, -2, -3 ] );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
 
   /* */
 
   test.case = 'several events handler with similar events, events are given in second handler';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
@@ -228,47 +228,47 @@ function on( test )
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } } );
-  _.event.eventGive( ehandler2, 'event' );
-  _.event.eventGive( ehandler2, 'event' );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } } );
+  _.event.eventGive( ehandler2, { event : 'event', args : [] } );
+  _.event.eventGive( ehandler2, { event : 'event', args : [] } );
   test.identical( result, [] );
-  _.event.eventGive( ehandler2, 'event2' );
-  _.event.eventGive( ehandler2, 'event2' );
+  _.event.eventGive( ehandler2, { event : 'event2', args : [] } );
+  _.event.eventGive( ehandler2, { event : 'event2', args : [] } );
   test.identical( result, [] );
 
   /* */
 
   test.case = 'event handler has a few handlers for different events - once and regular';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.once( ehandler, { 'callbackMap' : { 'event2' : onEvent2 } } );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event2' : onEvent2 } } );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, 1 ] );
-  _.event.eventGive( ehandler, 'event2' );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0, 1, -2 ] );
 
   test.case = 'event handler has a few handlers for single event - once and regular';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent2 } } );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent2 } } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, -1 ] );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, -1, 2 ] );
 
   test.close( 'option first - 0' );
@@ -278,35 +278,35 @@ function on( test )
   test.open( 'option first - 1' );
 
   test.case = 'callback for once added before other callback';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent2 }, 'first' : 1 } );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent2 }, 'first' : 1 } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ -0, 1 ] );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ -0, 1, 2 ] );
 
   /* */
 
   test.case = 'callback for once added after other callback';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent2 }, 'first' : 1 } );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent2 }, 'first' : 1 } );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ -0, 1 ] );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ -0, 1, -2 ] );
 
   test.close( 'option first - 1' );
@@ -322,10 +322,10 @@ function on( test )
   test.case = 'not enough arguments';
   test.shouldThrowErrorSync( () => _.event.on( { events : { begin : [] } } ) );
 
-  test.case = 'wrong type of ehandler';
+  test.case = 'wrong type of edispatcher';
   test.shouldThrowErrorSync( () => _.event.on( 'wrong', { callbackMap : { begin : () => true } } ) );
 
-  test.case = 'wrong type of ehandler.events';
+  test.case = 'wrong type of edispatcher.events';
   test.shouldThrowErrorSync( () => _.event.on( { events : null }, { callbackMap : { begin : () => true } } ) );
 
   test.case = 'wrong type of options map o';
@@ -346,7 +346,7 @@ function on( test )
 function onCheckDescriptor( test )
 {
   test.case = 'descriptor, check fields, not used method off and properties';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
@@ -354,30 +354,30 @@ function onCheckDescriptor( test )
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
   var callbackMap = { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } };
-  var descriptor = _.event.on( ehandler, callbackMap );
+  var descriptor = _.event.on( edispatcher, callbackMap );
 
   test.identical( _.props.keys( descriptor ), [ 'event', 'event2' ] );
   test.identical( _.props.keys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event.enabled, true );
-  test.identical( descriptor.event.first, 0 );
+  test.identical( descriptor.event.first, false );
   test.equivalent( descriptor.event.callbackMap, callbackMap.callbackMap );
   test.true( _.routine.is( descriptor.event.off ) );
   test.identical( _.props.keys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event2.enabled, true );
-  test.identical( descriptor.event2.first, 0 );
+  test.identical( descriptor.event2.first, false );
   test.equivalent( descriptor.event2.callbackMap, callbackMap.callbackMap );
   test.true( _.routine.is( descriptor.event2.off ) );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
-  _.event.eventGive( ehandler, 'event' );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0, -1 ] );
 
   /* */
 
   test.case = 'descriptor, use method off without arguments';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
@@ -385,40 +385,40 @@ function onCheckDescriptor( test )
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
   var callbackMap = { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } };
-  var descriptor = _.event.on( ehandler, callbackMap );
+  var descriptor = _.event.on( edispatcher, callbackMap );
 
   test.identical( _.props.keys( descriptor ), [ 'event', 'event2' ] );
   test.identical( _.props.keys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event.enabled, true );
-  test.identical( descriptor.event.first, 0 );
+  test.identical( descriptor.event.first, false );
   test.equivalent( descriptor.event.callbackMap, callbackMap.callbackMap );
   test.true( _.routine.is( descriptor.event.off ) );
   test.identical( _.props.keys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event2.enabled, true );
-  test.identical( descriptor.event2.first, 0 );
+  test.identical( descriptor.event2.first, false );
   test.equivalent( descriptor.event2.callbackMap, callbackMap.callbackMap );
   test.true( _.routine.is( descriptor.event2.off ) );
 
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
 
   descriptor.event.off();
-  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.false( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
 
   descriptor.event2.off();
-  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.false( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.false( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
 
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [] );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
 
   /* */
 
   test.case = 'descriptor, set property enabled to false and call off';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
@@ -426,41 +426,41 @@ function onCheckDescriptor( test )
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
   var callbackMap = { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } };
-  var descriptor = _.event.on( ehandler, callbackMap );
+  var descriptor = _.event.on( edispatcher, callbackMap );
 
   test.identical( _.props.keys( descriptor ), [ 'event', 'event2' ] );
   test.identical( _.props.keys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event.enabled, true );
-  test.identical( descriptor.event.first, 0 );
+  test.identical( descriptor.event.first, false );
   test.equivalent( descriptor.event.callbackMap, callbackMap.callbackMap );
   test.true( _.routine.is( descriptor.event.off ) );
   test.identical( _.props.keys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event2.enabled, true );
-  test.identical( descriptor.event2.first, 0 );
+  test.identical( descriptor.event2.first, false );
   test.equivalent( descriptor.event2.callbackMap, callbackMap.callbackMap );
   test.true( _.routine.is( descriptor.event2.off ) );
 
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
 
   descriptor.event.enabled = false;
   descriptor.event.off();
-  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.false( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
 
   descriptor.event2.enabled = false;
   descriptor.event2.off();
-  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
-  _.event.eventGive( ehandler, 'event' );
+  test.false( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.false( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [] );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
 
   /* */
 
   test.case = 'descriptor, set property enabled to false';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
@@ -468,33 +468,33 @@ function onCheckDescriptor( test )
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
   var callbackMap = { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } };
-  var descriptor = _.event.on( ehandler, callbackMap );
+  var descriptor = _.event.on( edispatcher, callbackMap );
 
   test.identical( _.props.keys( descriptor ), [ 'event', 'event2' ] );
   test.identical( _.props.keys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event.enabled, true );
-  test.identical( descriptor.event.first, 0 );
+  test.identical( descriptor.event.first, false );
   test.equivalent( descriptor.event.callbackMap, callbackMap.callbackMap );
   test.true( _.routine.is( descriptor.event.off ) );
   test.identical( _.props.keys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event2.enabled, true );
-  test.identical( descriptor.event2.first, 0 );
+  test.identical( descriptor.event2.first, false );
   test.equivalent( descriptor.event2.callbackMap, callbackMap.callbackMap );
   test.true( _.routine.is( descriptor.event2.off ) );
 
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
 
   descriptor.event.enabled = false;
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
 
   descriptor.event2.enabled = false;
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
-  _.event.eventGive( ehandler, 'event' );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [] );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
 }
 
@@ -505,63 +505,63 @@ function onWithChain( test )
   test.open( 'with string names' );
 
   test.case = 'chain with single step';
-  var ehandler = { events : { 'event' : [], 'event2' : [] } };
+  var edispatcher = { events : { 'event' : [], 'event2' : [] } };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : [ onEvent ] } } );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : [ onEvent ] } } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
-  test.identical( ehandler.events.event[ 0 ].native, onEvent );
-  _.event.eventGive( ehandler, 'event' );
+  test.identical( edispatcher.events.event[ 0 ].native, onEvent );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, 1 ] );
-  test.identical( ehandler.events.event[ 0 ].native, onEvent );
+  test.identical( edispatcher.events.event[ 0 ].native, onEvent );
 
   /* */
 
   test.case = 'chain with two steps';
-  var ehandler = { events : { 'event' : [], 'event2' : [] } };
+  var edispatcher = { events : { 'event' : [], 'event2' : [] } };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : [ 'event2', onEvent ] } } );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : [ 'event2', onEvent ] } } );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
-  test.identical( ehandler.events.event2, [] );
-  _.event.eventGive( ehandler, 'event' );
+  test.identical( edispatcher.events.event2, [] );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [] );
-  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
-  _.event.eventGive( ehandler, 'event2' );
+  test.identical( edispatcher.events.event2[ 0 ].native, onEvent );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0 ] );
-  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
-  _.event.eventGive( ehandler, 'event2' );
+  test.identical( edispatcher.events.event2[ 0 ].native, onEvent );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0, 1 ] );
-  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
+  test.identical( edispatcher.events.event2[ 0 ].native, onEvent );
 
   /* */
 
   test.case = 'chain with three steps';
-  var ehandler = { events : { 'event' : [], 'event2' : [], 'event3' : [] } };
+  var edispatcher = { events : { 'event' : [], 'event2' : [], 'event3' : [] } };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : [ 'event3', 'event2', onEvent ] } } );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : [ 'event3', 'event2', onEvent ] } } );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
-  test.identical( ehandler.events.event2, [] );
-  _.event.eventGive( ehandler, 'event3' );
+  test.identical( edispatcher.events.event2, [] );
+  _.event.eventGive( edispatcher, { event : 'event3', args : [] } );
   test.identical( result, [] );
-  test.identical( ehandler.events.event2, [] );
+  test.identical( edispatcher.events.event2, [] );
 
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [] );
-  test.identical( ehandler.events.event2, [] );
-  _.event.eventGive( ehandler, 'event3' );
+  test.identical( edispatcher.events.event2, [] );
+  _.event.eventGive( edispatcher, { event : 'event3', args : [] } );
   test.identical( result, [] );
-  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
-  _.event.eventGive( ehandler, 'event2' );
+  test.identical( edispatcher.events.event2[ 0 ].native, onEvent );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0 ] );
-  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
-  _.event.eventGive( ehandler, 'event2' );
+  test.identical( edispatcher.events.event2[ 0 ].native, onEvent );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0, 1 ] );
-  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
+  test.identical( edispatcher.events.event2[ 0 ].native, onEvent );
 
   test.close( 'with string names' );
 
@@ -570,49 +570,49 @@ function onWithChain( test )
   test.open( 'with instances of Name' );
 
   test.case = 'chain with two steps';
-  var ehandler = { events : { 'event' : [], 'event2' : [] } };
+  var edispatcher = { events : { 'event' : [], 'event2' : [] } };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : [ _.event.Name( 'event2' ), onEvent ] } } );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : [ _.event.Name( 'event2' ), onEvent ] } } );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
-  test.identical( ehandler.events.event2, [] );
-  _.event.eventGive( ehandler, 'event' );
+  test.identical( edispatcher.events.event2, [] );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [] );
-  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
-  _.event.eventGive( ehandler, 'event2' );
+  test.identical( edispatcher.events.event2[ 0 ].native, onEvent );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0 ] );
-  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
-  _.event.eventGive( ehandler, 'event2' );
+  test.identical( edispatcher.events.event2[ 0 ].native, onEvent );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0, 1 ] );
-  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
+  test.identical( edispatcher.events.event2[ 0 ].native, onEvent );
 
   /* */
 
   test.case = 'chain with three steps';
-  var ehandler = { events : { 'event' : [], 'event2' : [], 'event3' : [] } };
+  var edispatcher = { events : { 'event' : [], 'event2' : [], 'event3' : [] } };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : [ _.event.Name( 'event3' ), _.event.Name( 'event2' ), onEvent ] } } );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : [ _.event.Name( 'event3' ), _.event.Name( 'event2' ), onEvent ] } } );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
-  test.identical( ehandler.events.event2, [] );
-  _.event.eventGive( ehandler, 'event3' );
+  test.identical( edispatcher.events.event2, [] );
+  _.event.eventGive( edispatcher, { event : 'event3', args : [] } );
   test.identical( result, [] );
-  test.identical( ehandler.events.event2, [] );
+  test.identical( edispatcher.events.event2, [] );
 
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [] );
-  test.identical( ehandler.events.event2, [] );
-  _.event.eventGive( ehandler, 'event3' );
+  test.identical( edispatcher.events.event2, [] );
+  _.event.eventGive( edispatcher, { event : 'event3', args : [] } );
   test.identical( result, [] );
-  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
-  _.event.eventGive( ehandler, 'event2' );
+  test.identical( edispatcher.events.event2[ 0 ].native, onEvent );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0 ] );
-  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
-  _.event.eventGive( ehandler, 'event2' );
+  test.identical( edispatcher.events.event2[ 0 ].native, onEvent );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0, 1 ] );
-  test.identical( ehandler.events.event2[ 0 ].native, onEvent );
+  test.identical( edispatcher.events.event2[ 0 ].native, onEvent );
 
   test.close( 'with instances of Name' );
 }
@@ -622,29 +622,29 @@ function onWithChain( test )
 function onCallWithHeadRoutine( test )
 {
   test.case = 'head calls with options map';
-  var ehandler = { events : { 'event' : [], 'event2' : [] } };
+  var edispatcher = { events : { 'event' : [], 'event2' : [] } };
   var result = [];
   var onEvent = () => result.push( result.length );
-  var o = _.event.on.head( _.event.on, [ { 'callbackMap' : { 'event' : onEvent } } ] );
-  _.event.on( ehandler, o );
-  _.event.eventGive( ehandler, 'event' );
+  var o = _.event.onHead( _.event.on, [ { 'callbackMap' : { 'event' : onEvent } } ] );
+  _.event.on( edispatcher, o );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, 1 ] );
 
   test.case = 'head calls with chain and callback';
-  var ehandler = { events : { 'event' : [], 'event2' : [] } };
+  var edispatcher = { events : { 'event' : [], 'event2' : [] } };
   var result = [];
   var onEvent = () => result.push( result.length );
   var chain = _.event.Chain( 'event2', 'event' );
-  var o = _.event.on.head( _.event.on, [ chain, onEvent ] )
-  _.event.on( ehandler, o );
-  _.event.eventGive( ehandler, 'event' );
+  var o = _.event.onHead( _.event.on, [ chain, onEvent ] )
+  _.event.on( edispatcher, o );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [] );
 
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
 }
 
@@ -659,73 +659,73 @@ function once( test )
   test.open( 'option first - 0' );
 
   test.case = 'no callback for events';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [] );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
 
   /* */
 
   test.case = 'single callback for single event, single event is given';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0 ] );
 
   /* */
 
   test.case = 'single callback for single event, a few events are given';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( ehandler, 'event' );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0 ] );
 
   /* */
 
   test.case = 'single callback for each events in event handler, a few events are given';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } } );
-  _.event.eventGive( ehandler, 'event' );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( ehandler, 'event2' );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0, -1 ] );
 
   /* */
 
   test.case = 'several events handler with similar events, events are given in second handler';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
@@ -736,46 +736,46 @@ function once( test )
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } } );
-  _.event.eventGive( ehandler2, 'event' );
-  _.event.eventGive( ehandler2, 'event' );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } } );
+  _.event.eventGive( ehandler2, { event : 'event', args : [] } );
+  _.event.eventGive( ehandler2, { event : 'event', args : [] } );
   test.identical( result, [] );
-  _.event.eventGive( ehandler2, 'event2' );
-  _.event.eventGive( ehandler2, 'event2' );
+  _.event.eventGive( ehandler2, { event : 'event2', args : [] } );
+  _.event.eventGive( ehandler2, { event : 'event2', args : [] } );
   test.identical( result, [] );
 
   /* */
 
   test.case = 'event handler has a few handlers for different events - once and regular';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'event2' : onEvent2 } } );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( ehandler, 'event' );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event2' : onEvent2 } } );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( ehandler, 'event2' );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0, -1, -2 ] );
 
   test.case = 'event handler has a few handlers for single event - once and regular';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent2 } } );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent2 } } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, -1 ] );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, -1, -2 ] );
 
   test.close( 'option first - 0' );
@@ -785,35 +785,35 @@ function once( test )
   test.open( 'option first - 1' );
 
   test.case = 'callback for once added before other callback';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent }, 'first' : 1 } );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent2 } } );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent }, 'first' : 1 } );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent2 } } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, -1 ] );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, -1, -2 ] );
 
   /* */
 
   test.case = 'callback for once added after other callback';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent2 } } );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent }, 'first' : 1 } );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent2 } } );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent }, 'first' : 1 } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, -1 ] );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, -1, -2 ] );
 
   test.close( 'option first - 1' );
@@ -829,10 +829,10 @@ function once( test )
   test.case = 'not enough arguments';
   test.shouldThrowErrorSync( () => _.event.once( { events : { begin : [] } } ) );
 
-  test.case = 'wrong type of ehandler';
+  test.case = 'wrong type of edispatcher';
   test.shouldThrowErrorSync( () => _.event.once( 'wrong', { callbackMap : { begin : () => true } } ) );
 
-  test.case = 'wrong type of ehandler.events';
+  test.case = 'wrong type of edispatcher.events';
   test.shouldThrowErrorSync( () => _.event.once( { events : null }, { callbackMap : { begin : () => true } } ) );
 
   test.case = 'wrong type of options map o';
@@ -853,7 +853,7 @@ function once( test )
 function onceCheckDescriptor( test )
 {
   test.case = 'descriptor, check fields, not used method off and properties';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
@@ -861,30 +861,30 @@ function onceCheckDescriptor( test )
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
   var callbackMap = { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } };
-  var descriptor = _.event.once( ehandler, callbackMap );
+  var descriptor = _.event.once( edispatcher, callbackMap );
 
   test.identical( _.props.keys( descriptor ), [ 'event', 'event2' ] );
   test.identical( _.props.keys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event.enabled, true );
-  test.identical( descriptor.event.first, 0 );
+  test.identical( descriptor.event.first, false );
   test.equivalent( descriptor.event.callbackMap, callbackMap.callbackMap );
   test.true( _.routine.is( descriptor.event.off ) );
   test.identical( _.props.keys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event2.enabled, true );
-  test.identical( descriptor.event2.first, 0 );
+  test.identical( descriptor.event2.first, false );
   test.equivalent( descriptor.event2.callbackMap, callbackMap.callbackMap );
   test.true( _.routine.is( descriptor.event2.off ) );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
-  _.event.eventGive( ehandler, 'event' );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0, -1 ] );
 
   /* */
 
   test.case = 'descriptor, use method off without arguments';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
@@ -892,40 +892,40 @@ function onceCheckDescriptor( test )
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
   var callbackMap = { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } };
-  var descriptor = _.event.once( ehandler, callbackMap );
+  var descriptor = _.event.once( edispatcher, callbackMap );
 
   test.identical( _.props.keys( descriptor ), [ 'event', 'event2' ] );
   test.identical( _.props.keys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event.enabled, true );
-  test.identical( descriptor.event.first, 0 );
+  test.identical( descriptor.event.first, false );
   test.equivalent( descriptor.event.callbackMap, callbackMap.callbackMap );
   test.true( _.routine.is( descriptor.event.off ) );
   test.identical( _.props.keys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event2.enabled, true );
-  test.identical( descriptor.event2.first, 0 );
+  test.identical( descriptor.event2.first, false );
   test.equivalent( descriptor.event2.callbackMap, callbackMap.callbackMap );
   test.true( _.routine.is( descriptor.event2.off ) );
 
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
 
   descriptor.event.off();
-  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.false( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
 
   descriptor.event2.off();
-  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.false( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.false( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
 
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [] );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
 
   /* */
 
   test.case = 'descriptor, set property enabled to false and call off';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
@@ -933,41 +933,41 @@ function onceCheckDescriptor( test )
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
   var callbackMap = { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } };
-  var descriptor = _.event.once( ehandler, callbackMap );
+  var descriptor = _.event.once( edispatcher, callbackMap );
 
   test.identical( _.props.keys( descriptor ), [ 'event', 'event2' ] );
   test.identical( _.props.keys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event.enabled, true );
-  test.identical( descriptor.event.first, 0 );
+  test.identical( descriptor.event.first, false );
   test.equivalent( descriptor.event.callbackMap, callbackMap.callbackMap );
   test.true( _.routine.is( descriptor.event.off ) );
   test.identical( _.props.keys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event2.enabled, true );
-  test.identical( descriptor.event2.first, 0 );
+  test.identical( descriptor.event2.first, false );
   test.equivalent( descriptor.event2.callbackMap, callbackMap.callbackMap );
   test.true( _.routine.is( descriptor.event2.off ) );
 
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
 
   descriptor.event.enabled = false;
   descriptor.event.off();
-  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.false( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
 
   descriptor.event2.enabled = false;
   descriptor.event2.off();
-  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.false( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
-  _.event.eventGive( ehandler, 'event' );
+  test.false( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.false( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [] );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
 
   /* */
 
   test.case = 'descriptor, set property enabled to false';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
@@ -975,33 +975,33 @@ function onceCheckDescriptor( test )
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
   var callbackMap = { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } };
-  var descriptor = _.event.once( ehandler, callbackMap );
+  var descriptor = _.event.once( edispatcher, callbackMap );
 
   test.identical( _.props.keys( descriptor ), [ 'event', 'event2' ] );
   test.identical( _.props.keys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event.enabled, true );
-  test.identical( descriptor.event.first, 0 );
+  test.identical( descriptor.event.first, false );
   test.equivalent( descriptor.event.callbackMap, callbackMap.callbackMap );
   test.true( _.routine.is( descriptor.event.off ) );
   test.identical( _.props.keys( descriptor.event ), [ 'off', 'enabled', 'first', 'callbackMap' ] );
   test.identical( descriptor.event2.enabled, true );
-  test.identical( descriptor.event2.first, 0 );
+  test.identical( descriptor.event2.first, false );
   test.equivalent( descriptor.event2.callbackMap, callbackMap.callbackMap );
   test.true( _.routine.is( descriptor.event2.off ) );
 
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
 
   descriptor.event.enabled = false;
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
 
   descriptor.event2.enabled = false;
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.true( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
-  _.event.eventGive( ehandler, 'event' );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } ) );
+  test.true( _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [] );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
 }
 
@@ -1012,64 +1012,64 @@ function onceWithChain( test )
   test.open( 'with string names' );
 
   test.case = 'chain with single step';
-  var ehandler = { events : { 'event' : [], 'event2' : [] } };
+  var edispatcher = { events : { 'event' : [], 'event2' : [] } };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : [ onEvent ] } } );
-  test.identical( ehandler.events.event[ 0 ].native, onEvent );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : [ onEvent ] } } );
+  test.identical( edispatcher.events.event[ 0 ].native, onEvent );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
-  test.identical( ehandler.events.event, [] );
-  _.event.eventGive( ehandler, 'event' );
+  test.identical( edispatcher.events.event, [] );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
-  test.identical( ehandler.events.event, [] );
+  test.identical( edispatcher.events.event, [] );
 
   /* */
 
   test.case = 'chain with few steps';
-  var ehandler = { events : { 'event' : [], 'event2' : [] } };
+  var edispatcher = { events : { 'event' : [], 'event2' : [] } };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : [ 'event2', onEvent ] } } );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : [ 'event2', onEvent ] } } );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
-  test.identical( ehandler.events.event2, [] );
-  _.event.eventGive( ehandler, 'event' );
+  test.identical( edispatcher.events.event2, [] );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [] );
-  test.true( _.routine.is( ehandler.events.event2[ 0 ] ) );
-  _.event.eventGive( ehandler, 'event2' );
+  test.true( _.routine.is( edispatcher.events.event2[ 0 ] ) );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0 ] );
-  test.identical( ehandler.events.event2, [] );
-  _.event.eventGive( ehandler, 'event2' );
+  test.identical( edispatcher.events.event2, [] );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0 ] );
-  test.identical( ehandler.events.event2, [] );
+  test.identical( edispatcher.events.event2, [] );
 
   /* */
 
   test.case = 'chain with three steps';
-  var ehandler = { events : { 'event' : [], 'event2' : [], 'event3' : [] } };
+  var edispatcher = { events : { 'event' : [], 'event2' : [], 'event3' : [] } };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : [ 'event3', 'event2', onEvent ] } } );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : [ 'event3', 'event2', onEvent ] } } );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
-  test.identical( ehandler.events.event2, [] );
-  _.event.eventGive( ehandler, 'event3' );
+  test.identical( edispatcher.events.event2, [] );
+  _.event.eventGive( edispatcher, { event : 'event3', args : [] } );
   test.identical( result, [] );
-  test.identical( ehandler.events.event2, [] );
+  test.identical( edispatcher.events.event2, [] );
 
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [] );
-  test.identical( ehandler.events.event2, [] );
-  _.event.eventGive( ehandler, 'event3' );
+  test.identical( edispatcher.events.event2, [] );
+  _.event.eventGive( edispatcher, { event : 'event3', args : [] } );
   test.identical( result, [] );
-  test.true( _.routine.is( ehandler.events.event2[ 0 ] ) );
-  _.event.eventGive( ehandler, 'event2' );
+  test.true( _.routine.is( edispatcher.events.event2[ 0 ] ) );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0 ] );
-  test.identical( ehandler.events.event2, [] );
-  _.event.eventGive( ehandler, 'event2' );
+  test.identical( edispatcher.events.event2, [] );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0 ] );
-  test.identical( ehandler.events.event2, [] );
+  test.identical( edispatcher.events.event2, [] );
 
   test.close( 'with string names' );
 
@@ -1078,49 +1078,49 @@ function onceWithChain( test )
   test.open( 'with instances of Name' );
 
   test.case = 'chain with few steps';
-  var ehandler = { events : { 'event' : [], 'event2' : [] } };
+  var edispatcher = { events : { 'event' : [], 'event2' : [] } };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : [ _.event.Name( 'event2' ), onEvent ] } } );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : [ _.event.Name( 'event2' ), onEvent ] } } );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
-  test.identical( ehandler.events.event2, [] );
-  _.event.eventGive( ehandler, 'event' );
+  test.identical( edispatcher.events.event2, [] );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [] );
-  test.true( _.routine.is( ehandler.events.event2[ 0 ] ) );
-  _.event.eventGive( ehandler, 'event2' );
+  test.true( _.routine.is( edispatcher.events.event2[ 0 ] ) );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0 ] );
-  test.identical( ehandler.events.event2, [] );
-  _.event.eventGive( ehandler, 'event2' );
+  test.identical( edispatcher.events.event2, [] );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0 ] );
-  test.identical( ehandler.events.event2, [] );
+  test.identical( edispatcher.events.event2, [] );
 
   /* */
 
   test.case = 'chain with three steps';
-  var ehandler = { events : { 'event' : [], 'event2' : [], 'event3' : [] } };
+  var edispatcher = { events : { 'event' : [], 'event2' : [], 'event3' : [] } };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : [ _.event.Name( 'event3' ), _.event.Name( 'event2' ), onEvent ] } } );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : [ _.event.Name( 'event3' ), _.event.Name( 'event2' ), onEvent ] } } );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
-  test.identical( ehandler.events.event2, [] );
-  _.event.eventGive( ehandler, 'event3' );
+  test.identical( edispatcher.events.event2, [] );
+  _.event.eventGive( edispatcher, { event : 'event3', args : [] } );
   test.identical( result, [] );
-  test.identical( ehandler.events.event2, [] );
+  test.identical( edispatcher.events.event2, [] );
 
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [] );
-  test.identical( ehandler.events.event2, [] );
-  _.event.eventGive( ehandler, 'event3' );
+  test.identical( edispatcher.events.event2, [] );
+  _.event.eventGive( edispatcher, { event : 'event3', args : [] } );
   test.identical( result, [] );
-  test.true( _.routine.is( ehandler.events.event2[ 0 ] ) );
-  _.event.eventGive( ehandler, 'event2' );
+  test.true( _.routine.is( edispatcher.events.event2[ 0 ] ) );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0 ] );
-  test.identical( ehandler.events.event2, [] );
-  _.event.eventGive( ehandler, 'event2' );
+  test.identical( edispatcher.events.event2, [] );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0 ] );
-  test.identical( ehandler.events.event2, [] );
+  test.identical( edispatcher.events.event2, [] );
 
   test.close( 'with instances of Name' );
 }
@@ -1130,29 +1130,29 @@ function onceWithChain( test )
 function onceCallWithHeadRoutine( test )
 {
   test.case = 'head calls with options map';
-  var ehandler = { events : { 'event' : [], 'event2' : [] } };
+  var edispatcher = { events : { 'event' : [], 'event2' : [] } };
   var result = [];
   var onEvent = () => result.push( result.length );
-  var o = _.event.on.head( _.event.on, [ { 'callbackMap' : { 'event' : onEvent } } ] );
-  _.event.once( ehandler, o );
-  _.event.eventGive( ehandler, 'event' );
+  var o = _.event.onHead( _.event.on, [ { 'callbackMap' : { 'event' : onEvent } } ] );
+  _.event.once( edispatcher, o );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
 
   test.case = 'head calls with chain and callback';
-  var ehandler = { events : { 'event' : [], 'event2' : [] } };
+  var edispatcher = { events : { 'event' : [], 'event2' : [] } };
   var result = [];
   var onEvent = () => result.push( result.length );
   var chain = _.event.Chain( 'event2', 'event' );
-  var o = _.event.on.head( _.event.on, [ chain, onEvent ] )
-  _.event.once( ehandler, o );
-  _.event.eventGive( ehandler, 'event' );
+  var o = _.event.onHead( _.event.on, [ chain, onEvent ] )
+  _.event.once( edispatcher, o );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [] );
 
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
 }
 
@@ -1163,19 +1163,19 @@ function off( test )
   test.case = 'off all callbacks in event, events not exist';
   var onEvent = () => 'true';
   var onEvent2 = () => 'false';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [] },
   };
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } );
   test.identical( got, false );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent2 } );
   test.identical( got, false );
 
-  _.event.off( ehandler, { 'callbackMap' : { 'event' : null } } );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  _.event.off( edispatcher, { 'callbackMap' : { 'event' : null } } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } );
   test.identical( got, false );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent2 } );
   test.identical( got, false );
 
   /* */
@@ -1183,19 +1183,19 @@ function off( test )
   test.case = 'off all callbacks in event, events exist';
   var onEvent = () => 'true';
   var onEvent2 = () => 'false';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [ onEvent, onEvent2 ] },
   };
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } );
   test.identical( got, true );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent2 } );
   test.identical( got, true );
 
-  _.event.off( ehandler, { 'callbackMap' : { 'event' : null } } );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  _.event.off( edispatcher, { 'callbackMap' : { 'event' : null } } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } );
   test.identical( got, false );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent2 } );
   test.identical( got, false );
 
   /* */
@@ -1203,19 +1203,19 @@ function off( test )
   test.case = 'off individual callback from event';
   var onEvent = () => 'true';
   var onEvent2 = () => 'false';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [ onEvent, onEvent2 ] },
   };
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } );
   test.identical( got, true );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent2 } );
   test.identical( got, true );
 
-  _.event.off( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  _.event.off( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } );
   test.identical( got, false );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent2 } );
   test.identical( got, true );
 
   /* */
@@ -1223,21 +1223,21 @@ function off( test )
   test.case = 'off individual callback added by routine on';
   var onEvent = () => 'true';
   var onEvent2 = () => 'false';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [] },
   };
-  _.event.on( ehandler, { callbackMap : { 'event' : onEvent } } )
-  _.event.on( ehandler, { callbackMap : { 'event' : onEvent2 } } )
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  _.event.on( edispatcher, { callbackMap : { 'event' : onEvent } } )
+  _.event.on( edispatcher, { callbackMap : { 'event' : onEvent2 } } )
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } );
   test.identical( got, true );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent2 } );
   test.identical( got, true );
 
-  _.event.off( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  _.event.off( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } );
   test.identical( got, false );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent2 } );
   test.identical( got, true );
 
   /* */
@@ -1245,21 +1245,21 @@ function off( test )
   test.case = 'off individual callback added by routine once';
   var onEvent = () => 'true';
   var onEvent2 = () => 'false';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [] },
   };
-  _.event.once( ehandler, { callbackMap : { 'event' : onEvent } } )
-  _.event.once( ehandler, { callbackMap : { 'event' : onEvent2 } } )
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  _.event.once( edispatcher, { callbackMap : { 'event' : onEvent } } )
+  _.event.once( edispatcher, { callbackMap : { 'event' : onEvent2 } } )
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } );
   test.identical( got, true );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent2 } );
   test.identical( got, true );
 
-  _.event.off( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  _.event.off( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } );
   test.identical( got, false );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent2 } );
   test.identical( got, true );
 
   /* - */
@@ -1280,13 +1280,13 @@ function off( test )
     _.event.off( { events : { event : [ onEvent ] } }, { callbackMap : { event : onEvent } }, { extra : true } );
   });
 
-  test.case = 'wrong type of ehandler';
+  test.case = 'wrong type of edispatcher';
   test.shouldThrowErrorSync( () =>
   {
     _.event.off( [ { events : { event : [ onEvent ] } } ], { callbackMap : { event : onEvent } } );
   });
 
-  test.case = 'wrong type of ehandler.events';
+  test.case = 'wrong type of edispatcher.events';
   test.shouldThrowErrorSync( () =>
   {
     _.event.off( { events : [ { event : [ onEvent ] } ] }, { callbackMap : { event : onEvent } } );
@@ -1363,13 +1363,13 @@ function eventHasHandler( test )
   test.case = 'handler has no callbacks';
   var onEvent = () => 'true';
   var onEvent2 = () => 'false';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [] },
   };
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } );
   test.identical( got, false );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent2 } );
   test.identical( got, false );
 
   /* */
@@ -1377,13 +1377,13 @@ function eventHasHandler( test )
   test.case = 'handler has single callback for event';
   var onEvent = () => 'true';
   var onEvent2 = () => 'false';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [ onEvent ] },
   };
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } );
   test.identical( got, true );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent2 } );
   test.identical( got, false );
 
   /* */
@@ -1391,13 +1391,13 @@ function eventHasHandler( test )
   test.case = 'handler has several callbacks for event';
   var onEvent = () => 'true';
   var onEvent2 = () => 'false';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [ onEvent, onEvent2 ] },
   };
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } );
   test.identical( got, true );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent2 } );
   test.identical( got, true );
 
   /* */
@@ -1405,17 +1405,17 @@ function eventHasHandler( test )
   test.case = 'several events in event handler, different callbacks for each event';
   var onEvent = () => 'true';
   var onEvent2 = () => 'false';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [ onEvent ], 'event2' : [ onEvent2 ] },
   };
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } );
   test.identical( got, true );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent2 } );
   test.identical( got, false );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent } );
   test.identical( got, false );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event2', eventHandler : onEvent2 } );
   test.identical( got, true );
 
   /* */
@@ -1423,14 +1423,14 @@ function eventHasHandler( test )
   test.case = 'event added by routine on';
   var onEvent = () => 'true';
   var onEvent2 = () => 'false';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [] },
   };
-  _.event.on( ehandler, { callbackMap : { event : onEvent } } )
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  _.event.on( edispatcher, { callbackMap : { event : onEvent } } )
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } );
   test.identical( got, true );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent2 } );
   test.identical( got, false );
 
   /* */
@@ -1438,14 +1438,14 @@ function eventHasHandler( test )
   test.case = 'event added by routine once';
   var onEvent = () => 'true';
   var onEvent2 = () => 'false';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [] },
   };
-  _.event.once( ehandler, { callbackMap : { event : onEvent } } )
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  _.event.once( edispatcher, { callbackMap : { event : onEvent } } )
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent } );
   test.identical( got, true );
-  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  var got = _.event.eventHasHandler( edispatcher, { eventName : 'event', eventHandler : onEvent2 } );
   test.identical( got, false );
 
   /* - */
@@ -1466,7 +1466,7 @@ function eventHasHandler( test )
     _.eventHasHandler( { events : { event : [] } }, { eventName : 'event', eventHandler : onEvent }, { extra : {} } );
   });
 
-  test.case = 'wrong type of ehandler';
+  test.case = 'wrong type of edispatcher';
   var onEvent = () => true;
   var handler = { events : { event : [] } };
   test.shouldThrowErrorSync( () =>
@@ -1474,7 +1474,7 @@ function eventHasHandler( test )
     _.eventHasHandler( [ handler ], { eventName : 'event', eventHandler : onEvent } );
   });
 
-  test.case = 'wrong type of ehandler.events';
+  test.case = 'wrong type of edispatcher.events';
   var onEvent = () => true;
   test.shouldThrowErrorSync( () =>
   {
@@ -1516,129 +1516,129 @@ function eventGive( test )
   test.open( 'event type - on' );
 
   test.case = 'give event for event without callbacks';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( edispatcher, 'event2' );
   test.identical( result, [] );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, 'event2' );
   test.identical( result, [] );
 
   /* */
 
   test.case = 'give event for event with single callback';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( edispatcher, 'event' );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, 'event' );
   test.identical( result, [ 0, 1 ] );
 
   /* */
 
   test.case = 'give event for event with several callbacks for event';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent2 } } );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent2 } } );
+  _.event.eventGive( edispatcher, 'event' );
   test.identical( result, [ 0, -1 ] );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, 'event2' );
   test.identical( result, [ 0, -1 ] );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, 'event' );
   test.identical( result, [ 0, -1, 2, -3 ] );
 
   /* */
 
   test.case = 'give event for event without callbacks';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( ehandler, { event : 'event2' } );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( edispatcher, { event : 'event2' } );
   test.identical( result, [] );
-  _.event.eventGive( ehandler, { event : 'event2' } );
+  _.event.eventGive( edispatcher, { event : 'event2' } );
   test.identical( result, [] );
 
   /* */
 
   test.case = 'give event for event with single callback';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( ehandler, { event : 'event' } );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( edispatcher, { event : 'event' } );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( ehandler, { event : 'event' } );
+  _.event.eventGive( edispatcher, { event : 'event' } );
   test.identical( result, [ 0, 1 ] );
 
   /* */
 
   test.case = 'give event for event with several callbacks for event';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent2 } } );
-  _.event.eventGive( ehandler, { event : 'event' } );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent2 } } );
+  _.event.eventGive( edispatcher, { event : 'event' } );
   test.identical( result, [ 0, -1 ] );
-  _.event.eventGive( ehandler, { event : 'event2' } );
+  _.event.eventGive( edispatcher, { event : 'event2' } );
   test.identical( result, [ 0, -1 ] );
-  _.event.eventGive( ehandler, { event : 'event' } );
+  _.event.eventGive( edispatcher, { event : 'event' } );
   test.identical( result, [ 0, -1, 2, -3 ] );
 
   /* */
 
   test.case = 'give event, use default args in callback';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = ( o ) => result.push( o.event );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( edispatcher, 'event' );
   test.identical( result, [ 'event' ] );
-  _.event.eventGive( ehandler, { event : 'event' } );
+  _.event.eventGive( edispatcher, { event : 'event' } );
   test.identical( result, [ 'event', 'event' ] );
 
   /* */
 
   test.case = 'give event, use not default args in callback';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = ( e1, e2 ) => result.push( e1, e2 );
-  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( ehandler, { event : 'event', args : [ 1, 2 ] } );
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [ 1, 2 ] } );
   test.identical( result, [ 1, 2 ] );
-  _.event.eventGive( ehandler, { event : 'event' } );
+  _.event.eventGive( edispatcher, { event : 'event' } );
   test.identical( result, [ 1, 2, { event : 'event' }, undefined ] );
 
   test.close( 'event type - on' );
@@ -1648,129 +1648,129 @@ function eventGive( test )
   test.open( 'event type - once' );
 
   test.case = 'give event for event without callbacks';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( edispatcher, 'event2' );
   test.identical( result, [] );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, 'event2' );
   test.identical( result, [] );
 
   /* */
 
   test.case = 'give event for event with single callback';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( edispatcher, 'event' );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, 'event' );
   test.identical( result, [ 0 ] );
 
   /* */
 
   test.case = 'give event for event with several callbacks for event';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent2 } } );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent2 } } );
+  _.event.eventGive( edispatcher, 'event' );
   test.identical( result, [ 0, -1 ] );
-  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( edispatcher, 'event2' );
   test.identical( result, [ 0, -1 ] );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.eventGive( edispatcher, 'event' );
   test.identical( result, [ 0, -1 ] );
 
   /* */
 
   test.case = 'give event for event without callbacks';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( ehandler, { event : 'event2' } );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( edispatcher, { event : 'event2' } );
   test.identical( result, [] );
-  _.event.eventGive( ehandler, { event : 'event2' } );
+  _.event.eventGive( edispatcher, { event : 'event2' } );
   test.identical( result, [] );
 
   /* */
 
   test.case = 'give event for event with single callback';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( ehandler, { event : 'event' } );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( edispatcher, { event : 'event' } );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( ehandler, { event : 'event' } );
+  _.event.eventGive( edispatcher, { event : 'event' } );
   test.identical( result, [ 0 ] );
 
   /* */
 
   test.case = 'give event for event with several callbacks for event';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent2 } } );
-  _.event.eventGive( ehandler, { event : 'event' } );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent2 } } );
+  _.event.eventGive( edispatcher, { event : 'event' } );
   test.identical( result, [ 0, -1 ] );
-  _.event.eventGive( ehandler, { event : 'event2' } );
+  _.event.eventGive( edispatcher, { event : 'event2' } );
   test.identical( result, [ 0, -1 ] );
-  _.event.eventGive( ehandler, { event : 'event' } );
+  _.event.eventGive( edispatcher, { event : 'event' } );
   test.identical( result, [ 0, -1 ] );
 
   /* */
 
   test.case = 'give event, use default args in callback';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = ( o ) => result.push( o.event );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( ehandler, 'event' );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( edispatcher, 'event' );
   test.identical( result, [ 'event' ] );
-  _.event.eventGive( ehandler, { event : 'event' } );
+  _.event.eventGive( edispatcher, { event : 'event' } );
   test.identical( result, [ 'event' ] );
 
   /* */
 
   test.case = 'give event, use not default args in callback';
-  var ehandler =
+  var edispatcher =
   {
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
   var onEvent = ( e1, e2 ) => result.push( e1, e2 );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( ehandler, { event : 'event', args : [ 1, 2 ] } );
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [ 1, 2 ] } );
   test.identical( result, [ 1, 2 ] );
-  _.event.eventGive( ehandler, { event : 'event' } );
+  _.event.eventGive( edispatcher, { event : 'event' } );
   test.identical( result, [ 1, 2 ] );
 
   test.close( 'event type - once' );
@@ -1796,22 +1796,39 @@ function eventGive( test )
   test.shouldThrowErrorSync( () => _.event.eventGive( { events : { 'event' : [] } }, { event : 'event', args : 'wrong' } ) );
 
   test.case = 'callback throws error';
-  test.shouldThrowErrorSync( () =>
-  {
-    var handler = { events : { event : [ () => { throw _.err( 'err' ) } ] } };
-    _.event.eventGive( handler, 'event' );
-  },
-  ( err, arg ) =>
-  {
-    test.true( _.error.is( err ) );
-    test.identical( _.strCount( err.message, 'Error on handing event event\n' ), 1 );
-  });
+  // test.shouldThrowErrorSync( () =>
+  // {
+  //   var handler = { events : { event : [ () => { throw _.err( 'err' ) } ] } };
+  //   _.event.eventGive( handler, 'event' );
+  // },
+  // ( err, arg ) =>
+  // {
+  //   test.true( _.error.is( err ) );
+  //   test.identical( _.strCount( err.message, 'Error on handing event event\n' ), 1 );
+  // });
+  // qqq2 : for Dmytro : ask
+
+  test.shouldThrowErrorSync
+  (
+    () =>
+    {
+      var handler = { events : { event : [ () => { throw _.err( 'err' ) } ] } };
+      _.event.eventGive( handler, 'event' );
+    },
+    ( err, arg ) =>
+    {
+      test.true( _.error.is( err ) );
+      test.identical( err.originalMEssage, 'Error on handing event event' );
+    }
+  );
+
 }
 
 // --
 // declare
 // --
 
+/* aaa2 : for Dmytro : repair */ /* Dmytro : regressions is fixed */
 const Proto =
 {
 
@@ -1842,7 +1859,7 @@ const Proto =
     off,
 
     eventHasHandler,
-    eventGive,
+    // eventGive,
 
   }
 

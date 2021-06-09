@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-_global_.wTools.object = _global_.wTools.object || Object.create( null );
+_.object = _.object || Object.create( null );
 
 // --
 // dichotomy

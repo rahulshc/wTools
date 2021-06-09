@@ -7,7 +7,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.sorted = _global_.wTools.sorted || Object.create( null );
+const Self = _.sorted = _.sorted || Object.create( null );
 
 // --
 //

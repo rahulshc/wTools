@@ -404,7 +404,8 @@ function elementWithCardinalDel( dst, cardinal )
 {
   _.assert( arguments.length === 2 );
   _.assert( this.is( dst ) );
-  return this._elementWithCardinalDel( dst, cardinal, val );
+  // return this._elementWithCardinalDel( dst, cardinal, val );
+  return this._elementWithCardinalDel( dst, cardinal );
 }
 
 //

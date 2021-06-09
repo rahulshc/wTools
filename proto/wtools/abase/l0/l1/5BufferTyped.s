@@ -88,51 +88,6 @@ function isUsingExistenceOfField_functor()
 
 let isUsingExistenceOfField = isUsingExistenceOfField_functor();
 
-// //
-//
-// function isUsingGetPrototypeAndFunctor( src )
-// {
-//   return alternateX( src );
-// }
-//
-// //
-// /* qqq : for Rahul : it is not simplification */ Rahul : Got it!
-// function isUsingGetPrototypeSimplified( src )
-// {
-//   if( src instanceof Object.getPrototypeOf( Int8Array ) )
-//   return !_.buffer.nodeIs( src );
-//   return false;
-// }
-//
-// //
-// /* qqq : for Rahul : pointless */ Rahul: Yes agreed, with reference to isUsingGetPrototype, indeed pointless.
-// function isUsingGetPrototypeAndEquality( src )
-// {
-//   if( !( src && Object.getPrototypeOf( src.constructor ).name === 'TypedArray' ) )
-//   return false;
-//   if( _.buffer.nodeIs( src ) )
-//   return false;
-//   return true;
-// }
-
-//
-
-// //
-//
-// function isUsingHashMap( src )
-// {
-//   return alternateMap( src );
-// }
-//
-// //
-//
-// function isUsingExistenceOfField( src )
-// {
-//   if( !( src && src.buffer ) )
-//   return false;
-//   return isUsingExistenceOfField( src );
-// }
-
 //
 
 function alternateSet_functor()
@@ -458,13 +413,10 @@ let BufferTypedExtension =
   is : is,
   like : is,
   IsResizable,
-  isSlow,
+  isSlow, /* xxx : remove later */
   isUsingGetPrototype,
   isUsingGetPrototypeWithFunctor,
   isUsingExistenceOfField,
-  // isUsingGetPrototypeAndFunctor,
-  // isUsingGetPrototypeSimplified,
-  // isUsingGetPrototypeAndEquality,
   isUsingSet,
   isUsingHashMap,
   isUsingMap,

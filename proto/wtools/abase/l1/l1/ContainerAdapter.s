@@ -15,28 +15,6 @@ _.assert( _.routine.is( _.longLeft ) );
 // type test
 // --
 
-// function is( src )
-// {
-//   if( !src )
-//   return false;
-//   return src instanceof ContainerAdapterAbstract;
-// }
-//
-// //
-//
-// function isContainer( src )
-// {
-//   if( _.set.like( src ) )
-//   return true;
-//   if( _.longLike( src ) )
-//   return true;
-//   if( _.containerAdapter.is( src ) )
-//   return true;
-//   return false;
-// }
-
-//
-
 function make( container )
 {
 
@@ -471,32 +449,9 @@ function ExportTo( dstGlobal, srcGlobal )
 // declare
 // --
 
-// class ContainerAdapterNamespace
-// {
-//   static[ Symbol.hasInstance ]( instance )
-//   {
-//     return is( instance );
-//   }
-// }
-//
-// let Handler =
-// {
-//   construct( original, args )
-//   {
-//     return ContainerAdapterNamespace.make( ... args );
-//   }
-// };
-//
-// const Self = new Proxy( ContainerAdapterNamespace, Handler );
-// Self.original = ContainerAdapterNamespace;
-
-//
-
 var Extension =
 {
 
-  // is,
-  // isContainer,
   make,
   from,
 
@@ -510,9 +465,6 @@ var Extension =
 //
 
 Object.assign( _.containerAdapter, Extension );
-// Object.assign( Self, Extension );
-// _.assert( _.containerAdapter === undefined );
-// _.containerAdapter = Self;
 
 // --
 // export

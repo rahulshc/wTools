@@ -11,6 +11,7 @@ if( typeof module !== 'undefined' )
 
 const _global = _global_;
 const _ = _global_.wTools;
+const __ = _globals_.testing.wTools;
 
 // --
 // evaluator
@@ -6186,204 +6187,232 @@ function strJoinPath( test )
 
 function strLinesIndentation( test )
 {
-  test.open( 'src - string, tab - string' );
 
-  test.case = 'empty line';
-  var got = _.strLinesIndentation( '', '_' );
-  var expected = '';
-  test.identical( got, expected );
+  // act({ every : true });
+  act({ every : false });
 
-  test.case = 'string without new line symbol';
-  var got = _.strLinesIndentation( 'abc', '_' );
-  var expected = 'abc';
-  test.identical( got, expected );
+  function act( env )
+  {
 
-  test.case = 'string with new line symbol at the end';
-  var got = _.strLinesIndentation( 'abc\n', '_' );
-  var expected = 'abc\n_';
-  test.identical( got, expected );
+    /* - */
 
-  test.case = 'string with new line symbol at the start';
-  var got = _.strLinesIndentation( '\nabc', '_' );
-  var expected = '\n_abc';
-  test.identical( got, expected );
+    test.open( `${__.entity.exportStringSolo( env )}, src - string, tab - string` );
 
-  test.case = 'new line symbol at the mid';
-  var got = _.strLinesIndentation( 'a\nb', '_' );
-  var expected = 'a\n_b';
-  test.identical( got, expected );
+    test.case = 'empty line';
+    var got = _.strLinesIndentation( '', '_', env.every );
+    var expected = '';
+    test.identical( got, expected );
 
-  test.case = 'tab before first and each new line';
-  var got = _.strLinesIndentation( '\na\nb\nc', '_' );
-  var expected = '\n_a\n_b\n_c';
-  test.identical( got, expected );
+    test.case = 'string without new line symbol';
+    var got = _.strLinesIndentation( 'abc', '_', env.every );
+    var expected = 'abc';
+    test.identical( got, expected );
 
-  test.case = 'only new line symbols';
-  var got = _.strLinesIndentation( '\n\n\n', '_' );
-  var expected = '\n_\n_\n_';
-  test.identical( got, expected );
+    test.case = 'string with new line symbol at the end';
+    var got = _.strLinesIndentation( 'abc\n', '_', env.every );
+    var expected = 'abc\n';
+    if( env.every )
+    expected = 'abc\n_';
+    test.identical( got, expected );
 
-  test.case = 'tab - special symbol';
-  var got = _.strLinesIndentation( 'a\nb\nc', '\t' );
-  var expected = 'a\n\tb\n\tc';
-  test.identical( got, expected );
+    test.case = 'string with new line symbol at the start';
+    var got = _.strLinesIndentation( '\nabc', '_', env.every );
+    var expected = '\n_abc';
+    test.identical( got, expected );
 
-  test.close( 'src - string, tab - string' );
+    test.case = 'new line symbol at the mid';
+    var got = _.strLinesIndentation( 'a\nb', '_', env.every );
+    var expected = 'a\n_b';
+    test.identical( got, expected );
 
-  /* - */
+    test.case = 'tab before first and each new line';
+    var got = _.strLinesIndentation( '\na\nb\nc', '_', env.every );
+    var expected = '\n_a\n_b\n_c';
+    test.identical( got, expected );
 
-  test.open( 'src - string, tab - number' );
+    test.case = 'only new line symbols';
+    var got = _.strLinesIndentation( '\n\n\n', '_', env.every );
+    var expected = '\n\n\n';
+    if( env.every )
+    expected = '\n_\n_\n_';
+    test.identical( got, expected );
 
-  test.case = 'empty line';
-  var got = _.strLinesIndentation( '', 2 );
-  var expected = '';
-  test.identical( got, expected );
+    test.case = 'tab - special symbol';
+    var got = _.strLinesIndentation( 'a\nb\nc', '\t', env.every );
+    var expected = 'a\n\tb\n\tc';
+    test.identical( got, expected );
 
-  test.case = 'string without new line symbol';
-  var got = _.strLinesIndentation( 'abc', 2 );
-  var expected = 'abc';
-  test.identical( got, expected );
+    test.close( `${__.entity.exportStringSolo( env )}, src - string, tab - string` );
 
-  test.case = 'string with new line symbol at the end';
-  var got = _.strLinesIndentation( 'abc\n', 2 );
-  var expected = 'abc\n  ';
-  test.identical( got, expected );
+    /* - */
 
-  test.case = 'string with new line symbol at the start';
-  var got = _.strLinesIndentation( '\nabc', 2 );
-  var expected = '\n  abc';
-  test.identical( got, expected );
+    test.open( `${__.entity.exportStringSolo( env )}, src - string, tab - number` );
 
-  test.case = 'new line symbol at the mid';
-  var got = _.strLinesIndentation( 'a\nb', 2 );
-  var expected = 'a\n  b';
-  test.identical( got, expected );
+    test.case = 'empty line';
+    var got = _.strLinesIndentation( '', 2, env.every );
+    var expected = '';
+    test.identical( got, expected );
 
-  test.case = 'tab before first and each new line';
-  var got = _.strLinesIndentation( '\na\nb\nc', 2 );
-  var expected = '\n  a\n  b\n  c';
-  test.identical( got, expected );
+    test.case = 'string without new line symbol';
+    var got = _.strLinesIndentation( 'abc', 2, env.every );
+    var expected = 'abc';
+    test.identical( got, expected );
 
-  test.case = 'only new line symbols';
-  var got = _.strLinesIndentation( '\n\n\n', 2 );
-  var expected = '\n  \n  \n  ';
-  test.identical( got, expected );
+    test.case = 'string with new line symbol at the end';
+    var got = _.strLinesIndentation( 'abc\n', 2, env.every );
+    var expected = 'abc\n';
+    if( env.every )
+    expected = 'abc\n  ';
+    test.identical( got, expected );
 
-  test.case = 'tab - negative number';
-  var got = _.strLinesIndentation( 'a\nb\nc', -1 );
-  var expected = 'a\nb\nc';
-  test.identical( got, expected );
+    test.case = 'string with new line symbol at the start';
+    var got = _.strLinesIndentation( '\nabc', 2, env.every );
+    var expected = '\n  abc';
+    test.identical( got, expected );
 
-  test.close( 'src - string, tab - number' );
+    test.case = 'new line symbol at the mid';
+    var got = _.strLinesIndentation( 'a\nb', 2, env.every );
+    var expected = 'a\n  b';
+    test.identical( got, expected );
 
-  /* - */
+    test.case = 'tab before first and each new line';
+    var got = _.strLinesIndentation( '\na\nb\nc', 2, env.every );
+    var expected = '\n  a\n  b\n  c';
+    test.identical( got, expected );
 
-  test.open( 'src - array, tab - string' );
+    test.case = 'only new line symbols';
+    var got = _.strLinesIndentation( '\n\n\n', 2, env.every );
+    var expected = '\n\n\n';
+    if( env.every )
+    expected = '\n  \n  \n  ';
+    test.identical( got, expected );
 
-  test.case = 'single empty string';
-  var got = _.strLinesIndentation( [ '' ], '_' );
-  var expected = '';
-  test.identical( got, expected );
+    test.case = 'tab - negative number';
+    var got = _.strLinesIndentation( 'a\nb\nc', -1, env.every );
+    var expected = 'a\nb\nc';
+    test.identical( got, expected );
 
-  test.case = 'single string';
-  var got = _.strLinesIndentation( [ 'abc' ], '_' );
-  var expected = 'abc';
-  test.identical( got, expected );
+    test.close( `${__.entity.exportStringSolo( env )}, src - string, tab - number` );
 
-  test.case = 'last element - empty string';
-  var got = _.strLinesIndentation( [ 'abc', '' ], '_' );
-  var expected = 'abc\n_';
-  test.identical( got, expected );
+    /* - */
 
-  test.case = 'first element - empty string';
-  var got = _.strLinesIndentation( [ '', 'abc' ], '_' );
-  var expected = '\n_abc';
-  test.identical( got, expected );
+    test.open( `${__.entity.exportStringSolo( env )}, src - array, tab - string` );
 
-  test.case = 'two strings';
-  var got = _.strLinesIndentation( [ 'a', 'b' ], '_' );
-  var expected = 'a\n_b';
-  test.identical( got, expected );
+    test.case = 'single empty string';
+    var got = _.strLinesIndentation( [ '' ], '_', env.every );
+    var expected = '';
+    test.identical( got, expected );
 
-  test.case = 'first element - empty string';
-  var got = _.strLinesIndentation( [ '', 'a', 'b', 'c' ], '_' );
-  var expected = '\n_a\n_b\n_c';
-  test.identical( got, expected );
+    test.case = 'single string';
+    var got = _.strLinesIndentation( [ 'abc' ], '_', env.every );
+    var expected = 'abc';
+    test.identical( got, expected );
 
-  test.case = 'only empty strings';
-  var got = _.strLinesIndentation( [ '', '', '', '' ], '_' );
-  var expected = '\n_\n_\n_';
-  test.identical( got, expected );
+    test.case = 'last element - empty string';
+    var got = _.strLinesIndentation( [ 'abc', '' ], '_', env.every );
+    var expected = 'abc\n';
+    if( env.every )
+    expected = 'abc\n_';
+    test.identical( got, expected );
 
-  test.case = 'tab - special symbol';
-  var got = _.strLinesIndentation( [ 'a', 'b', 'c' ], '\t' );
-  var expected = 'a\n\tb\n\tc';
-  test.identical( got, expected );
+    test.case = 'first element - empty string';
+    var got = _.strLinesIndentation( [ '', 'abc' ], '_', env.every );
+    var expected = '\n_abc';
+    test.identical( got, expected );
 
-  test.close( 'src - array, tab - string' );
+    test.case = 'two strings';
+    var got = _.strLinesIndentation( [ 'a', 'b' ], '_', env.every );
+    var expected = 'a\n_b';
+    test.identical( got, expected );
 
-  /* - */
+    test.case = 'first element - empty string';
+    var got = _.strLinesIndentation( [ '', 'a', 'b', 'c' ], '_', env.every );
+    var expected = '\n_a\n_b\n_c';
+    test.identical( got, expected );
 
-  test.open( 'src - array, tab - number' );
+    test.case = 'only empty strings';
+    var got = _.strLinesIndentation( [ '', '', '', '' ], '_', env.every );
+    var expected = '\n\n\n';
+    if( env.every )
+    expected = '\n_\n_\n_';
+    test.identical( got, expected );
 
-  test.case = 'single empty string';
-  var got = _.strLinesIndentation( [ '' ], 2 );
-  var expected = '';
-  test.identical( got, expected );
+    test.case = 'tab - special symbol';
+    var got = _.strLinesIndentation( [ 'a', 'b', 'c' ], '\t', env.every );
+    var expected = 'a\n\tb\n\tc';
+    test.identical( got, expected );
 
-  test.case = 'single string';
-  var got = _.strLinesIndentation( [ 'abc' ], 2 );
-  var expected = 'abc';
-  test.identical( got, expected );
+    test.close( `${__.entity.exportStringSolo( env )}, src - array, tab - string` );
 
-  test.case = 'last element - empty string';
-  var got = _.strLinesIndentation( [ 'abc', '' ], 2 );
-  var expected = 'abc\n  ';
-  test.identical( got, expected );
+    /* - */
 
-  test.case = 'first element - empty string';
-  var got = _.strLinesIndentation( [ '', 'abc' ], 2 );
-  var expected = '\n  abc';
-  test.identical( got, expected );
+    test.open( `${__.entity.exportStringSolo( env )}, src - array, tab - number` );
 
-  test.case = 'two strings';
-  var got = _.strLinesIndentation( [ 'a', 'b' ], 2 );
-  var expected = 'a\n  b';
-  test.identical( got, expected );
+    test.case = 'single empty string';
+    var got = _.strLinesIndentation( [ '' ], 2, env.every );
+    var expected = '';
+    test.identical( got, expected );
 
-  test.case = 'first element - empty string';
-  var got = _.strLinesIndentation( [ '', 'a', 'b', 'c' ], 2 );
-  var expected = '\n  a\n  b\n  c';
-  test.identical( got, expected );
+    test.case = 'single string';
+    var got = _.strLinesIndentation( [ 'abc' ], 2, env.every );
+    var expected = 'abc';
+    test.identical( got, expected );
 
-  test.case = 'only empty strings';
-  var got = _.strLinesIndentation( [ '', '', '', '' ], 2 );
-  var expected = '\n  \n  \n  ';
-  test.identical( got, expected );
+    test.case = 'last element - empty string';
+    var got = _.strLinesIndentation( [ 'abc', '' ], 2, env.every );
+    var expected = 'abc\n';
+    if( env.every )
+    expected = 'abc\n  ';
+    test.identical( got, expected );
 
-  test.case = 'tab - negative number';
-  var got = _.strLinesIndentation( [ 'a', 'b', 'c' ], -1 );
-  var expected = 'a\nb\nc';
-  test.identical( got, expected );
+    test.case = 'first element - empty string';
+    var got = _.strLinesIndentation( [ '', 'abc' ], 2, env.every );
+    var expected = '\n  abc';
+    test.identical( got, expected );
 
-  test.close( 'src - array, tab - number' );
+    test.case = 'two strings';
+    var got = _.strLinesIndentation( [ 'a', 'b' ], 2, env.every );
+    var expected = 'a\n  b';
+    test.identical( got, expected );
 
-  /* - */
+    test.case = 'first element - empty string';
+    var got = _.strLinesIndentation( [ '', 'a', 'b', 'c' ], 2, env.every );
+    var expected = '\n  a\n  b\n  c';
+    test.identical( got, expected );
 
-  if( !Config.debug )
-  return;
+    test.case = 'only empty strings';
+    var got = _.strLinesIndentation( [ '', '', '', '' ], 2, env.every );
+    var expected = '\n\n\n';
+    if( env.every )
+    expected = '\n  \n  \n  ';
+    test.identical( got, expected );
 
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.strLinesIndentation() );
+    test.case = 'tab - negative number';
+    var got = _.strLinesIndentation( [ 'a', 'b', 'c' ], -1, env.every );
+    var expected = 'a\nb\nc';
+    test.identical( got, expected );
 
-  test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.strLinesIndentation( 'one', 'two', 'three' ) );
+    test.close( `${__.entity.exportStringSolo( env )}, src - array, tab - number` );
 
-  test.case = 'wrong type of src';
-  test.shouldThrowErrorSync( () => _.strLinesIndentation( 12, 'two' ) );
+    /* - */
 
-  test.case = 'wrong type of tab';
-  test.shouldThrowErrorSync( () => _.strLinesIndentation( 'one', [] ) );
+    if( !Config.debug )
+    return;
+
+    test.case = 'without arguments';
+    test.shouldThrowErrorSync( () => _.strLinesIndentation() );
+
+    test.case = 'extra arguments';
+    test.shouldThrowErrorSync( () => _.strLinesIndentation( 'one', 'two', 'three' ) );
+
+    test.case = 'wrong type of src';
+    test.shouldThrowErrorSync( () => _.strLinesIndentation( 12, 'two' ) );
+
+    test.case = 'wrong type of tab';
+    test.shouldThrowErrorSync( () => _.strLinesIndentation( 'one', [] ) );
+
+  }
+
 }
 
 //
