@@ -23,11 +23,11 @@ function dichotomy( test )
 
   dichotomyTemplate( { method : 'is' } );
   dichotomyTemplate( { method : 'isOld' } );
-  dichotomyTemplate( { method : 'like' } );
   dichotomyTemplate( { method : 'isCompact' } );
   dichotomyTemplate( { method : 'isUnfolded' } );
   dichotomyTemplate( { method : 'isUnfoldedSmartOrder' } );
   dichotomyTemplate( { method : 'isUnfoldedSmarter' } );
+  dichotomyTemplate( { method : 'like' } );
 
   function dichotomyTemplate( env )
   {
@@ -36,60 +36,84 @@ function dichotomy( test )
     var expected = true;
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, an array`;
     var got = _.long[ env.method ]( [ 1, 2, 3 ] );
     var expected  = true;
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, a pseudo array`;
     var got = _.long[ env.method ]( arguments );
     var expected = true;
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, raw array buffer`;
     var got = _.long[ env.method ]( new BufferRaw( 10 ) );
     var expected = false;
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, typed array buffer`;
     var got = _.long[ env.method ]( new F32x( 10 ) );
     var expected = true;
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, no arguments`;
     var got = _.long[ env.method ]();
     var expected  = false;
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, null`;
     var got = _.long[ env.method ]( null );
     var expected  = false;
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, function`;
     var got = _.long[ env.method ]( function() {} );
     var expected  = false;
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, string`;
     var got = _.long[ env.method ]( 'x' );
     var expected  = false;
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, number`;
     var got = _.long[ env.method ]( 1 );
     var expected  = false;
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, boolean`;
     var got = _.long[ env.method ]( true );
     var expected  = false;
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, empty map`;
     var got = _.long[ env.method ]( {} );
     var expected  = false;
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, object with fields and iteraor method`;
     var src = new function()
@@ -102,6 +126,8 @@ function dichotomy( test )
     var got = _.long[ env.method ]( src );
     var expected  = false;
     test.identical( got, expected );
+
+    /* */
 
     test.case = 'Testing for overlaps';
     test.identical( _.arrayIs( src ), false );
@@ -124,57 +150,55 @@ function isPerformance( test )
     ╔════════════════════════╤═════╤═════╤═════════╤══════════╤════════════════════╤═════════════════╗
     ║                        │  is │isOld│isCompact│isUnfolded│isUnfoldedSmartOrder│isUnfoldedSmarter║
     ╟────────────────────────┼─────┼─────┼─────────┼──────────┼────────────────────┼─────────────────╢
-    ║Windows-10-20H2, 10.24.1│0.598│3.592│  1.211  │   1.137  │        0.823       │      0.628      ║
+    ║Windows-10-20H2, 10.24.1│     │     │         │          │                    │                 ║
     ╟────────────────────────┼─────┼─────┼─────────┼──────────┼────────────────────┼─────────────────╢
-    ║Windows-10-20H2, 14.17.0│0.596│4.197│  1.275  │   1.217  │        0.863       │      0.590      ║
+    ║Windows-10-20H2, 14.17.0│     │     │         │          │                    │                 ║
     ╟────────────────────────┼─────┼─────┼─────────┼──────────┼────────────────────┼─────────────────╢
     ║    Linux-Kos, 12.9.1   │     │     │         │          │                    │                 ║
     ╚════════════════════════╧═════╧═════╧═════════╧══════════╧════════════════════╧═════════════════╝
     qqq : for Rahul : update the table please
   */
-  debugger; /* eslint-disable-line no-debugger */
-  var debugFlag = Config.debug;
-  Config.debug = false;
+
+  let a = test.assetFor( false );
+  test.identical( true, true );
+  programRoutine.meta = {}
+  programRoutine.meta.locals = { methodMeasure, varsInit, run };
+  let program = a.program( programRoutine );
+
+  program.start( { args : [ 'is' ] } );
+  //program.start( { args : [ 'isOld' ] } );
+  //program.start( { args : [ 'isCompact' ] } );
+  //program.start( { args : [ 'isUnfolded' ] } );
+  //program.start( { args : [ 'isUnfoldedSmartOrder' ] } );
+  //program.start( { args : [ 'isUnfoldedSmarter' ] } );
+
+  return a.ready;
 
   /* */
 
-  isPerformanceTemplate( { method : 'is' } );
-  isPerformanceTemplate( { method : 'isOld' } );
-  isPerformanceTemplate( { method : 'isCompact' } );
-  isPerformanceTemplate( { method : 'isUnfolded' } );
-  isPerformanceTemplate( { method : 'isUnfoldedSmartOrder' } );
-  isPerformanceTemplate( { method : 'isUnfoldedSmarter' } );
-
-  /* */
-
-  Config.debug = debugFlag;
-  debugger; /* eslint-disable-line no-debugger */
-
-  /* */
-
-  function isPerformanceTemplate( data )
+  function methodMeasure( data )
   {
-    test.case = `${data.method}`;
-    var took, time;
-    var env = initializeVariables();
-    __.time.sleep( 100 );
+    let _ = wTools;
+    let __ = wTools;
+    let took, time;
+    Config.debug = false;
+    env = varsInit( env );
 
+    debugger; /* eslint-disable-line no-debugger */
     time = _.time.now();
     for( let i = env.times; i > 0; i-- )
-    {
-      env.name = data.method;
-      run( env );
-    }
+    run( env );
     took = __.time.spent( time );
-
-    console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
-    test.identical( true, true );
+    console.log( `${env.times} iterations of ${env.method} took : ${took} on ${process.version}` );
+    debugger; /* eslint-disable-line no-debugger */
   }
 
   /* - */
 
-  function initializeVariables()
+  function varsInit( env )
   {
+    let _ = wTools;
+    let __ = wTools;
     var env = {};
     env.times = 1000000;
     env.nonEmptyArray = [ 1, 2, 3 ];
@@ -207,32 +231,44 @@ function isPerformance( test )
 
   function run( env )
   {
-    _.long[ env.name ]( [] );
-    _.long[ env.name ]( env.nonEmptyArray );
-    _.long[ env.name ]( arguments );
-    _.long[ env.name ]( env.float32Array );
-    _.long[ env.name ]( env.int32Array );
-    _.long[ env.name ]( env.uint16Array );
-    _.long[ env.name ]( env.uint8Array );
-    _.long[ env.name ]( env.uint8ClampedArray );
-    _.long[ env.name ]( env.derivedArray );
-    _.long[ env.name ]( env.arrayProtoType );
-    _.long[ env.name ]( env.multiDimensionalArray );
-    _.long[ env.name ]( env.constructedArray );
-    _.long[ env.name ]( env.rawBuffer );
-    _.long[ env.name ]();
-    _.long[ env.name ]( null );
-    _.long[ env.name ]( undefined );
-    _.long[ env.name ]( NaN );
-    _.long[ env.name ]( new Date() );
-    _.long[ env.name ]( env.anEmptyRoutine );
-    _.long[ env.name ]( env.aString );
-    _.long[ env.name ]( env.aNumber );
-    _.long[ env.name ]( env.aBoolean );
-    _.long[ env.name ]( env.anEmptyObject );
-    _.long[ env.name ]( env.routine );
+    let _ = wTools;
+    let __ = wTools;
+    let r = [];
+    r.push( _.long[ env.name ]( [] ) );
+    r.push( _.long[ env.name ]( env.nonEmptyArray ) );
+    r.push( _.long[ env.name ]( arguments ) );
+    r.push( _.long[ env.name ]( env.float32Array ) );
+    r.push( _.long[ env.name ]( env.int32Array ) );
+    r.push( _.long[ env.name ]( env.uint16Array ) );
+    r.push( _.long[ env.name ]( env.uint8Array ) );
+    r.push( _.long[ env.name ]( env.uint8ClampedArray ) );
+    r.push( _.long[ env.name ]( env.derivedArray ) );
+    r.push( _.long[ env.name ]( env.arrayProtoType ) );
+    r.push( _.long[ env.name ]( env.multiDimensionalArray ) );
+    r.push( _.long[ env.name ]( env.constructedArray ) );
+    r.push( _.long[ env.name ]( env.rawBuffer ) );
+    r.push( _.long[ env.name ]() );
+    r.push( _.long[ env.name ]( null ) );
+    r.push( _.long[ env.name ]( undefined ) );
+    r.push( _.long[ env.name ]( NaN ) );
+    r.push( _.long[ env.name ]( new Date() ) );
+    r.push( _.long[ env.name ]( env.anEmptyRoutine ) );
+    r.push( _.long[ env.name ]( env.aString ) );
+    r.push( _.long[ env.name ]( env.aNumber ) );
+    r.push( _.long[ env.name ]( env.aBoolean ) );
+    r.push( _.long[ env.name ]( env.anEmptyObject ) );
+    r.push( _.long[ env.name ]( env.routine ) );
+
+    return r;
   }
 
+  /* */
+
+  function programRoutine()
+  {
+    const _ = require( toolsPath );
+    methodMeasure( { method : process.argv[ 2 ] } );
+  }
 }
 
 isPerformance.timeOut = 1e7;
