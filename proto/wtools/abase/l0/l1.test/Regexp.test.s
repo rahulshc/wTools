@@ -32,8 +32,8 @@ function dichotomy( test )
 
   dichotomyTemplate( { method : 'like' } );
   dichotomyTemplate( { method : 'likeOld' } );
-  dichotomyTemplate( { method : 'likeUnfolded' } );
   dichotomyTemplate( { method : 'likeUsingisUsingInstanceOf' } );
+  dichotomyTemplate( { method : 'likeUnfolded' } );
 
   function dichotomyTemplate( env )
   {
@@ -42,35 +42,49 @@ function dichotomy( test )
     var expected = false;
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, null`;
     var got = _.regexp[ env.method ]( null );
     var expected = false;
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, false`;
     var got = _.regexp[ env.method ]( false );
     var expected = false;
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, NaN`;
     var got = _.regexp[ env.method ]( NaN );
     var expected = false;
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, a boolean`;
     var got = _.regexp[ env.method ]( true );
     var expected = false;
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, a number`;
     var got = _.regexp[ env.method ]( 13 );
     var expected = false;
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, a function`;
     var got = _.regexp[ env.method ]( function() {} );
     var expected = false;
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, constructor`;
     function Constr( x )
@@ -82,30 +96,42 @@ function dichotomy( test )
     var expected = false;
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, BufferRaw`;
     var got = _.regexp[ env.method ]( new BufferRaw( 5 ) );
     var expected = false;
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, BufferView`;
     var got = _.regexp[ env.method ]( new BufferView( new BufferRaw( 5 ) ) );
     var expected = false;
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, Set`;
     var got = _.regexp[ env.method ]( new Set( [ 5 ] ) );
     var expected = false;
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, Map`;
     var got = _.regexp[ env.method ]( new HashMap( [ [ 1, 2 ] ] ) );
     var expected = false;
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, pure empty map`;
     var got = _.regexp[ env.method ]( Object.create( null ) );
     var expected = false;
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, pure map`;
     var src = Object.create( null );
@@ -114,16 +140,22 @@ function dichotomy( test )
     var expected = false;
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, map from pure map`;
     var src = Object.create( Object.create( null ) );
     var got = _.regexp[ env.method ]( src );
     var expected = false;
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, an empty object`;
     var got = _.regexp[ env.method ]( {} );
     var expected = false;
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, an object`;
     var got = _.regexp[ env.method ]( { a : 7, b : 13 } );
@@ -137,20 +169,28 @@ function dichotomy( test )
     var expected = true;
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, regexp empty`;
     var got = _.regexp[ env.method ]( /(?:)/ );
     var expected = true;
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, regexp with flags`;
     var got = _.regexp[ env.method ]( /a/g );
     var expected = true;
     test.identical( got, expected );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, regexp complex`;
     var got = _.regexp[ env.method ]( /(?:\d{3}|\(\d{3}\))([-\/\.])\d{3}\1\d{4}/ );
     var expected = true;
     test.identical( got, expected );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, empty string`;
     var got = _.regexp[ env.method ]( '' );
@@ -159,12 +199,16 @@ function dichotomy( test )
     if( env.method.startsWith( 'like' ) )
     test.identical( got, true );
 
+    /* */
+
     test.case = `${__.entity.exportStringSolo( env )}, a string`;
     var got = _.regexp[ env.method ]( 'str' );
     if( env.method.startsWith( 'is' ) )
     test.identical( got, false );
     if( env.method.startsWith( 'like' ) )
     test.identical( got, true );
+
+    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, a string object`;
     var got = _.regexp[ env.method ]( new String( 'str' ) );
