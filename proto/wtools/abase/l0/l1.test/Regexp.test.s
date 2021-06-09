@@ -227,12 +227,13 @@ function dichotomyPerformance( test )
   ╔════════════════════════╤═════╤═════╤═════════════════╤═════╤═══════╤══════════════════════════╤════════════╗
   ║                        │  is │isOld│isUsingInstanceOf│ like│likeOld│likeUsingisUsingInstanceOf│likeUnfolded║
   ╟────────────────────────┼─────┼─────┼─────────────────┼─────┼───────┼──────────────────────────┼────────────╢
-  ║Windows-10-20H2, 10.24.1│2.221│2.167│    1.702        │4.335│ 4.315 │          3.526           │   2.206    ║
+  ║Windows-10-20H2, 10.24.1│2.221│2.167│    1.702        │  ?  │ 4.315 │          3.526           │   2.206    ║
   ╟────────────────────────┼─────┼─────┼─────────────────┼─────┼───────┼──────────────────────────┼────────────╢
-  ║Windows-10-20H2, 14.17.0│2.416│2.312│    2.064        │4.725│ 4.612 │          4.151           │   2.461    ║
+  ║Windows-10-20H2, 14.17.0│2.416│2.312│    2.064        │  ?  │ 4.612 │          4.151           │   2.461    ║
   ╟────────────────────────┼─────┼─────┼─────────────────┼─────┼───────┼──────────────────────────┼────────────╢
-  ║    Linux-Kos, 12.9.1   │     │     │                 │     │       │                          │            ║
+  ║    Linux-Kos, 12.9.1   │3.063│3.156│    2.715        │3.399│ 5.915 │          5.910           │   3.049    ║
   ╚════════════════════════╧═════╧═════╧═════════════════╧═════╧═══════╧══════════════════════════╧════════════╝
+  qqq : for Rahul : update missing cells please
   */
 
   let a = test.assetFor( false );
@@ -241,13 +242,13 @@ function dichotomyPerformance( test )
   programRoutine.meta.locals = { methodMeasure, varsInit, run };
   let program = a.program( programRoutine );
 
-  program.start( { args : [ 'is' ] } );
-  program.start( { args : [ 'isOld' ] } );
-  program.start( { args : [ 'isUsingInstanceOf' ] } );
-  program.start( { args : [ 'like' ] } );
-  program.start( { args : [ 'likeOld' ] } );
-  program.start( { args : [ 'likeUsingisUsingInstanceOf' ] } );
-  program.start( { args : [ 'likeUnfolded' ] } );
+  program.start({ args : [ 'is' ] });
+  program.start({ args : [ 'isOld' ] });
+  program.start({ args : [ 'isUsingInstanceOf' ] });
+  program.start({ args : [ 'like' ] });
+  program.start({ args : [ 'likeOld' ] });
+  program.start({ args : [ 'likeUsingisUsingInstanceOf' ] });
+  program.start({ args : [ 'likeUnfolded' ] });
 
   return a.ready;
 

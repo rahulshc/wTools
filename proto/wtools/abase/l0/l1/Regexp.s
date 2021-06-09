@@ -45,7 +45,7 @@ function objectIs( src )
 
 function like( src )
 {
-  if( _.regexp.is( src ) || _.strIs( src ) )
+  if( src instanceof RegExp || Object.prototype.toString.call( src ) === '[object String]' )
   return true;
   return false;
 }
@@ -72,9 +72,9 @@ function likeUsingisUsingInstanceOf( src )
 
 function likeUnfolded( src )
 {
-    if( src instanceof RegExp || Object.prototype.toString.call( src ) === '[object String]' )
-    return true;
-    return false;
+  if( src instanceof RegExp || Object.prototype.toString.call( src ) === '[object String]' )
+  return true;
+  return false;
 }
 
 // //
