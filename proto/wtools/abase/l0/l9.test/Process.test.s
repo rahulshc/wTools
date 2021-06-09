@@ -101,12 +101,10 @@ function onWithArguments( test )
   {
     test.identical( op.exitCode, 0 );
     var exp =
-`[
-  [ 'available', 'arg' ],
+`[ 'available', 'arg' ],
   'uncaughtError1',
   [ 'available', 'arg' ],
-  'uncaughtError3'
-]`;
+  'uncaughtError3'`;
     test.identical( _.strCount( op.output, exp ), 1 );
     return null;
   });
@@ -348,13 +346,11 @@ function onWithOptionsMap( test )
     {
       test.identical( op.exitCode, 0 );
       var exp =
-`[
-  [ 'available', 'arg' ],
+`[ 'available', 'arg' ],
   'uncaughtError1',
   [ 'available', 'arg' ],
-  'uncaughtError3'
-]`;
-      test.identical( _.strCount( op.output, exp ), 1 );
+  'uncaughtError3'`;
+      test.contains( _.strCount( op.output, exp ), 1 );
       return null;
     });
   });
