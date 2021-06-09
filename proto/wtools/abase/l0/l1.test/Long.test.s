@@ -165,18 +165,18 @@ function isPerformance( test )
   programRoutine.meta.locals = { methodMeasure, varsInit, run };
   let program = a.program( programRoutine );
 
-  program.start( { args : [ 'is' ] } );
-  //program.start( { args : [ 'isOld' ] } );
-  //program.start( { args : [ 'isCompact' ] } );
-  //program.start( { args : [ 'isUnfolded' ] } );
-  //program.start( { args : [ 'isUnfoldedSmartOrder' ] } );
-  //program.start( { args : [ 'isUnfoldedSmarter' ] } );
+  program.start({ args : [ 'is' ] });
+  program.start({ args : [ 'isOld' ] });
+  program.start({ args : [ 'isCompact' ] });
+  program.start({ args : [ 'isUnfolded' ] });
+  program.start({ args : [ 'isUnfoldedSmartOrder' ] });
+  program.start({ args : [ 'isUnfoldedSmarter' ] });
 
   return a.ready;
 
   /* */
 
-  function methodMeasure( data )
+  function methodMeasure( env )
   {
     let _ = wTools;
     let __ = wTools;
@@ -234,30 +234,30 @@ function isPerformance( test )
     let _ = wTools;
     let __ = wTools;
     let r = [];
-    r.push( _.long[ env.name ]( [] ) );
-    r.push( _.long[ env.name ]( env.nonEmptyArray ) );
-    r.push( _.long[ env.name ]( arguments ) );
-    r.push( _.long[ env.name ]( env.float32Array ) );
-    r.push( _.long[ env.name ]( env.int32Array ) );
-    r.push( _.long[ env.name ]( env.uint16Array ) );
-    r.push( _.long[ env.name ]( env.uint8Array ) );
-    r.push( _.long[ env.name ]( env.uint8ClampedArray ) );
-    r.push( _.long[ env.name ]( env.derivedArray ) );
-    r.push( _.long[ env.name ]( env.arrayProtoType ) );
-    r.push( _.long[ env.name ]( env.multiDimensionalArray ) );
-    r.push( _.long[ env.name ]( env.constructedArray ) );
-    r.push( _.long[ env.name ]( env.rawBuffer ) );
-    r.push( _.long[ env.name ]() );
-    r.push( _.long[ env.name ]( null ) );
-    r.push( _.long[ env.name ]( undefined ) );
-    r.push( _.long[ env.name ]( NaN ) );
-    r.push( _.long[ env.name ]( new Date() ) );
-    r.push( _.long[ env.name ]( env.anEmptyRoutine ) );
-    r.push( _.long[ env.name ]( env.aString ) );
-    r.push( _.long[ env.name ]( env.aNumber ) );
-    r.push( _.long[ env.name ]( env.aBoolean ) );
-    r.push( _.long[ env.name ]( env.anEmptyObject ) );
-    r.push( _.long[ env.name ]( env.routine ) );
+    r.push( _.long[ env.method ]( [] ) );
+    r.push( _.long[ env.method ]( env.nonEmptyArray ) );
+    r.push( _.long[ env.method ]( arguments ) );
+    r.push( _.long[ env.method ]( env.float32Array ) );
+    r.push( _.long[ env.method ]( env.int32Array ) );
+    r.push( _.long[ env.method ]( env.uint16Array ) );
+    r.push( _.long[ env.method ]( env.uint8Array ) );
+    r.push( _.long[ env.method ]( env.uint8ClampedArray ) );
+    r.push( _.long[ env.method ]( env.derivedArray ) );
+    r.push( _.long[ env.method ]( env.arrayProtoType ) );
+    r.push( _.long[ env.method ]( env.multiDimensionalArray ) );
+    r.push( _.long[ env.method ]( env.constructedArray ) );
+    r.push( _.long[ env.method ]( env.rawBuffer ) );
+    r.push( _.long[ env.method ]() );
+    r.push( _.long[ env.method ]( null ) );
+    r.push( _.long[ env.method ]( undefined ) );
+    r.push( _.long[ env.method ]( NaN ) );
+    r.push( _.long[ env.method ]( new Date() ) );
+    r.push( _.long[ env.method ]( env.anEmptyRoutine ) );
+    r.push( _.long[ env.method ]( env.aString ) );
+    r.push( _.long[ env.method ]( env.aNumber ) );
+    r.push( _.long[ env.method ]( env.aBoolean ) );
+    r.push( _.long[ env.method ]( env.anEmptyObject ) );
+    r.push( _.long[ env.method ]( env.routine ) );
 
     return r;
   }
