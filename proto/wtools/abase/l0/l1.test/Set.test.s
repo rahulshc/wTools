@@ -47,7 +47,7 @@ function dichotomy( test )
 function as( test )
 {
 
-  act( { method : 'as' } );
+  act({ method : 'as' });
   // act({ method : 'asTest' });
 
   function act( env )
