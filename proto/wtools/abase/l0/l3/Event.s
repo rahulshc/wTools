@@ -52,8 +52,10 @@ function _chainGenerate( args )
       else
       {
         let o = _.event.onHead( _.event.on, next );
-        _.event.on( self, o );
+        o.once = on.once;
+        _.event._on( self, o );
 
+        if( !on.once )
         if( _.event.eventHasHandler( self, { eventName : e1, eventHandler : on } ) )
         _.event.off( self, { callbackMap : { [ e1 ] : on } } );
       }
@@ -316,7 +318,7 @@ function _on( edispatcher, o )
 
     _.assert( _.routine.is( callback ) );
 
-    callback = callbackOn_functor.call( descriptors[ c ], callback );
+    callback = callbackOn_functor.call( descriptors[ c ], callback, c );
     descriptors[ c ].off = off_functor.call( descriptors[ c ], edispatcher, { callbackMap : { [ c ] : callback } } );
 
     append( edispatcher.events[ c ], callback );
@@ -334,7 +336,8 @@ function _on( edispatcher, o )
 
   /* */
 
-  function callbackOn_functor( callback )
+  // function callbackOn_functor( callback ) /* Dmytro : can't extract name from descriptor. Maybe, it can contains field `name` */
+  function callbackOn_functor( callback, name )
   {
     let self = this;
 
@@ -345,11 +348,13 @@ function _on( edispatcher, o )
       {
         result = callback.apply( this, arguments );
         if( once === true )
-        _.event.off( edispatcher, { callbackMap : { [ name ] : callbackOnce } } );
+        _.event.off( edispatcher, { callbackMap : { [ name ] : callbackOn } } );
+        // _.event.off( edispatcher, { callbackMap : { [ name ] : callbackOnce } } ); /* Dmytro : callbackOnce does not exist */
       }
       return result;
     }
     callbackOn.native = callback;
+    callbackOn.native.once = once;
 
     return callbackOn;
   }
@@ -964,9 +969,9 @@ function eventGive( edispatcher, o )
   //   o.args[ 0 ].event = o.event;
   // }
 
-  _.assert( !!edispatcher.events[ o.event ], `Unknown event ${o.event}` );
-  _.assert( _.longIs( o.args ) );
   _.assert( arguments.length === 2 );
+  _.assert( !!edispatcher.events[ o.event ], `Unknown event ${o.event}` );
+  _.assert( _.long.is( o.args ), 'Expects arguments {-o.args-}' );
 
   let was;
   let visited = [];
