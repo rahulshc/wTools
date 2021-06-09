@@ -45,15 +45,15 @@ join into single test routine::dichotomy
 
 function dichotomy( test )
 {
-  act( { method : 'is' } );
-  act( { method : 'like' } );
-  act( { method : 'isTrivial' } );
-  act( { method : 'isSync' } );
-  act( { method : 'isAsync' } );
-  act( { method : 'isGenerator' } );
-  act( { method : 'isSyncGenerator' } );
-  act( { method : 'isAsyncGenerator' } );
-  act( { method : 'withName' } );
+  act({ method : 'is' });
+  act({ method : 'like' });
+  act({ method : 'isTrivial' });
+  act({ method : 'isSync' });
+  act({ method : 'isAsync' });
+  act({ method : 'isGenerator' });
+  act({ method : 'isSyncGenerator' });
+  act({ method : 'isAsyncGenerator' });
+  act({ method : 'withName' });
 
   function act( env )
   {
@@ -64,7 +64,7 @@ function dichotomy( test )
 
     test.case = `Method : ${ env.method }, Null`;
     test.false( _.routine[ env.method ]( null ) );
- 
+
     /* */
 
     test.case = `Method : ${ env.method }, Nothing`;
