@@ -1735,7 +1735,7 @@ function as( test )
   var exp = [ 1, 2, 3 ]
   test.identical( got, exp );
 
-  act( { method : 'as' } );
+  act({ method : 'as' });
   // act({ method : 'asTest' });
 
   function act( env )
