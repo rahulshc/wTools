@@ -297,8 +297,6 @@ let Extension =
   isPopulated,
   IsResizable,
 
-  /* xxx : qqq : implement keys* routines */
-
   // maker
 
   _makeEmpty,

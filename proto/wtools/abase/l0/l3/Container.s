@@ -545,7 +545,7 @@ let ContainerExtension =
 
 }
 
-_.props.supplement( _.container, ContainerExtension );
+Object.assign( _.container, ContainerExtension );
 
 //
 

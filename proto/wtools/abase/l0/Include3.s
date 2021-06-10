@@ -13,6 +13,7 @@ if( typeof module !== 'undefined' )
   require( './l3/2Props.s' );
   require( './l3/3Blank.s' );
   require( './l3/3Long.s' );
+  require( './l3/3Path.s' );
   require( './l3/ArgumentsArray.s' );
   require( './l3/Array.s' );
   require( './l3/ArraySet.s' );

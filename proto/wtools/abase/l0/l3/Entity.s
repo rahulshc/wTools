@@ -510,7 +510,7 @@ let EntityExtension =
 
 //
 
-_.props.supplement( _.entity, EntityExtension );
+Object.assign( _.entity, EntityExtension );
 
 // --
 // tools extension
@@ -523,6 +523,6 @@ let ToolsExtension =
 
 //
 
-_.props.supplement( _, ToolsExtension );
+Object.assign( _, ToolsExtension );
 
 })();

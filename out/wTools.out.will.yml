@@ -273,6 +273,7 @@ module:
           - ../proto/wtools/abase/l0/l1.test/Logic.test.s
           - ../proto/wtools/abase/l0/l1.test/Long.test.s
           - ../proto/wtools/abase/l0/l1.test/Map.test.s
+          - ../proto/wtools/abase/l0/l1.test/Module.test.s
           - ../proto/wtools/abase/l0/l1.test/Number.test.s
           - ../proto/wtools/abase/l0/l1.test/Object.test.s
           - ../proto/wtools/abase/l0/l1.test/Primitive.test.s
@@ -292,6 +293,7 @@ module:
           - ../proto/wtools/abase/l0/l3/2Props.s
           - ../proto/wtools/abase/l0/l3/3Blank.s
           - ../proto/wtools/abase/l0/l3/3Long.s
+          - ../proto/wtools/abase/l0/l3/3Path.s
           - ../proto/wtools/abase/l0/l3/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l3/Array.s
           - ../proto/wtools/abase/l0/l3/ArraySet.s
@@ -344,8 +346,10 @@ module:
           - ../proto/wtools/abase/l0/l3.test/Logic.test.s
           - ../proto/wtools/abase/l0/l3.test/Long.test.s
           - ../proto/wtools/abase/l0/l3.test/Map.test.s
+          - ../proto/wtools/abase/l0/l3.test/Module.test.s
           - ../proto/wtools/abase/l0/l3.test/Number.test.s
           - ../proto/wtools/abase/l0/l3.test/Object.test.s
+          - ../proto/wtools/abase/l0/l3.test/Path.test.s
           - ../proto/wtools/abase/l0/l3.test/Primitive.test.s
           - ../proto/wtools/abase/l0/l3.test/Props.test.s
           - ../proto/wtools/abase/l0/l3.test/Regexp.test.s
