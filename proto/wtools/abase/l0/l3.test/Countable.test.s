@@ -72,6 +72,12 @@ function countablesAreEqShallow( test )
     var got = _.countable[ env.method ]( src1, src2 );
     test.identical( got, false );
 
+    test.case = `Method : ${env.method}, map with generator as iterator, different  elements`;/* Special case*/
+    var src1 = __.diagnostic.objectMake({ elements : [ '4', '5', '6' ], countable : 1, new : 0, iteratorIsGenerator : 1 });
+    var src2 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1, new : 0, iteratorIsGenerator : 1 });
+    var got = _.countable[ env.method ]( src1, src2 );
+    test.identical( got, true );
+
     test.case = `Method : ${env.method}, object countable`;
     var src1 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1 });
     var src2 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1 });
