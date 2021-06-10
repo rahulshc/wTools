@@ -240,6 +240,7 @@ function dichotomyPerformance( test )
   test.identical( true, true );
   programRoutine.meta = {}
   programRoutine.meta.locals = { methodMeasure, varsInit, run };
+  debugger;
   let program = a.program( programRoutine );
 
   program.start({ args : [ 'is' ] });

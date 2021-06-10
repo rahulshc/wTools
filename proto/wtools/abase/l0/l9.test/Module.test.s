@@ -6,8 +6,6 @@
 if( typeof module !== 'undefined' )
 {
   const _ = require( 'Tools' );
-  // _.include( 'wSelector' );
-  // require( 'wTesting' );
   _.include( 'wTesting' );
 }
 
@@ -215,78 +213,78 @@ resolveBasic.description  =
   Routine _.module.resolve return path to include path of module::wTools.
 `
 
+// //
 //
-
-function toolsPathGetBasic( test )
-{
-  let context = this;
-
-  /* */
-
-  test.case = 'toolsPathGet';
-  var got = _.module.toolsPathGet();
-  // var exp = _.path.nativize( __.path.join( __dirname, '../../../../node_modules/Tools' ) );
-  var exp = __.path.join( __dirname, '../../../../node_modules/Tools' );
-  test.identical( got, exp );
-  console.log( `toolsPathGet : ${got}` );
-
-  /* */
-
-  test.case = 'toolsDirGet';
-  var got = _.module.toolsDirGet();
-  // var exp = __.path.nativize( __.path.join( __dirname, '../../..' ) );
-  var exp = __.path.join( __dirname, '../../..' );
-  test.identical( got, exp );
-  console.log( `toolsDirGet : ${got}` );
-
-  /* */
-
-  test.case = 'resolve wTools';
-  var got = _.module.resolve( 'wTools' );
-  // var exp = __.path.nativize( __.path.join( __dirname, '../../../../node_modules/Tools' ) );
-  var exp = __.path.join( __dirname, '../../../../node_modules/Tools' );
-  test.identical( got, exp );
-  console.log( `resolved : ${got}` );
-
-  /* */
-
-}
-
+// function toolsPathGetBasic( test )
+// {
+//   let context = this;
 //
-
-function toolsPathGetProgram( test )
-{
-  let context = this;
-  let a = test.assetFor( false );
-  let programPath = a.program( program ).programPath;
-
-  console.log( 'programPath', programPath );
-
-  return a.forkNonThrowing({ execPath : programPath })
-  .then( ( op ) =>
-  {
-    test.identical( op.exitCode, 0 );
-    var exp =
-`
-toolsPath : ${__.path.nativize( __.path.join( __dirname, '../../../../node_modules/Tools' ) )}
-module.resolve( wTools ) : ${__.path.join( __dirname, '../../../../node_modules/Tools' )}
-module.toolsPathGet : ${__.path.join( __dirname, '../../../../node_modules/Tools' )}
-module.toolsirGet : ${__.path.join( __dirname, '../../..' )}
-`
-    test.equivalent( op.output, exp );
-    return op;
-  });
-
-  function program()
-  {
-    console.log( `toolsPath : ${toolsPath}` );
-    const _ = require( toolsPath );
-    console.log( `module.resolve( wTools ) : ${_.module.resolve( 'wTools' )}` );
-    console.log( `module.toolsPathGet : ${_.module.toolsPathGet()}` );
-    console.log( `module.toolsirGet : ${_.module.toolsDirGet()}` );
-  }
-
-}
+//   /* */
+//
+//   test.case = 'toolsPathGet';
+//   var got = _.module.toolsPathGet();
+//   // var exp = _.path.nativize( __.path.join( __dirname, '../../../../node_modules/Tools' ) );
+//   var exp = __.path.join( __dirname, '../../../../node_modules/Tools' );
+//   test.identical( got, exp );
+//   console.log( `toolsPathGet : ${got}` );
+//
+//   /* */
+//
+//   test.case = 'toolsDirGet';
+//   var got = _.module.toolsDirGet();
+//   // var exp = __.path.nativize( __.path.join( __dirname, '../../..' ) );
+//   var exp = __.path.join( __dirname, '../../..' );
+//   test.identical( got, exp );
+//   console.log( `toolsDirGet : ${got}` );
+//
+//   /* */
+//
+//   test.case = 'resolve wTools';
+//   var got = _.module.resolve( 'wTools' );
+//   // var exp = __.path.nativize( __.path.join( __dirname, '../../../../node_modules/Tools' ) );
+//   var exp = __.path.join( __dirname, '../../../../node_modules/Tools' );
+//   test.identical( got, exp );
+//   console.log( `resolved : ${got}` );
+//
+//   /* */
+//
+// }
+//
+// //
+//
+// function toolsPathGetProgram( test )
+// {
+//   let context = this;
+//   let a = test.assetFor( false );
+//   let programPath = a.program( program ).programPath;
+//
+//   console.log( 'programPath', programPath );
+//
+//   return a.forkNonThrowing({ execPath : programPath })
+//   .then( ( op ) =>
+//   {
+//     test.identical( op.exitCode, 0 );
+//     var exp =
+// `
+// toolsPath : ${__.path.nativize( __.path.join( __dirname, '../../../../node_modules/Tools' ) )}
+// module.resolve( wTools ) : ${__.path.join( __dirname, '../../../../node_modules/Tools' )}
+// module.toolsPathGet : ${__.path.join( __dirname, '../../../../node_modules/Tools' )}
+// module.toolsirGet : ${__.path.join( __dirname, '../../..' )}
+// `
+//     test.equivalent( op.output, exp );
+//     return op;
+//   });
+//
+//   function program()
+//   {
+//     console.log( `toolsPath : ${toolsPath}` );
+//     const _ = require( toolsPath );
+//     console.log( `module.resolve( wTools ) : ${_.module.resolve( 'wTools' )}` );
+//     console.log( `module.toolsPathGet : ${_.module.toolsPathGet()}` );
+//     console.log( `module.toolsirGet : ${_.module.toolsDirGet()}` );
+//   }
+//
+// }
 
 //
 
@@ -4769,8 +4767,9 @@ const Proto =
     modulePredeclareBasic2,
     moduleExportsUndefined,
     resolveBasic,
-    toolsPathGetBasic,
-    toolsPathGetProgram,
+
+    // toolsPathGetBasic,
+    // toolsPathGetProgram,
 
     modulingLogistic,
     modulingNativeIncludeErrors,

@@ -341,69 +341,65 @@ function strRemove( srcStr, insStr )
   return result;
 }
 
+// //
 //
-
-/**
-  * Prepends string( begin ) to the source( src ) if prefix( begin ) is not match with first chars of string( src ),
-  * otherwise returns original string.
-  * @param { String } src - Source string to parse.
-  * @param { String } begin - String to prepend.
-  *
-  * @example
-  * _.strPrependOnce( 'test', 'test' );
-  * // returns 'test'
-  *
-  * @example
-  * _.strPrependOnce( 'abc', 'x' );
-  * // returns 'xabc'
-  *
-  * @returns { String } Returns result of prepending string( begin ) to source( src ) or original string.
-  * @function strPrependOnce
-  * @namespace Tools
-  */
-
-function strPrependOnce( src, begin )
-{
-  _.assert( _.strIs( src ) && _.strIs( begin ), 'Expects {-src-} and {-begin-} as strings' );
-  if( src.lastIndexOf( begin, 0 ) === 0 )
-  return src;
-  else
-  return begin + src;
-}
-
+// /**
+//   * Prepends string( begin ) to the source( src ) if prefix( begin ) is not match with first chars of string( src ),
+//   * otherwise returns original string.
+//   * @param { String } src - Source string to parse.
+//   * @param { String } begin - String to prepend.
+//   *
+//   * @example
+//   * _.strPrependOnce( 'test', 'test' );
+//   * // returns 'test'
+//   *
+//   * @example
+//   * _.strPrependOnce( 'abc', 'x' );
+//   * // returns 'xabc'
+//   *
+//   * @returns { String } Returns result of prepending string( begin ) to source( src ) or original string.
+//   * @function strPrependOnce
+//   * @namespace Tools
+//   */
 //
-
-/**
-  * Appends string( end ) to the source( src ) if postfix( end ) is not match with last chars of string( src ),
-  * otherwise returns original string.
-  * @param {string} src - Source string to parse.
-  * @param {string} end - String to append.
-  *
-  * @example
-  * _.strAppendOnce( 'test', 'test' );
-  * // returns 'test'
-  *
-  * @example
-  * _.strAppendOnce( 'abc', 'x' );
-  * // returns 'abcx'
-  *
-  * @returns {string} Returns result of appending string( end ) to source( src ) or original string.
-  * @function strAppendOnce
-  * @namespace Tools
-  */
-
-function strAppendOnce( src, end )
-{
-  _.assert( _.strIs( src ) && _.strIs( end ), 'Expects {-src-} and {-end-} as strings' );
-  if( src.indexOf( end, src.length - end.length ) === -1 )
-  return src + end;
-  else
-  return src;
-  // if( src.indexOf( end, src.length - end.length ) !== -1 )
-  // return src;
-  // else
-  // return src + end;
-}
+// function strPrependOnce( src, begin )
+// {
+//   _.assert( _.strIs( src ) && _.strIs( begin ), 'Expects {-src-} and {-begin-} as strings' );
+//   if( src.lastIndexOf( begin, 0 ) === 0 )
+//   return src;
+//   else
+//   return begin + src;
+// }
+//
+// //
+//
+// /**
+//   * Appends string( end ) to the source( src ) if postfix( end ) is not match with last chars of string( src ),
+//   * otherwise returns original string.
+//   * @param {string} src - Source string to parse.
+//   * @param {string} end - String to append.
+//   *
+//   * @example
+//   * _.strAppendOnce( 'test', 'test' );
+//   * // returns 'test'
+//   *
+//   * @example
+//   * _.strAppendOnce( 'abc', 'x' );
+//   * // returns 'abcx'
+//   *
+//   * @returns {string} Returns result of appending string( end ) to source( src ) or original string.
+//   * @function strAppendOnce
+//   * @namespace Tools
+//   */
+//
+// function strAppendOnce( src, end )
+// {
+//   _.assert( _.strIs( src ) && _.strIs( end ), 'Expects {-src-} and {-end-} as strings' );
+//   if( src.indexOf( end, src.length - end.length ) === -1 )
+//   return src + end;
+//   else
+//   return src;
+// }
 
 // --
 // etc
@@ -3412,8 +3408,8 @@ let Proto =
   _strRemoved,
   strRemove,
 
-  strPrependOnce,
-  strAppendOnce,
+  // strPrependOnce,
+  // strAppendOnce,
 
   strReplaceWords,
 
