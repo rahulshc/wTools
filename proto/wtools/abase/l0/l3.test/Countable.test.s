@@ -271,7 +271,6 @@ function countablesAreEqShallow( test )
     test.identical( _.countable[ env.method ]( src1, src2 ), false );
     if( env.method === 'equivalentShallow' )
     test.identical( _.countable[ env.method ]( src1, src2 ), true );
-      
 
     test.case = `Method : ${env.method}, vector and array`;
     var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
