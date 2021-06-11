@@ -58,7 +58,7 @@ function toolsPathGetProgram( test )
   let program = a.program( programRoutine );
 
   console.log( 'programPath', program.programPath );
-  test.identical( program.locals.toolsPath, _.module.toolsPathGet() );
+  test.identical( program.locals.toolsPath, _.path.nativize( _.module.toolsPathGet() ) );
   test.true( __.strBegins( __.path.normalize( program.locals.toolsPath ), __.path.normalize( __dirname + '/../../../..' ) ) );
 
   return a.forkNonThrowing({ execPath : program.programPath })
