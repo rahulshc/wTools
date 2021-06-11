@@ -1,5 +1,3 @@
-const { env } = require('process');
-
 ( function _l0_l3_Entity_test_s()
 {
 
