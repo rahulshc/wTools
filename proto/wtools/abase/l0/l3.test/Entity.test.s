@@ -1134,16 +1134,16 @@ function strTypeWithoutTraitsGeneratedObject( test )
 // equaler
 // --
 
-function eqShallowBasic( test )--
+function eqShallowBasic( test )
 {
-  act({ method : 'identicalShallowBasic' });
-  act({ method : 'equivalentShallowBasic' });
+  act({ method : 'identicalShallow' });
+  act({ method : 'equivalentShallow' });
 
   function act( env )
   {
     /* */
-    
-    test.case = 'null - undefined';
+
+    test.case = `Method : ${env.method}, null - undefined`;
 
     var got = _.entity[ env.method ]( null, null );
     test.true( got );
@@ -1159,15 +1159,44 @@ function eqShallowBasic( test )--
 
     /* */
 
-    test.case = 'number - number';
+    test.case = `Method : ${env.method}, Boolean - Boolean`;
+
+    var got = _.entity[ env.method ]( true, true );
+    test.true( got );
+
+    var got = _.entity[ env.method ]( false, false );
+    test.true( got );
+
+    var got = _.entity[ env.method ]( true, false );
+    test.false( got );
+
+    /* */
+
+    test.case = `Method : ${env.method}, Boolean - not boolean`;
+
+    var got = _.entity[ env.method ]( 1, true );
+    if( env.method === 'identicalShallow' )
+    test.false( got );
+    if( env.method === 'equivalentShallow' )
+    test.true( got );
+
+    var got = _.entity[ env.method ]( 0, false );
+    if( env.method === 'identicalShallow' )
+    test.false( got );
+    if( env.method === 'equivalentShallow' )
+    test.true( got );
+
+    /* */
+
+    test.case = `Method : ${env.method}, Number - Number`;
 
     var got = _.entity[ env.method ]( 1, 1 );
     test.true( got );
 
     var got = _.entity[ env.method ]( 1, 1 + 1e-15 );
-    if( env.method === 'identicalShallowBasic' )
+    if( env.method === 'identicalShallow' )
     test.false( got );
-    if( env.method === 'equivalentShallowBasic' )
+    if( env.method === 'equivalentShallow' )
     test.true( got );
 
     var got = _.entity[ env.method ]( 0, 0 );
@@ -1181,682 +1210,617 @@ function eqShallowBasic( test )--
 
     /* */
 
-    test.case = 'number - not number';
+    test.case = `Method : ${env.method}, Number - not Number`;
 
-    var got = _.entity.identicalShallow( 1, '1' );
+    var got = _.entity[ env.method ]( 1, '1' );
     test.false( got );
 
-    var got = _.entity.identicalShallow( 0, '0' );
+    var got = _.entity[ env.method ]( 0, '0' );
     test.false( got );
 
-    var got = _.entity.identicalShallow( 0, '' );
+    var got = _.entity[ env.method ]( 0, '' );
     test.false( got );
 
-    var got = _.entity.identicalShallow( 0, null );
+    var got = _.entity[ env.method ]( 0, null );
     test.false( got );
 
-    var got = _.entity.identicalShallow( 0, undefined );
+    var got = _.entity[ env.method ]( 0, undefined );
     test.false( got );
 
-    var got = _.entity.identicalShallow( NaN, null );
+    var got = _.entity[ env.method ]( NaN, null );
     test.false( got );
 
-    var got = _.entity.identicalShallow( Infinity, null );
-    test.false( got );
-    
-    var got = _.entity.identicalShallow( 3, [] );
+    var got = _.entity[ env.method ]( Infinity, null );
     test.false( got );
 
-    var got = _.entity.identicalShallow( 3, {} );
+    var got = _.entity[ env.method ]( 3, [] );
     test.false( got );
 
-    var got = _.entity.identicalShallow( 3, [ 3 ] );
+    var got = _.entity[ env.method ]( 3, {} );
     test.false( got );
 
-    var got = _.entity.identicalShallow( 3, { a : 3 } );
+    var got = _.entity[ env.method ]( 3, [ 3 ] );
     test.false( got );
 
-    var got = _.entity.identicalShallow( 3, new Date() );
+    var got = _.entity[ env.method ]( 3, { a : 3 } );
     test.false( got );
 
-    var got = _.entity.identicalShallow( 3, new F32x( 3 ) );
+    var got = _.entity[ env.method ]( 3, new Date() );
     test.false( got );
 
-    var got = _.entity.identicalShallow( 3, /abc/ );
+    var got = _.entity[ env.method ]( 3, new F32x( 3 ) );
     test.false( got );
 
-    var got = _.entity.identicalShallow( 3, function(){} );
+    var got = _.entity[ env.method ]( 3, /abc/ );
     test.false( got );
 
-    /* */
-
-    test.case = 'String - String';
-
-    var got = _.entity.identicalShallow( '', '' );
-    test.true( got );
-
-    var got = _.entity.identicalShallow( 'abc', 'abc' );
-    test.true( got );
-
-    var got = _.entity.identicalShallow( '', 'abc' );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( 'abc', '' );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( 'ab', 'c' );
+    var got = _.entity[ env.method ]( 3, function(){} );
     test.false( got );
 
     /* */
 
-    test.case = 'String - not String';
+    test.case = `Method : ${env.method}, String - String`;
 
-    var got = _.entity.identicalShallow( '', new Date() );
+    var got = _.entity[ env.method ]( '', '' );
+    test.true( got );
+
+    var got = _.entity[ env.method ]( 'abc', 'abc' );
+    test.true( got );
+
+    var got = _.entity[ env.method ]( '', 'abc' );
     test.false( got );
 
-    var got = _.entity.identicalShallow( '', undefined );
+    var got = _.entity[ env.method ]( 'abc', '' );
     test.false( got );
 
-    var got = _.entity.identicalShallow( '', null );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( '', NaN );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( '', 0 );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( '', 1 );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( '', [] );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( '', {} );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( '', [ '' ] );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( '', { a : '' } );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( '', new F32x( 3 ) );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( '', /(?:)/ );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( '', function(){} );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( 'abc', new Date() );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( 'abc', undefined );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( 'abc', null );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( 'abc', NaN );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( 'abc', 0 );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( 'abc', 1 );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( '0', 0 );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( '1', 1 );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( 'abc', [] );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( 'abc', {} );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( 'abc', [ 'abc' ] );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( 'abc', { abc : 'abc' } );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( 'abc', new F32x( 3 ) );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( 'abc', /abc/ );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( 'abc', function(){} );
+    var got = _.entity[ env.method ]( 'ab', 'c' );
     test.false( got );
 
     /* */
 
-    test.case = 'RegExp - RegExp';
+    test.case = `Method : ${env.method}, String - not String`;
 
-    var got = _.entity.identicalShallow( /(?:)/, /(?:)/ );
-    test.true( got );
-
-    var got = _.entity.identicalShallow( /abc/, /abc/ );
-    test.true( got );
-
-    var got = _.entity.identicalShallow( /abc/iy, /abc/yi );
-    test.true( got );
-
-    // var expected = true;
-    // var got = _.entity.identicalShallow( new RegExp( 'abc' ), /abc/ );
-    // test.identical( got, expected );
-
-    var got = _.entity.identicalShallow( /abc/i, /abc/i );
-    test.true( got );
-
-    var got = _.entity.identicalShallow( /abc/i, /abc/ );
+    var got = _.entity[ env.method ]( '', new Date() );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /abc/i, /abc/yi );
+    var got = _.entity[ env.method ]( '', undefined );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /(?:)/, /abc/ );
+    var got = _.entity[ env.method ]( '', null );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /abc/, /(?:)/ );
+    var got = _.entity[ env.method ]( '', NaN );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /ab/, /c/ );
+    var got = _.entity[ env.method ]( '', 0 );
     test.false( got );
 
-    /* */
-
-    test.case = 'RegExp - not RegExp';
-
-    var got = _.entity.identicalShallow( /(?:)/, new Date() );
+    var got = _.entity[ env.method ]( '', 1 );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /(?:)/, undefined );
+    var got = _.entity[ env.method ]( '', [] );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /(?:)/, null );
+    var got = _.entity[ env.method ]( '', {} );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /(?:)/, NaN );
+    var got = _.entity[ env.method ]( '', [ '' ] );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /(?:)/, 0 );
+    var got = _.entity[ env.method ]( '', { a : '' } );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /(?:)/, 1 );
+    var got = _.entity[ env.method ]( '', new F32x( 3 ) );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /(?:)/, [] );
+    var got = _.entity[ env.method ]( '', /(?:)/ );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /(?:)/, {} );
+    var got = _.entity[ env.method ]( '', function(){} );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /(?:)/, [ /(?:)/ ] );
+    var got = _.entity[ env.method ]( 'abc', new Date() );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /(?:)/, { a : /(?:)/ } );
+    var got = _.entity[ env.method ]( 'abc', undefined );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /(?:)/, new F32x( 3 ) );
+    var got = _.entity[ env.method ]( 'abc', null );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /(?:)/, function(){} );
+    var got = _.entity[ env.method ]( 'abc', NaN );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /abc/, new Date() );
+    var got = _.entity[ env.method ]( 'abc', 0 );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /abc/, undefined );
+    var got = _.entity[ env.method ]( 'abc', 1 );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /abc/, null );
+    var got = _.entity[ env.method ]( '0', 0 );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /abc/, NaN );
+    var got = _.entity[ env.method ]( '1', 1 );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /abc/, 0 );
+    var got = _.entity[ env.method ]( 'abc', [] );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /abc/, 1 );
+    var got = _.entity[ env.method ]( 'abc', {} );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /abc/, [] );
+    var got = _.entity[ env.method ]( 'abc', [ 'abc' ] );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /abc/, {} );
+    var got = _.entity[ env.method ]( 'abc', { abc : 'abc' } );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /abc/, [ /abc/ ] );
+    var got = _.entity[ env.method ]( 'abc', new F32x( 3 ) );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /abc/, { a : /abc/ } );
+    var got = _.entity[ env.method ]( 'abc', /abc/ );
     test.false( got );
 
-    var got = _.entity.identicalShallow( /abc/, new F32x( 3 ) );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( /abc/, function(){} );
+    var got = _.entity[ env.method ]( 'abc', function(){} );
     test.false( got );
 
     /* */
 
-    test.case = 'Routine - Routine';
+    test.case = `Method : ${env.method}, RegExp - RegExp`;
+
+    var got = _.entity[ env.method ]( /(?:)/, /(?:)/ );
+    test.true( got );
+
+    var got = _.entity[ env.method ]( /abc/, /abc/ );
+    test.true( got );
+
+    var got = _.entity[ env.method ]( /abc/iy, /abc/yi );
+    test.true( got );
+
+    var got = _.entity[ env.method ]( /abc/i, /abc/i );
+    test.true( got );
+
+    var got = _.entity[ env.method ]( /abc/i, /abc/ );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /abc/i, /abc/yi );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /(?:)/, /abc/ );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /abc/, /(?:)/ );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /ab/, /c/ );
+    test.false( got );
+
+    /* */
+
+    test.case = `Method : ${env.method}, RegExp - not RegExp`;
+
+    var got = _.entity[ env.method ]( /(?:)/, new Date() );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /(?:)/, undefined );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /(?:)/, null );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /(?:)/, NaN );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /(?:)/, 0 );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /(?:)/, 1 );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /(?:)/, [] );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /(?:)/, {} );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /(?:)/, [ /(?:)/ ] );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /(?:)/, { a : /(?:)/ } );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /(?:)/, new F32x( 3 ) );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /(?:)/, function(){} );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /abc/, new Date() );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /abc/, undefined );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /abc/, null );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /abc/, NaN );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /abc/, 0 );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /abc/, 1 );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /abc/, [] );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /abc/, {} );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /abc/, [ /abc/ ] );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /abc/, { a : /abc/ } );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /abc/, new F32x( 3 ) );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( /abc/, function(){} );
+    test.false( got );
+
+    /* */
+
+    test.case = `Method : ${env.method}, Routine - Routine`;
 
     function func1(){};
     function func2(){};
 
-    var got = _.entity.identicalShallow( func1, func1 );
+    var got = _.entity[ env.method ]( func1, func1 );
     test.true( got );
 
-    var got = _.entity.identicalShallow( func1, func2 );
-    test.true( got );
-
-    /* */
-
-    test.case = 'Routine - not Routine';
-
-    var got = _.entity.identicalShallow( func1, '1' );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( func1, undefined );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( func1, null );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( func1, NaN );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( func1, 0 );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( func1, 1 );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( func1, [] );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( func1, {} );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( func1, [ func1 ] );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( func1, { a : func1 } );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( func1, new F32x( 3 ) );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( func1, /abc/ );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( func1, function(){} );
+    var got = _.entity[ env.method ]( func1, func2 );
     test.false( got );
 
     /* */
 
-    test.case = 'Date - Date';
+    test.case = `Method : ${env.method}, Routine - not Routine`;
 
-    var got = _.entity.identicalShallow( new Date(), new Date() );
+    var got = _.entity[ env.method ]( func1, '1' );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( func1, undefined );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( func1, null );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( func1, NaN );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( func1, 0 );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( func1, 1 );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( func1, [] );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( func1, {} );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( func1, [ func1 ] );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( func1, { a : func1 } );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( func1, new F32x( 3 ) );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( func1, /abc/ );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( func1, function(){} );
+    test.false( got );
+
+    /* */
+
+    test.case = `Method : ${env.method}, Date - Date`;
+
+    var got = _.entity[ env.method ]( new Date(), new Date() );
     test.true( got );
 
     var src1 = new Date();
     var src2 = new Date();
     src2.setFullYear( 1987 );
-    var got = _.entity.identicalShallow( src1, src2 );
+    var got = _.entity[ env.method ]( src1, src2 );
     test.false( got );
 
     /* */
 
-    test.case = 'Date - not Date';
+    test.case = `Method : ${env.method}, Date - not Date`;
 
-    var got = _.entity.identicalShallow( new Date(), '1' );
+    var got = _.entity[ env.method ]( new Date(), '1' );
     test.false( got );
 
-    var got = _.entity.identicalShallow( new Date(), undefined );
+    var got = _.entity[ env.method ]( new Date(), undefined );
     test.false( got );
 
-    var got = _.entity.identicalShallow( new Date(), null );
+    var got = _.entity[ env.method ]( new Date(), null );
     test.false( got );
 
-    var got = _.entity.identicalShallow( new Date(), NaN );
+    var got = _.entity[ env.method ]( new Date(), NaN );
     test.false( got );
 
-    var got = _.entity.identicalShallow( new Date(), 0 );
+    var got = _.entity[ env.method ]( new Date(), 0 );
     test.false( got );
 
-    var got = _.entity.identicalShallow( new Date(), 1 );
+    var got = _.entity[ env.method ]( new Date(), 1 );
     test.false( got );
 
-    var got = _.entity.identicalShallow( new Date(), [] );
+    var got = _.entity[ env.method ]( new Date(), [] );
     test.false( got );
 
-    var got = _.entity.identicalShallow( new Date(), {} );
+    var got = _.entity[ env.method ]( new Date(), {} );
     test.false( got );
 
-    var got = _.entity.identicalShallow( new Date(), [ new Date() ] );
+    var got = _.entity[ env.method ]( new Date(), [ new Date() ] );
     test.false( got );
 
-    var got = _.entity.identicalShallow( new Date(), { a : new Date() } );
+    var got = _.entity[ env.method ]( new Date(), { a : new Date() } );
     test.false( got );
 
-    var got = _.entity.identicalShallow( new Date(), new F32x( 3 ) );
+    var got = _.entity[ env.method ]( new Date(), new F32x( 3 ) );
     test.false( got );
 
-    var got = _.entity.identicalShallow( new Date(), /abc/ );
+    var got = _.entity[ env.method ]( new Date(), /abc/ );
     test.false( got );
 
-    var got = _.entity.identicalShallow( new Date(), function(){} );
-    test.false( got );
-
-    /* */
-
-    test.case = 'Array - Array';
-
-    var got = _.entity.identicalShallow( [], [] );
-    test.true( got );
-
-    var got = _.entity.identicalShallow( [ 0 ], [ 0 ] );
-    test.true( got );
-
-    var got = _.entity.identicalShallow( [ 1 ], [ 1 ] );
-    test.true( got );
-
-    var got = _.entity.identicalShallow( [ undefined ], [ undefined ] );
-    test.true( got );
-
-    var got = _.entity.identicalShallow( [ null ], [ null ] );
-    test.true( got );
-
-    var got = _.entity.identicalShallow( [ [ 1, 2, 3 ] ], [ [ 1, 2, 3 ] ] );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( [ [ 1, 2 ] ], [ [ 1, 2, 3 ] ] );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( [ [ 1, 2, 3 ] ], [ [ 1, 2 ] ] );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( [ [ 1, 2 ] ], [ [ 1 ] ] );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( [ [ 1, 3 ] ], [ 1, 3 ] );
-    test.false( got );
-
-    var got = _.entity.identicalShallow( [ null ], [ undefined ] );
+    var got = _.entity[ env.method ]( new Date(), function(){} );
     test.false( got );
 
     /* */
 
-    test.case = 'Array - not Array';
+    test.case = `Method : ${env.method}, Array - Array`;
 
-    var got = _.entity.identicalShallow( [], '1' );
+    var got = _.entity[ env.method ]( [], [] );
+    test.true( got );
+
+    var got = _.entity[ env.method ]( [ 0 ], [ 0 ] );
+    test.true( got );
+
+    var got = _.entity[ env.method ]( [ 1 ], [ 1 ] );
+    test.true( got );
+
+    var got = _.entity[ env.method ]( [ undefined ], [ undefined ] );
+    test.true( got );
+
+    var got = _.entity[ env.method ]( [ null ], [ null ] );
+    test.true( got );
+
+    var got = _.entity[ env.method ]( [ [ 1, 2, 3 ] ], [ [ 1, 2, 3 ] ] );
     test.false( got );
 
-    var got = _.entity.identicalShallow( [], undefined );
+    var got = _.entity[ env.method ]( [ [ 1, 2 ] ], [ [ 1, 2, 3 ] ] );
     test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( [], null );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [ [ 1, 2, 3 ] ], [ [ 1, 2 ] ] );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( [], NaN );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [ [ 1, 2 ] ], [ [ 1 ] ] );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( [], 0 );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [ [ 1, 3 ] ], [ 1, 3 ] );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( [], 1 );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [ null ], [ undefined ] );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( [], {} );
-  test.identical( got, expected );
+    /* */
 
-  var expected = false;
-  var got = _.entity.identicalShallow( [], new Date() );
-  test.identical( got, expected );
+    test.case = `Method : ${env.method}, Array - not Array`;
 
-  var expected = false;
-  var got = _.entity.identicalShallow( [], new F32x( 3 ) );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [], '1' );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( [], /(?:)/ );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [], undefined );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( [], function(){} );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [], null );
+    test.false( got );
 
-  /* */
+    var got = _.entity[ env.method ]( [], NaN );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( [ '1' ], '1' );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [], 0 );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( [ undefined ], undefined );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [], 1 );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( [ null ], null );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [], {} );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( [ NaN ], NaN );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [], new Date() );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( [ 0 ], 0 );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [], new F32x( 3 ) );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( [ 1 ], 1 );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [], /(?:)/ );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( [ {} ], {} );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [], function(){} );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( [ new Date() ], new Date() );
-  test.identical( got, expected );
+    /* */
 
-  var expected = false;
-  var got = _.entity.identicalShallow( [ new F32x( 3 ) ], new F32x( 3 ) );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [ '1' ], '1' );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( [ /(?:)/ ], /(?:)/ );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [ undefined ], undefined );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( [ function(){} ], function(){} );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [ null ], null );
+    test.false( got );
 
-  /* */
+    var got = _.entity[ env.method ]( [ NaN ], NaN );
+    test.false( got );
 
-  test.case = 'Map - Map';
+    var got = _.entity[ env.method ]( [ 0 ], 0 );
+    test.false( got );
 
-  var expected = true;
-  var got = _.entity.identicalShallow( {}, {} );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [ 1 ], 1 );
+    test.false( got );
 
-  var expected = true;
-  var got = _.entity.identicalShallow( { a : 0 }, { a : 0 } );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [ {} ], {} );
+    test.false( got );
 
-  var expected = true;
-  var got = _.entity.identicalShallow( { a : 1 }, { a : 1 } );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [ new Date() ], new Date() );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( { a : 1, b : 1 }, { a : 1 } );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [ new F32x( 3 ) ], new F32x( 3 ) );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( { a : 1 }, { a : 1, b : 1 } );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [ /(?:)/ ], /(?:)/ );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( { a : undefined, b : 1 }, { a : undefined } );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( [ function(){} ], function(){} );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( { a : undefined }, { a : undefined, b : 1 } );
-  test.identical( got, expected );
+    /* */
 
-  var expected = true;
-  var got = _.entity.identicalShallow( { a : undefined }, { a : undefined } );
-  test.identical( got, expected );
+    test.case = `Method : ${env.method}, Map - Map`;
 
-  var expected = true;
-  var got = _.entity.identicalShallow( { a : null }, { a : null } );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( {}, {} );
+    test.true( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( { a : { b : 1 } }, { a : { b : 1 } } );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( { a : 0 }, { a : 0 } );
+    test.true( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( { a : { b : 1 } }, { a : { b : 1, c : 2 } } );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( { a : 1 }, { a : 1 } );
+    test.true( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( { a : { b : 1, c : 2 } }, { a : { b : 1 } } );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( { a : 1, b : 1 }, { a : 1 } );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( { a : { b : 1, c : 3 } }, { b : 1, c : 3 } );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( { a : 1 }, { a : 1, b : 1 } );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( { a : null }, { a : undefined } );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( { a : undefined, b : 1 }, { a : undefined } );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( { a : undefined }, {} );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( { a : undefined }, { a : undefined, b : 1 } );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( {}, { a : undefined } );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( { a : undefined }, { a : undefined } );
+    test.true( got );
 
-  /* */
+    var got = _.entity[ env.method ]( { a : null }, { a : null } );
+    test.true( got );
 
-  test.case = 'Map - not Map';
+    var got = _.entity[ env.method ]( { a : { b : 1 } }, { a : { b : 1 } } );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( {}, '1' );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( { a : { b : 1 } }, { a : { b : 1, c : 2 } } );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( {}, undefined );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( { a : { b : 1, c : 2 } }, { a : { b : 1 } } );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( {}, null );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( { a : { b : 1, c : 3 } }, { b : 1, c : 3 } );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( {}, NaN );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( { a : null }, { a : undefined } );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( {}, 0 );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( { a : undefined }, {} );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( {}, 1 );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( {}, { a : undefined } );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( {}, [] );
-  test.identical( got, expected );
+    /* */
 
-  var expected = false;
-  var got = _.entity.identicalShallow( {}, [ 0 ] );
-  test.identical( got, expected );
+    test.case = `Method : ${env.method}, Map - Not Map`;
 
-  var expected = false;
-  var got = _.entity.identicalShallow( {}, [ 1 ] );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( {}, '1' );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( {}, new Date() );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( {}, undefined );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( {}, new F32x( 3 ) );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( {}, null );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( {}, /(?:)/ );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( {}, NaN );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( {}, function(){} );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( {}, 0 );
+    test.false( got );
 
-  /* */
+    var got = _.entity[ env.method ]( {}, 1 );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( { a : '1' }, '1' );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( {}, [] );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( { a : undefined }, undefined );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( {}, [ 0 ] );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( { a : null }, null );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( {}, [ 1 ] );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( { a : NaN }, NaN );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( {}, new Date() );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( { a : 0 }, 0 );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( {}, new F32x( 3 ) );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( { a : 1 }, 1 );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( {}, /(?:)/ );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( { a : {} }, {} );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( {}, function(){} );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( { a : new Date() }, new Date() );
-  test.identical( got, expected );
+    /* */
 
-  var expected = false;
-  var got = _.entity.identicalShallow( { a : new F32x( 3 ) }, new F32x( 3 ) );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( { a : '1' }, '1' );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( { a : /(?:)/ }, /(?:)/ );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( { a : undefined }, undefined );
+    test.false( got );
 
-  var expected = false;
-  var got = _.entity.identicalShallow( { a : function(){} }, function(){} );
-  test.identical( got, expected );
+    var got = _.entity[ env.method ]( { a : null }, null );
+    test.false( got );
 
+    var got = _.entity[ env.method ]( { a : NaN }, NaN );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( { a : 0 }, 0 );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( { a : 1 }, 1 );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( { a : {} }, {} );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( { a : new Date() }, new Date() );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( { a : new F32x( 3 ) }, new F32x( 3 ) );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( { a : /(?:)/ }, /(?:)/ );
+    test.false( got );
+
+    var got = _.entity[ env.method ]( { a : function(){} }, function(){} );
+    test.false( got );;
   }
 }
 
@@ -8572,7 +8536,7 @@ const Proto =
     strTypeWithoutTraitsGeneratedObject,
 
     // equaler
-
+    eqShallowBasic,
     identicalShallowBasic, /* qqq : for Rahul : merge test routines identicalShallowBasic and equivalentShallowBasic into single test routine eqShallowBasic */
     identicalShallowAllTypes, /* qqq : for Rahul : merge test routines identicalShallowAllTypes and equivalentShallowAllTypes into single test routine eqShallowAllTypes */
     equivalentShallowBasic,
