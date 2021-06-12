@@ -1686,23 +1686,17 @@ function eqShallowBasic( test )
   test.true( _.entity.identicalShallow( { a : 1 }, { a : 1 } ));
   test.true( _.entity.equivalentShallow( { a : 1 }, { a : 1 } ));
 
-  var src1 = { a : 1, b : 1 };
-  var src2 = { a : 1 };
+  test.true( !_.entity.identicalShallow( { a : 1, b : 1 }, { a : 1 } ));
+  test.true( !_.entity.equivalentShallow( { a : 1, b : 1 }, { a : 1 } ));
 
-  test.true( !_.entity.identicalShallow( src1, src2 ));
-  test.true( !_.entity.equivalentShallow( src1, src2 ));
+  test.true( !_.entity.identicalShallow( { a : 1 }, { a : 1, b : 1 } ));
+  test.true( !_.entity.equivalentShallow( { a : 1 }, { a : 1, b : 1 } ));
 
-  test.true( !_.entity.identicalShallow( src2, src1 ));
-  test.true( !_.entity.equivalentShallow( src2, src1 ));
+  test.true( !_.entity.identicalShallow( { a : undefined, b : 1 }, { a : undefined } ));
+  test.true( !_.entity.equivalentShallow( { a : undefined, b : 1 }, { a : undefined } ));
 
-  var src1 = { a : undefined, b : 1 };
-  var src2 = { a : undefined };
-
-  test.true( !_.entity.identicalShallow( src1, src2 ));
-  test.true( !_.entity.equivalentShallow( src1, src2 ));
-
-  test.true( !_.entity.identicalShallow( src2, src1 ));
-  test.true( !_.entity.equivalentShallow( src2, src1 ));
+  test.true( !_.entity.identicalShallow( { a : undefined }, { a : undefined, b : 1 } ));
+  test.true( !_.entity.equivalentShallow( { a : undefined }, { a : undefined, b : 1 } ));
 
   test.true( _.entity.identicalShallow( { a : null }, { a : null } ));
   test.true( _.entity.equivalentShallow( { a : null }, { a : null } ));
@@ -1722,14 +1716,11 @@ function eqShallowBasic( test )
   test.true( !_.entity.identicalShallow( { a : null }, { a : undefined } ));
   test.true( !_.entity.equivalentShallow( { a : null }, { a : undefined } ));
 
-  var src1 = { a : undefined };
-  var src2 = {};
+  test.true( !_.entity.identicalShallow( { a : undefined }, {} ));
+  test.true( !_.entity.equivalentShallow( { a : undefined }, {} ));
 
-  test.true( !_.entity.identicalShallow( src1, src2 ));
-  test.true( !_.entity.equivalentShallow( src1, src2 ));
-
-  test.true( !_.entity.identicalShallow( src2, src1 ));
-  test.true( !_.entity.equivalentShallow( src2, src1 ));
+  test.true( !_.entity.identicalShallow( {}, { a : undefined } ));
+  test.true( !_.entity.equivalentShallow( {}, { a : undefined } ));
 
   /* */
 
