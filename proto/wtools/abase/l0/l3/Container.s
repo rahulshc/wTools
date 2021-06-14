@@ -14,7 +14,7 @@ const _functor_functor = _.container._functor_functor;
 function _exportStringDiagnosticShallow( src, o )
 {
   let result;
-  let namespace = this.namespaceOfEntity( src );
+  let namespace = this.namespaceForExporting( src );
 
   if( namespace )
   result = namespace.exportStringDiagnosticShallow( src );

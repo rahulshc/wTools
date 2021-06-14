@@ -95,13 +95,13 @@ function strTypeWithTraits( src )
   {
 
     if( _.mapIsPure( src ) )
-    return 'Map.pure';
+    return end( 'Map.pure' );
     else if( _.mapIsPolluted( src ) )
-    return 'Map.polluted';
+    return end( 'Map.polluted' );
     else if( _.aux.isPure( src ) && _.aux.isPrototyped( src ) )
-    return 'Aux.pure.prototyped';
+    return end( 'Aux.pure.prototyped' );
     else if( _.aux.isPolluted( src ) && _.aux.isPrototyped( src ) )
-    return 'Aux.polluted.prototyped';
+    return end( 'Aux.polluted.prototyped' );
     else _.assert( 0, 'undexpected' );
 
   }
@@ -144,12 +144,10 @@ function strTypeWithoutTraits( src )
 
   if( _.aux.is( src ) )
   {
-
     if( _.mapIs( src ) )
     return 'Map';
     else
     return 'Aux';
-
   }
 
   if( _.primitive.is( src ) )
@@ -175,7 +173,7 @@ function strTypeWithoutTraits( src )
 // meta
 // --
 
-function namespaceOfContainer( src ) /* qqq for junior : cover please */
+function namespaceForIterating( src ) /* qqq for junior : cover please */
 {
   _.assert( arguments.length === 1 );
 
@@ -187,13 +185,13 @@ function namespaceOfContainer( src ) /* qqq for junior : cover please */
   return _.hashMap;
   if( _.set.like( src ) )
   return _.set;
-  if( _.longIs( src ) )
+  if( _.long.is( src ) )
   return _.long;
   if( _.buffer.like( src ) )
   return _.buffer;
-  if( _.mapIs( src ) )
-  return _.map;
-  if( _.auxIs( src ) )
+  if( _.countable.is( src ) )
+  return _.object;
+  if( _.aux.is( src ) )
   return _.aux;
   if( _.object.is( src ) )
   return _.object;
@@ -305,9 +303,9 @@ let EntityExtension =
 
   // meta
 
-  namespaceOfContainer,
-  namespaceOfEntity : _.container.namespaceOfEntity,
-  namespaceOf : namespaceOfContainer,
+  namespaceForIterating,
+  namespaceForExporting : _.container.namespaceForExporting,
+  namespaceOf : namespaceForIterating,
   namespaceWithDefaultOf : _.props.namespaceWithDefaultOf,
   _functor_functor : _.props._functor_functor,
 
