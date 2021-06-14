@@ -560,6 +560,12 @@ function cardinalWithKey( test )
   var expected = -1;
   test.identical( got, expected );
 
+  test.case = 'with duplicates';
+  var src = new Set( [ 1, 3, 4, 4, 1, 2 ] );
+  var got = _.set.cardinalWithKey( src, 4 );
+  var expected = 2;
+  test.identical( got, expected );
+
   test.case = 'wrong src';
   test.shouldThrowErrorSync( () => _.set.hasKey( 2, 2 ) );
   test.shouldThrowErrorSync( () => _.set.hasKey( new Set( {} ) ) );
