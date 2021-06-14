@@ -2000,7 +2000,6 @@ function eqShallowAllTypes( test )
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
 
-
   test.case = 'boolLike & number & fuzzyLike';
   var src1 = 0;
   var src2 = 0;
@@ -2013,20 +2012,17 @@ function eqShallowAllTypes( test )
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
 
-
   test.case = 'bigint';
   var src1 = 10n;
   var src2 = 10n;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
 
-
   test.case = 'str & regexpLike';
   var src1 = 'str';
   var src2 = 'str';
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
-
 
   test.case = 'regexp & objectLike & constructible & constructibleLike';
   var src1 = /hello/g;
