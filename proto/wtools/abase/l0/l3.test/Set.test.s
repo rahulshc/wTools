@@ -23,14 +23,14 @@ function aptLeft( test )
   /* */
 
   test.case = 'left';
-  var src = new Set( [ 1, 2, 3 ] );
+  var src = new Set([ 1, 2, 3 ]);
   var ops = [];
   var got = _.set.aptLeft( src, function( val )
   {
     ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 1 )
     return val + 10;
-  } );
+  });
   var exp = [ 11, 1, 0, true ];
   test.identical( got, exp );
   var exp =
@@ -47,14 +47,14 @@ function aptLeft( test )
   /* */
 
   test.case = 'middle';
-  var src = new Set( [ 1, 2, 3 ] );
+  var src = new Set([ 1, 2, 3 ]);
   var ops = [];
   var got = _.set.aptLeft( src, function( val )
   {
     ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 2 )
     return val + 10;
-  } );
+  });
   var exp = [ 12, 2, 1, true ];
   test.identical( got, exp );
   var exp =
@@ -77,14 +77,14 @@ function aptLeft( test )
   /* */
 
   test.case = 'right';
-  var src = new Set( [ 1, 2, 3 ] );
+  var src = new Set([ 1, 2, 3 ]);
   var ops = [];
   var got = _.set.aptLeft( src, function( val )
   {
     ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 3 )
     return val + 10;
-  } );
+  });
   var exp = [ 13, 3, 2, true ];
   test.identical( got, exp );
   var exp =
@@ -113,14 +113,14 @@ function aptLeft( test )
   /* */
 
   test.case = 'no';
-  var src = new Set( [ 1, 2, 3 ] );
+  var src = new Set([ 1, 2, 3 ]);
   var ops = [];
   var got = _.set.aptLeft( src, function( val )
   {
     ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 4 )
     return val + 10;
-  } );
+  });
   var exp = [ 3, 3, 2, false ];
   test.identical( got, exp );
   var exp =
@@ -149,24 +149,25 @@ function aptLeft( test )
   /* */
 
   test.case = 'empty';
-  var src = new Set( [] );
+  var src = new Set([]);
   var ops = [];
   var got = _.set.aptLeft( src, function( val )
   {
     ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 4 )
     return val + 10;
-  } );
+  });
   var exp = [ undefined, undefined, -1, false ];
   test.identical( got, exp );
   var exp =
-  []
+  [
+  ]
   test.identical( ops, exp );
 
   /* */
 
   test.case = 'without callback';
-  var src = new Set( [ 1, 2, 3 ] );
+  var src = new Set([ 1, 2, 3 ]);
   var exp = [ 1, 1, 0, true ];
   var got = _.set.aptLeft( src );
   test.identical( got, exp );
@@ -177,7 +178,7 @@ function aptLeft( test )
   /* */
 
   test.case = 'without callback, empty';
-  var src = new Set( [] );
+  var src = new Set([]);
   var exp = [ undefined, undefined, -1, false ];
   var got = _.set.aptLeft( src );
   test.identical( got, exp );
@@ -197,14 +198,14 @@ function aptRight( test )
   /* */
 
   test.case = 'left';
-  var src = new Set( [ 1, 2, 3 ] );
+  var src = new Set([ 1, 2, 3 ]);
   var ops = [];
   var got = _.set.aptRight( src, function( val )
   {
     ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 1 )
     return val + 10;
-  } );
+  });
   var exp = [ 11, 1, 0, true ];
   test.identical( got, exp );
   var exp =
@@ -233,14 +234,14 @@ function aptRight( test )
   /* */
 
   test.case = 'middle';
-  var src = new Set( [ 1, 2, 3 ] );
+  var src = new Set([ 1, 2, 3 ]);
   var ops = [];
   var got = _.set.aptRight( src, function( val )
   {
     ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 2 )
     return val + 10;
-  } );
+  });
   var exp = [ 12, 2, 1, true ];
   test.identical( got, exp );
   var exp =
@@ -263,14 +264,14 @@ function aptRight( test )
   /* */
 
   test.case = 'right';
-  var src = new Set( [ 1, 2, 3 ] );
+  var src = new Set([ 1, 2, 3 ]);
   var ops = [];
   var got = _.set.aptRight( src, function( val )
   {
     ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 3 )
     return val + 10;
-  } );
+  });
   var exp = [ 13, 3, 2, true ];
   test.identical( got, exp );
   var exp =
@@ -287,14 +288,14 @@ function aptRight( test )
   /* */
 
   test.case = 'no';
-  var src = new Set( [ 1, 2, 3 ] );
+  var src = new Set([ 1, 2, 3 ]);
   var ops = [];
   var got = _.set.aptRight( src, function( val )
   {
     ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 4 )
     return val + 10;
-  } );
+  });
   var exp = [ 1, 1, 0, false ];
   test.identical( got, exp );
   var exp =
@@ -323,24 +324,25 @@ function aptRight( test )
   /* */
 
   test.case = 'empty';
-  var src = new Set( [] );
+  var src = new Set([]);
   var ops = [];
   var got = _.set.aptRight( src, function( val )
   {
     ops.push( Array.prototype.slice.call( arguments ) );
     if( val === 4 )
     return val + 10;
-  } );
+  });
   var exp = [ undefined, undefined, -1, false ];
   test.identical( got, exp );
   var exp =
-  []
+  [
+  ]
   test.identical( ops, exp );
 
   /* */
 
   test.case = 'without callback';
-  var src = new Set( [ 1, 2, 3 ] );
+  var src = new Set([ 1, 2, 3 ]);
   var exp = [ 3, 3, 2, true ];
   var got = _.set.aptRight( src );
   test.identical( got, exp );
@@ -351,7 +353,7 @@ function aptRight( test )
   /* */
 
   test.case = 'without callback, empty';
-  var src = new Set( [] );
+  var src = new Set([]);
   var exp = [ undefined, undefined, -1, false ];
   var got = _.set.aptRight( src );
   test.identical( got, exp );
@@ -433,7 +435,7 @@ function hasKey( test )
 
   test.case = 'string, with key';
   var src = new Set( 'a' );
-  var got = _.set.hasKey( src, 'b' );
+  var got = _.set.hasKey( src, 'a' );
   var expected = true;
   test.identical( got, expected );
 
@@ -476,6 +478,8 @@ function hasCardinal( test )
   var expected = false;
   test.identical( got, expected );
 }
+
+//
 
 function keyWithCardinal( test )
 {
@@ -602,4 +606,4 @@ const Self = wTestSuite( Proto );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 
-} )();
+})();
