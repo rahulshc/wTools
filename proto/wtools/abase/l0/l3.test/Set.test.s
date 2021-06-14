@@ -442,6 +442,41 @@ function hasKey( test )
   test.shouldThrowErrorSync( () => _.set.hasKey( new Set( {} ) ) );
 }
 
+//
+
+function hasCardinal( test )
+{
+  test.case = 'empty array, no cardinal';
+  var src = new Set( [] );
+  var got = _.set.hasCardinal( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'empty array, with cardinal';
+  var src = new Set( [] );
+  var got = _.set.hasCardinal( src, 1 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'numbers array, cardinal < 0';
+  var src = new Set( [] );
+  var got = _.set.hasCardinal( src, -1 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'numbers array, cardinal < array size';
+  var src = new Set( [ 1, 2, 3 ] );
+  var got = _.set.hasCardinal( src, 2 );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'string array, cardinal > array size';
+  var src = new Set( [ 'a', 'b', 'c', [] ] );
+  var got = _.set.hasCardinal( src, 5 );
+  var expected = false;
+  test.identical( got, expected );
+}
+
 // --
 // declaration
 // --
@@ -459,6 +494,7 @@ const Proto =
     aptRight,
     lengthOf,
     hasKey,
+    hasCardinal,
 
   }
 
