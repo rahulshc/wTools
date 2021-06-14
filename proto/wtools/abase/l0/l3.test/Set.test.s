@@ -532,6 +532,39 @@ function keyWithCardinal( test )
   test.shouldThrowErrorSync( () => _.set.hasKey( new Set( {} ) ) );
 }
 
+//
+
+function cardinalWithKey( test )
+{
+  test.case = 'array of strings, with key';
+  var src = new Set( [ 'a', 'b', 'c' ] );
+  var got = _.set.cardinalWithKey( src, 'b' );
+  var expected = 1;
+  test.identical( got, expected );
+
+  test.case = 'array of numbers, with wrong key';
+  var src = new Set( [ 1, 2, 3 ] );
+  var got = _.set.cardinalWithKey( src, 5 );
+  var expected = -1;
+  test.identical( got, expected );
+
+  test.case = 'string';
+  var src = new Set( 'a' );
+  var got = _.set.cardinalWithKey( src, 'a' );
+  var expected = 0;
+  test.identical( got, expected );
+
+  test.case = 'two dimensional array';
+  var src = new Set( [ [ 2 ], [ 1, 2, 3 ] ] );
+  var got = _.set.cardinalWithKey( src, 1 );
+  var expected = -1;
+  test.identical( got, expected );
+
+  test.case = 'wrong src';
+  test.shouldThrowErrorSync( () => _.set.hasKey( 2, 2 ) );
+  test.shouldThrowErrorSync( () => _.set.hasKey( new Set( {} ) ) );
+}
+
 // --
 // declaration
 // --
@@ -551,6 +584,7 @@ const Proto =
     hasKey,
     hasCardinal,
     keyWithCardinal,
+    cardinalWithKey,
 
   }
 
