@@ -433,7 +433,7 @@ function hasKey( test )
 
   test.case = 'string, with key';
   var src = new Set( 'a' );
-  var got = _.set.hasKey( src, 'a' );
+  var got = _.set.hasKey( src, 'b' );
   var expected = true;
   test.identical( got, expected );
 
@@ -477,6 +477,61 @@ function hasCardinal( test )
   test.identical( got, expected );
 }
 
+function keyWithCardinal( test )
+{
+  test.case = 'empty array';
+  var src = new Set( [] );
+  var got = _.set.keyWithCardinal( src, 1 );
+  var expected = [ undefined, false ];
+  test.identical( got, expected );
+
+  test.case = 'cardinal < 0';
+  var src = new Set( [ 1, 3, 4 ] );
+  var got = _.set.keyWithCardinal( src, -1 );
+  var expected = [ undefined, false ];
+  test.identical( got, expected );
+
+  test.case = 'array size = cardinal';
+  var src = new Set( 'a' );
+  var got = _.set.keyWithCardinal( src, 0 );
+  var expected = [ 'a', true ];
+  test.identical( got, expected );
+
+  test.case = 'array size > cardinal';
+  var src = new Set( [ [ 1, 3 ], [ 2, 4 ], [ 5, 7 ] ] );
+  var got = _.set.keyWithCardinal( src, 2 );
+  var expected = [ [ 5, 7 ], true ];
+  test.identical( got, expected );
+
+  test.case = 'array size < cardinal';
+  var src = new Set( [ { id : 1, text : 'x' }, { id : 2, text : 'y' }, [ 23 ] ] );
+  var got = _.set.keyWithCardinal( src, 3 );
+  var expected = [ undefined, false ];
+  test.identical( got, expected );
+
+  test.case = 'number array, cardinal of string';
+  var src = new Set( [ 1, 2 ] );
+  var got = _.set.keyWithCardinal( src, 'a' );
+  var expected = [ undefined, true ];
+  test.identical( got, expected );
+
+  test.case = 'duplicates, cardinal of array';
+  var src = new Set( [ 22, 1, 22, 2, 22, 3 ] );
+  var got = _.set.keyWithCardinal( src, [ 2 ] );
+  var expected = [ 2, true ];
+  test.identical( got, expected );
+
+  test.case = 'empty array, no cardinal';
+  var src = new Set( [] );
+  var got = _.set.keyWithCardinal( src );
+  var expected = [ undefined, true ];
+  test.identical( got, expected );
+
+  test.case = 'wrong src';
+  test.shouldThrowErrorSync( () => _.set.hasKey( 2, 2 ) );
+  test.shouldThrowErrorSync( () => _.set.hasKey( new Set( {} ) ) );
+}
+
 // --
 // declaration
 // --
@@ -495,6 +550,7 @@ const Proto =
     lengthOf,
     hasKey,
     hasCardinal,
+    keyWithCardinal,
 
   }
 
