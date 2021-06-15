@@ -370,19 +370,19 @@ function aptRight( test )
 function lengthOf( test )
 {
   test.case = 'empty set';
-  var src = new Set( [] );
+  var src = new Set([]);
   var got = _.set.lengthOf( src );
   var expected = 0;
   test.identical( got, expected );
 
   test.case = 'set of numbers';
-  var src = new Set( [ 1, 2, 3 ] );
+  var src = new Set([ 1, 2, 3 ]);
   var got = _.set.lengthOf( src );
   var expected = 3;
   test.identical( got, expected );
 
   test.case = 'set with undefined and boolean';
-  var src = new Set( [ 1, undefined, false ] );
+  var src = new Set([ 1, undefined, false ]);
   var got = _.set.lengthOf( src );
   var expected = 3;
   test.identical( got, expected );
@@ -396,7 +396,7 @@ function lengthOf( test )
   test.shouldThrowErrorSync( () => _.set.lengthOf( 'wrong' ) );
   test.shouldThrowErrorSync( () => _.set.lengthOf( 2 ) );
   test.shouldThrowErrorSync( () => _.set.lengthOf( [] ) );
-  test.shouldThrowErrorSync( () => _.set.lengthOf( new Set( {} ) ) );
+  test.shouldThrowErrorSync( () => _.set.lengthOf( new Set( {} ) ));
 }
 
 //
@@ -404,37 +404,37 @@ function lengthOf( test )
 function hasKey( test )
 {
   test.case = 'empty set, no key';
-  var src = new Set( [] );
+  var src = new Set([]);
   var got = _.set.hasKey( src );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'empty set, with key';
-  var src = new Set( [] );
+  var src = new Set([]);
   var got = _.set.hasKey( src, 1 );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'number set, with key';
-  var src = new Set( [ 1, 2, 3 ] );
+  var src = new Set([ 1, 2, 3 ]);
   var got = _.set.hasKey( src, 1 );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'number set, with wrong key';
-  var src = new Set( [ 1, 2, 3 ] );
+  var src = new Set([ 1, 2, 3 ]);
   var got = _.set.hasKey( src, 4 );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'set of strings, with key';
-  var src = new Set( [ 'a', 'b', 'c' ] );
+  var src = new Set([ 'a', 'b', 'c' ]);
   var got = _.set.hasKey( src, 'a' );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'string, with key';
-  var src = new Set( 'a' );
+  var src = new Set('a');
   var got = _.set.hasKey( src, 'a' );
   var expected = true;
   test.identical( got, expected );
@@ -449,31 +449,31 @@ function hasKey( test )
 function hasCardinal( test )
 {
   test.case = 'empty set, no cardinal';
-  var src = new Set( [] );
+  var src = new Set([]);
   var got = _.set.hasCardinal( src );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'empty set, with cardinal';
-  var src = new Set( [] );
+  var src = new Set([]);
   var got = _.set.hasCardinal( src, 1 );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'numbers set, cardinal < 0';
-  var src = new Set( [] );
+  var src = new Set([]);
   var got = _.set.hasCardinal( src, -1 );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'numbers set, cardinal < set size';
-  var src = new Set( [ 1, 2, 3 ] );
+  var src = new Set([ 1, 2, 3 ]);
   var got = _.set.hasCardinal( src, 2 );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'string set, cardinal > set size';
-  var src = new Set( [ 'a', 'b', 'c', [] ] );
+  var src = new Set([ 'a', 'b', 'c', [] ]);
   var got = _.set.hasCardinal( src, 5 );
   var expected = false;
   test.identical( got, expected );
@@ -484,49 +484,49 @@ function hasCardinal( test )
 function keyWithCardinal( test )
 {
   test.case = 'empty set';
-  var src = new Set( [] );
+  var src = new Set([]);
   var got = _.set.keyWithCardinal( src, 1 );
   var expected = [ undefined, false ];
   test.identical( got, expected );
 
   test.case = 'cardinal < 0';
-  var src = new Set( [ 1, 3, 4 ] );
+  var src = new Set([ 1, 3, 4 ]);
   var got = _.set.keyWithCardinal( src, -1 );
   var expected = [ undefined, false ];
   test.identical( got, expected );
 
   test.case = 'set size = cardinal';
-  var src = new Set( 'a' );
+  var src = new Set('a');
   var got = _.set.keyWithCardinal( src, 0 );
   var expected = [ 'a', true ];
   test.identical( got, expected );
 
   test.case = 'set size > cardinal';
-  var src = new Set( [ [ 1, 3 ], [ 2, 4 ], [ 5, 7 ] ] );
+  var src = new Set([ [ 1, 3 ], [ 2, 4 ], [ 5, 7 ] ]);
   var got = _.set.keyWithCardinal( src, 2 );
   var expected = [ [ 5, 7 ], true ];
   test.identical( got, expected );
 
   test.case = 'set size < cardinal';
-  var src = new Set( [ { id : 1, text : 'x' }, { id : 2, text : 'y' }, [ 23 ] ] );
+  var src = new Set([ { id : 1, text : 'x' }, { id : 2, text : 'y' }, [ 23 ] ]);
   var got = _.set.keyWithCardinal( src, 3 );
   var expected = [ undefined, false ];
   test.identical( got, expected );
 
   test.case = 'number set, cardinal of string';
-  var src = new Set( [ 1, 2 ] );
+  var src = new Set([ 1, 2 ]);
   var got = _.set.keyWithCardinal( src, 'a' );
   var expected = [ undefined, true ];
   test.identical( got, expected );
 
   test.case = 'duplicates, cardinal of set';
-  var src = new Set( [ 22, 1, 22, 2, 22, 3 ] );
+  var src = new Set([ 22, 1, 22, 2, 22, 3 ]);
   var got = _.set.keyWithCardinal( src, [ 2 ] );
   var expected = [ 2, true ];
   test.identical( got, expected );
 
   test.case = 'empty set, no cardinal';
-  var src = new Set( [] );
+  var src = new Set([]);
   var got = _.set.keyWithCardinal( src );
   var expected = [ undefined, true ];
   test.identical( got, expected );
@@ -541,31 +541,31 @@ function keyWithCardinal( test )
 function cardinalWithKey( test )
 {
   test.case = 'set of strings, with key';
-  var src = new Set( [ 'a', 'b', 'c' ] );
+  var src = new Set([ 'a', 'b', 'c' ]);
   var got = _.set.cardinalWithKey( src, 'b' );
   var expected = 1;
   test.identical( got, expected );
 
   test.case = 'set of numbers, with wrong key';
-  var src = new Set( [ 1, 2, 3 ] );
+  var src = new Set([ 1, 2, 3 ]);
   var got = _.set.cardinalWithKey( src, 5 );
   var expected = -1;
   test.identical( got, expected );
 
   test.case = 'string';
-  var src = new Set( 'a' );
+  var src = new Set('a');
   var got = _.set.cardinalWithKey( src, 'a' );
   var expected = 0;
   test.identical( got, expected );
 
   test.case = 'two dimensional set';
-  var src = new Set( [ [ 2 ], [ 1, 2, 3 ] ] );
+  var src = new Set([ [ 2 ], [ 1, 2, 3 ] ]);
   var got = _.set.cardinalWithKey( src, 1 );
   var expected = -1;
   test.identical( got, expected );
 
   test.case = 'with duplicates';
-  var src = new Set( [ 1, 3, 4, 4, 1, 2 ] );
+  var src = new Set([ 1, 3, 4, 4, 1, 2 ]);
   var got = _.set.cardinalWithKey( src, 4 );
   var expected = 2;
   test.identical( got, expected );
