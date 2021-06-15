@@ -94,7 +94,7 @@ function exportStringDiagnosticShallow( test )
 
   test.case = `object countable - empty, non-vector`;
   var src = __.diagnostic.objectMake({ new : 0, elements : [], countable : 1 } );
-  var expected = '{- Map.polluted with 9 elements -}';
+  var expected = '{- Map.polluted.countable with 0 elements -}';
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Global & GlobalReal';
@@ -223,7 +223,7 @@ function exportStringDiagnosticShallow( test )
 
   test.case = 'escape';
   var src = _.escape.make( 1 );
-  var expected = '{- Escape 1 -}';
+  var expected = '{- Escape.countable.constructible with 1 elements -}';
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'interval & BufferTyped';
@@ -473,7 +473,7 @@ function exportStringCodeShallow( test )
 
   test.case = `object countable - empty, non-vector`;
   var src = __.diagnostic.objectMake({ new : 0, elements : [], countable : 1 } );
-  var expected = '{- Map.polluted with 9 elements -}';
+  var expected = '{- Map.polluted.countable with 0 elements -}';
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'Global & GlobalReal';
@@ -602,7 +602,7 @@ function exportStringCodeShallow( test )
 
   test.case = 'escape';
   var src = _.escape.make( 1 );
-  var expected = '{- Escape 1 -}'; /* xxx2 : qqq : bad */
+  var expected = '{- Escape.countable.constructible with 1 elements -}';
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'interval & BufferTyped';

@@ -244,6 +244,7 @@ module:
           - ../proto/wtools/abase/l0/l1/Sorted.s
           - ../proto/wtools/abase/l0/l1/Str.s
           - ../proto/wtools/abase/l0/l1/Stringer.s
+          - ../proto/wtools/abase/l0/l1/StrLines.s
           - ../proto/wtools/abase/l0/l1/Symbol.s
           - ../proto/wtools/abase/l0/l1/Time.s
           - ../proto/wtools/abase/l0/l1/Type.s

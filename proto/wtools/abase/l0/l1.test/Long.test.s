@@ -18,6 +18,7 @@ const __ = _globals_.testing.wTools;
 //--
 
 /* qqq : for junior : merge routines is and like to routine dichotomy and extend */
+/* qqq2 : for Ragul : redo please */
 function dichotomy( test )
 {
 
