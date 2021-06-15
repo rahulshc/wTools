@@ -4739,6 +4739,132 @@ requireModuleFileWithAccessor.description =
 - no error  should be throwen in such case
 `
 
+//
+
+function requireSameModuleTwice( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let _ToolsPath_ = a.path.nativize( _.module.toolsPathGet() );
+  let programRoutine1Path = a.program({ routine : programRoutine1 });
+
+  /* */
+
+  begin()
+  a.appStartNonThrowing({ execPath : programRoutine1Path })
+  .then( ( op ) =>
+  {
+    test.identical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, 'nhandled' ), 0 );
+    test.identical( _.strCount( op.output, 'error' ), 0 );
+    test.identical( _.strCount( op.output, 'programRoutine1.begin' ), 1 );
+    test.identical( _.strCount( op.output, 'programRoutine1.end' ), 1 );
+    return null;
+  });
+
+  /* */
+
+  return a.ready;
+
+  function programRoutine1()
+  {
+    console.log( 'programRoutine1.begin' );
+    const _ = require( 'modulea' );
+    console.log( 'programRoutine1.end' );
+  }
+
+  /* */
+
+  function module1Make()
+  {
+    let modulea =
+    `
+    const _ToolsPath_ = '${_ToolsPath_}'
+    const _ = require( _ToolsPath_ );
+
+    _.include( 'moduleB' );
+
+    _.assert( !_.modulea, 'Module modulea is included for the second time' );
+    _.modulea = Object.create( null );
+
+    module.exports = _global_.wTools;
+
+    _.module.predeclare
+    ({
+      alias : [ 'moduleA', 'modulea' ],
+      entryPath : __filename,
+    });
+    `
+
+    let packageFile =
+    {
+      name : 'modulea',
+      main : 'proto/node_modules/modulea',
+    }
+
+    a.fileProvider.fileWrite({ filePath : a.abs( 'node_modules/modulea/package.json' ), data : packageFile, encoding : 'json' })
+    a.fileProvider.fileWrite({ filePath : a.abs( 'node_modules/modulea/proto/node_modules/modulea' ), data : modulea })
+  }
+
+  /* */
+
+  function module2Make()
+  {
+    let moduleb =
+    `
+    const _ToolsPath_ = '${_ToolsPath_}'
+    const _ = require( _ToolsPath_ );
+
+    debugger;
+    _.include( 'moduleA' );
+
+    _.assert( !_.moduleb, 'Module moduleb is included for the second time' );
+    _.moduleb = Object.create( null );
+
+    module.exports = _global_.wTools;
+
+    _.module.predeclare
+    ({
+      alias : [ 'moduleB', 'moduleb' ],
+      entryPath : __filename,
+    });
+    `
+
+    let packageFile =
+    {
+      name : 'moduleb',
+      main : 'proto/node_modules/moduleb',
+    }
+
+    a.fileProvider.fileWrite({ filePath : a.abs( 'node_modules/moduleb/package.json' ), data : packageFile, encoding : 'json' })
+    a.fileProvider.fileWrite({ filePath : a.abs( 'node_modules/moduleb/proto/node_modules/moduleb' ), data : moduleb })
+  }
+
+  /* */
+
+  function begin()
+  {
+    a.ready.then( () =>
+    {
+      module1Make();
+      module2Make();
+      return null;
+    });
+    return a.ready;
+
+  }
+}
+
+requireSameModuleTwice.description =
+`
+- Both modules have lowercase and uppercase version of the name
+- Main script includes moduleA via require( 'modulea' )
+- Module moduleA is cached using lowercase name of the module
+- Module moduleA includes moduleB via _.include( 'moduleB' )
+- Module moduleB includes moduleA via _.include( 'moduleA' )
+- Module moduleA should not be included for the second time, cached version should be used instead
+`
+
 // --
 // test suite declaration
 // --
@@ -4800,6 +4926,7 @@ const Proto =
 
     // requireThirdPartyModule
     requireModuleFileWithAccessor,
+    requireSameModuleTwice,
 
   }
 
