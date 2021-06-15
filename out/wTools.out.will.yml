@@ -168,6 +168,10 @@ module:
           - ../proto/node_modules
           - ../proto/node_modules/Tools
           - ../proto/node_modules/wTools
+          - ../proto/node_modules/wTools.l1
+          - ../proto/node_modules/wTools.l3
+          - ../proto/node_modules/wTools.l5
+          - ../proto/node_modules/wTools.l7
           - ../proto/wtools
           - ../proto/wtools/abase
           - ../proto/wtools/abase/l0
