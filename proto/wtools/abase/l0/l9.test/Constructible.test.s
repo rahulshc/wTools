@@ -1012,21 +1012,24 @@ function typingExtended( test )
   // test.true( _.aux.isPolluted( src ) );
   // test.true( !_.mapIsPolluted( src ) );
 
-  test.case = 'printerLike';
-  var src = _global.logger;
-  test.true( !_.constructible.like( src ) );
-  test.true( !_.constructible.is( src ) );
-  test.true( _.object.is( src ) );
-  test.true( _.object.like( src ) );
-  test.true( _.object.isBasic( src ) );
-  test.true( _.aux.like( src ) );
-  test.true( _.aux.is( src ) );
-  test.true( _.mapIs( src ) );
-  test.true( !_.aux.isPure( src ) );
-  test.true( !_.aux.isPrototyped( src ) );
-  test.true( !_.mapIsPure( src ) );
-  test.true( _.aux.isPolluted( src ) );
-  test.true( _.mapIsPolluted( src ) );
+  if( !_.Logger )
+  {
+    test.case = 'printerLike';
+    var src = _global.logger;
+    test.true( !_.constructible.like( src ) );
+    test.true( !_.constructible.is( src ) );
+    test.true( _.object.is( src ) );
+    test.true( _.object.like( src ) );
+    test.true( _.object.isBasic( src ) );
+    test.true( _.aux.like( src ) );
+    test.true( _.aux.is( src ) );
+    test.true( _.mapIs( src ) );
+    test.true( !_.aux.isPure( src ) );
+    test.true( !_.aux.isPrototyped( src ) );
+    test.true( !_.mapIsPure( src ) );
+    test.true( _.aux.isPolluted( src ) );
+    test.true( _.mapIsPolluted( src ) );
+  }
 
   test.case = 'process';
   var src = process;

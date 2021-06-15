@@ -2949,7 +2949,7 @@ function begin( test )
     return __.time.out( context.t1, () =>
     {
       test.identical( timer.onTime, onTime );
-      test.identical( timer.onCancel, undefined );
+      test.identical( timer.onCancel, null );
       test.identical( timer.state, 0 );
       test.identical( timer.result, undefined );
       _.time.cancel( timer );
@@ -2966,7 +2966,7 @@ function begin( test )
     return __.time.out( context.t1, () =>
     {
       test.identical( timer.onTime, onTime );
-      test.identical( timer.onCancel, undefined );
+      test.identical( timer.onCancel, null );
       test.identical( timer.state, 2 );
       test.identical( timer.result, 0 );
 
@@ -2980,7 +2980,7 @@ function begin( test )
     var timer = _.time.begin( Infinity, undefined, onCancel );
     return __.time.out( context.t1, () =>
     {
-      test.identical( timer.onTime, undefined );
+      test.identical( timer.onTime, null );
       test.identical( timer.onCancel, onCancel );
       test.identical( timer.state, 0 );
       test.identical( timer.result, undefined );
@@ -2997,7 +2997,7 @@ function begin( test )
     timer.cancel();
     return __.time.out( context.t1, () =>
     {
-      test.identical( timer.onTime, undefined );
+      test.identical( timer.onTime, null );
       test.identical( timer.onCancel, onCancel );
       test.identical( timer.state, -2 );
       test.identical( timer.result, -1 );
@@ -3043,7 +3043,7 @@ function begin( test )
     return __.time.out( context.t1, () =>
     {
       test.identical( timer.onTime, onTime );
-      test.identical( timer.onCancel, undefined );
+      test.identical( timer.onCancel, null );
       test.identical( timer.state, 2 );
       test.identical( timer.result, 0 );
 
@@ -3059,7 +3059,7 @@ function begin( test )
     return __.time.out( context.t1, () =>
     {
       test.identical( timer.onTime, onTime );
-      test.identical( timer.onCancel, undefined );
+      test.identical( timer.onCancel, null );
       test.identical( timer.state, 2 );
       test.identical( timer.result, 0 );
 
@@ -3073,7 +3073,7 @@ function begin( test )
     var timer = _.time.begin( 0, undefined, onCancel );
     return __.time.out( context.t1, () =>
     {
-      test.identical( timer.onTime, undefined );
+      test.identical( timer.onTime, null );
       test.identical( timer.onCancel, onCancel );
       test.identical( timer.state, 2 );
       test.identical( timer.result, undefined );
@@ -3089,7 +3089,7 @@ function begin( test )
     timer.cancel();
     return __.time.out( context.t1, () =>
     {
-      test.identical( timer.onTime, undefined );
+      test.identical( timer.onTime, null );
       test.identical( timer.onCancel, onCancel );
       test.identical( timer.state, -2 );
       test.identical( timer.result, -1 );
@@ -3131,7 +3131,7 @@ function begin( test )
     return __.time.out( context.t1 * 10, () =>
     {
       test.identical( timer.onTime, onTime );
-      test.identical( timer.onCancel, undefined );
+      test.identical( timer.onCancel, null );
       test.identical( timer.state, 2 );
       test.identical( timer.result, undefined );
       test.identical( times, 4 );
@@ -3162,7 +3162,7 @@ function begin( test )
     return __.time.out( context.t1, () =>
     {
       test.identical( timer.onTime, onTime );
-      test.identical( timer.onCancel, undefined );
+      test.identical( timer.onCancel, null );
       test.identical( timer.state, 2 );
       test.identical( timer.result, 0 );
 
@@ -3177,7 +3177,7 @@ function begin( test )
     return __.time.out( context.t1, () =>
     {
       test.identical( timer.onTime, onTime );
-      test.identical( timer.onCancel, undefined );
+      test.identical( timer.onCancel, null );
       test.identical( timer.state, 0 );
       test.identical( timer.result, undefined );
       _.time.cancel( timer );
@@ -3194,7 +3194,7 @@ function begin( test )
     return __.time.out( context.t1, () =>
     {
       test.identical( timer.onTime, onTime );
-      test.identical( timer.onCancel, undefined );
+      test.identical( timer.onCancel, null );
       test.identical( timer.state, 2 );
       test.identical( timer.result, 0 );
 
@@ -3208,7 +3208,7 @@ function begin( test )
     var timer = _.time.begin( context.t1/2, undefined, onCancel );
     return __.time.out( context.t1, () =>
     {
-      test.identical( timer.onTime, undefined );
+      test.identical( timer.onTime, null );
       test.identical( timer.onCancel, onCancel );
       test.identical( timer.state, 2 );
       test.identical( timer.result, undefined );
@@ -3224,7 +3224,7 @@ function begin( test )
     timer.cancel();
     return __.time.out( context.t1, () =>
     {
-      test.identical( timer.onTime, undefined );
+      test.identical( timer.onTime, null );
       test.identical( timer.onCancel, onCancel );
       test.identical( timer.state, -2 );
       test.identical( timer.result, -1 );
@@ -3282,7 +3282,7 @@ function begin( test )
     return __.time.out( context.t1 * 10, () =>
     {
       test.identical( timer.onTime, onTime );
-      test.identical( timer.onCancel, undefined );
+      test.identical( timer.onCancel, null );
       test.identical( timer.state, 2 );
       test.identical( timer.result, undefined );
       test.identical( times, 4 );
@@ -3500,7 +3500,7 @@ function beginTimerInsideOfCallback( test )
     return __.time.out( context.t1 * 100, () =>
     {
       test.identical( timer.onTime, onTime );
-      test.identical( timer.onCancel, undefined );
+      test.identical( timer.onCancel, null );
       test.identical( timer.state, 2 );
       test.identical( timer.result, 1 );
       test.identical( result, [ 1, 2 ] );
@@ -3531,7 +3531,7 @@ function beginTimerInsideOfCallback( test )
     return __.time.out( context.t1 * 100, () =>
     {
       test.identical( timer.onTime, onTime );
-      test.identical( timer.onCancel, undefined );
+      test.identical( timer.onCancel, null );
       test.identical( timer.state, 2 );
       test.identical( timer.result, -1 );
       test.identical( result, [ 1, 1, 1, -1 ] );
@@ -3568,8 +3568,8 @@ function finally_( test )
     var timer = _.time.finally( Infinity, undefined );
     return __.time.out( context.t1, () =>
     {
-      test.identical( timer.onTime, undefined );
-      test.identical( timer.onCancel, undefined );
+      test.identical( timer.onTime, null );
+      test.identical( timer.onCancel, null );
       test.identical( timer.state, 0 );
       test.identical( timer.result, undefined );
       _.time.cancel( timer );
@@ -3646,8 +3646,8 @@ function finally_( test )
     var timer = _.time.finally( 0, undefined );
     return __.time.out( context.t1, () =>
     {
-      test.identical( timer.onTime, undefined );
-      test.identical( timer.onCancel, undefined );
+      test.identical( timer.onTime, null );
+      test.identical( timer.onCancel, null );
       test.identical( timer.state, 2 );
       test.identical( timer.result, undefined );
 
@@ -3750,8 +3750,8 @@ function finally_( test )
     var timer = _.time.finally( context.t1/2, undefined );
     return __.time.out( context.t1, () =>
     {
-      test.identical( timer.onTime, undefined );
-      test.identical( timer.onCancel, undefined );
+      test.identical( timer.onTime, null );
+      test.identical( timer.onCancel, null );
       test.identical( timer.state, 2 );
       test.identical( timer.result, undefined );
 
@@ -3765,8 +3765,8 @@ function finally_( test )
     var timer = _.time.finally( context.t1 * 10, undefined );
     return __.time.out( context.t1, () =>
     {
-      test.identical( timer.onTime, undefined );
-      test.identical( timer.onCancel, undefined );
+      test.identical( timer.onTime, null );
+      test.identical( timer.onCancel, null );
       test.identical( timer.state, 0 );
       test.identical( timer.result, undefined );
       _.time.cancel( timer );
@@ -4080,7 +4080,7 @@ function periodic( test )
     return __.time.out( context.t1 * 20, () =>
     {
       test.identical( timer.onTime, onTime );
-      test.identical( timer.onCancel, undefined );
+      test.identical( timer.onCancel, null );
       test.identical( timer.state, -2 );
       test.identical( timer.result, undefined );
       test.identical( times, 0 );
@@ -4110,7 +4110,7 @@ function periodic( test )
     return __.time.out( context.t1 * 20, () =>
     {
       test.identical( timer.onTime, onTime );
-      test.identical( timer.onCancel, undefined );
+      test.identical( timer.onCancel, null );
       test.identical( timer.state, -2 );
       test.identical( timer.result, _.dont );
       test.identical( times, 0 );
@@ -4182,7 +4182,7 @@ function periodic( test )
     return __.time.out( context.t1 * 40, () =>
     {
       test.identical( timer.onTime, onTime );
-      test.identical( timer.onCancel, undefined );
+      test.identical( timer.onCancel, null );
       test.true( timer.state === -2 );
       test.identical( timer.result, undefined );
       test.identical( times, 0 );
@@ -4212,7 +4212,7 @@ function periodic( test )
     return __.time.out( context.t1 * 40, () =>
     {
       test.identical( timer.onTime, onTime );
-      test.identical( timer.onCancel, undefined );
+      test.identical( timer.onCancel, null );
       test.identical( timer.state, -2 );
       test.identical( timer.result, _.dont );
       test.identical( times, 0 );
