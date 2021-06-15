@@ -99,7 +99,7 @@ function entityFilterDeep( src, onEach )
 //
 
 /*
-qqq2 : poor coverage and implementation was wrong!
+qqq : for Dmytro : poor coverage and implementation was wrong!
 */
 
 function _entityIndex_functor( fop )

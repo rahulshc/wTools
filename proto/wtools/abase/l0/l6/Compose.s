@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-// _global_.wTools.compose = _global_.wTools.compose || Object.create( null );
+// _.compose = _.compose || Object.create( null );
 _.routine.chainer = _.routine.chainer || Object.create( null );
 _.routine.tail = _.routine.tail || Object.create( null );
 

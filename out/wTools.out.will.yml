@@ -244,6 +244,7 @@ module:
           - ../proto/wtools/abase/l0/l1/Sorted.s
           - ../proto/wtools/abase/l0/l1/Str.s
           - ../proto/wtools/abase/l0/l1/Stringer.s
+          - ../proto/wtools/abase/l0/l1/StrLines.s
           - ../proto/wtools/abase/l0/l1/Symbol.s
           - ../proto/wtools/abase/l0/l1/Time.s
           - ../proto/wtools/abase/l0/l1/Type.s
@@ -264,12 +265,16 @@ module:
           - ../proto/wtools/abase/l0/l1.test/Container.test.s
           - ../proto/wtools/abase/l0/l1.test/ContainerAdapter.test.s
           - ../proto/wtools/abase/l0/l1.test/Countable.test.s
+          - ../proto/wtools/abase/l0/l1.test/Diagnostic.test.s
           - ../proto/wtools/abase/l0/l1.test/Entity.test.s
+          - ../proto/wtools/abase/l0/l1.test/Err.test.s
           - ../proto/wtools/abase/l0/l1.test/HashMap.test.s
+          - ../proto/wtools/abase/l0/l1.test/Introspector.test.s
           - ../proto/wtools/abase/l0/l1.test/Itself.test.s
           - ../proto/wtools/abase/l0/l1.test/Logic.test.s
           - ../proto/wtools/abase/l0/l1.test/Long.test.s
           - ../proto/wtools/abase/l0/l1.test/Map.test.s
+          - ../proto/wtools/abase/l0/l1.test/Module.test.s
           - ../proto/wtools/abase/l0/l1.test/Number.test.s
           - ../proto/wtools/abase/l0/l1.test/Object.test.s
           - ../proto/wtools/abase/l0/l1.test/Primitive.test.s
@@ -289,6 +294,7 @@ module:
           - ../proto/wtools/abase/l0/l3/2Props.s
           - ../proto/wtools/abase/l0/l3/3Blank.s
           - ../proto/wtools/abase/l0/l3/3Long.s
+          - ../proto/wtools/abase/l0/l3/3Path.s
           - ../proto/wtools/abase/l0/l3/ArgumentsArray.s
           - ../proto/wtools/abase/l0/l3/Array.s
           - ../proto/wtools/abase/l0/l3/ArraySet.s
@@ -303,6 +309,7 @@ module:
           - ../proto/wtools/abase/l0/l3/Diagnostic.s
           - ../proto/wtools/abase/l0/l3/Entity.s
           - ../proto/wtools/abase/l0/l3/Escape.s
+          - ../proto/wtools/abase/l0/l3/Event.s
           - ../proto/wtools/abase/l0/l3/HashMap.s
           - ../proto/wtools/abase/l0/l3/Itself.s
           - ../proto/wtools/abase/l0/l3/Logic.s
@@ -311,6 +318,7 @@ module:
           - ../proto/wtools/abase/l0/l3/Number.s
           - ../proto/wtools/abase/l0/l3/Object.s
           - ../proto/wtools/abase/l0/l3/Primitive.s
+          - ../proto/wtools/abase/l0/l3/Process.s
           - ../proto/wtools/abase/l0/l3/Regexp.s
           - ../proto/wtools/abase/l0/l3/Routine.s
           - ../proto/wtools/abase/l0/l3/Seeker.s
@@ -320,6 +328,7 @@ module:
           - ../proto/wtools/abase/l0/l3/Time.s
           - ../proto/wtools/abase/l0/l3/Unroll.s
           - ../proto/wtools/abase/l0/l3/Vector.s
+          - ../proto/wtools/abase/l0/l3/zErr.s
           - ../proto/wtools/abase/l0/l3.test
           - ../proto/wtools/abase/l0/l3.test/ArgumentsArray.test.s
           - ../proto/wtools/abase/l0/l3.test/Array.test.s
@@ -331,13 +340,17 @@ module:
           - ../proto/wtools/abase/l0/l3.test/Container.test.s
           - ../proto/wtools/abase/l0/l3.test/Countable.test.s
           - ../proto/wtools/abase/l0/l3.test/Entity.test.s
+          - ../proto/wtools/abase/l0/l3.test/Err.test.s
           - ../proto/wtools/abase/l0/l3.test/HashMap.test.s
+          - ../proto/wtools/abase/l0/l3.test/Introspector.test.s
           - ../proto/wtools/abase/l0/l3.test/Itself.test.s
           - ../proto/wtools/abase/l0/l3.test/Logic.test.s
           - ../proto/wtools/abase/l0/l3.test/Long.test.s
           - ../proto/wtools/abase/l0/l3.test/Map.test.s
+          - ../proto/wtools/abase/l0/l3.test/Module.test.s
           - ../proto/wtools/abase/l0/l3.test/Number.test.s
           - ../proto/wtools/abase/l0/l3.test/Object.test.s
+          - ../proto/wtools/abase/l0/l3.test/Path.test.s
           - ../proto/wtools/abase/l0/l3.test/Primitive.test.s
           - ../proto/wtools/abase/l0/l3.test/Props.test.s
           - ../proto/wtools/abase/l0/l3.test/Regexp.test.s

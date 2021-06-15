@@ -6,10 +6,6 @@
 const _global = _global_;
 const _ = _global_.wTools;
 
-_.props = _.props || Object.create( null );
-_.props.mapper = _.props.mapper || Object.create( null );
-_.props.condition = _.props.condition || Object.create( null );
-
 // --
 // implementation
 // --
@@ -242,16 +238,16 @@ function conditionIs( transformer )
 let PropsExtension =
 {
 
-  mapperFromCondition, /* qqq : light coverage required | aaa : Done. Yevhen S. */
-  mapperFrom, /* qqq : light coverage required | aaa : Done. Yevhen S. */
-  conditionFrom, /* qqq : light coverage required | aaa : Done. Yevhen S. */
-  transformerRegister, /* qqq : light coverage required | aaa : Done. Yevhen S.*/
-  transformersRegister, /* qqq : light coverage required | aaa : Done. Yevhen S.*/
+  mapperFromCondition,
+  mapperFrom,
+  conditionFrom,
+  transformerRegister, 
+  transformersRegister,
   transformerUnregister,
   transformersUnregister,
   transformerIs,
-  mapperIs, /* qqq : light coverage required | aaa : Done. Yevhen S. */
-  conditionIs, /* qqq : light coverage required | aaa : Done. Yevhen S. */
+  mapperIs,
+  conditionIs,
 
 }
 

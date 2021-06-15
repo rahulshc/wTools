@@ -7,7 +7,7 @@ const _global = _global_;
 const _ = _global_.wTools;
 
 _.number = _.number || Object.create( null );
-_.number.s = _.numbers = _.numbers || _.number.s || Object.create( null );
+_.numbers = _.number.s = _.numbers || _.number.s || Object.create( null );
 
 // --
 // number
@@ -161,7 +161,45 @@ function areInt( src )
 }
 
 // --
-// extension
+// number extension
+// --
+
+let NumberExtension =
+{
+
+  is,
+  like,
+
+  isNotNan,
+  isFinite : numberIsFinite,
+  defined : numberIsFinite,
+  isInfinite,
+
+  intIs,
+
+}
+
+Object.assign( _.number, NumberExtension );
+
+// --
+// numbers
+// --
+
+let NumbersExtension =
+{
+
+  areAll,
+
+  areFinite,
+  arePositive,
+  areInt,
+
+}
+
+Object.assign( _.numbers, NumbersExtension );
+
+// --
+// tools extension
 // --
 
 let ToolsExtension =
@@ -186,37 +224,5 @@ let ToolsExtension =
 Object.assign( _, ToolsExtension );
 
 //
-
-let NumberExtension =
-{
-
-  is,
-  like,
-
-  isNotNan,
-  isFinite : numberIsFinite,
-  defined : numberIsFinite,
-  isInfinite,
-
-  intIs,
-
-}
-
-Object.assign( _.number, NumberExtension );
-
-//
-
-let NumbersExtension =
-{
-
-  areAll,
-
-  areFinite,
-  arePositive,
-  areInt,
-
-}
-
-Object.assign( _.number.s, NumbersExtension );
 
 })();

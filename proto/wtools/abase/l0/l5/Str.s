@@ -3165,7 +3165,7 @@ let StrExtension =
 
 /* xxx : duplicate exportString in namespace::diagnostic? */
 
-_.props.extend( _.str, StrExtension );
+/* _.props.extend */Object.assign( _.str, StrExtension );
 
 // --
 //
@@ -3191,7 +3191,7 @@ let EntityExtension =
 
 //
 
-_.props.extend( _.entity, EntityExtension );
+/* _.props.extend */Object.assign( _.entity, EntityExtension );
 
 // --
 // extension

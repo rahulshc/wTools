@@ -323,7 +323,7 @@ function _elementWithKeySet( dst, key, val )
     if( key < 0 || dst.length <= key || !_.numberIs( key ) )
     return [ key, false ];
   }
-  dst[ key ] = val
+  dst[ key ] = val;
   return [ key, true ];
 }
 

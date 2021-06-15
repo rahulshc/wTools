@@ -7,7 +7,7 @@ const _global = _global_;
 const _ = _global_.wTools;
 const Self = _global_.wTools;
 
-_global.wTools.error = _global.wTools.error || Object.create( null );
+_.error = _.error || Object.create( null );
 
 // --
 // dichotomy
@@ -257,7 +257,6 @@ sectionAdd.defaults =
 
 function _sectionAdd( o )
 {
-  // _.map.assertHasAll( o, _sectionAdd.defaults );
 
   if( Config.debug )
   for( let k in _sectionAdd.defaults )
@@ -286,7 +285,7 @@ _sectionAdd.defaults =
 
 function _sectionExposedAdd( o )
 {
-  // _.map.assertHasAll( o, _sectionExposedAdd.defaults );
+  const exportString = _.entity.exportString ? _.entity.exportString.bind( _.entity ) : String;
 
   if( Config.debug )
   for( let k in _sectionExposedAdd.defaults )
@@ -295,19 +294,13 @@ function _sectionExposedAdd( o )
     throw Error( `Expects defined option::${k}` );
   }
 
-  // for( let k in o )
-  // {
-  //   if( _sectionExposedAdd.defaults[ k ] === undefined )
-  //   throw Error( `Unknown option::${k}` );
-  // }
-
   let i = 0;
   let body = '';
   for( let k in o.exposed )
   {
     if( i > 0 )
     body += `\n`;
-    body += `${k} : ${_.entity.exportString( o.exposed[ k ] )}`;
+    body += `${k} : ${exportString( o.exposed[ k ] )}`;
     i += 1;
   }
 
@@ -450,6 +443,7 @@ function _inStr( errStr )
 
 function _make( o )
 {
+  const logger = _global_.logger || _global_.console;
 
   if( arguments.length !== 1 )
   throw Error( 'Expects single argument : options map' );
@@ -561,7 +555,8 @@ function _make( o )
   {
     let result = '';
 
-    sectionAdd( 'message', `Message of error#${o.id}`, o.originalMessage );
+    // sectionAdd( 'message', `Message of Error#${o.id}`, o.originalMessage );
+    sectionAdd( 'message', `Message of ${o.error.name || 'error'}#${o.id}`, o.originalMessage );
     sectionAdd( 'combinedStack', o.stackCondensing ? 'Beautified calls stack' : 'Calls stack', o.combinedStack );
     sectionAdd( 'throwsStack', `Throws stack`, o.throwsStack );
 
@@ -639,6 +634,8 @@ function _make( o )
     nonenumerable( 'toString', function() { return this.stack } );
     nonenumerable( 'sections', o.sections );
 
+    getter( 'name', function() { return this.constructor.name } );
+
     o.error[ Symbol.for( 'nodejs.util.inspect.custom' ) ] = o.error.toString;
 
     if( o.concealed )
@@ -672,10 +669,28 @@ function _make( o )
 
   /* */
 
-  // function logging( propName, value )
+  function getter( propName, get )
+  {
+    try
+    {
+      let o2 =
+      {
+        enumerable : false,
+        configurable : true,
+        get,
+      };
+      Object.defineProperty( o.error, propName, o2 );
+    }
+    catch( err2 )
+    {
+      console.error( err2 );
+    }
+  }
+
+  /* */
+
   function logging( propName )
   {
-    // let symbol = Symbol.for( propName );
     try
     {
       let o2 =
@@ -685,7 +700,6 @@ function _make( o )
         get,
         set,
       };
-      // nonenumerable( symbol, value );
       Object.defineProperty( o.error, propName, o2 );
     }
     catch( err2 )
@@ -694,14 +708,19 @@ function _make( o )
     }
     function get()
     {
-      _.error.logged( this );
-      _.error.attend( this );
+      /*
+      workaround to avoid Njs issue: Njs stingify inherited error
+      */
+      /* zzz : qqq : find better solution */
+      if( ( new Error().stack ).split( '\n' ).length !== 3 )
+      {
+        _.error.logged( this );
+        _.error.attend( this );
+      }
       return this.message;
-      // return this[ symbol ];
     }
     function set( src )
     {
-      // this[ symbol ] = src;
       this.message = src;
       return src;
     }
@@ -752,6 +771,7 @@ _make.defaults =
 
 function _err( o )
 {
+  const exportString = _.entity.exportString ? _.entity.exportString.bind( _.entity ) : String;
   let error;
 
   if( arguments.length !== 1 )
@@ -878,7 +898,9 @@ function _err( o )
         }
         if( _.unrollIs( arg ) )
         {
-          o.args = _.longBut_( null, o.args, [ a, a ], arg );
+          debugger;
+          o.args = [ ... Array.prototype.slice.call( o.args, 0, a ), ... arg, ... Array.prototype.slice.call( o.args, a+1, o.args.length ) ];
+          // o.args = _.longBut_( null, o.args, [ a, a ], arg );
           // o.args = _.longBut( o.args, [ a, a+1 ], arg );
           a -= 1;
           continue;
@@ -1207,11 +1229,11 @@ function _err( o )
           if( _.strIs( arg.message ) )
           str = arg.message;
           else
-          str = _.entity.exportString( arg );
+          str = exportString( arg );
         }
         else
         {
-          str = _.entity.exportString( arg, { levels : 2 } );
+          str = exportString( arg, { levels : 2 } );
         }
       }
       else if( arg === undefined )
@@ -1535,6 +1557,7 @@ function logged( err, value )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   if( value === undefined )
   value = Config.debug ? _.introspector.stack([ 0, Infinity ]) : true;
+  // console.log( `logged ${value}` );
   return _.error.concealedSet( err, { logged : value } );
 }
 

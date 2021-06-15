@@ -14,7 +14,7 @@ const _functor_functor = _.container._functor_functor;
 function _exportStringDiagnosticShallow( src, o )
 {
   let result;
-  let namespace = this.namespaceOfEntity( src );
+  let namespace = this.namespaceForExporting( src );
 
   if( namespace )
   result = namespace.exportStringDiagnosticShallow( src );
@@ -234,7 +234,7 @@ elementSet.functor = _functor_functor( 'elementSet' );
 function elementDel( src, key )
 {
   _.assert( arguments.length === 2 );
-  return elementDel.functor.call( this, src )( key, val );
+  return elementDel.functor.call( this, src )( key );
 }
 
 elementDel.functor = _functor_functor( 'elementDel' );
@@ -244,7 +244,7 @@ elementDel.functor = _functor_functor( 'elementDel' );
 function elementWithKeyDel( src, key )
 {
   _.assert( arguments.length === 2 );
-  return elementWithKeyDel.functor.call( this, src )( key, val );
+  return elementWithKeyDel.functor.call( this, src )( key );
 }
 
 elementWithKeyDel.functor = _functor_functor( 'elementWithKeyDel' );
@@ -254,7 +254,7 @@ elementWithKeyDel.functor = _functor_functor( 'elementWithKeyDel' );
 function elementWithCardinalDel( src, key )
 {
   _.assert( arguments.length === 2 );
-  return elementWithCardinalDel.functor.call( this, src )( key, val );
+  return elementWithCardinalDel.functor.call( this, src )( key );
 }
 
 elementWithCardinalDel.functor = _functor_functor( 'elementWithCardinalDel' );
@@ -262,7 +262,7 @@ elementWithCardinalDel.functor = _functor_functor( 'elementWithCardinalDel' );
 //
 
 /**
- * The routine empty() clears provided src {-dstContainer-}.
+ * The routine empty() clears provided container {-dstContainer-}.
  *
  * @param { Long|Set|HashMap|Aux } dstContainer - Container to be cleared. {-dstContainer-} should be resizable.
  *
@@ -545,7 +545,7 @@ let ContainerExtension =
 
 }
 
-_.props.supplement( _.container, ContainerExtension );
+Object.assign( _.container, ContainerExtension );
 
 //
 

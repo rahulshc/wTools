@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.diagnostic = _global_.wTools.diagnostic || Object.create( null );
+const Self = _.diagnostic = _.diagnostic || Object.create( null );
 
 // --
 // diagnostic

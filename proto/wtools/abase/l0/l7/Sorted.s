@@ -7,7 +7,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _global_.wTools.sorted = _global_.wTools.sorted || Object.create( null );
+_.sorted = _.sorted || Object.create( null );
 
 // --
 //
@@ -21,6 +21,6 @@ let Extension =
 {
 };
 
-_.props.supplement( Self, Extension );
+_.props.supplement( _.sorted, Extension );
 
 })();

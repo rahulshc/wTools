@@ -6,8 +6,8 @@
 const _global = _global_;
 const _ = _global_.wTools;
 // const Self = _global_.wTools;
-_global_.wTools.regexp = _global_.wTools.regexp || Object.create( null );
-_global_.wTools.regexp.s = _global_.wTools.regexp.s || Object.create( null );
+_.regexp = _.regexp || Object.create( null );
+_.regexp.s = _.regexp.s || Object.create( null );
 
 // --
 // regexp

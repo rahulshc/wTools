@@ -6,7 +6,7 @@
 const _global = _global_;
 const _ = _global_.wTools;
 _.set = _.set || Object.create( null );
-_.set.s = _.set.s || Object.create( null ); /* qqq : xxx : ask */
+_.sets = _.set.s = _.sets || _.set.s || Object.create( null );
 
 // --
 // implementation
@@ -163,10 +163,11 @@ function from( src )
 
 //
 
-/* qqq2 : for junior : cover please */
+/* qqq : for junior : cover please */
 function as( src )
 {
-  if( src === null || src === undefined )
+  _.assert( src !== undefined );
+  if( src === null )
   return new Set;
   else if( _.set.is( src ) )
   return src;
@@ -175,6 +176,20 @@ function as( src )
   else
   return new Set([ src ]);
 }
+
+// //
+//
+// function asTest( src )
+// {
+//   if( src === null || src === undefined )
+//   return new Set;
+//   if( src[ Symbol.iterator ] && !_.str.is( src ) )
+//   return new Set( [ ... src ] );
+//   if( src instanceof WeakSet )
+//   return src;
+//
+//   return new Set( [ src ] );
+// }
 
 // //
 //
@@ -236,33 +251,8 @@ function pairs( src )
 }
 
 // --
-// extension
+// set extension
 // --
-
-let ToolsExtension =
-{
-
-  // dichotomy
-
-  setIs : is.bind( _.set ),
-  setIsEmpty : isEmpty.bind( _.set ),
-  setIsPopulated : isPopulated.bind( _.set ),
-  setLike : like.bind( _.set ),
-
-  // maker
-
-  setMakeEmpty : makeEmpty.bind( _.set ),
-  setMakeUndefined : makeUndefined.bind( _.set ),
-  setMake : make.bind( _.set ),
-  setCloneShallow : cloneShallow.bind( _.set ),
-  setFrom : from.bind( _.set ),
-  setAs : as.bind( _.set ),
-
-}
-
-Object.assign( _, ToolsExtension );
-
-//
 
 let SetExtension =
 {
@@ -300,6 +290,7 @@ let SetExtension =
   cloneShallow, /* qqq : for junior : cover */
   from,
   as,
+  // asTest,
 
   // properties
 
@@ -320,14 +311,33 @@ let SetExtension =
 
 Object.assign( _.set, SetExtension );
 
-//
+// --
+// tools extension
+// --
 
-let SetsExtension =
+let ToolsExtension =
 {
+
+  // dichotomy
+
+  setIs : is.bind( _.set ),
+  setIsEmpty : isEmpty.bind( _.set ),
+  setIsPopulated : isPopulated.bind( _.set ),
+  setLike : like.bind( _.set ),
+
+  // maker
+
+  setMakeEmpty : makeEmpty.bind( _.set ),
+  setMakeUndefined : makeUndefined.bind( _.set ),
+  setMake : make.bind( _.set ),
+  setCloneShallow : cloneShallow.bind( _.set ),
+  setFrom : from.bind( _.set ),
+  setAs : as.bind( _.set ),
+
 }
 
-//
+Object.assign( _, ToolsExtension );
 
-Object.assign( _.set.s, SetsExtension );
+//
 
 })();

@@ -5,8 +5,6 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-_.set = _.set || Object.create( null );
-_.set.s = _.set.s || Object.create( null );
 
 // --
 //
@@ -235,20 +233,8 @@ function _whileRight( src, onEach )
 }
 
 // --
-// extension
+// set extension
 // --
-
-let ToolsExtension =
-{
-
-  setToArray : toArray,
-  setsToArrays,
-
-}
-
-Object.assign( _, ToolsExtension );
-
-//
 
 let SetExtension =
 {
@@ -360,7 +346,9 @@ let SetExtension =
 
 Object.assign( _.set, SetExtension );
 
-//
+// --
+// sets extension
+// --
 
 let SetsExtension =
 {
@@ -372,8 +360,22 @@ let SetsExtension =
 
 }
 
-//
+Object.assign( _.sets, SetsExtension );
 
-Object.assign( _.set.s, SetsExtension );
+// --
+// tools extension
+// --
+
+let ToolsExtension =
+{
+
+  setToArray : toArray,
+  setsToArrays,
+
+}
+
+Object.assign( _, ToolsExtension );
+
+//
 
 })();

@@ -6,10 +6,8 @@
 const _global = _global_;
 const _ = _global_.wTools;
 
-_.assert( _.regexp === undefined );
-_.regexp = Object.create( null );
-_.assert( _.regexp.s === undefined );
-_.regexp.s = Object.create( null );
+_.regexp = _.regexp || Object.create( null );
+_.regexps = _.regexp.s = _.regexps || _.regexp.s || Object.create( null );
 
 // --
 // regexp
@@ -18,6 +16,20 @@ _.regexp.s = Object.create( null );
 function is( src )
 {
   return Object.prototype.toString.call( src ) === '[object RegExp]';
+}
+
+//
+
+function isOld( src )
+{
+  return Object.prototype.toString.call( src ) === '[object RegExp]';
+}
+
+//
+
+function isUsingInstanceOf( src )
+{
+  return src instanceof RegExp;
 }
 
 //
@@ -33,7 +45,34 @@ function objectIs( src )
 
 function like( src )
 {
+  if( src instanceof RegExp || Object.prototype.toString.call( src ) === '[object String]' )
+  return true;
+  return false;
+}
+
+//
+
+function likeOld( src )
+{
   if( _.regexp.is( src ) || _.strIs( src ) )
+  return true;
+  return false;
+}
+
+//
+
+function likeUsingisUsingInstanceOf( src )
+{
+  if( _.regexp.isUsingInstanceOf( src ) || _.strIs( src ) )
+  return true;
+  return false;
+}
+
+//
+
+function likeUnfolded( src )
+{
+  if( src instanceof RegExp || Object.prototype.toString.call( src ) === '[object String]' )
   return true;
   return false;
 }
@@ -115,8 +154,13 @@ let RegexpExtension =
   // regexp
 
   is,
+  isOld,
+  isUsingInstanceOf,
   objectIs,
   like,
+  likeOld,
+  likeUsingisUsingInstanceOf,
+  likeUnfolded,
 
   escape,
 

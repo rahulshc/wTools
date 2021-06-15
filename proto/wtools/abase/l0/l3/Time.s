@@ -113,6 +113,6 @@ let TimeExtension =
 
 //
 
-_.props.supplement( _.time, TimeExtension );
+Object.assign( _.time, TimeExtension );
 
 })();

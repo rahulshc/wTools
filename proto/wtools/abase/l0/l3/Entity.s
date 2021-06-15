@@ -448,7 +448,7 @@ function lengthOf( src ) /* qqq for junior : cover please */
   return lengthOf.functor.call( this, src )();
 }
 
-lengthOf.functor = _functor_functor( 'lengthOf', 'namespaceOfContainer' );
+lengthOf.functor = _functor_functor( 'lengthOf' );
 
 // --
 // entity extension
@@ -510,7 +510,7 @@ let EntityExtension =
 
 //
 
-_.props.supplement( _.entity, EntityExtension );
+Object.assign( _.entity, EntityExtension );
 
 // --
 // tools extension
@@ -523,6 +523,6 @@ let ToolsExtension =
 
 //
 
-_.props.supplement( _, ToolsExtension );
+Object.assign( _, ToolsExtension );
 
 })();

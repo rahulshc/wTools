@@ -5,23 +5,11 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-const Self = _.process = _.process || Object.create( null );
+_.process = _.process || Object.create( null );
 
 // --
 // implementation
 // --
-
-function eventGive()
-{
-  return _.event.eventGive( _.process._ehandler, ... arguments );
-}
-
-eventGive.defaults =
-{
-  ... _.event.eventGive.defaults,
-}
-
-//
 
 /**
  * The routine ready() delays execution of code to moment when web-page ( or program itself ) is loaded.
@@ -119,11 +107,11 @@ let ready = _.routine.unite( ready_head, ready_body );
 
 let Extension =
 {
-  eventGive,
 
   ready,
+
 }
 
-_.props.extend( Self, Extension );
+Object.assign( _.process, Extension );
 
 })();

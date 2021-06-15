@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-_global_.wTools.hashMap = _global_.wTools.hashMap || Object.create( null );
+_.hashMap = _.hashMap || Object.create( null );
 
 // --
 // dichotomy
@@ -296,8 +296,6 @@ let Extension =
   isEmpty,
   isPopulated,
   IsResizable,
-
-  /* xxx : qqq : implement keys* routines */
 
   // maker
 

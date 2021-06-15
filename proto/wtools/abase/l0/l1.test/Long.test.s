@@ -18,6 +18,7 @@ const __ = _globals_.testing.wTools;
 //--
 
 /* qqq : for junior : merge routines is and like to routine dichotomy and extend */
+/* qqq2 : for Ragul : redo please */
 function dichotomy( test )
 {
 
@@ -202,7 +203,6 @@ function isPerformance( test )
     return env;
   }
 
-  /* qqq : for Rahul : lets add more typed buffers and non-longs Rahul: Done */
   function run( env )
   {
     _.long[ env.name ]( [] );

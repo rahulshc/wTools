@@ -11,7 +11,6 @@ qqq : write article "strIsolate* difference"
 
 //
 
-const Self = _global_.wTools;
 const _global = _global_;
 const _ = _global_.wTools;
 
@@ -342,69 +341,65 @@ function strRemove( srcStr, insStr )
   return result;
 }
 
+// //
 //
-
-/**
-  * Prepends string( begin ) to the source( src ) if prefix( begin ) is not match with first chars of string( src ),
-  * otherwise returns original string.
-  * @param { String } src - Source string to parse.
-  * @param { String } begin - String to prepend.
-  *
-  * @example
-  * _.strPrependOnce( 'test', 'test' );
-  * // returns 'test'
-  *
-  * @example
-  * _.strPrependOnce( 'abc', 'x' );
-  * // returns 'xabc'
-  *
-  * @returns { String } Returns result of prepending string( begin ) to source( src ) or original string.
-  * @function strPrependOnce
-  * @namespace Tools
-  */
-
-function strPrependOnce( src, begin )
-{
-  _.assert( _.strIs( src ) && _.strIs( begin ), 'Expects {-src-} and {-begin-} as strings' );
-  if( src.lastIndexOf( begin, 0 ) === 0 )
-  return src;
-  else
-  return begin + src;
-}
-
+// /**
+//   * Prepends string( begin ) to the source( src ) if prefix( begin ) is not match with first chars of string( src ),
+//   * otherwise returns original string.
+//   * @param { String } src - Source string to parse.
+//   * @param { String } begin - String to prepend.
+//   *
+//   * @example
+//   * _.strPrependOnce( 'test', 'test' );
+//   * // returns 'test'
+//   *
+//   * @example
+//   * _.strPrependOnce( 'abc', 'x' );
+//   * // returns 'xabc'
+//   *
+//   * @returns { String } Returns result of prepending string( begin ) to source( src ) or original string.
+//   * @function strPrependOnce
+//   * @namespace Tools
+//   */
 //
-
-/**
-  * Appends string( end ) to the source( src ) if postfix( end ) is not match with last chars of string( src ),
-  * otherwise returns original string.
-  * @param {string} src - Source string to parse.
-  * @param {string} end - String to append.
-  *
-  * @example
-  * _.strAppendOnce( 'test', 'test' );
-  * // returns 'test'
-  *
-  * @example
-  * _.strAppendOnce( 'abc', 'x' );
-  * // returns 'abcx'
-  *
-  * @returns {string} Returns result of appending string( end ) to source( src ) or original string.
-  * @function strAppendOnce
-  * @namespace Tools
-  */
-
-function strAppendOnce( src, end )
-{
-  _.assert( _.strIs( src ) && _.strIs( end ), 'Expects {-src-} and {-end-} as strings' );
-  if( src.indexOf( end, src.length - end.length ) === -1 )
-  return src + end;
-  else
-  return src;
-  // if( src.indexOf( end, src.length - end.length ) !== -1 )
-  // return src;
-  // else
-  // return src + end;
-}
+// function strPrependOnce( src, begin )
+// {
+//   _.assert( _.strIs( src ) && _.strIs( begin ), 'Expects {-src-} and {-begin-} as strings' );
+//   if( src.lastIndexOf( begin, 0 ) === 0 )
+//   return src;
+//   else
+//   return begin + src;
+// }
+//
+// //
+//
+// /**
+//   * Appends string( end ) to the source( src ) if postfix( end ) is not match with last chars of string( src ),
+//   * otherwise returns original string.
+//   * @param {string} src - Source string to parse.
+//   * @param {string} end - String to append.
+//   *
+//   * @example
+//   * _.strAppendOnce( 'test', 'test' );
+//   * // returns 'test'
+//   *
+//   * @example
+//   * _.strAppendOnce( 'abc', 'x' );
+//   * // returns 'abcx'
+//   *
+//   * @returns {string} Returns result of appending string( end ) to source( src ) or original string.
+//   * @function strAppendOnce
+//   * @namespace Tools
+//   */
+//
+// function strAppendOnce( src, end )
+// {
+//   _.assert( _.strIs( src ) && _.strIs( end ), 'Expects {-src-} and {-end-} as strings' );
+//   if( src.indexOf( end, src.length - end.length ) === -1 )
+//   return src + end;
+//   else
+//   return src;
+// }
 
 // --
 // etc
@@ -1004,6 +999,8 @@ function strIsSigned( src, prefix )
 
 }
 
+//
+
 /**
  * Disables escaped characters in source string( src ).
  * Example: '\n' -> '\\n', '\u001b' -> '\\u001b' etc.
@@ -1104,10 +1101,10 @@ function strEscape( o )
         result += '\\t';
         break;
 
-      /* qqq : cover the case, please */
-      case 0x0b /* '\v' */ :
-        result += '\\v';
-        break;
+      // /* xxx : extend coverage of routine _.strEscape. don't forget this test case */
+      // case 0x0b /* '\v' */ :
+      //   result += '\\v';
+      //   break;
 
       default :
         if( code < 32 )
@@ -1130,6 +1127,7 @@ strEscape.defaults =
 {
   src : null,
   stringWrapper : '\'',
+  charsToEscape : null, /* xxx : qqq : implement */
 }
 
 //
@@ -1340,7 +1338,7 @@ function strSplitChunks( o )
     end = src.search( o.postfix );
     if( end === -1 )
     {
-      result.lines = src.split( '\n' ).length;
+      result.lines = _.str.lines.split( src ).length;
       result.error = _.err( 'Openning prefix', o.prefix, 'of chunk #' + result.chunks.length, 'at'+line, 'line does not have closing tag :', o.postfix );
       return result;
     }
@@ -1408,7 +1406,7 @@ function strSplitChunks( o )
     chunk.code = src.substring( chunk.prefix.length, end );
     if( o.investigate )
     {
-      chunk.lines = chunk.code.split( '\n' );
+      chunk.lines = _.str.lines.split( chunk.code );
       chunk.tab = /^\s*/.exec( chunk.lines[ chunk.lines.length-1 ] )[ 0 ];
     }
 
@@ -2309,66 +2307,48 @@ function strJoinPath( srcs, joiner )
  *
  */
 
-function strLinesIndentation( src, tab )
+function strLinesIndentation( src, tab, every )
 {
 
-  _.assert( arguments.length === 2, 'Expects two arguments' );
+  if( every === undefined )
+  every = true;
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.strIs( src ) || _.arrayIs( src ), 'Expects src as string or array' );
-  _.assert( _.strIs( tab ) || _.number.is( tab ), 'Expects tab as string or number' ); /* aaa2 : cover please */ /*Dmytro : covered */
+  _.assert( _.strIs( tab ) || _.number.is( tab ), 'Expects tab as string or number' );
+  _.assert( every === undefined || _.bool.like( every ) );
 
   if( _.number.is( tab ) )
   tab = _.strDup( ' ', tab );
 
   if( _.strIs( src ) )
   {
-
     if( src.indexOf( '\n' ) === -1 )
     return src;
-
-    // if( src.indexOf( '\n' ) === -1 )
-    // return tab + src;
-
-    src = src.split( '\n' );
-
+    src = _.str.lines.split( src );
   }
 
   /*
     should be no tab in prolog
   */
 
-  let result = src.join( '\n' + tab );
-  // let result = tab + src.join( '\n' + tab );
-
-  return result;
+  if( every === true )
+  {
+    let result = src.join( '\n' + tab );
+    return result;
+  }
+  else
+  {
+    let result = '';
+    src.forEach( ( e, c ) =>
+    {
+      if( c > 0 )
+      result += '\n';
+      result += e.length > 0 && c > 0 ? tab + e : e;
+    });
+    return result;
+  }
 }
-
-// //
-//
-// function strLinesIndentationButFirst( src, tab )
-// {
-//
-//   _.assert( _.strIs( src ) || _.arrayIs( src ), 'Expects src as string or array' );
-//   _.assert( _.strIs( tab ), 'Expects string tab' );
-//   _.assert( arguments.length === 2, 'Expects two arguments' );
-//
-//   if( _.strIs( src ) )
-//   {
-//
-//     if( src.indexOf( '\n' ) === -1 )
-//     return tab + src;
-//
-//     src = src.split( '\n' );
-//
-//   }
-//
-// /*
-//   should be no tab in prolog
-// */
-//
-//   let result = src.join( '\n' + tab );
-//
-//   return result;
-// }
 
 //
 
@@ -2444,7 +2424,7 @@ function strLinesBut( src, range, ins )
 {
 
   if( _.strIs( src ) )
-  src = src.split( '\n' );
+  src = _.str.lines.split( src );
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.longIs( src ) );
@@ -2559,7 +2539,7 @@ function strLinesOnly( src, range )
 {
 
   if( _.strIs( src ) )
-  src = src.split( '\n' );
+  src = _.str.lines.split( src );
 
   _.assert( arguments.length === 2 );
   _.assert( _.longIs( src ) );
@@ -2580,85 +2560,6 @@ function strLinesOnly( src, range )
   return result.join( '\n' );
 
 }
-//
-// //
-//
-// function strLinesSplit( src )
-// {
-//   _.assert( _.strIs( src ) || _.arrayIs( src ) );
-//   _.assert( arguments.length === 1 );
-//   if( _.arrayIs( src ) )
-//   return src;
-//   return src.split( '\n' );
-// }
-//
-// //
-//
-// function strLinesJoin( src )
-// {
-//   _.assert( _.strIs( src ) || _.arrayIs( src ) );
-//   _.assert( arguments.length === 1 );
-//   let result = src;
-//   if( _.arrayIs( src ) )
-//   result = src.join( '\n' );
-//   return result;
-// }
-//
-// //
-//
-// /**
-//  * Remove espace characters and white spaces at the begin or at the end of each line.
-//  * Input arguments can be strings or arrays of strings. If input is a string, it splits it in lines and
-//  * removes the white/escape characters from the beggining and the end of each line. If input is an array,
-//  * it treats it as a single string split into lines, where each entry corresponds to a line. Therefore,
-//  * it removes the white/escape characters only from the beggining and the end of the strings in the array.
-//  *
-//  * @param { String/Array } [ src ] - Source string or array of strings.
-//  * @returns { String/Array } Returns string/array with empty lines and spaces removed.
-//  *
-//  * @example input string
-//  * _.str.lines.strip( '  Hello \r\n\t World \n\n ' );
-//  * // returns 'Hello\nWorld'
-//  *
-//  * @example input array
-//  * _.str.lines.strip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ] );
-//  * // returns  [ 'Hello \r\n\t world', '!' ]
-//  *
-//  * @example input strings
-//  * _.str.lines.strip( '  Hello \r\n\t', ' World \n\n  ! \n\n', '\n\n' );
-//  * // returns [ 'Hello', 'World\n!', '' ]
-//  *
-//  * @example input arrays
-//  * _.str.lines.strip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ], [ '\n\nHow\n\nAre  ', '  \r\nyou ? \n'], [ '\t\r\n  ' ] );
-//  * // returns [ [ 'Hello \r\n\t world', '!' ], [ 'How\n\nAre', 'you ?' ], [] ]
-//  *
-//  * @method strLinesStrip
-//  * @throws { Exception } Throw an exception if( src ) is not a String or Array.
-//  * @namespace Tools
-//  */
-//
-// /* qqq : for Dmytro : measure time and optimize. ask */
-// function strLinesStrip( src )
-// {
-//
-//   if( arguments.length > 1 )
-//   {
-//     let result = _.unroll.make( null );
-//     for( let a = 0 ; a < arguments.length ; a++ )
-//     result[ a ] = _.str.lines.strip( arguments[ a ] );
-//     return result;
-//   }
-//
-//   _.assert( _.strIs( src ) || _.arrayIs( src ) );
-//   _.assert( arguments.length === 1 );
-//
-//   let lines = _.strLinesSplit( src );
-//   lines = lines.map( ( line ) => line.trim() ).filter( ( line ) => line );
-//
-//   if( _.strIs( src ) )
-//   lines = _.strLinesJoin( lines );
-//   return lines;
-// }
 
 //
 
@@ -2736,7 +2637,7 @@ function strLinesNumber( o )
 
   /* */
 
-  let lines = _.strIs( o.src ) ? o.src.split( '\n' ) : o.src;
+  let lines = _.strIs( o.src ) ? _.str.lines.split( o.src ) : o.src;
 
   /* */
 
@@ -2830,26 +2731,6 @@ _.strLinesNumber({ src, highlighting : [ 865, 867 ] });
 // * 867 :     test.equivalent( op.output, exp );
 
 */
-
-//
-
-// function strLinesAt( code, line, radius )
-// {
-//   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-//   _.assert( _.strIs( code ) || _.arrayIs( code ) );
-//   _.assert( _.number.is( line ) );
-//
-//   if( radius === undefined )
-//   radius = 2;
-//
-//   debugger;
-//
-//   let lines = code.split( '\n' );
-//   let result = lines.slice( line-radius, line+radius-1 );
-//   result = _.strLinesNumber( result, line-radius+1 );
-//
-//   return result;
-// }
 
 //
 
@@ -3406,8 +3287,7 @@ function strLinesCount( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( src ) );
-  let result = src.indexOf( '\n' ) === -1 ? 1 : src.split( '\n' ).length;
-  // let result = src.indexOf( '\n' ) !== -1 ? src.split( '\n' ).length : 1;
+  let result = src.indexOf( '\n' ) === -1 ? 1 : _.str.lines.split( src ).length;
   return result;
 }
 
@@ -3432,7 +3312,7 @@ function strLinesSize( o )
     return [ 0, 0 ];
     if( o.src.indexOf( '\n' ) === -1 )
     return [ 1, o.onLength( o.src ) ];
-    lines = o.src.split( '\n' );
+    lines = _.str.lines.split( o.src );
   }
   else
   {
@@ -3528,8 +3408,8 @@ let Proto =
   _strRemoved,
   strRemove,
 
-  strPrependOnce,
-  strAppendOnce,
+  // strPrependOnce,
+  // strAppendOnce,
 
   strReplaceWords,
 
@@ -3601,13 +3481,6 @@ let Proto =
 
 }
 
-_.props.extend( Self, Proto );
-
-// --
-// export
-// --
-
-if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+_.props.extend( _, Proto );
 
 })();

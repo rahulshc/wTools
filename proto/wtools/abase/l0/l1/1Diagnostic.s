@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-_global_.wTools.diagnostic = _global_.wTools.diagnostic || Object.create( null );
+_.diagnostic = _.diagnostic || Object.create( null );
 
 // --
 //
@@ -211,7 +211,7 @@ function assert( condition, ... args )
   if( Config.debug === false )
   return true;
 
-  if( !condition )
+  if( condition !== true )
   {
     _assertDebugger( condition, arguments );
     if( !_._err )
@@ -351,7 +351,33 @@ Object.defineProperty( _, 'debugger',
 });
 
 // --
-// declare
+// diagnostic extension
+// --
+
+let DiagnosticExtension =
+{
+
+  // sure
+
+  sure,
+  sureBriefly,
+  sureWithoutDebugger,
+
+  // assert
+
+  assert,
+  assertWithoutBreakpoint,
+  assertNotTested,
+  assertWarn,
+
+}
+
+//
+
+Object.assign( _.diagnostic, DiagnosticExtension );
+
+// --
+// tools extension
 // --
 
 let ToolsExtension =
@@ -377,29 +403,5 @@ let ToolsExtension =
 }
 
 Object.assign( _, ToolsExtension );
-
-//
-
-let DiagnosticExtension =
-{
-
-  // sure
-
-  sure,
-  sureBriefly,
-  sureWithoutDebugger,
-
-  // assert
-
-  assert,
-  assertWithoutBreakpoint,
-  assertNotTested,
-  assertWarn,
-
-}
-
-//
-
-Object.assign( _.diagnostic, DiagnosticExtension );
 
 })();

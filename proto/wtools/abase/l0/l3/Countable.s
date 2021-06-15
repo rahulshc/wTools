@@ -163,6 +163,7 @@ function _elementWithKey( src, key )
   {
     if( key < 0 )
     return [ undefined, key, false ];
+    debugger;
     const src2 = [ ... src ];
     if( src2.length <= key )
     return [ undefined, key, false ];

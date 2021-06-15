@@ -5,7 +5,7 @@
 
 const _global = _global_;
 const _ = _global_.wTools;
-_global_.wTools.aux = _global_.wTools.aux || Object.create( null );
+_.aux = _.aux || Object.create( null );
 
 _.assert( !!_.props.keys, 'Expects routine _.props.keys' );
 _.assert( !!_.props._extendWithHashmap, 'Expects routine _.props._extendWithHashmap' );
@@ -261,12 +261,11 @@ function _makeEmpty( src )
 {
   let result = Object.create( null );
   let src2 = _.prototype.of( src );
-  while( src2 )
+  while( src2 && src2 !== Object.prototype )
   {
     result = Object.create( result );
     src2 = _.prototype.of( src2 );
   }
-  // _.assert( 0, 'not tested' );
   return result;
 }
 
@@ -285,8 +284,6 @@ function makeEmpty( src )
 function _makeUndefined( src, length )
 {
   let result = Object.create( null );
-  // debugger;
-  // _.assert( 0, 'not tested' );
   return result;
 }
 
@@ -435,7 +432,6 @@ var AuxiliaryExtension =
   MostGeneralNamespaceName : 'props',
   TypeName : 'Aux',
   TypeNames : [ 'Aux', 'Auxiliary' ],
-  // SecondTypeName : 'Auxiliary',
   InstanceConstructor : null,
   tools : _,
 

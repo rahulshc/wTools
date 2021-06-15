@@ -119,7 +119,7 @@ var Extension =
 
 //
 
-_.props.supplement( _.escape, Extension );
+Object.assign( _.escape, Extension );
 _.escape.escaped.nothing = _.escape.wrap( _.nothing );
 _.escape.escaped.null = _.escape.wrap( _.null );
 _.escape.escaped.undefined = _.escape.wrap( _.undefined );

@@ -52,12 +52,12 @@ function exportStringDiagnosticShallow( test )
 
   test.case = `object countable - empty, non-vector`;
   var src = __.diagnostic.objectMake({ elements : [], countable : 1, new : 0 });
-  var expected = '{- Map.polluted with 8 elements -}';
+  var expected = '{- Map.polluted.countable with 0 elements -}';
   test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = `object countable - non empty, non-vector`;
   var src = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1, new : 0 });
-  var expected = '{- Map.polluted with 8 elements -}';
+  var expected = '{- Map.polluted.countable with 3 elements -}';
   test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'Global & GlobalReal';
@@ -152,7 +152,7 @@ function exportStringDiagnosticShallow( test )
 
   test.case = 'escape';
   var src = _.escape.make( 1 );
-  var expected = '{- Escape 1 -}';
+  var expected = '{- Escape.countable.constructible with 1 elements -}';
   test.identical( _.container.exportStringDiagnosticShallow( src ), expected );
 
   test.case = 'interval & BufferTyped';
@@ -1344,30 +1344,6 @@ function elementWithImplicitArgImplicit( test )
 
   /* - */
 
-  // function _iterate()
-  // {
-  //
-  //   let iterator = Object.create( null );
-  //   iterator.next = next;
-  //   iterator.index = 0;
-  //   iterator.instance = this;
-  //   return iterator;
-  //
-  //   function next()
-  //   {
-  //     let result = Object.create( null );
-  //     result.done = this.index === this.instance.elements.length;
-  //     if( result.done )
-  //     return result;
-  //     result.value = this.instance.elements[ this.index ];
-  //     this.index += 1;
-  //     return result;
-  //   }
-  //
-  // }
-
-  /* */
-
   function routine () {}
 
   /* */
@@ -1522,8 +1498,6 @@ function elementWithImplicit( test )
   test.case = 'vector & vectorLike';
   var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1, length : 2 });
   var got = _.container.elementWithImplicit( src, 'elements' );
-  // test.identical( got, [ [ '1', '10' ], 'elements', true ] );
-  // test.identical( got, [ undefined, 'elements', true ] );
   test.identical( got, [ undefined, 'elements', false ] );
   var got = _.container.elementWithImplicit( src, 'non-exists' );
   test.identical( got, [ undefined, 'non-exists', false ] );
@@ -1531,11 +1505,9 @@ function elementWithImplicit( test )
   test.case = 'vector & vectorLike wit 3 elems';
   var src = __.diagnostic.objectMake({ element1 : '1', element2 : 1, countable : 1, length : 2 });
   var got = _.container.elementWithImplicit( src, 'element1' );
-  // test.identical( got, [ '1', 'element1', true ] );
   test.identical( got, [ undefined, 'element1', false ] );
   var got2 = _.container.elementWithImplicit( src, 'element2' );
   test.identical( got2, [ undefined, 'element2', false ] );
-  // test.identical( got2, [ 1, 'element2', true ] );
   var got3 = _.container.elementWithImplicit( src, 'non-exists' );
   test.identical( got3, [ undefined, 'non-exists', false ] );
 
@@ -1543,7 +1515,6 @@ function elementWithImplicit( test )
   var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   var got = _.container.elementWithImplicit( src, 'elements' );
   test.identical( got, [ undefined, 'elements', false ] );
-  // test.identical( got, [ [ '1', '10' ], 'elements', true ] );
   var got = _.container.elementWithImplicit( src, 'non-exists' );
   test.identical( got, [ undefined, 'non-exists', false ] );
 
@@ -1551,7 +1522,6 @@ function elementWithImplicit( test )
   var src = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   src[ '' ] = 'empty';
   var got = _.container.elementWithImplicit( src, '' );
-  // test.identical( got, [ 'empty', '', true ] );
   test.identical( got, [ undefined, '', false ] );
   var got = _.container.elementWithImplicit( src, 0 );
   test.identical( got, [ '1', 0, true ] );
@@ -1632,8 +1602,6 @@ function elementWithImplicit( test )
   test.identical( got3, [ undefined, '2', false ] );
   var got4 = _.container.elementWithImplicit( src, '3' );
   test.identical( got4, [ undefined, '3', false ] );
-  // var got = _.container.elementWithImplicit( src, 0 );
-  // test.identical( got, [ 'a', 0, true ] );
   var got = _.container.elementWithImplicit( src, 0 );
   test.identical( got, [ undefined, 0, false ] );
   var got = _.container.elementWithImplicit( src, 1 );
@@ -1642,15 +1610,8 @@ function elementWithImplicit( test )
   test.identical( got, [ 'a', 'a', true ] );
   var got2 = _.container.elementWithImplicit( src, 1 );
   test.identical( got2, [ 1, 1, true ] );
-  // var got3 = _.container.elementWithImplicit( src, 2 );
-  // test.identical( got3, [ true, 2, true ] );
   var got3 = _.container.elementWithImplicit( src, 2 );
   test.identical( got3, [ undefined, 2, false ] );
-  // var got4 = _.container.elementWithImplicit( src, 3 );
-  // test.identical( got4, [ objRef, 3, true ] );
-  // var got4 = _.container.elementWithImplicit( src,  );
-  // var got4 = _.container.elementWithImplicit( src, undefined );
-  // test.identical( got4, [ undefined, 3, true ] );
   var got4 = _.container.elementWithImplicit( src, undefined );
   test.identical( got4, [ undefined, undefined, false ] );
   var got4 = _.container.elementWithImplicit( src, 4 );
@@ -1663,34 +1624,9 @@ function elementWithImplicit( test )
   var got = _.container.elementWithImplicit( src, undefined );
   test.identical( got, [ undefined, undefined, true ] );
 
-  // test.case = 'Set & SetLike';
-  // var objRef = { a : 1 };
-  // var src = new Set([ 'a', 1, true, objRef ]);
-  // var got = _.container.elementWithImplicit( src, '0' );
-  // test.identical( got, [ undefined, '0', false ] );
-  // var got2 = _.container.elementWithImplicit( src, '1' );
-  // test.identical( got2, [ undefined, '1', false ] );
-  // var got3 = _.container.elementWithImplicit( src, '2' );
-  // test.identical( got3, [ undefined, '2', false ] );
-  // var got4 = _.container.elementWithImplicit( src, '3' );
-  // test.identical( got4, [ undefined, '3', false ] );
-  // var got = _.container.elementWithImplicit( src, 0 );
-  // test.identical( got, [ 'a', 0, true ] );
-  // var got2 = _.container.elementWithImplicit( src, 1 );
-  // test.identical( got2, [ 1, 1, true ] );
-  // var got3 = _.container.elementWithImplicit( src, 2 );
-  // test.identical( got3, [ true, 2, true ] );
-  // var got4 = _.container.elementWithImplicit( src, 3 );
-  // test.identical( got4, [ objRef, 3, true ] );
-  // var got4 = _.container.elementWithImplicit( src, 4 );
-  // test.identical( got4, [ undefined, 4, false ] );
-  // var got5 = _.container.elementWithImplicit( src, 'non-exists' );
-  // test.identical( got5, [ undefined, 'non-exists', false ] );
-
   test.case = 'BufferNode';
   var src = BufferNode.from( 'str' );
   var got = _.container.elementWithImplicit( src, '0' );
-  // test.identical( got, [ 115, '0', true ] );
   test.identical( got, [ undefined, '0', false ] );
   var got = _.container.elementWithImplicit( src, 'non-exists' );
   test.identical( got, [ undefined, 'non-exists', false ] );
@@ -1759,13 +1695,6 @@ function elementWithImplicit( test )
   var got = _.container.elementWithImplicit( src, 'non-exists' );
   test.identical( got, [ undefined, 'non-exists', false ] );
 
-  // test.case = 'propertyTransformer & mapper';
-  // var src = _.props.mapper[ 'assigning' ];
-  // var got = _.container.elementWithImplicit( src, 'group' );
-  // test.identical( got, [ undefined, 'group', false ] );
-  // var got = _.container.elementWithImplicit( src, 'non-exists' );
-  // test.identical( got, [ undefined, 'non-exists', false ] );
-
   test.case = 'routine & routineLike';
   var src = routine;
   var got = _.container.elementWithImplicit( src, 'name' );
@@ -1802,6 +1731,11 @@ function elementWithImplicit( test )
   var got = _.container.elementWithImplicit( src, 'non-exists' );
   test.identical( got, [ undefined, 'non-exists', false ] );
 
+  test.case = `object countable - non empty, non-vector, not the same array`;
+  var src = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 });
+  test.identical( _.container.elementWithImplicit( src, 0 ), [ '1', 0, true ] );
+  test.identical( _.container.elementWithImplicit( src, 2 ), [ '3', 2, true ] );
+
   /* */
 
   if( !Config.debug )
@@ -1814,32 +1748,6 @@ function elementWithImplicit( test )
   test.shouldThrowErrorSync( () => _.container.elementWithImplicit( {}, 'a', 'b' ) );
 
   /* - */
-
-  /* qqq2 : for junior : use _.diangostic.objectMake() in ALL tests instead of this */
-
-  // function _iterate()
-  // {
-  //
-  //   let iterator = Object.create( null );
-  //   iterator.next = next;
-  //   iterator.index = 0;
-  //   iterator.instance = this;
-  //   return iterator;
-  //
-  //   function next()
-  //   {
-  //     let result = Object.create( null );
-  //     result.done = this.index === this.instance.elements.length;
-  //     if( result.done )
-  //     return result;
-  //     result.value = this.instance.elements[ this.index ];
-  //     this.index += 1;
-  //     return result;
-  //   }
-  //
-  // }
-
-  /* */
 
   function routine () {}
 
