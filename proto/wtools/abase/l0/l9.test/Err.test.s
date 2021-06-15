@@ -438,11 +438,15 @@ function _originalMessage( test )
   ({
     args : [ new Error( 'Sample' ), 'str', undefined, '', null, false, abc ],
   });
+  console.log( err.originalMessage );
   test.true( _.error.is( err ) );
   test.identical( __.strLinesCount( err.originalMessage ), 3 );
   test.identical( _.strCount( err.originalMessage, 'Sample str' ), 1 );
   test.identical( _.strCount( err.originalMessage, 'undefined' ), 1 );
-  test.identical( _.strCount( err.originalMessage, '{- routine.anonymous -}' ), 1 );
+  var got = _.strCount( err.originalMessage, '{- routine.anonymous -}' );
+  if( got === 0 )
+  got = _.strCount( err.originalMessage, '[ routine without name ]' )
+  test.identical( got, 1 );
   console.log( err.originalMessage );
 
 }
@@ -509,17 +513,13 @@ function errWithExpoesedBasic( test )
 
   var exp = `= Exposed`;
   test.identical( _.strCount( err.message, exp ), 1 );
-
-  var exp =
-`= Exposed
-    code : code1
-    requireStack : {- Array with 2 elements -}`;
+  var exp = /code : (\'){0,1}code1(\'){0,1}/;
+  test.identical( _.strCount( err.message, exp ), 1 );
+  var exp = 'requireStack : ';
   test.identical( _.strCount( err.message, exp ), 1 );
 
   var exp = new Set([ 'message', 'combinedStack', 'throwsStack', 'sourceCode', 'exposed' ]);
   test.identical( new Set( _.props.keys( err.sections ) ), exp );
-
-  console.log( err.message );
 
   /* */
 
@@ -537,17 +537,13 @@ function errWithExpoesedBasic( test )
 
   var exp = `= Exposed`;
   test.identical( _.strCount( err.message, exp ), 1 );
-
-  var exp =
-`= Exposed
-    code : code1
-    requireStack : {- Array with 2 elements -}`;
+  var exp = /code : (\'){0,1}code1(\'){0,1}/;
+  test.identical( _.strCount( err.message, exp ), 1 );
+  var exp = 'requireStack : ';
   test.identical( _.strCount( err.message, exp ), 1 );
 
   var exp = new Set([ 'message', 'combinedStack', 'throwsStack', 'sourceCode', 'exposed' ]);
   test.identical( new Set( _.props.keys( err.sections ) ), exp );
-
-  console.log( err.message );
 
   /* */
 
@@ -565,18 +561,15 @@ function errWithExpoesedBasic( test )
 
   var exp = `= Exposed`;
   test.identical( _.strCount( err.message, exp ), 1 );
-
-  var exp =
-`= Exposed
-    code : code2
-    prop2 : 13
-    requireStack : {- Array with 2 elements -}`;
+  var exp = /code : (\'){0,1}code2(\'){0,1}/
+  test.identical( _.strCount( err.message, exp ), 1 );
+  var exp = 'prop2 : 13';
+  test.identical( _.strCount( err.message, exp ), 1 );
+  var exp = 'requireStack : ';
   test.identical( _.strCount( err.message, exp ), 1 );
 
   var exp = new Set([ 'message', 'combinedStack', 'throwsStack', 'sourceCode', 'exposed' ]);
   test.identical( new Set( _.props.keys( err.sections ) ), exp );
-
-  console.log( err.message );
 
   /* */
 
@@ -597,13 +590,13 @@ function errWithExpoesedBasic( test )
 
   var exp = `= Exposed`;
   test.identical( _.strCount( err.message, exp ), 1 );
+  var exp = /f1 : (\'){0,1}val1(\'){0,1}/
+  test.identical( _.strCount( err.message, exp ), 1 );
+  var exp = /f2 : (\'){0,1}val2(\'){0,1}/
+  test.identical( _.strCount( err.message, exp ), 1 );
 
   var exp =
-`= Exposed
-    f1 : val1
-    f2 : val2
-
- = ExtraSection
+`= ExtraSection
     this
     is extra
     section`;
