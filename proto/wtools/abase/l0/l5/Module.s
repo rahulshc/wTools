@@ -1784,8 +1784,15 @@ function _trackingEnable()
 
   ModuleFileNative._resolveFilename = _resolveFilename;
 
-  if( _global === _realGlobal_ )
-  ModuleFileNative._load = _loadEnvironment;
+  // yyy
+  debugger;
+  // if( _global === _realGlobal_ )
+  // ModuleFileNative._load = _loadEnvironment;
+  if( !_realGlobal_.__loadEnvironment )
+  {
+    ModuleFileNative._load = _loadEnvironment;
+    _realGlobal_.__loadEnvironment = _loadEnvironment;
+  }
 
   ModuleFileNative.prototype.load = moduleFileLoad;
 
@@ -1797,6 +1804,10 @@ function _trackingEnable()
     let parent = arguments[ 1 ];
     let isMain = arguments[ 2 ];
     let options = arguments[ 3 ];
+
+    // if( request.endsWith( '/r4' ) )
+    // debugger;
+
     if( resolving.parent === parent && resolving.request === request )
     return resolving.resolvedPath;
     resolving.resolvedPath = NjsResolveFilename.apply( this, arguments );
@@ -1892,6 +1903,9 @@ function _trackingEnable()
     const originalModuleNativeFiles = ModuleFileNative._cache;
     const originalGlobal = _realGlobal_._global_;
 
+    if( request.endsWith( '/r4' ) )
+    debugger;
+
     if( parent )
     if( parent._virtualEnvironment )
     {
@@ -1935,6 +1949,9 @@ function _trackingEnable()
   function moduleFileLoad( nativeSourcePath )
   {
     loading.counter += 1;
+
+    if( nativeSourcePath.endsWith( '/r4' ) )
+    debugger;
 
     /*
     ignore includes of other global namespaces
