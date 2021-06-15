@@ -1298,6 +1298,8 @@ function erMakeShouldSupplementNotDefinedFields( test )
   test.identical( got, { arg : 'arg1', arg2 : 'arg2' } );
 }
 
+erMakeShouldSupplementNotDefinedFields.timeOut = 10000;
+
 // --
 //
 // --
