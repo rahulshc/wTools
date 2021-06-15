@@ -98,6 +98,156 @@ function instanceOfContainer( test )
 
 }
 
+//
+
+function namespaceOf( test )
+{
+
+  test.case = 'undefined';
+  var src = undefined;
+  test.true( _.container.namespaceOf( src ) === _.blank );
+  test.true( _.container.namespaceForIterating( src ) === _.blank );
+  test.true( _.container.namespaceForExporting( src ) === _.primitive );
+  test.true( _.container.namespaceWithDefaultOf( src ) === _.blank );
+  test.true( _.entity.namespaceOf( src ) === _.blank );
+  test.true( _.entity.namespaceForIterating( src ) === _.blank );
+  test.true( _.entity.namespaceForExporting( src ) === _.primitive );
+  test.true( _.entity.namespaceWithDefaultOf( src ) === _.blank );
+
+  test.case = 'primitive';
+  var src = 13;
+  test.true( _.container.namespaceOf( src ) === _.blank );
+  test.true( _.container.namespaceForIterating( src ) === _.blank );
+  test.true( _.container.namespaceForExporting( src ) === _.primitive );
+  test.true( _.container.namespaceWithDefaultOf( src ) === _.blank );
+  test.true( _.entity.namespaceOf( src ) === _.itself );
+  test.true( _.entity.namespaceForIterating( src ) === _.itself );
+  test.true( _.entity.namespaceForExporting( src ) === _.primitive );
+  test.true( _.entity.namespaceWithDefaultOf( src ) === _.itself );
+
+  test.case = 'non-primitive';
+  var src = /abc/;
+  test.true( _.container.namespaceOf( src ) === _.blank );
+  test.true( _.container.namespaceForIterating( src ) === _.blank );
+  test.true( _.container.namespaceForExporting( src ) === _.regexp );
+  test.true( _.container.namespaceWithDefaultOf( src ) === _.blank );
+  test.true( _.entity.namespaceOf( src ) === _.object );
+  test.true( _.entity.namespaceForIterating( src ) === _.object );
+  test.true( _.entity.namespaceForExporting( src ) === _.regexp );
+  test.true( _.entity.namespaceWithDefaultOf( src ) === _.object );
+
+  test.case = 'routine';
+  var src = function f1(){};
+  test.true( _.container.namespaceOf( src ) === _.blank );
+  test.true( _.container.namespaceForIterating( src ) === _.blank );
+  test.true( _.container.namespaceForExporting( src ) === _.routine );
+  test.true( _.container.namespaceWithDefaultOf( src ) === _.blank );
+  test.true( _.entity.namespaceOf( src ) === _.props );
+  test.true( _.entity.namespaceForIterating( src ) === _.props );
+  test.true( _.entity.namespaceForExporting( src ) === _.routine );
+  test.true( _.entity.namespaceWithDefaultOf( src ) === _.props );
+
+  test.case = 'countable map';
+  var src = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 });
+  test.true( _.container.namespaceOf( src ) === _.countable );
+  test.true( _.container.namespaceForIterating( src ) === _.countable );
+  test.true( _.container.namespaceForExporting( src ) === _.countable );
+  test.true( _.container.namespaceWithDefaultOf( src ) === _.countable );
+  test.true( _.entity.namespaceOf( src ) === _.object );
+  test.true( _.entity.namespaceForIterating( src ) === _.object );
+  test.true( _.entity.namespaceForExporting( src ) === _.countable );
+  test.true( _.entity.namespaceWithDefaultOf( src ) === _.object );
+
+  test.case = 'countable object';
+  var src = __.diagnostic.objectMake({ new : 1, elements : [ '1', '2', '3' ], countable : 1 });
+  test.true( _.container.namespaceOf( src ) === _.countable );
+  test.true( _.container.namespaceForIterating( src ) === _.countable );
+  test.true( _.container.namespaceForExporting( src ) === _.countable );
+  test.true( _.container.namespaceWithDefaultOf( src ) === _.countable );
+  test.true( _.entity.namespaceOf( src ) === _.object );
+  test.true( _.entity.namespaceForIterating( src ) === _.object );
+  test.true( _.entity.namespaceForExporting( src ) === _.countable );
+  test.true( _.entity.namespaceWithDefaultOf( src ) === _.object );
+
+  test.case = 'object';
+  var src = __.diagnostic.objectMake({ new : 1, elements : [ '1', '2', '3' ], countable : 0 });
+  test.true( _.container.namespaceOf( src ) === _.blank );
+  test.true( _.container.namespaceForIterating( src ) === _.blank );
+  test.true( _.container.namespaceForExporting( src ) === _.object );
+  test.true( _.container.namespaceWithDefaultOf( src ) === _.blank );
+  test.true( _.entity.namespaceOf( src ) === _.object );
+  test.true( _.entity.namespaceForIterating( src ) === _.object );
+  test.true( _.entity.namespaceForExporting( src ) === _.object );
+  test.true( _.entity.namespaceWithDefaultOf( src ) === _.object );
+
+  test.case = 'map';
+  var src = {};
+  test.true( _.container.namespaceOf( src ) === _.aux );
+  test.true( _.container.namespaceForIterating( src ) === _.aux );
+  test.true( _.container.namespaceForExporting( src ) === _.aux );
+  test.true( _.container.namespaceWithDefaultOf( src ) === _.aux );
+  test.true( _.entity.namespaceOf( src ) === _.aux );
+  test.true( _.entity.namespaceForIterating( src ) === _.aux );
+  test.true( _.entity.namespaceForExporting( src ) === _.aux );
+  test.true( _.entity.namespaceWithDefaultOf( src ) === _.aux );
+
+  test.case = 'aux';
+  var src = Object.create( {} );
+  test.true( _.container.namespaceOf( src ) === _.aux );
+  test.true( _.container.namespaceForIterating( src ) === _.aux );
+  test.true( _.container.namespaceForExporting( src ) === _.aux );
+  test.true( _.container.namespaceWithDefaultOf( src ) === _.aux );
+  test.true( _.entity.namespaceOf( src ) === _.aux );
+  test.true( _.entity.namespaceForIterating( src ) === _.aux );
+  test.true( _.entity.namespaceForExporting( src ) === _.aux );
+  test.true( _.entity.namespaceWithDefaultOf( src ) === _.aux );
+
+  test.case = 'set';
+  var src = new Set();
+  test.true( _.container.namespaceOf( src ) === _.set );
+  test.true( _.container.namespaceForIterating( src ) === _.set );
+  test.true( _.container.namespaceForExporting( src ) === _.set );
+  test.true( _.container.namespaceWithDefaultOf( src ) === _.set );
+  test.true( _.entity.namespaceOf( src ) === _.set );
+  test.true( _.entity.namespaceForIterating( src ) === _.set );
+  test.true( _.entity.namespaceForExporting( src ) === _.set );
+  test.true( _.entity.namespaceWithDefaultOf( src ) === _.set );
+
+  test.case = 'hashmap';
+  var src = new HashMap();
+  test.true( _.container.namespaceOf( src ) === _.hashMap );
+  test.true( _.container.namespaceForIterating( src ) === _.hashMap );
+  test.true( _.container.namespaceForExporting( src ) === _.hashMap );
+  test.true( _.container.namespaceWithDefaultOf( src ) === _.hashMap );
+  test.true( _.entity.namespaceOf( src ) === _.hashMap );
+  test.true( _.entity.namespaceForIterating( src ) === _.hashMap );
+  test.true( _.entity.namespaceForExporting( src ) === _.hashMap );
+  test.true( _.entity.namespaceWithDefaultOf( src ) === _.hashMap );
+
+  test.case = 'array';
+  var src = [];
+  test.true( _.container.namespaceOf( src ) === _.long );
+  test.true( _.container.namespaceForIterating( src ) === _.long );
+  test.true( _.container.namespaceForExporting( src ) === _.long );
+  test.true( _.container.namespaceWithDefaultOf( src ) === _.long );
+  test.true( _.entity.namespaceOf( src ) === _.long );
+  test.true( _.entity.namespaceForIterating( src ) === _.long );
+  test.true( _.entity.namespaceForExporting( src ) === _.long );
+  test.true( _.entity.namespaceWithDefaultOf( src ) === _.long );
+
+  test.case = 'typed buffer';
+  var src = new F32x();
+  test.true( _.container.namespaceOf( src ) === _.long );
+  test.true( _.container.namespaceForIterating( src ) === _.long );
+  test.true( _.container.namespaceForExporting( src ) === _.buffer );
+  test.true( _.container.namespaceWithDefaultOf( src ) === _.long );
+  test.true( _.entity.namespaceOf( src ) === _.long );
+  test.true( _.entity.namespaceForIterating( src ) === _.long );
+  test.true( _.entity.namespaceForExporting( src ) === _.buffer );
+  test.true( _.entity.namespaceWithDefaultOf( src ) === _.long );
+
+}
+
 // --
 // define test suite
 // --
@@ -115,6 +265,8 @@ const Proto =
 
     dichotomy,
     instanceOfContainer,
+
+    namespaceOf,
 
   }
 

@@ -34,9 +34,6 @@ function optionsFromArguments( args )
 
   if( args.length === 1 )
   {
-    // if( _.numberIs( args[ 0 ] ) )
-    // o = { accuracy : args[ 0 ] }
-    // else
     o = args[ 0 ];
   }
   else if( args.length === 2 )
@@ -130,10 +127,6 @@ function iteratorInitEnd( iterator )
     if( _iteratorInitExcluding.has( key ) )
     continue;
 
-    // if( key === 'option1' )
-    // debugger;
-    // if( key === 'dst' )
-    // debugger;
     if( !_.props.own( iterator.iterationPrototype, key ) )
     continue;
 
@@ -142,7 +135,6 @@ function iteratorInitEnd( iterator )
       if( iterator.firstIterationPrototype[ key ] !== val )
       {
         iterator.firstIterationPrototype[ key ] = val;
-        // console.log( `${key} -- firstIterationPrototype` );
       }
     }
     else
@@ -150,7 +142,6 @@ function iteratorInitEnd( iterator )
       if( iterator.iterationPrototype[ key ] !== val )
       {
         iterator.iterationPrototype[ key ] = val;
-        // console.log( `${key} -- iterationPrototype` );
       }
     }
 
@@ -165,26 +156,15 @@ function iteratorInitEnd( iterator )
 function iteratorIterationMake()
 {
   let it = this;
-  // let newIt = it.iterationMakeCommon();
   let newIt = Object.create( it.firstIterationPrototype );
   return newIt;
 }
-
-// //
-//
-// function iterationMakeCommon()
-// {
-//   let it = this;
-//   let newIt = Object.create( it.iterationPrototype );
-//   return newIt;
-// }
 
 //
 
 function iterationMake()
 {
   let it = this;
-  // let newIt = it.iterationMakeCommon();
   let newIt = Object.create( it.iterationPrototype );
 
   for( let k in it.Seeker.IterationPreserve )
@@ -284,12 +264,6 @@ function classDefine( o )
 
   let seeker = _.props.extend( null, o.parent );
 
-  // _.assert
-  // (
-  //   !!o.seeker && !!o.seeker.constructor && o.seeker.constructor !== Object,
-  //   'Seeker should have explicitly defined constructor'
-  // );
-
   if( !o.seeker || !o.seeker.constructor || o.seeker.constructor === Object )
   {
     let CustomSeeker = (function()
@@ -308,11 +282,6 @@ function classDefine( o )
   _.props.extend( seeker, o.seeker );
   if( o.iterator )
   _.props.extend( seeker, o.iterator );
-  // yyy
-  // if( o.iterationPreserve )
-  // _.props.supplement( seeker, o.iterationPreserve );
-  // if( o.iterationPreserve )
-  // debugger;
   if( o.iterationPreserve )
   o.iteration = _.props.supplement( o.iteration || Object.create( null ), o.iterationPreserve );
 
@@ -378,7 +347,6 @@ function classDefine( o )
 
     /* qqq : add explanation for each assert */
     _.assert( seeker.Prime.Seeker === undefined );
-    // _.assert( _.routineIs( seeker.iterableEval ) );
     _.assert( !_.props.has( seeker.Iteration, 'src' ) || seeker.Iteration.src === undefined );
     _.assert( !_.props.has( seeker.IterationPreserve, 'src' ) || seeker.IterationPreserve.src === undefined );
     _.assert( !_.props.has( seeker, 'src' ) || seeker.src === undefined );
@@ -389,11 +357,6 @@ function classDefine( o )
       _.assert( _.props.has( seeker.Iteration, 'dst' ) && seeker.Iteration.dst === undefined );
       _.assert( _.props.has( seeker, 'dst' ) && seeker.dst === undefined );
     }
-    // if( _.props.has( seeker, 'result' ) )
-    // {
-    //   _.assert( _.props.has( seeker.Iterator, 'result' ) && seeker.Iterator.result === undefined );
-    //   _.assert( _.props.has( seeker, 'result' ) && seeker.result === undefined );
-    // }
 
     for( let k in seeker.Iteration )
     if( _.props.has( seeker, k ) )
@@ -455,7 +418,6 @@ Seeker.iteratorInit = iteratorInit;
 Seeker.iteratorInitBegin = iteratorInitBegin;
 Seeker.iteratorInitEnd = iteratorInitEnd;
 Seeker.iteratorIterationMake = iteratorIterationMake;
-// Seeker.iterationMakeCommon = iterationMakeCommon;
 Seeker.iterationMake = iterationMake;
 Seeker.iterationProper = iterationProper;
 Seeker.onUp = null;

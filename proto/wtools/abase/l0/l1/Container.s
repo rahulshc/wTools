@@ -88,7 +88,7 @@ makeUndefined.functor = _functor_functor( 'makeUndefined' );
 // meta
 // --
 
-function namespaceOfContainer( src ) /* qqq for junior : cover please */
+function namespaceForIterating( src ) /* qqq for junior : cover please */
 {
   _.assert( arguments.length === 1 );
 
@@ -102,8 +102,6 @@ function namespaceOfContainer( src ) /* qqq for junior : cover please */
   return _.long;
   if( _.countableIs( src ) )
   return _.countable;
-  if( _.mapIs( src ) )
-  return _.map;
   if( _.auxIs( src ) )
   return _.aux;
 
@@ -112,7 +110,7 @@ function namespaceOfContainer( src ) /* qqq for junior : cover please */
 
 //
 
-function namespaceOfEntity( src )
+function namespaceForExporting( src )
 {
   if( _.primitive.is( src ) )
   return _.primitive;
@@ -120,16 +118,20 @@ function namespaceOfEntity( src )
   return _.date;
   if( _.regexp.is( src ) )
   return _.regexp;
-  if( _.buffer.like( src ) )
-  return _.buffer;
   if( _.set.like( src ) )
   return _.set;
   if( _.hashMap.like( src ) )
   return _.hashMap;
-  if( _.vector.like( src ) )
-  return _.vector;
   if( _.routine.is( src ) )
   return _.routine;
+  if( _.buffer.like( src ) )
+  return _.buffer;
+  if( _.long.like( src ) )
+  return _.long;
+  if( _.vector.like( src ) )
+  return _.vector;
+  if( _.countable.like( src ) )
+  return _.countable;
   if( _.aux.like( src ) )
   return _.aux;
   if( _.object.like( src ) )
@@ -191,9 +193,9 @@ let ContainerExtension =
 
   // meta
 
-  namespaceOfContainer,
-  namespaceOfEntity,
-  namespaceOf : namespaceOfContainer,
+  namespaceForIterating,
+  namespaceForExporting,
+  namespaceOf : namespaceForIterating,
   namespaceWithDefaultOf : _.props.namespaceWithDefaultOf,
   _functor_functor : _.props._functor_functor,
 

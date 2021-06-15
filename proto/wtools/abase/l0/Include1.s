@@ -71,6 +71,7 @@ if( typeof module !== 'undefined' )
   require( './l1/Sorted.s' );
   require( './l1/Str.s' );
   require( './l1/Stringer.s' );
+  require( './l1/StrLines.s' );
   require( './l1/Symbol.s' );
   require( './l1/Time.s' );
   require( './l1/Type.s' );
