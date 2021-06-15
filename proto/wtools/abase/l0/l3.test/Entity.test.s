@@ -1137,390 +1137,260 @@ function eqShallowBasic( test )
   /* */
 
   test.case = `null - undefined`;
-
   var src1 = null;
   var src2 = undefined;
-
-  test.true( _.entity.identicalShallow( src1, src1 ) );
-  test.true( _.entity.equivalentShallow( src1, src1 ) );
-
-  test.true( _.entity.identicalShallow( src2, src2 ) );
-  test.true( _.entity.equivalentShallow( src2, src2 ) );
-
   test.true( !_.entity.identicalShallow( src1, src2 ) );
-  test.true( !_.entity.equivalentShallow( src1, src2 ) );
-
   test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
   test.true( !_.entity.equivalentShallow( src2, src1 ) );
 
   /* */
 
   test.case = `Boolean - Boolean`;
-
   var src1 = true;
   var src2 = false;
-
-  test.true( _.entity.identicalShallow( src1, src1 ) );
-  test.true( _.entity.equivalentShallow( src1, src1 ) );
-
-  test.true( _.entity.identicalShallow( src2, src2 ) );
-  test.true( _.entity.equivalentShallow( src2, src2 ) );
-
   test.true( !_.entity.identicalShallow( src1, src2 ) );
-  test.true( !_.entity.equivalentShallow( src1, src2 ) );
-
   test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
   test.true( !_.entity.equivalentShallow( src2, src1 ) );
 
   /* */
 
   test.case = `Boolean - not boolean`;
-
   var src1 = true;
   var src2 = false;
-
   test.true( !_.entity.identicalShallow( src1, 1 ) );
-  test.true( _.entity.equivalentShallow( src1, 1 ) );
-
   test.true( !_.entity.identicalShallow( src2, 0 ) );
+  test.true( _.entity.equivalentShallow( src1, 1 ) );
   test.true( _.entity.equivalentShallow( src2, 0 ) );
 
   /* */
 
   test.case = `Number - Number`;
-
   test.true( !_.entity.identicalShallow( 1, 1 + 1e-15 ) );
-  test.true( _.entity.equivalentShallow( 1, 1 + 1e-15 ) );
-
   test.true( !_.entity.identicalShallow( NaN, Infinity ) );
-  test.true( !_.entity.equivalentShallow( NaN, Infinity ) );
-
   test.true( _.entity.identicalShallow( +0, -0 ) );
-  test.true( _.entity.equivalentShallow( +0, -0 ) );
-
   test.true( _.entity.identicalShallow( 0, -0 ) );
+  test.true( _.entity.equivalentShallow( 1, 1 + 1e-15 ) );
+  test.true( !_.entity.equivalentShallow( NaN, Infinity ) );
+  test.true( _.entity.equivalentShallow( +0, -0 ) );
   test.true( _.entity.equivalentShallow( 0, -0 ) );
 
   /* */
 
   test.case = `Number - Not Number`
-
   test.true( !_.entity.identicalShallow( 1, '1' ) );
-  test.true( !_.entity.equivalentShallow( 1, '1' ) );
-
   test.true( !_.entity.identicalShallow( Infinity, null ) );
-  test.true( !_.entity.equivalentShallow( Infinity, null ) );
-
   test.true( !_.entity.identicalShallow( NaN, undefined ) );
-  test.true( !_.entity.equivalentShallow( NaN, undefined ) );
-
   test.true( !_.entity.identicalShallow( NaN, null ) );
-  test.true( !_.entity.equivalentShallow( NaN, null ) );
-
   test.true( !_.entity.identicalShallow( Infinity, null ) );
-  test.true( !_.entity.equivalentShallow( Infinity, null ) );
-
   test.true( !_.entity.identicalShallow( 3, [] ) );
-  test.true( !_.entity.equivalentShallow( 3, [] ) );
-
   test.true( !_.entity.identicalShallow( 3, {} ) );
-  test.true( !_.entity.equivalentShallow( 3, {} ) );
-
   test.true( !_.entity.identicalShallow( 3, [ 3 ] ) );
-  test.true( !_.entity.equivalentShallow( 3, [ 3 ] ) );
-
   test.true( !_.entity.identicalShallow( 3, { a : 3 } ) );
-  test.true( !_.entity.equivalentShallow( 3, { a : 3 } ) );
-
   test.true( !_.entity.identicalShallow( 3, new Date() ) );
-  test.true( !_.entity.equivalentShallow( 3, new Date() ) );
-
   test.true( !_.entity.identicalShallow( 3, new F32x( 3 ) ) );
-  test.true( !_.entity.equivalentShallow( 3, new F32x( 3 ) ) );
-
   test.true( !_.entity.identicalShallow( 3, /abc/ ) );
-  test.true( !_.entity.equivalentShallow( 3, /abc/ ) );
-
   test.true( !_.entity.identicalShallow( 3, function(){} ) );
-  test.true( !_.entity.equivalentShallow( 3, function(){} ) );
-
   test.true( _.entity.identicalShallow( 3, (function(){return 3;})() ) );
+  test.true( !_.entity.equivalentShallow( 1, '1' ) );
+  test.true( !_.entity.equivalentShallow( Infinity, null ) );
+  test.true( !_.entity.equivalentShallow( NaN, undefined ) );
+  test.true( !_.entity.equivalentShallow( NaN, null ) );
+  test.true( !_.entity.equivalentShallow( Infinity, null ) );
+  test.true( !_.entity.equivalentShallow( 3, [] ) );
+  test.true( !_.entity.equivalentShallow( 3, {} ) );
+  test.true( !_.entity.equivalentShallow( 3, [ 3 ] ) );
+  test.true( !_.entity.equivalentShallow( 3, { a : 3 } ) );
+  test.true( !_.entity.equivalentShallow( 3, new Date() ) );
+  test.true( !_.entity.equivalentShallow( 3, new F32x( 3 ) ) );
+  test.true( !_.entity.equivalentShallow( 3, /abc/ ) );
+  test.true( !_.entity.equivalentShallow( 3, function(){} ) );
   test.true( _.entity.equivalentShallow( 3, (function(){return 3;})() ) );
 
   /* */
 
   test.case = `String - String`;
-
   var src1 = '';
   var src2 = 'abc';
-
-  test.true( _.entity.identicalShallow( src1, src1 ) );
-  test.true( _.entity.equivalentShallow( src1, src1 ) );
-
-  test.true( _.entity.identicalShallow( src2, src2 ) );
-  test.true( _.entity.equivalentShallow( src2, src2 ) );
-
   test.true( !_.entity.identicalShallow( src1, src2 ) );
-  test.true( !_.entity.equivalentShallow( src1, src2 ) );
-
   test.true( !_.entity.identicalShallow( src2, src1 ) );
-  test.true( !_.entity.equivalentShallow( src2, src1 ) );
-
   test.true( !_.entity.identicalShallow( 'ab', 'c' ) );
-  test.true( !_.entity.equivalentShallow( 'ab', 'c' ) );
-
   test.true( _.entity.identicalShallow( src2, String( src2 ) ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( 'ab', 'c' ) );
   test.true( _.entity.equivalentShallow( src2, String( src2 ) ) );
 
   /* */
 
   test.case = `String - not String`;
-
   test.true( !_.entity.identicalShallow( '', new Date() ) );
-  test.true( !_.entity.equivalentShallow( '', new Date() ) );
-
   test.true( !_.entity.identicalShallow( '', undefined ) );
-  test.true( !_.entity.equivalentShallow( '', undefined ) );
-
   test.true( !_.entity.identicalShallow( '', null ) );
-  test.true( !_.entity.equivalentShallow( '', null ) );
-
   test.true( !_.entity.identicalShallow( '', NaN ) );
-  test.true( !_.entity.equivalentShallow( '', NaN ) );
-
   test.true( !_.entity.identicalShallow( '', 0 ) );
-  test.true( !_.entity.equivalentShallow( '', 0 ) );
-
   test.true( !_.entity.identicalShallow( '', [] ) );
-  test.true( !_.entity.equivalentShallow( '', [] ) );
-
   test.true( !_.entity.identicalShallow( '', {} ) );
-  test.true( !_.entity.equivalentShallow( '', {}) );
-
   test.true( !_.entity.identicalShallow( '', [ '' ]) );
-  test.true( !_.entity.equivalentShallow( '', [ '' ] ) );
-
   test.true( !_.entity.identicalShallow( '', { a : '' } ) );
-  test.true( !_.entity.equivalentShallow( '', { a : '' } ) );
-
   test.true( !_.entity.identicalShallow( '', new F32x( 3 ) ) );
-  test.true( !_.entity.equivalentShallow( '', new F32x( 3 ) ) );
-
   test.true( !_.entity.identicalShallow( '', /(?:)/ ) );
-  test.true( !_.entity.equivalentShallow( '', /(?:)/ ) );
-
   test.true( !_.entity.identicalShallow( '', function(){} ) );
-  test.true( !_.entity.equivalentShallow( '', function(){} ) );
-
   test.true( !_.entity.identicalShallow( '', new Date( ) ));
-  test.true( !_.entity.equivalentShallow( '', new Date(  ) ));
-
   test.true( !_.entity.identicalShallow( 'abc', new Date( ) ));
-  test.true( !_.entity.equivalentShallow( 'abc', new Date(  ) ));
-
   test.true( !_.entity.identicalShallow( 'abc', undefined ));
-  test.true( !_.entity.equivalentShallow( 'abc', undefined ));
-
   test.true( !_.entity.identicalShallow( 'abc', null ));
-  test.true( !_.entity.equivalentShallow( 'abc', NaN ));
-
   test.true( !_.entity.identicalShallow( 'abc', 0 ));
-  test.true( !_.entity.equivalentShallow( 'abc', 0 ));
-
   test.true( !_.entity.identicalShallow( 'abc', 1 ));
-  test.true( !_.entity.equivalentShallow( 'abc', 1 ));
-
   test.true( !_.entity.identicalShallow( 'abc', [] ));
-  test.true( !_.entity.equivalentShallow( 'abc', [] ));
-
   test.true( !_.entity.identicalShallow( 'abc', {} ));
-  test.true( !_.entity.equivalentShallow( 'abc', {} ));
-
   test.true( !_.entity.identicalShallow( 'abc', [ 'abc' ] ));
-  test.true( !_.entity.equivalentShallow( 'abc', [ 'abc' ] ));
-
   test.true( !_.entity.identicalShallow( 'abc', { abc : 'abc' } ));
-  test.true( !_.entity.equivalentShallow( 'abc', { abc : 'abc' } ));
-
   test.true( !_.entity.identicalShallow( 'abc', new F32x( 3 ) ));
-  test.true( !_.entity.equivalentShallow( 'abc', new F32x( 3 ) ));
-
   test.true( !_.entity.identicalShallow( 'abc', /abc/ ));
-  test.true( !_.entity.equivalentShallow( 'abc', /abc/ ));
-
   test.true( !_.entity.identicalShallow( 'abc', function(){} ));
+  test.true( !_.entity.equivalentShallow( '', new Date() ) );
+  test.true( !_.entity.equivalentShallow( '', undefined ) );
+  test.true( !_.entity.equivalentShallow( '', null ) );
+  test.true( !_.entity.equivalentShallow( '', NaN ) );
+  test.true( !_.entity.equivalentShallow( '', 0 ) );
+  test.true( !_.entity.equivalentShallow( '', [] ) );
+  test.true( !_.entity.equivalentShallow( '', {}) );
+  test.true( !_.entity.equivalentShallow( '', [ '' ] ) );
+  test.true( !_.entity.equivalentShallow( '', { a : '' } ) );
+  test.true( !_.entity.equivalentShallow( '', new F32x( 3 ) ) );
+  test.true( !_.entity.equivalentShallow( '', /(?:)/ ) );
+  test.true( !_.entity.equivalentShallow( '', function(){} ) );
+  test.true( !_.entity.equivalentShallow( '', new Date(  ) ));
+  test.true( !_.entity.equivalentShallow( 'abc', new Date(  ) ));
+  test.true( !_.entity.equivalentShallow( 'abc', undefined ));
+  test.true( !_.entity.equivalentShallow( 'abc', NaN ));
+  test.true( !_.entity.equivalentShallow( 'abc', 0 ));
+  test.true( !_.entity.equivalentShallow( 'abc', 1 ));
+  test.true( !_.entity.equivalentShallow( 'abc', [] ));
+  test.true( !_.entity.equivalentShallow( 'abc', {} ));
+  test.true( !_.entity.equivalentShallow( 'abc', [ 'abc' ] ));
+  test.true( !_.entity.equivalentShallow( 'abc', { abc : 'abc' } ));
+  test.true( !_.entity.equivalentShallow( 'abc', new F32x( 3 ) ));
+  test.true( !_.entity.equivalentShallow( 'abc', /abc/ ));
   test.true( !_.entity.equivalentShallow( 'abc', function(){} ));
 
   /* */
 
   test.case = `RegExp - RegExp`;
-
   test.true( _.entity.identicalShallow( /(?:)/, /(?:)/ ));
-  test.true( _.entity.equivalentShallow( /(?:)/, /(?:)/ ));
-
   test.true( _.entity.identicalShallow( /abc/, /abc/ ));
-  test.true( _.entity.equivalentShallow( /abc/, /abc/ ));
-
   test.true( _.entity.identicalShallow( /abc/iy, /abc/yi ));
-  test.true( _.entity.equivalentShallow( /abc/iy, /abc/yi ));
-
   test.true( _.entity.identicalShallow( /abc/i, /abc/i ));
-  test.true( _.entity.equivalentShallow( /abc/i, /abc/i ));
-
   test.true( _.entity.identicalShallow( /abc/iy, /abc/yi ));
-  test.true( _.entity.equivalentShallow( /abc/iy, /abc/yi ));
-
   test.true( !_.entity.identicalShallow( /abc/i, /abc/ ));
-  test.true( !_.entity.equivalentShallow( /abc/i, /abc/ ));
-
   test.true( !_.entity.identicalShallow( /abc/i, /abc/yi ));
-  test.true( !_.entity.equivalentShallow( /abc/i, /abc/yi ));
-
   test.true( !_.entity.identicalShallow( /(?:)/, /abc/ ));
-  test.true( !_.entity.equivalentShallow( /(?:)/, /abc/ ));
-
   test.true( !_.entity.identicalShallow( /abc/, /(?:)/ ));
-  test.true( !_.entity.equivalentShallow( /abc/, /(?:)/ ));
-
   test.true( !_.entity.identicalShallow( /ab/, /c/ ));
+  test.true( _.entity.equivalentShallow( /(?:)/, /(?:)/ ));
+  test.true( _.entity.equivalentShallow( /abc/, /abc/ ));
+  test.true( _.entity.equivalentShallow( /abc/iy, /abc/yi ));
+  test.true( _.entity.equivalentShallow( /abc/i, /abc/i ));
+  test.true( _.entity.equivalentShallow( /abc/iy, /abc/yi ));
+  test.true( !_.entity.equivalentShallow( /abc/i, /abc/ ));
+  test.true( !_.entity.equivalentShallow( /abc/i, /abc/yi ));
+  test.true( !_.entity.equivalentShallow( /(?:)/, /abc/ ));
+  test.true( !_.entity.equivalentShallow( /abc/, /(?:)/ ));
   test.true( !_.entity.equivalentShallow( /ab/, /c/ ));
 
   /* */
 
   test.case = `RegExp - not RegExp`;
-
   test.true( !_.entity.identicalShallow( /(?:)/, new Date() ));
-  test.true( !_.entity.equivalentShallow( /(?:)/, new Date() ));
-
   test.true( !_.entity.identicalShallow( /(?:)/, undefined ));
-  test.true( !_.entity.equivalentShallow( /(?:)/, undefined ));
-
   test.true( !_.entity.identicalShallow( /(?:)/, null ));
-  test.true( !_.entity.equivalentShallow( /(?:)/, null ));
-
   test.true( !_.entity.identicalShallow( /(?:)/, NaN ));
-  test.true( !_.entity.equivalentShallow( /(?:)/, NaN ));
-
   test.true( !_.entity.identicalShallow( /(?:)/, 0 ));
-  test.true( !_.entity.equivalentShallow( /(?:)/, 0 ));
-
   test.true( !_.entity.identicalShallow( /(?:)/, 1 ));
-  test.true( !_.entity.equivalentShallow( /(?:)/, 1 ));
-
   test.true( !_.entity.identicalShallow( /(?:)/, [] ));
-  test.true( !_.entity.equivalentShallow( /(?:)/, [] ));
-
   test.true( !_.entity.identicalShallow( /(?:)/, {} ));
-  test.true( !_.entity.equivalentShallow( /(?:)/, {} ));
-
   test.true( !_.entity.identicalShallow( /(?:)/, [ /(?:)/ ] ));
-  test.true( !_.entity.equivalentShallow( /(?:)/, [ /(?:)/ ] ));
-
   test.true( !_.entity.identicalShallow( /(?:)/, { a : /(?:)/ } ));
-  test.true( !_.entity.equivalentShallow( /(?:)/, { a : /(?:)/ } ));
-
   test.true( !_.entity.identicalShallow( /(?:)/, new F32x( 3 ) ));
-  test.true( !_.entity.equivalentShallow( /(?:)/, new F32x( 3 ) ));
-
   test.true( !_.entity.identicalShallow( /(?:)/, function(){} ));
-  test.true( !_.entity.equivalentShallow( /(?:)/, function(){} ));
-
   test.true( !_.entity.identicalShallow( /abc/, new Date() ));
-  test.true( !_.entity.equivalentShallow( /abc/, new Date() ));
-
   test.true( !_.entity.identicalShallow( /abc/, undefined ));
-  test.true( !_.entity.equivalentShallow( /abc/, undefined ));
-
   test.true( !_.entity.identicalShallow( /abc/, null ));
-  test.true( !_.entity.equivalentShallow( /abc/, null ));
-
   test.true( !_.entity.identicalShallow( /abc/, NaN ));
-  test.true( !_.entity.equivalentShallow( /abc/, NaN ));
-
   test.true( !_.entity.identicalShallow( /abc/, 0 ));
-  test.true( !_.entity.equivalentShallow( /abc/, 0 ));
-
   test.true( !_.entity.identicalShallow( /abc/, 1 ));
-  test.true( !_.entity.equivalentShallow( /abc/, 1 ));
-
   test.true( !_.entity.identicalShallow( /abc/, [] ));
-  test.true( !_.entity.equivalentShallow( /abc/, [] ));
-
   test.true( !_.entity.identicalShallow( /abc/, {} ));
-  test.true( !_.entity.equivalentShallow( /abc/, {} ));
-
   test.true( !_.entity.identicalShallow( /abc/, [ /abc/ ] ));
-  test.true( !_.entity.equivalentShallow( /abc/, [ /abc/ ] ));
-
   test.true( !_.entity.identicalShallow( /abc/, { a : /abc/ } ));
-  test.true( !_.entity.equivalentShallow( /abc/, { a : /abc/ } ));
-
   test.true( !_.entity.identicalShallow( /abc/, new F32x( 3 ) ));
-  test.true( !_.entity.equivalentShallow( /abc/, new F32x( 3 ) ));
-
   test.true( !_.entity.identicalShallow( /abc/, function(){} ));
+  test.true( !_.entity.equivalentShallow( /(?:)/, new Date() ));
+  test.true( !_.entity.equivalentShallow( /(?:)/, undefined ));
+  test.true( !_.entity.equivalentShallow( /(?:)/, null ));
+  test.true( !_.entity.equivalentShallow( /(?:)/, NaN ));
+  test.true( !_.entity.equivalentShallow( /(?:)/, 0 ));
+  test.true( !_.entity.equivalentShallow( /(?:)/, 1 ));
+  test.true( !_.entity.equivalentShallow( /(?:)/, [] ));
+  test.true( !_.entity.equivalentShallow( /(?:)/, {} ));
+  test.true( !_.entity.equivalentShallow( /(?:)/, [ /(?:)/ ] ));
+  test.true( !_.entity.equivalentShallow( /(?:)/, { a : /(?:)/ } ));
+  test.true( !_.entity.equivalentShallow( /(?:)/, new F32x( 3 ) ));
+  test.true( !_.entity.equivalentShallow( /(?:)/, function(){} ));
+  test.true( !_.entity.equivalentShallow( /abc/, new Date() ));
+  test.true( !_.entity.equivalentShallow( /abc/, undefined ));
+  test.true( !_.entity.equivalentShallow( /abc/, null ));
+  test.true( !_.entity.equivalentShallow( /abc/, NaN ));
+  test.true( !_.entity.equivalentShallow( /abc/, 0 ));
+  test.true( !_.entity.equivalentShallow( /abc/, 1 ));
+  test.true( !_.entity.equivalentShallow( /abc/, [] ));
+  test.true( !_.entity.equivalentShallow( /abc/, {} ));
+  test.true( !_.entity.equivalentShallow( /abc/, [ /abc/ ] ));
+  test.true( !_.entity.equivalentShallow( /abc/, { a : /abc/ } ));
+  test.true( !_.entity.equivalentShallow( /abc/, new F32x( 3 ) ));
   test.true( !_.entity.equivalentShallow( /abc/,function(){} ));
 
   /* */
 
   test.case = `Routine - Routine`;
-
   function func1(){};
   function func2(){};
-
-  test.true( _.entity.identicalShallow( func1, func1 ));
-  test.true( _.entity.equivalentShallow( func1, func1 ));
-
   test.true( !_.entity.identicalShallow( func1, func2 ));
   test.true( !_.entity.equivalentShallow( func1, func2 ));
 
   /* */
 
   test.case = `Routine - not Routine`;
-
   test.true( !_.entity.identicalShallow( func1, 1 ));
-  test.true( !_.entity.equivalentShallow( func1, 1 ));
-
   test.true( !_.entity.identicalShallow( func1, undefined ));
-  test.true( !_.entity.equivalentShallow( func1, undefined ));
-
   test.true( !_.entity.identicalShallow( func1, null ));
-  test.true( !_.entity.equivalentShallow( func1, null ));
-
   test.true( !_.entity.identicalShallow( func1, NaN ));
-  test.true( !_.entity.equivalentShallow( func1, NaN ));
-
   test.true( !_.entity.identicalShallow( func1, 0 ));
-  test.true( !_.entity.equivalentShallow( func1, 0 ));
-
   test.true( !_.entity.identicalShallow( func1, 1 ));
-  test.true( !_.entity.equivalentShallow( func1, 1 ));
-
   test.true( !_.entity.identicalShallow( func1, [] ));
-  test.true( !_.entity.equivalentShallow( func1, [] ));
-
   test.true( !_.entity.identicalShallow( func1, {} ));
-  test.true( !_.entity.equivalentShallow( func1, {} ));
-
   test.true( !_.entity.identicalShallow( func1, [ func1 ] ));
-  test.true( !_.entity.equivalentShallow( func1, [ func1 ] ));
-
   test.true( !_.entity.identicalShallow( func1, { a : func1 } ));
-  test.true( !_.entity.equivalentShallow( func1, { a : func1 } ));
-
   test.true( !_.entity.identicalShallow( func1, /abc/ ));
-  test.true( !_.entity.equivalentShallow( func1, /abc/ ));
-
   test.true( !_.entity.identicalShallow( func1, function(){} ));
+  test.true( !_.entity.equivalentShallow( func1, 1 ));
+  test.true( !_.entity.equivalentShallow( func1, undefined ));
+  test.true( !_.entity.equivalentShallow( func1, null ));
+  test.true( !_.entity.equivalentShallow( func1, NaN ));
+  test.true( !_.entity.equivalentShallow( func1, 0 ));
+  test.true( !_.entity.equivalentShallow( func1, 1 ));
+  test.true( !_.entity.equivalentShallow( func1, [] ));
+  test.true( !_.entity.equivalentShallow( func1, {} ));
+  test.true( !_.entity.equivalentShallow( func1, [ func1 ] ));
+  test.true( !_.entity.equivalentShallow( func1, { a : func1 } ));
+  test.true( !_.entity.equivalentShallow( func1, /abc/ ));
   test.true( !_.entity.equivalentShallow( func1, function(){} ));
 
   /* */
 
   test.case = `Date - Date`;
-
-  test.true( _.entity.identicalShallow( new Date(), new Date() ));
-  test.true( _.entity.equivalentShallow( new Date(), new Date() ));
-
   var src1 = new Date();
   var src2 = new Date();
   src2.setFullYear( 1987 );
@@ -1530,274 +1400,187 @@ function eqShallowBasic( test )
   /* */
 
   test.case = `Date - not Date`;
-
   test.true( !_.entity.identicalShallow( new Date(), '1' ));
-  test.true( !_.entity.equivalentShallow( new Date(), '1' ));
-
   test.true( !_.entity.identicalShallow( new Date(), undefined ));
-  test.true( !_.entity.equivalentShallow( new Date(), undefined ));
-
   test.true( !_.entity.identicalShallow( new Date(), null ));
-  test.true( !_.entity.equivalentShallow( new Date(), null ));
-
   test.true( !_.entity.identicalShallow( new Date(), NaN ));
-  test.true( !_.entity.equivalentShallow( new Date(), NaN ));
-
   test.true( !_.entity.identicalShallow( new Date(), [] ));
-  test.true( !_.entity.equivalentShallow( new Date(), [] ));
-
   test.true( !_.entity.identicalShallow( new Date(), {} ));
-  test.true( !_.entity.equivalentShallow( new Date(), {} ));
-
   test.true( !_.entity.identicalShallow( new Date(), [ new Date() ] ));
-  test.true( !_.entity.equivalentShallow( new Date(), [ new Date() ] ));
-
   test.true( !_.entity.identicalShallow( new Date(), { a : new Date() } ));
-  test.true( !_.entity.equivalentShallow( new Date(), { a : new Date() } ));
-
   test.true( !_.entity.identicalShallow( new Date(), new F32x( 3 ) ));
-  test.true( !_.entity.equivalentShallow( new Date(), new F32x( 3 ) ));
-
   test.true( !_.entity.identicalShallow( new Date(), /abc/ ));
-  test.true( !_.entity.equivalentShallow( new Date(), /abc/ ));
-
   test.true( !_.entity.identicalShallow( new Date(), function(){} ));
+  test.true( !_.entity.equivalentShallow( new Date(), '1' ));
+  test.true( !_.entity.equivalentShallow( new Date(), undefined ));
+  test.true( !_.entity.equivalentShallow( new Date(), null ));
+  test.true( !_.entity.equivalentShallow( new Date(), NaN ));
+  test.true( !_.entity.equivalentShallow( new Date(), [] ));
+  test.true( !_.entity.equivalentShallow( new Date(), {} ));
+  test.true( !_.entity.equivalentShallow( new Date(), [ new Date() ] ));
+  test.true( !_.entity.equivalentShallow( new Date(), { a : new Date() } ));
+  test.true( !_.entity.equivalentShallow( new Date(), new F32x( 3 ) ));
+  test.true( !_.entity.equivalentShallow( new Date(), /abc/ ));
   test.true( !_.entity.equivalentShallow( new Date(), function(){} ));
 
   /* */
 
   test.case = `Array - Array`;
-
   test.true( _.entity.identicalShallow( [], [] ));
-  test.true( _.entity.equivalentShallow( [], [] ));
-
   test.true( _.entity.identicalShallow( [ 0 ], [ 0 ] ));
-  test.true( _.entity.equivalentShallow( [ 0 ], [ 0 ] ));
-
   test.true( _.entity.identicalShallow( [ 1 ], [ 1 ] ));
-  test.true( _.entity.equivalentShallow( [ 1 ], [ 1 ] ));
-
   test.true( _.entity.identicalShallow( [ undefined ], [ undefined ] ));
-  test.true( _.entity.equivalentShallow( [ undefined ], [ undefined ] ));
-
   test.true( _.entity.identicalShallow( [ null ], [ null ] ));
-  test.true( _.entity.equivalentShallow( [ null ], [ null ] ));
-
   test.true( !_.entity.identicalShallow( [ [ 1, 2, 3 ] ], [ [ 1, 2, 3 ] ] ));
-  test.true( !_.entity.equivalentShallow( [ [ 1, 2, 3 ] ], [ [ 1, 2, 3 ] ] ));
-
-  test.true( !_.entity.identicalShallow(  [ [ 1, 2 ] ], [ [ 1, 2, 3 ] ] ));
-  test.true( !_.entity.equivalentShallow(  [ [ 1, 2 ] ], [ [ 1, 2, 3 ] ] ));
-
-  test.true( !_.entity.identicalShallow(  [ [ 1, 2 ] ], [ [ 1, 2, 3 ] ] ));
-  test.true( !_.entity.equivalentShallow(  [ [ 1, 2 ] ], [ [ 1, 2, 3 ] ] ));
-
+  test.true( !_.entity.identicalShallow( [ [ 1, 2 ] ], [ [ 1, 2, 3 ] ] ));
+  test.true( !_.entity.identicalShallow( [ [ 1, 2 ] ], [ [ 1, 2, 3 ] ] ));
   test.true( !_.entity.identicalShallow( [ [ 1, 2, 3 ] ], [ [ 1, 2 ] ] ));
-  test.true( !_.entity.equivalentShallow( [ [ 1, 2, 3 ] ], [ [ 1, 2 ] ] ));
-
   test.true( !_.entity.identicalShallow( [ [ 1, 3 ] ], [ 1, 3 ] ));
-  test.true( !_.entity.equivalentShallow( [ [ 1, 3 ] ], [ 1, 3 ] ));
-
   test.true( !_.entity.identicalShallow( [ null ], [ undefined ] ));
+  test.true( _.entity.equivalentShallow( [], [] ));
+  test.true( _.entity.equivalentShallow( [ 0 ], [ 0 ] ));
+  test.true( _.entity.equivalentShallow( [ 1 ], [ 1 ] ));
+  test.true( _.entity.equivalentShallow( [ undefined ], [ undefined ] ));
+  test.true( _.entity.equivalentShallow( [ null ], [ null ] ));
+  test.true( !_.entity.equivalentShallow( [ [ 1, 2, 3 ] ], [ [ 1, 2, 3 ] ] ));
+  test.true( !_.entity.equivalentShallow( [ [ 1, 2 ] ], [ [ 1, 2, 3 ] ] ));
+  test.true( !_.entity.equivalentShallow( [ [ 1, 2 ] ], [ [ 1, 2, 3 ] ] ));
+  test.true( !_.entity.equivalentShallow( [ [ 1, 2, 3 ] ], [ [ 1, 2 ] ] ));
+  test.true( !_.entity.equivalentShallow( [ [ 1, 3 ] ], [ 1, 3 ] ));
   test.true( !_.entity.equivalentShallow( [ null ], [ undefined ] ));
 
   /* */
 
   test.case = `Array - not Array`;
-
   test.true( !_.entity.identicalShallow( [], '1' ));
-  test.true( !_.entity.equivalentShallow( [], '1' ));
-
   test.true( !_.entity.identicalShallow( [], undefined ));
-  test.true( !_.entity.equivalentShallow( [], undefined ));
-
   test.true( !_.entity.identicalShallow( [], null ));
-  test.true( !_.entity.equivalentShallow( [], null ));
-
   test.true( !_.entity.identicalShallow( [], NaN ));
-  test.true( !_.entity.equivalentShallow( [], NaN ));
-
   test.true( !_.entity.identicalShallow( [], 0 ));
-  test.true( !_.entity.equivalentShallow( [], 0 ));
-
   test.true( !_.entity.identicalShallow( [], 1 ));
-  test.true( !_.entity.equivalentShallow( [], 1 ));
-
   test.true( !_.entity.identicalShallow( [], {} ));
-  test.true( !_.entity.equivalentShallow( [], { }));
-
   test.true( !_.entity.identicalShallow( [], new Date() ));
-  test.true( !_.entity.equivalentShallow( [], new Date() ));
-
   test.true( !_.entity.identicalShallow( [], new F32x( 3 ) ));
-  test.true( !_.entity.equivalentShallow( [], new F32x( 3 ) ));
-
   test.true( !_.entity.identicalShallow( [], /abc/ ));
-  test.true( !_.entity.equivalentShallow( [], /abc/ ));
-
   test.true( !_.entity.identicalShallow( [], function(){} ));
-  test.true( !_.entity.equivalentShallow( [], function(){} ));
-
-  /* */
-
   test.true( !_.entity.identicalShallow( [ '1' ], '1' ));
-  test.true( !_.entity.equivalentShallow( [ '1' ], '1' ));
-
   test.true( !_.entity.identicalShallow( [ undefined ], undefined ));
-  test.true( !_.entity.equivalentShallow( [ undefined ], undefined ));
-
   test.true( !_.entity.identicalShallow( [ null ], null ));
-  test.true( !_.entity.equivalentShallow( [ null ], null ));
-
   test.true( !_.entity.identicalShallow( [ NaN ], NaN ));
-  test.true( !_.entity.equivalentShallow( [ NaN ], NaN ));
-
   test.true( !_.entity.identicalShallow( [ 0 ], 0 ));
-  test.true( !_.entity.equivalentShallow( [ 0 ], 0 ));
-
   test.true( !_.entity.identicalShallow( [ 1 ], 1 ));
-  test.true( !_.entity.equivalentShallow( [ 1 ], 1 ));
-
   test.true( !_.entity.identicalShallow( [ {} ], {} ));
-  test.true( !_.entity.equivalentShallow( [ {} ], { }));
-
   test.true( !_.entity.identicalShallow( [ new Date() ], new Date() ));
-  test.true( !_.entity.equivalentShallow( [ new Date() ], new Date() ));
-
   test.true( !_.entity.identicalShallow( [ new F32x( 3 ) ], new F32x( 3 ) ));
-  test.true( !_.entity.equivalentShallow( [ new F32x( 3 ) ], new F32x( 3 ) ));
-
   test.true( !_.entity.identicalShallow( [ /abc/ ], /abc/ ));
-  test.true( !_.entity.equivalentShallow( [ /abc/ ], /abc/ ));
-
   test.true( !_.entity.identicalShallow( [ function(){} ], function(){} ));
+  test.true( !_.entity.equivalentShallow( [], '1' ));
+  test.true( !_.entity.equivalentShallow( [], undefined ));
+  test.true( !_.entity.equivalentShallow( [], null ));
+  test.true( !_.entity.equivalentShallow( [], NaN ));
+  test.true( !_.entity.equivalentShallow( [], 0 ));
+  test.true( !_.entity.equivalentShallow( [], 1 ));
+  test.true( !_.entity.equivalentShallow( [], { }));
+  test.true( !_.entity.equivalentShallow( [], new Date() ));
+  test.true( !_.entity.equivalentShallow( [], new F32x( 3 ) ));
+  test.true( !_.entity.equivalentShallow( [], /abc/ ));
+  test.true( !_.entity.equivalentShallow( [], function(){} ));
+  test.true( !_.entity.equivalentShallow( [ '1' ], '1' ));
+  test.true( !_.entity.equivalentShallow( [ undefined ], undefined ));
+  test.true( !_.entity.equivalentShallow( [ null ], null ));
+  test.true( !_.entity.equivalentShallow( [ NaN ], NaN ));
+  test.true( !_.entity.equivalentShallow( [ 0 ], 0 ));
+  test.true( !_.entity.equivalentShallow( [ 1 ], 1 ));
+  test.true( !_.entity.equivalentShallow( [ {} ], { }));
+  test.true( !_.entity.equivalentShallow( [ new Date() ], new Date() ));
+  test.true( !_.entity.equivalentShallow( [ new F32x( 3 ) ], new F32x( 3 ) ));
+  test.true( !_.entity.equivalentShallow( [ /abc/ ], /abc/ ));
   test.true( !_.entity.equivalentShallow( [ function(){} ], function(){} ));
 
   /* */
 
   test.case = `Map - Map`;
-
   test.true( _.entity.identicalShallow( {}, {} ));
-  test.true( _.entity.equivalentShallow( {}, {} ));
-
   test.true( _.entity.identicalShallow( { a : 0 }, { a : 0 } ));
-  test.true( _.entity.equivalentShallow( { a : 0 }, { a : 0 } ));
-
   test.true( _.entity.identicalShallow( { a : 1 }, { a : 1 } ));
-  test.true( _.entity.equivalentShallow( { a : 1 }, { a : 1 } ));
-
   test.true( !_.entity.identicalShallow( { a : 1, b : 1 }, { a : 1 } ));
-  test.true( !_.entity.equivalentShallow( { a : 1, b : 1 }, { a : 1 } ));
-
   test.true( !_.entity.identicalShallow( { a : 1 }, { a : 1, b : 1 } ));
-  test.true( !_.entity.equivalentShallow( { a : 1 }, { a : 1, b : 1 } ));
-
   test.true( !_.entity.identicalShallow( { a : undefined, b : 1 }, { a : undefined } ));
-  test.true( !_.entity.equivalentShallow( { a : undefined, b : 1 }, { a : undefined } ));
-
   test.true( !_.entity.identicalShallow( { a : undefined }, { a : undefined, b : 1 } ));
-  test.true( !_.entity.equivalentShallow( { a : undefined }, { a : undefined, b : 1 } ));
-
   test.true( _.entity.identicalShallow( { a : null }, { a : null } ));
-  test.true( _.entity.equivalentShallow( { a : null }, { a : null } ));
-
   test.true( !_.entity.identicalShallow( { a : { b : 1 } }, { a : { b : 1 } } ));
-  test.true( !_.entity.equivalentShallow( { a : { b : 1 } }, { a : { b : 1 } } ));
-
   test.true( !_.entity.identicalShallow( { a : { b : 1 } }, { a : { b : 1, c : 2 } }));
-  test.true( !_.entity.equivalentShallow( { a : { b : 1 } }, { a : { b : 1, c : 2 } } ));
-
   test.true( !_.entity.identicalShallow( { a : { b : 1, c : 2 } }, { a : { b : 1 } } ));
-  test.true( !_.entity.equivalentShallow( { a : { b : 1, c : 2 } }, { a : { b : 1 } } ));
-
   test.true( !_.entity.identicalShallow( { a : { b : 1, c : 3 } }, { b : 1, c : 3 } ));
-  test.true( !_.entity.equivalentShallow( { a : { b : 1, c : 3 } }, { b : 1, c : 3 } ));
-
   test.true( !_.entity.identicalShallow( { a : null }, { a : undefined } ));
-  test.true( !_.entity.equivalentShallow( { a : null }, { a : undefined } ));
-
   test.true( !_.entity.identicalShallow( { a : undefined }, {} ));
-  test.true( !_.entity.equivalentShallow( { a : undefined }, {} ));
-
   test.true( !_.entity.identicalShallow( {}, { a : undefined } ));
+  test.true( _.entity.equivalentShallow( {}, {} ));
+  test.true( _.entity.equivalentShallow( { a : 0 }, { a : 0 } ));
+  test.true( _.entity.equivalentShallow( { a : 1 }, { a : 1 } ));
+  test.true( !_.entity.equivalentShallow( { a : 1, b : 1 }, { a : 1 } ));
+  test.true( !_.entity.equivalentShallow( { a : 1 }, { a : 1, b : 1 } ));
+  test.true( !_.entity.equivalentShallow( { a : undefined, b : 1 }, { a : undefined } ));
+  test.true( !_.entity.equivalentShallow( { a : undefined }, { a : undefined, b : 1 } ));
+  test.true( _.entity.equivalentShallow( { a : null }, { a : null } ));
+  test.true( !_.entity.equivalentShallow( { a : { b : 1 } }, { a : { b : 1 } } ));
+  test.true( !_.entity.equivalentShallow( { a : { b : 1 } }, { a : { b : 1, c : 2 } } ));
+  test.true( !_.entity.equivalentShallow( { a : { b : 1, c : 2 } }, { a : { b : 1 } } ));
+  test.true( !_.entity.equivalentShallow( { a : { b : 1, c : 3 } }, { b : 1, c : 3 } ));
+  test.true( !_.entity.equivalentShallow( { a : null }, { a : undefined } ));
+  test.true( !_.entity.equivalentShallow( { a : undefined }, {} ));
   test.true( !_.entity.equivalentShallow( {}, { a : undefined } ));
 
   /* */
 
   test.case = `Map - Not Map`;
-
   test.true( !_.entity.identicalShallow( {}, '1' ));
-  test.true( !_.entity.equivalentShallow( {}, '1' ));
-
   test.true( !_.entity.identicalShallow( {}, undefined ));
-  test.true( !_.entity.equivalentShallow( {}, undefined ));
-
   test.true( !_.entity.identicalShallow( {}, null ));
-  test.true( !_.entity.equivalentShallow( {}, null ));
-
   test.true( !_.entity.identicalShallow( {}, NaN ));
-  test.true( !_.entity.equivalentShallow( {}, NaN ));
-
   test.true( !_.entity.identicalShallow( {}, 0 ));
-  test.true( !_.entity.equivalentShallow( {}, 0 ));
-
   test.true( !_.entity.identicalShallow( {}, 1 ));
-  test.true( !_.entity.equivalentShallow( {}, 1 ));
-
   test.true( !_.entity.identicalShallow( {}, [] ));
-  test.true( !_.entity.equivalentShallow( {}, [] ));
-
   test.true( !_.entity.identicalShallow( {}, [ 0 ] ));
-  test.true( !_.entity.equivalentShallow( {}, [ 0 ] ));
-
   test.true( !_.entity.identicalShallow( {}, [ 1 ] ));
-  test.true( !_.entity.equivalentShallow( {}, [ 1 ] ));
-
   test.true( !_.entity.identicalShallow( {}, new Date() ));
-  test.true( !_.entity.equivalentShallow( {}, new Date() ));
-
   test.true( !_.entity.identicalShallow( {}, new F32x( 3 ) ));
-  test.true( !_.entity.equivalentShallow( {}, new F32x( 3 ) ));
-
   test.true( !_.entity.identicalShallow( {}, /abc/ ));
-  test.true( !_.entity.equivalentShallow( {}, /abc/ ));
-
-  test.true( !_.entity.identicalShallow( {}, function(){} ));
-  test.true( !_.entity.equivalentShallow( {}, function(){} ));
-
-  /* */
-
   test.true( !_.entity.identicalShallow( { a : '1' }, '1' ) );
-  test.true( !_.entity.equivalentShallow( { a : '1' }, '1' ) );
-
+  test.true( !_.entity.identicalShallow( {}, function(){} ));
   test.true( !_.entity.identicalShallow( { a : undefined }, undefined ) );
-  test.true( !_.entity.equivalentShallow( { a : undefined }, undefined ) );
-
   test.true( !_.entity.identicalShallow( { a : null }, null ));
-  test.true( !_.entity.equivalentShallow( { a : null }, null ));
-
   test.true( !_.entity.identicalShallow( { a : NaN }, NaN ));
-  test.true( !_.entity.equivalentShallow( { a : NaN }, NaN ));
-
   test.true( !_.entity.identicalShallow( { a : 0 }, 0 ));
-  test.true( !_.entity.equivalentShallow( { a : 0 }, 0 ));
-
   test.true( !_.entity.identicalShallow( { a : 1 }, 1 ));
-  test.true( !_.entity.equivalentShallow( { a : 1 }, 1 ));
-
   test.true( !_.entity.identicalShallow( { a : {} }, {} ));
-  test.true( !_.entity.equivalentShallow( { a : {} }, {} ));
-
   test.true( !_.entity.identicalShallow( { a : new Date() }, new Date() ));
-  test.true( !_.entity.equivalentShallow( { a : new Date() }, new Date() ));
-
   test.true( !_.entity.identicalShallow( { a : new F32x( 3 ) }, new F32x( 3 ) ));
-  test.true( !_.entity.equivalentShallow( { a : new F32x( 3 ) }, new F32x( 3 ) ));
-
   test.true( !_.entity.identicalShallow( { a : /abc/ }, /abc/ ));
-  test.true( !_.entity.equivalentShallow( { a : /abc/ }, /abc/ ));
-
   test.true( !_.entity.identicalShallow( { a : function(){} }, function(){} ));
+  test.true( !_.entity.equivalentShallow( {}, '1' ));
+  test.true( !_.entity.equivalentShallow( {}, undefined ));
+  test.true( !_.entity.equivalentShallow( {}, null ));
+  test.true( !_.entity.equivalentShallow( {}, NaN ));
+  test.true( !_.entity.equivalentShallow( {}, 0 ));
+  test.true( !_.entity.equivalentShallow( {}, 1 ));
+  test.true( !_.entity.equivalentShallow( {}, [] ));
+  test.true( !_.entity.equivalentShallow( {}, [ 0 ] ));
+  test.true( !_.entity.equivalentShallow( {}, [ 1 ] ));
+  test.true( !_.entity.equivalentShallow( {}, new Date() ));
+  test.true( !_.entity.equivalentShallow( {}, new F32x( 3 ) ));
+  test.true( !_.entity.equivalentShallow( {}, /abc/ ));
+  test.true( !_.entity.equivalentShallow( {}, function(){} ));
+  test.true( !_.entity.equivalentShallow( { a : '1' }, '1' ) );
+  test.true( !_.entity.equivalentShallow( { a : undefined }, undefined ) );
+  test.true( !_.entity.equivalentShallow( { a : null }, null ));
+  test.true( !_.entity.equivalentShallow( { a : NaN }, NaN ));
+  test.true( !_.entity.equivalentShallow( { a : 0 }, 0 ));
+  test.true( !_.entity.equivalentShallow( { a : 1 }, 1 ));
+  test.true( !_.entity.equivalentShallow( { a : {} }, {} ));
+  test.true( !_.entity.equivalentShallow( { a : new Date() }, new Date() ));
+  test.true( !_.entity.equivalentShallow( { a : new F32x( 3 ) }, new F32x( 3 ) ));
+  test.true( !_.entity.equivalentShallow( { a : /abc/ }, /abc/ ));
   test.true( !_.entity.equivalentShallow( { a : function(){} }, function(){} ));
 }
 
