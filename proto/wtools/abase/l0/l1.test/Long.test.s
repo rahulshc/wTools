@@ -124,9 +124,9 @@ function dichotomyPerformance( test )
     ╔════════════════════════╤═════╤═════╤═════════╤══════════╤════════════════════╤═════════════════╗
     ║                        │  is │isOld│isCompact│isUnfolded│isUnfoldedSmartOrder│isUnfoldedSmarter║
     ╟────────────────────────┼─────┼─────┼─────────┼──────────┼────────────────────┼─────────────────╢
-    ║Windows-10-21H1, 10.24.1│1.296│5.490│  1.973  │  1.907   │                    │                 ║
+    ║Windows-10-21H1, 10.24.1│1.296│5.490│  1.973  │  1.907   │     1.756          │    1.190        ║
     ╟────────────────────────┼─────┼─────┼─────────┼──────────┼────────────────────┼─────────────────╢
-    ║Windows-10-21H1, 14.17.0│     │     │         │          │                    │                 ║
+    ║Windows-10-21H1, 14.17.0│1.189│6.644│  1.902  │  1.989   │     1.657          │    1.342        ║
     ╟────────────────────────┼─────┼─────┼─────────┼──────────┼────────────────────┼─────────────────╢
     ║    Linux-Kos, 12.9.1   │     │     │         │          │                    │                 ║
     ╚════════════════════════╧═════╧═════╧═════════╧══════════╧════════════════════╧═════════════════╝
@@ -139,12 +139,12 @@ function dichotomyPerformance( test )
 
   /* */
 
-  //dichotomyPerformanceTemplate({ method : 'is' });
-  //dichotomyPerformanceTemplate({ method : 'isOld' });
-  //dichotomyPerformanceTemplate({ method : 'isCompact' });
-  //dichotomyPerformanceTemplate({ method : 'isUnfolded' });
-  dichotomyPerformanceTemplate({ method : 'isUnfoldedSmartOrder' });
-  //dichotomyPerformanceTemplate({ method : 'isUnfoldedSmarter' });
+  act({ method : 'is' });
+  act({ method : 'isOld' });
+  act({ method : 'isCompact' });
+  act({ method : 'isUnfolded' });
+  act({ method : 'isUnfoldedSmartOrder' });
+  act({ method : 'isUnfoldedSmarter' });
 
   /* */
 
@@ -153,7 +153,7 @@ function dichotomyPerformance( test )
 
   /* */
 
-  function dichotomyPerformanceTemplate( data )
+  function act( data )
   {
     test.case = `${data.method}`;
     var took, time;
