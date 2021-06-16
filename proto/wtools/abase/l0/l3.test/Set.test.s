@@ -439,6 +439,18 @@ function hasKey( test )
   var expected = true;
   test.identical( got, expected );
 
+  test.case = 'undefined key';
+  var src = new Set([1, 2, 3, [ 1, 3 ]]);
+  var got = _.set.hasKey( src, undefined );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'undefined key';
+  var src = new Set([1, 2, 3, undefined]);
+  var got = _.set.hasKey( src, undefined );
+  var expected = true;
+  test.identical( got, expected );
+
   test.case = 'wrong src';
   test.shouldThrowErrorSync( () => _.set.hasKey( 2, 2 ) );
   test.shouldThrowErrorSync( () => _.set.hasKey( new Set( {} ) ) );
