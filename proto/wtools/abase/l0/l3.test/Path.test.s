@@ -3647,15 +3647,15 @@ function refine( test )
 function refinePerformance( test )
 {
   /* Average of 10 runs of 0.5 million iterations of 67 path varaints
-  ╔════════════════════════╤══════╤═════════╤════════════╗
-  ║                        │refine│refineOld│refineFaster║
-  ╟────────────────────────┼──────┼─────────┼────────────╢
-  ║Windows-10-21H1, 10.24.1│      │         │            ║
-  ╟────────────────────────┼──────┼─────────┼────────────╢
-  ║Windows-10-21H1, 14.17.0│      │         │            ║
-  ╟────────────────────────┼──────┼─────────┼────────────╢
-  ║    Linux-Kos, 12.9.1   │      │         │            ║
-  ╚════════════════════════╧══════╧═════════╧════════════╝
+  ╔════════════════════════╤══════╤═════════╤══════════╤════════════╗
+  ║                        │refine│refineOld│refineFast│refineFaster║
+  ╟────────────────────────┼──────┼─────────┼──────────┼────────────╢
+  ║Windows-10-20H2, 10.24.1│7.246 │  7.247  │  6.714   │   6.388    ║
+  ╟────────────────────────┼──────┼─────────┼──────────┼────────────╢
+  ║Windows-10-20H2, 14.17.0│7.490 │  7.479  │  6.778   │   6.478    ║
+  ╟────────────────────────┼──────┼─────────┼──────────┼────────────╢
+  ║    Linux-Kos, 12.9.1   │      │         │          │            ║
+  ╚════════════════════════╧══════╧═════════╧══════════╧════════════╝
   */
 
   debugger; /* eslint-disable-line no-debugger */
@@ -3664,10 +3664,10 @@ function refinePerformance( test )
 
   /* */
 
-  //refinePerformanceTemplate( { method : 'refine' } );
-  //refinePerformanceTemplate( { method : 'refineOld' } );
-  refinePerformanceTemplate( { method : 'refineFast' } );
-  //refinePerformanceTemplate( { method : 'refineFaster' } );
+  refinePerformanceTemplate({ method : 'refine' });
+  refinePerformanceTemplate({ method : 'refineOld' });
+  refinePerformanceTemplate({ method : 'refineFast' });
+  refinePerformanceTemplate({ method : 'refineFaster' });
 
   /* */
 

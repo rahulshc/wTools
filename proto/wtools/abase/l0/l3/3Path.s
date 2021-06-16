@@ -368,8 +368,8 @@ function refineFaster( src )
 
   const hasBackSlash = result.indexOf( '\\' ) !== -1;
   const hasColon = result[ 1 ] === ':';
-  const secondIndex = result[ 2 ];
-  const zeroIndex = result[ 0 ];
+  const charAtSecondIndex = result[ 2 ];
+  const charAtZeroIndex = result[ 0 ];
 
   if( !hasBackSlash && !hasColon )
   return result;
@@ -378,13 +378,13 @@ function refineFaster( src )
   {
     if( result.length > 3 )
     {
-      if( secondIndex === '\\' || secondIndex === '/' )
+      if( charAtSecondIndex === '\\' || charAtSecondIndex === '/' )
       {
-        result = `/${zeroIndex}/${result.substring( 3 )}`;
+        result = `/${charAtZeroIndex}/${result.substring( 3 )}`;
       }
     }
     else
-    result = `/${zeroIndex}`
+    result = `/${charAtZeroIndex}`
   }
 
   if( hasBackSlash )
