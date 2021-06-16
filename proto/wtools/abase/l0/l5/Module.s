@@ -1802,7 +1802,7 @@ function _trackingEnable()
   ModuleFileNative._resolveFilename = _resolveFilename;
 
   // yyy
-  debugger;
+  // debugger;
   // if( _global === _realGlobal_ )
   // ModuleFileNative._load = _loadEnvironment;
   if( !_realGlobal_.__loadEnvironment )

@@ -320,7 +320,7 @@ function modulingLogistic( test )
   ]);
   var files = __.select( [ ... module.files.values() ], '*/sourcePath' );
   _.assert( files[ 0 ] !== undefined );
-  // test.identical( new Set( __.path.s.relative( testingPath + '/../../..', files ) ), exp ); /* xxx : investigate */
+  // test.identical( new Set( __.path.s.relative( testingPath + '/../../..', files ) ), exp ); /* xxx2 : investigate */
   test.true( new Set( __.path.s.relative( testingPath + '/../../..', files ) ).has( 'proto/node_modules/wTesting' ) );
   var module2 = _.module.withName( 'wTesting' );
   test.true( module === module2 );
@@ -4706,8 +4706,8 @@ function testingOnL1( test )
   let a = test.assetFor( false );
   let locals =
   {
-    toolsPath : __.path.normalize( __dirname + '/../../../../node_modules/wTools.l1' ),
-    testingPath : _.module.resolve( 'wTesting' ),
+    toolsPath : __.path.nativize( __.path.normalize( __dirname + '/../../../../node_modules/wTools.l1' ) ),
+    testingPath : __.path.nativize( _.module.resolve( 'wTesting' ) ),
     test1,
     programRoutine2,
   }
@@ -4721,7 +4721,6 @@ function testingOnL1( test )
     test.identical( op.exitCode, 0 );
     test.identical( _.strCount( op.output, 'nhandled' ), 0 );
     test.identical( _.strCount( op.output, 'error' ), 0 );
-    debugger;
     return null;
   });
 
@@ -4798,7 +4797,6 @@ function environmentWithL1( test )
     toolsPath,
   }
   let program = a.program({ routine : r1, locals });
-  debugger;
   a.program({ routine : r2, locals });
   a.program({ routine : r3, locals });
   a.program({ routine : r4, locals });
@@ -5012,6 +5010,74 @@ requireSameModuleTwice.description =
 - Module moduleA should not be included for the second time, cached version should be used instead
 `
 
+//
+
+function moduleFileExport( test )
+{
+  let a = test.assetFor( false );
+
+  let program1 = a.program( r1 );
+  let program2 = a.program( r2 );
+  let program3 = a.program( r3 );
+  let program4 = a.program( r4 );
+
+  /* */
+
+  program1.start()
+  .then( ( op ) =>
+  {
+    test.identical( op.exitCode, 0 );
+    var exp =
+`
+xxx
+`
+    test.equivalent( op.output, exp );
+    return null;
+  });
+
+  /* */
+
+  return a.ready;
+
+  /* */
+
+  function r1()
+  {
+    const _ = require( toolsPath );
+    debugger;
+    console.log( _.module.fileExportString( module ) );
+    require( './r2' );
+  }
+
+  function r2()
+  {
+    const _ = wTools;
+    const _global = _.global.makeAndOpen( module, 'test1' );
+    const __ = require( toolsPath );
+    console.log( `r2` );
+    require( './r3' );
+    _.global.close( 'test1' );
+  }
+
+  function r3()
+  {
+    console.log( `r3` );
+    require( './r4' );
+  }
+
+  function r4()
+  {
+    console.log( `r4` );
+  }
+
+}
+
+environmentWithL1.description =
+`
+- r4 should be included only once and only in namespace::test1
+- if real namespace include only l1 then "ModuleFileNative._load = _loadEnvironment" should be assigned anyway in secondary namespace
+`
+
 // --
 // test suite declaration
 // --
@@ -5076,7 +5142,7 @@ const Proto =
     environmentWithL1,
     // requireSameModuleTwice, /* xxx2 : switch on */
 
-
+    // moduleFileExport,
 
   }
 
