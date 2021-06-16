@@ -1227,6 +1227,8 @@ let Extension =
   // reformer
 
   refine,
+  refineOld,
+  refineFaster,
 
   _normalize,
   normalize,
