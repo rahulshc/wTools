@@ -22,6 +22,15 @@ function nodeIs( src )
 
 //
 
+function nodeIsOLd( src )
+{
+  if( typeof BufferNode !== 'undefined' )
+  return src instanceof BufferNode;
+  return false;
+}
+
+//
+
 function nodeIsUsingFunctor_functor()
 {
   let isBufferNode = !!_global_.BufferNode;
@@ -36,15 +45,6 @@ function nodeIsUsingFunctor_functor()
 }
 
 let nodeIsUsingFunctor = nodeIsUsingFunctor_functor();
-
-//
-
-function nodeIsOLd( src )
-{
-  if( typeof BufferNode !== 'undefined' )
-  return src instanceof BufferNode;
-  return false;
-}
 
 // --
 // declaration

@@ -22,11 +22,11 @@ function bufferNodeIs( test )
   if( !Config.interpreter === 'njs' )
   return;
 
-  isTemplate( { method : 'nodeIs' } );
-  isTemplate( { method : 'nodeIsOLd' } );
-  isTemplate( { method : 'nodeIsUsingFunctor' } );
+  act({ method : 'nodeIs' });
+  act({ method : 'nodeIsOLd' });
+  act({ method : 'nodeIsUsingFunctor' });
 
-  function isTemplate ( env )
+  function act( env )
   {
     test.case = `${__.entity.exportStringSolo( env )}, node buffer`;
     var src = BufferNode.alloc( 10 );
@@ -96,16 +96,16 @@ function bufferNodeIs( test )
 
 //
 
-function isPerformance( test )
+function bufferNodeIsPerformance( test )
 {
   /* Average of 10 runs of 5 million iterations of 14 input variants
      Values below are in seconds
   ╔════════════════════════╤══════╤═════════╤══════════════════╗
   ║                        │nodeIs│nodeIsOld│nodeIsUsingFunctor║
   ╟────────────────────────┼──────┼─────────┼──────────────────╢
-  ║Windows-10-20H2, 10.24.1│ 0.883│  0.839  │       0.854      ║
+  ║Windows-10-20H2, 10.24.1│ 2.728│  2.506  │       2.687      ║
   ╟────────────────────────┼──────┼─────────┼──────────────────╢
-  ║Windows-10-20H2, 14.17.0│ 1.057│  0.989  │       0.965      ║
+  ║Windows-10-20H2, 14.17.0│ 3.007│  2.889  │       2.910      ║
   ╟────────────────────────┼──────┼─────────┼──────────────────╢
   ║    Linux-Kos, 12.9.1   │      │         │                  ║
   ╚════════════════════════╧══════╧═════════╧══════════════════╝
@@ -120,9 +120,10 @@ function isPerformance( test )
 
   /* */
 
-  //isPerformanceTemplate( { method : 'nodeIs' } );
-  //isPerformanceTemplate( { method : 'nodeIsOLd' } );
-  isPerformanceTemplate( { method : 'nodeIsUsingFunctor' } );
+  act({ method : 'nodeIs' });
+  act({ method : 'nodeIsOLd' });
+  act({ method : 'nodeIsUsingFunctor' });
+
   /* */
 
   Config.debug = debugFlag;
@@ -130,7 +131,7 @@ function isPerformance( test )
 
   /* */
 
-  function isPerformanceTemplate( data )
+  function act( data )
   {
     test.case = `${data.method}`;
     var took, time;
@@ -174,26 +175,29 @@ function isPerformance( test )
 
   function run( env )
   {
-    _.bufferNode[ env.name ]( env.aNodeBuffer );
-    _.bufferNode[ env.name ]( env.bufferNodeFromArray );
-    _.bufferNode[ env.name ]( env.nodeBufferWithCharacterEncoding );
-    _.bufferNode[ env.name ]( env.uninitalizedNodeBuffer );
-    _.bufferNode[ env.name ]( env.truncatedNodeBuffer );
-    _.bufferNode[ env.name ]( env.aNodeBuffer, env.bufferNodeFromArray );
+    let r = [];
+    r.push( _.bufferNode[ env.name ]( env.aNodeBuffer ) );
+    r.push( _.bufferNode[ env.name ]( env.bufferNodeFromArray ) );
+    r.push( _.bufferNode[ env.name ]( env.nodeBufferWithCharacterEncoding ) );
+    r.push( _.bufferNode[ env.name ]( env.uninitalizedNodeBuffer ) );
+    r.push( _.bufferNode[ env.name ]( env.truncatedNodeBuffer ) );
+    r.push( _.bufferNode[ env.name ]( env.aNodeBuffer, env.bufferNodeFromArray ) );
 
-    _.bufferNode[ env.name ]( env.aTypedArray );
-    _.bufferNode[ env.name ]( env.U8xClampedArray );
-    _.bufferNode[ env.name ]( env.bufferRaw );
-    _.bufferNode[ env.name ]( env.sharedArrayBuffer );
-    _.bufferNode[ env.name ]( env.bufferViewFromBufferRaw );
-    _.bufferNode[ env.name ]( env.BufferViewFromSharedArrayBuffer );
-    _.bufferNode[ env.name ]();
-    _.bufferNode[ env.name ]( 123 );
+    r.push( _.bufferNode[ env.name ]( env.aTypedArray ) );
+    r.push( _.bufferNode[ env.name ]( env.U8xClampedArray ) );
+    r.push( _.bufferNode[ env.name ]( env.bufferRaw ) );
+    r.push( _.bufferNode[ env.name ]( env.sharedArrayBuffer ) );
+    r.push( _.bufferNode[ env.name ]( env.bufferViewFromBufferRaw ) );
+    r.push( _.bufferNode[ env.name ]( env.BufferViewFromSharedArrayBuffer ) );
+    r.push( _.bufferNode[ env.name ]() );
+    r.push( _.bufferNode[ env.name ]( 123 ) );
+
+    return r;
   }
 }
 
-isPerformance.timeOut = 1e7;
-isPerformance.experimental = true;
+bufferNodeIsPerformance.timeOut = 1e7;
+bufferNodeIsPerformance.experimental = true;
 
 // --
 // declaration
@@ -211,7 +215,7 @@ const Proto =
   {
 
     bufferNodeIs,
-    isPerformance
+    bufferNodeIsPerformance
 
   }
 
