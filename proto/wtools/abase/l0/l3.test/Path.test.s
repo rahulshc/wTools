@@ -3649,9 +3649,9 @@ function refinePerformance( test )
   ╔════════════════════════╤══════╤═════════╤════════════╗
   ║                        │refine│refineOld│refineFaster║
   ╟────────────────────────┼──────┼─────────┼────────────╢
-  ║Windows-10-21H1, 10.24.1│ 9.840│  8.292  │    7.827   ║
+  ║Windows-10-21H1, 10.24.1│      │         │            ║
   ╟────────────────────────┼──────┼─────────┼────────────╢
-  ║Windows-10-21H1, 14.17.0│ 9.180│  9.112  │    8.172   ║
+  ║Windows-10-21H1, 14.17.0│      │         │            ║
   ╟────────────────────────┼──────┼─────────┼────────────╢
   ║    Linux-Kos, 12.9.1   │      │         │            ║
   ╚════════════════════════╧══════╧═════════╧════════════╝
@@ -3687,7 +3687,7 @@ function refinePerformance( test )
       env.name = data.method;
       run( env );
     }
-    took = _.time.spent( time );
+    took = __.time.spent( time );
 
     console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
     test.identical( true, true );
