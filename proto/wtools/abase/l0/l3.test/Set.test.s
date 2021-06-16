@@ -440,13 +440,13 @@ function hasKey( test )
   test.identical( got, expected );
 
   test.case = 'undefined key';
-  var src = new Set([1, 2, 3, [ 1, 3 ]]);
+  var src = new Set([ 1, 2, 3, [ 1, 3 ] ]);
   var got = _.set.hasKey( src, undefined );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'undefined key';
-  var src = new Set([1, 2, 3, undefined]);
+  test.case = 'set with undefined key';
+  var src = new Set([ 1, 2, 3, undefined ]);
   var got = _.set.hasKey( src, undefined );
   var expected = true;
   test.identical( got, expected );
@@ -460,35 +460,35 @@ function hasKey( test )
 
 function hasCardinal( test )
 {
-  test.case = 'empty set, no cardinal';
-  var src = new Set([]);
-  var got = _.set.hasCardinal( src );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'empty set, with cardinal';
-  var src = new Set([]);
-  var got = _.set.hasCardinal( src, 1 );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'numbers set, cardinal < 0';
-  var src = new Set([]);
-  var got = _.set.hasCardinal( src, -1 );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'numbers set, cardinal < set size';
+  test.case = 'ordinary';
   var src = new Set([ 1, 2, 3 ]);
-  var got = _.set.hasCardinal( src, 2 );
-  var expected = true;
-  test.identical( got, expected );
+  test.identical( _.set.hasCardinal( src, -1 ), false );
+  test.identical( _.set.hasCardinal( src, 0 ), true );
+  test.identical( _.set.hasCardinal( src, 1 ), true );
+  test.identical( _.set.hasCardinal( src, 2 ), true );
+  test.identical( _.set.hasCardinal( src, 3 ), false );
+  test.identical( _.set.hasCardinal( src, undefined ), false );
 
-  test.case = 'string set, cardinal > set size';
-  var src = new Set([ 'a', 'b', 'c', [] ]);
-  var got = _.set.hasCardinal( src, 5 );
-  var expected = false;
-  test.identical( got, expected );
+  test.case = 'string set';
+  var src = new Set('abc');
+  test.identical( _.set.hasCardinal( src, -1 ), false );
+  test.identical( _.set.hasCardinal( src, 0 ), true );
+  test.identical( _.set.hasCardinal( src, 1 ), true );
+  test.identical( _.set.hasCardinal( src, 2 ), true );
+  test.identical( _.set.hasCardinal( src, 3 ), false );
+  test.identical( _.set.hasCardinal( src, [ 0 ] ), true );
+  test.identical( _.set.hasCardinal( src, {} ), false );
+  test.identical( _.set.hasCardinal( src, 'abc' ), false );
+
+  test.case = 'empty set';
+  var src = new Set([]);
+  test.identical( _.set.hasCardinal( src ), false );
+  test.identical( _.set.hasCardinal( src, 0 ), false );
+  test.identical( _.set.hasCardinal( src, -1 ), false );
+
+  test.case = 'wrong src';
+  test.shouldThrowErrorSync( () => _.set.hasCardinal( 2, 2 ) );
+  test.shouldThrowErrorSync( () => _.set.hasCardinal( new Set( {} ) ) );
 }
 
 //
@@ -544,8 +544,8 @@ function keyWithCardinal( test )
   test.identical( got, expected );
 
   test.case = 'wrong src';
-  test.shouldThrowErrorSync( () => _.set.hasKey( 2, 2 ) );
-  test.shouldThrowErrorSync( () => _.set.hasKey( new Set( {} ) ) );
+  test.shouldThrowErrorSync( () => _.set.keyWithCardinal( 2, 2 ) );
+  test.shouldThrowErrorSync( () => _.set.keyWithCardinal( new Set( {} ) ) );
 }
 
 //
@@ -583,8 +583,8 @@ function cardinalWithKey( test )
   test.identical( got, expected );
 
   test.case = 'wrong src';
-  test.shouldThrowErrorSync( () => _.set.hasKey( 2, 2 ) );
-  test.shouldThrowErrorSync( () => _.set.hasKey( new Set( {} ) ) );
+  test.shouldThrowErrorSync( () => _.set.cardinalWithKey( 2, 2 ) );
+  test.shouldThrowErrorSync( () => _.set.cardinalWithKey( new Set( {} ) ) );
 }
 
 // --
