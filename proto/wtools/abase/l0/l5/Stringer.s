@@ -176,7 +176,6 @@ nodesExportString.defaults =
 // --
 
 const StringerClassExtension = Object.create( null );
-
 StringerClassExtension.constructor = function Stringer(){};
 StringerClassExtension.head = head;
 StringerClassExtension.iteratorInitBegin = iteratorInitBegin;
@@ -194,6 +193,7 @@ Iterator.result = '';
 Iterator.resultNode = null;
 Iterator.dtab = '  ';
 Iterator.eol = _.str.lines.Eol.default;
+Iterator.recursive = Infinity;
 _.assert( !!Iterator.eol );
 
 const Iteration = StringerClassExtension.Iteration = Object.create( null );
@@ -203,6 +203,7 @@ const IterationPreserve = StringerClassExtension.IterationPreserve = Object.crea
 IterationPreserve.tab = '';
 IterationPreserve.verbosity = 2;
 IterationPreserve.tabLevel = 0;
+IterationPreserve.level = 0;
 
 const Prime = {};
 const Stringer = _.seeker.classDefine

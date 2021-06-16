@@ -77,8 +77,6 @@ function is( src )
   return false;
   if( Reflect.hasOwnProperty( src, 'constructor' ) )
   return false;
-  // if( !Reflect.has( src, 'constructor' ) )
-  // return false;
   return src[ ModuleSymbol ] === true;
 }
 
@@ -153,7 +151,6 @@ function predeclare_body( o )
 {
 
   _.arrayPrependOnce( o.alias, o.name );
-  // o.entryPath = _.array.as( o.entryPath );
   _.assert( _.arrayIs( o.entryPath ) );
 
   o.entryPath.forEach( ( entryPath, i ) =>
@@ -209,7 +206,6 @@ function predeclare_body( o )
 
     register( module2, o.entryPath, o.alias );
 
-    // let files = _.module._filesWhichEnds( o.entryPath )
     let files = _.module._filesWithResolvedPath( o.entryPath )
     _.module._filesUniversalAssociateModule( files, module2, true );
 
@@ -225,15 +221,12 @@ function predeclare_body( o )
   _.arrayAppendArray( o.filePath, o.entryPath );
   _.assert( o.lookPath === undefined );
   o.lookPath = [ ... o.entryPath, ... o.alias ];
-  /* xxx : set? */
 
   delete o.basePath;
   o.status = 0;
   Object.setPrototypeOf( o, _.module.Module.prototype );
   Object.preventExtensions( o );
 
-  // debugger;
-  // let files = _.module._filesWhichEnds( o.entryPath )
   let files = _.module._filesWithResolvedPath( o.entryPath )
   _.module._filesUniversalAssociateModule( files, o, true );
 
@@ -315,39 +308,6 @@ function fileIs( src )
   if( src instanceof ModuleFileNative );
   return true;
   return false;
-}
-
-//
-
-/* qqq : cover please */
-function fileExportString( file, o )
-{
-
-  _.assert( _.module.fileUniversalIs( file ), () => `Expects module file, but got ${_.strType( file )}` );
-  o = _.routine.options_( fileExportString, o || null );
-
-  if( !o.verbosity )
-  return '';
-
-  if( o.verbosity === 1 )
-  return String( file );
-
-  let result = String( file );
-
-  if( file.modules.size > 0 )
-  result += '\n  modules\n    ' + [ ... file.modules ].join( '\n    ' );
-  if( file.downFiles.size > 0 )
-  result += '\n  downFiles\n    ' + [ ... file.downFiles ].join( '\n    ' );
-  if( file.upFiles.size > 0 )
-  result += '\n  upFiles\n    ' + [ ... file.upFiles ].join( '\n    ' );
-
-  return result;
-}
-
-fileExportString.defaults =
-{
-  verbosity : 1,
-  it : null,
 }
 
 //
@@ -911,22 +871,6 @@ function _filesUniversalAssociateModule( files, modules, disassociating )
 
 }
 
-// //
-//
-// function _filesWhichEnds( filePaths )
-// {
-//   let result = new Set();
-//
-//   filePaths.forEach( ( filePath ) =>
-//   {
-//     let file = _.module.filesMap.get( filePath );
-//     if( file )
-//     result.add( file );
-//   });
-//
-//   return result;
-// }
-
 //
 
 function _fileWithResolvedPath( caninicalSourcePath )
@@ -1026,12 +970,103 @@ function fileNativeWith( relativeSourcePath, nativeFilesMap )
 }
 
 // --
+// export string
+// --
+
+function exportString( module, o )
+{
+
+  o = _.routine.options( exportString, o || null );
+
+  let it = o.it = _.stringer.it( o.it );
+  it.opts = o;
+  it.src = module;
+
+  let result = String( file );
+  if( o.verbosity <= 1 )
+  return result;
+
+  debugger;
+
+  return result;
+}
+
+exportString.defaults =
+{
+  format : 'diagnostic',
+  verbosity : 1,
+  it : null,
+}
+
+//
+
+/* xxx : cover please */
+function fileExportString( file, o )
+{
+
+  _.assert( _.module.fileUniversalIs( file ), () => `Expects module file, but got ${_.strType( file )}` );
+  o = _.routine.options( fileExportString, o || null );
+
+  if( !o.verbosity )
+  return '';
+
+  if( o.verbosity === 1 )
+  return String( file );
+
+  let result = String( file );
+
+  if( file.modules.size > 0 )
+  result += '\n  modules\n    ' + [ ... file.modules ].join( '\n    ' );
+  if( file.downFiles.size > 0 )
+  result += '\n  downFiles\n    ' + [ ... file.downFiles ].join( '\n    ' );
+  if( file.upFiles.size > 0 )
+  result += '\n  upFiles\n    ' + [ ... file.upFiles ].join( '\n    ' );
+
+  return result;
+}
+
+fileExportString.defaults =
+{
+  verbosity : 1,
+  it : null,
+}
+
+//
+
+function recursiveExportString( src, o )
+{
+  let Format = new Set([ 'diagnostic' ]);
+
+  o = _.routine.options( recursiveExportString, o || null );
+  _.assert( Format.has( o.format ) );
+
+  let it = o.it = _.stringer.it( o.it );
+  it.opts = o;
+  _.assert( _.number.is( it.depth ) );
+
+  if( _.module.fileIs( src ) )
+  _.module.fileExport( src, { it } );
+  else if( _.module.is( src ) )
+  _.module.fileExport( src, { it } );
+
+  it.lineWrite( operation.clname );
+
+}
+
+recursiveExportString.defaults =
+{
+  format : 'diagnostic',
+  it : null,
+}
+
+// --
 // file path
 // --
 
-/* xxx : qqq : for junior : cover _.module.fileNativeIs() */
+/* xxx : cover _.module.fileNativeIs() */
+/* xxx : cover and move on l3 */
 /* qqq : for junior : cover */
-function path_head( routine, args )
+function filePath_head( routine, args )
 {
 
   let o = args[ 0 ];
@@ -1058,7 +1093,7 @@ function path_head( routine, args )
 
 //
 
-function pathAmend_body( o )
+function filePathAmend_body( o )
 {
   const ModuleFileNative = require( 'module' );
 
@@ -1207,7 +1242,7 @@ function pathAmend_body( o )
 
 }
 
-pathAmend_body.defaults =
+filePathAmend_body.defaults =
 {
   moduleFile : null,
   paths : null,
@@ -1218,7 +1253,7 @@ pathAmend_body.defaults =
   amending : 'append',
 }
 
-let filePathAmend = _.routine.unite( path_head, pathAmend_body );
+let filePathAmend = _.routine.unite( filePath_head, filePathAmend_body );
 
 //
 
@@ -1328,7 +1363,7 @@ pathRemove_body.defaults =
   amending : 'append',
 }
 
-let filePathRemove = _.routine.unite( path_head, pathRemove_body );
+let filePathRemove = _.routine.unite( filePath_head, pathRemove_body );
 
 //
 
@@ -1465,7 +1500,6 @@ function _resolveFirst( o )
   if( !_.mapIs( o ) )
   o = { moduleNames : arguments }
 
-  // _.map.assertHasAll( o, _resolveFirst.defaults );
   _.assert( _.strDefined( o.downPath ) );
   _.assert( _.strDefined( o.basePath ) );
 
@@ -1529,7 +1563,6 @@ function _fileResolve( o )
   let native = _.module.nativeFilesMap[ _.path.nativizeMinimal( o.downPath ) ];
   native = native || module; /* xxx : comment out and look among namesapces? */
 
-  // _.map.assertHasAll( o, _fileResolve.defaults );
   _.assert( arguments.length === 1 );
   _.assert( _.longIs( o.sourcePaths ) );
   _.strDefined( o.downPath );
@@ -1655,22 +1688,6 @@ function _moduleNamesToPaths( names )
   return result;
 }
 
-// //
-//
-// const _toolsPath = _.path.canonize( __dirname + '/../../../../node_modules/Tools' );
-// function toolsPathGet()
-// {
-//   return _toolsPath;
-// }
-//
-// //
-//
-// const _toolsDir = _.path.canonize( __dirname + '/../../../../wtools' );
-// function toolsDirGet()
-// {
-//   return _toolsDir;
-// }
-
 // --
 // include
 // --
@@ -1694,7 +1711,7 @@ function _fileIncludeSingle( downPath, filePath )
 //
 
 /* xxx : implement _.path._dir */
-/* xxx : qqq : optimize _.path.dir */
+/* xxx : qqq3 : optimize _.path.dir */
 
 function include()
 {
@@ -2139,7 +2156,6 @@ var ModuleExtension =
   fileIs,
   fileNativeIs : __.module.fileNativeIs,
   fileUniversalIs : __.module.fileUniversalIs,
-  fileExportString,
   _fileUniversalFinit,
   _fileUniversalFrom,
   _filesUniversalFrom,
@@ -2149,7 +2165,6 @@ var ModuleExtension =
   _fileUniversalDisassociateModules,
   _filesUniversalAssociateModule,
 
-  // _filesWhichEnds,
   _filesWithResolvedPath,
   _fileWithResolvedPath,
   fileWithResolvedPath,
@@ -2159,6 +2174,12 @@ var ModuleExtension =
   fileNativeParent : __.module.fileNativeParent,
   _fileNativeWithResolvedNativePath,
   fileNativeWith,
+
+  // export string
+
+  exportString,
+  fileExportString,
+  recursiveExportString,
 
   // file path
 
@@ -2175,8 +2196,6 @@ var ModuleExtension =
   _fileResolve,
 
   _moduleNamesToPaths,
-  // toolsPathGet,
-  // toolsDirGet,
 
   // include
 
