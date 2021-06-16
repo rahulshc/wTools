@@ -36,7 +36,7 @@ function basic( test )
     'resultNode' : [],
   }
   test.identical( _.props.onlyOwn( _.prototype.each( it )[ 1 ] ), exp );
-  var exp = new Set([ 'resultNode', 'tab', 'verbosity', 'tabLevel' ]);
+  var exp = new Set([ 'resultNode', 'tab', 'verbosity', 'tabLevel', 'level' ]);
   test.identical( new Set( _.props.keys( _.props.onlyOwn( _.prototype.each( it )[ 2 ] ) ) ), exp );
   var exp = new Set([ 'resultNode', 'verbosity', 'Seeker', 'iterator', 'iterationPrototype', 'firstIterationPrototype' ]);
   test.identical( new Set( _.props.keys( _.props.onlyOwn( _.prototype.each( it )[ 3 ] ) ) ), exp );
