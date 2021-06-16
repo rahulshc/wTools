@@ -192,20 +192,36 @@ function countablesAreEqShallow( test )
   test.true( !_.countable.equivalentShallow( src2, src1 ) );
 
   test.case = `arrays non-empty with empty objects, not the same reference`;
-  test.true( !_.countable.identicalShallow( [ {} ], [ {} ] ) );
-  test.true( !_.countable.equivalentShallow( [ {} ], [ {} ] ) );
+  var src1 = [ {} ];
+  var src2 = [ {} ];
+  test.true( !_.countable.identicalShallow( src1, src2 ) );
+  test.true( !_.countable.identicalShallow( src2, src1 ) );
+  test.true( !_.countable.equivalentShallow( src1, src2 ) );
+  test.true( !_.countable.equivalentShallow( src2, src1 ) );
 
   test.case = `arrays non-empty with non-empty objects, not the same reference`;
-  test.true( !_.countable.identicalShallow( [ { a : 1 } ], [ { a : 1 } ] ) );
-  test.true( !_.countable.equivalentShallow( [ { a : 1 } ], [ { a : 1 } ] ) );
+  var src1 = [ { a : 1 } ];
+  var src2 = [ { a : 1 } ];
+  test.true( !_.countable.identicalShallow( src1, src2 ) );
+  test.true( !_.countable.identicalShallow( src2, src1 ) );
+  test.true( !_.countable.equivalentShallow( src1, src2 ) );
+  test.true( !_.countable.equivalentShallow( src2, src1 ) );
 
   test.case = `arrays non-empty with empty arrays, not the same reference`;
-  test.true( !_.countable.identicalShallow( [ [] ], [ [] ] ) );
-  test.true( !_.countable.equivalentShallow( [ [] ], [ [] ] ) );
+  var src1 = [ [] ];
+  var src2 = [ [] ];
+  test.true( !_.countable.identicalShallow( src1, src2 ) );
+  test.true( !_.countable.identicalShallow( src2, src1 ) );
+  test.true( !_.countable.equivalentShallow( src1, src2 ) );
+  test.true( !_.countable.equivalentShallow( src2, src1 ) );
 
   test.case = `arrays non-empty with non-empty arrays, not the same reference`;
-  test.true( !_.countable.identicalShallow( [ [ 1, 2 ] ], [ [ 1, 2 ] ] ) );
-  test.true( !_.countable.equivalentShallow( [ [ 1, 2 ] ], [ [ 1, 2 ] ] ) );
+  var src1 = [ [ 1, 2 ] ];
+  var src2 = [ [ 1, 2 ] ];
+  test.true( !_.countable.identicalShallow( src1, src2 ) );
+  test.true( !_.countable.identicalShallow( src2, src1 ) );
+  test.true( !_.countable.equivalentShallow( src1, src2 ) );
+  test.true( !_.countable.equivalentShallow( src2, src1 ) );
 
   test.case = `typed buffer`;
   var src1 = new F32x( 5 );
