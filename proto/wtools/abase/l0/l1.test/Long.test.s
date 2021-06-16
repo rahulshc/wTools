@@ -21,99 +21,75 @@ const __ = _globals_.testing.wTools;
 function dichotomy( test )
 {
 
-  dichotomyTemplate( { method : 'is' } );
-  dichotomyTemplate( { method : 'isOld' } );
-  dichotomyTemplate( { method : 'isCompact' } );
-  dichotomyTemplate( { method : 'isUnfolded' } );
-  dichotomyTemplate( { method : 'isUnfoldedSmartOrder' } );
-  dichotomyTemplate( { method : 'isUnfoldedSmarter' } );
-  dichotomyTemplate( { method : 'like' } );
+  act({ method : 'is' });
+  act({ method : 'isOld' });
+  act({ method : 'isCompact' });
+  act({ method : 'isUnfolded' });
+  act({ method : 'isUnfoldedSmartOrder' });
+  act({ method : 'isUnfoldedSmarter' });
+  act({ method : 'like' });
 
-  function dichotomyTemplate( env )
+  function act( env )
   {
     test.case = `${__.entity.exportStringSolo( env )}, an empty array`;
     var got = _.long[ env.method ]( [] );
     var expected = true;
     test.identical( got, expected );
 
-    /* */
-
     test.case = `${__.entity.exportStringSolo( env )}, an array`;
     var got = _.long[ env.method ]( [ 1, 2, 3 ] );
     var expected  = true;
     test.identical( got, expected );
-
-    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, a pseudo array`;
     var got = _.long[ env.method ]( arguments );
     var expected = true;
     test.identical( got, expected );
 
-    /* */
-
     test.case = `${__.entity.exportStringSolo( env )}, raw array buffer`;
     var got = _.long[ env.method ]( new BufferRaw( 10 ) );
     var expected = false;
     test.identical( got, expected );
-
-    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, typed array buffer`;
     var got = _.long[ env.method ]( new F32x( 10 ) );
     var expected = true;
     test.identical( got, expected );
 
-    /* */
-
     test.case = `${__.entity.exportStringSolo( env )}, no arguments`;
     var got = _.long[ env.method ]();
     var expected  = false;
     test.identical( got, expected );
-
-    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, null`;
     var got = _.long[ env.method ]( null );
     var expected  = false;
     test.identical( got, expected );
 
-    /* */
-
     test.case = `${__.entity.exportStringSolo( env )}, function`;
     var got = _.long[ env.method ]( function() {} );
     var expected  = false;
     test.identical( got, expected );
-
-    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, string`;
     var got = _.long[ env.method ]( 'x' );
     var expected  = false;
     test.identical( got, expected );
 
-    /* */
-
     test.case = `${__.entity.exportStringSolo( env )}, number`;
     var got = _.long[ env.method ]( 1 );
     var expected  = false;
     test.identical( got, expected );
-
-    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, boolean`;
     var got = _.long[ env.method ]( true );
     var expected  = false;
     test.identical( got, expected );
 
-    /* */
-
     test.case = `${__.entity.exportStringSolo( env )}, empty map`;
     var got = _.long[ env.method ]( {} );
     var expected  = false;
     test.identical( got, expected );
-
-    /* */
 
     test.case = `${__.entity.exportStringSolo( env )}, object with fields and iteraor method`;
     var src = new function()
@@ -126,8 +102,6 @@ function dichotomy( test )
     var got = _.long[ env.method ]( src );
     var expected  = false;
     test.identical( got, expected );
-
-    /* */
 
     test.case = 'Testing for overlaps';
     test.identical( _.arrayIs( src ), false );
@@ -142,7 +116,7 @@ function dichotomy( test )
 
 //
 
-function isPerformance( test )
+function dichotomyPerformance( test )
 {
    /*
     Average of 10 runs of 1 million iteration of 24 _.long.is variations
@@ -150,55 +124,58 @@ function isPerformance( test )
     ╔════════════════════════╤═════╤═════╤═════════╤══════════╤════════════════════╤═════════════════╗
     ║                        │  is │isOld│isCompact│isUnfolded│isUnfoldedSmartOrder│isUnfoldedSmarter║
     ╟────────────────────────┼─────┼─────┼─────────┼──────────┼────────────────────┼─────────────────╢
-    ║Windows-10-20H2, 10.24.1│     │     │         │          │                    │                 ║
+    ║Windows-10-21H1, 10.24.1│1.296│5.490│  1.973  │  1.907   │                    │                 ║
     ╟────────────────────────┼─────┼─────┼─────────┼──────────┼────────────────────┼─────────────────╢
-    ║Windows-10-20H2, 14.17.0│     │     │         │          │                    │                 ║
+    ║Windows-10-21H1, 14.17.0│     │     │         │          │                    │                 ║
     ╟────────────────────────┼─────┼─────┼─────────┼──────────┼────────────────────┼─────────────────╢
     ║    Linux-Kos, 12.9.1   │     │     │         │          │                    │                 ║
     ╚════════════════════════╧═════╧═════╧═════════╧══════════╧════════════════════╧═════════════════╝
     qqq : for Rahul : update the table please
   */
 
-  let a = test.assetFor( false );
-  test.identical( true, true );
-  programRoutine.meta = {}
-  programRoutine.meta.locals = { methodMeasure, varsInit, run };
-  let program = a.program( programRoutine );
-
-  program.start({ args : [ 'is' ] });
-  program.start({ args : [ 'isOld' ] });
-  program.start({ args : [ 'isCompact' ] });
-  program.start({ args : [ 'isUnfolded' ] });
-  program.start({ args : [ 'isUnfoldedSmartOrder' ] });
-  program.start({ args : [ 'isUnfoldedSmarter' ] });
-
-  return a.ready;
+  debugger; /* eslint-disable-line no-debugger */
+  var debugFlag = Config.debug;
+  Config.debug = false;
 
   /* */
 
-  function methodMeasure( env )
-  {
-    let _ = wTools;
-    let __ = wTools;
-    let took, time;
-    Config.debug = false;
-    env = varsInit( env );
+  //dichotomyPerformanceTemplate({ method : 'is' });
+  //dichotomyPerformanceTemplate({ method : 'isOld' });
+  //dichotomyPerformanceTemplate({ method : 'isCompact' });
+  //dichotomyPerformanceTemplate({ method : 'isUnfolded' });
+  dichotomyPerformanceTemplate({ method : 'isUnfoldedSmartOrder' });
+  //dichotomyPerformanceTemplate({ method : 'isUnfoldedSmarter' });
 
-    debugger; /* eslint-disable-line no-debugger */
+  /* */
+
+  Config.debug = debugFlag;
+  debugger; /* eslint-disable-line no-debugger */
+
+  /* */
+
+  function dichotomyPerformanceTemplate( data )
+  {
+    test.case = `${data.method}`;
+    var took, time;
+    var env = initializeVariables();
+    __.time.sleep( 100 );
+
     time = _.time.now();
     for( let i = env.times; i > 0; i-- )
-    run( env );
+    {
+      env.name = data.method;
+      run( env );
+    }
     took = __.time.spent( time );
-    console.log( `${env.times} iterations of ${env.method} took : ${took} on ${process.version}` );
-    debugger; /* eslint-disable-line no-debugger */
+
+    console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+    test.identical( true, true );
   }
 
   /* - */
 
-  function varsInit( env )
+  function initializeVariables()
   {
-    let _ = wTools;
-    let __ = wTools;
     var env = {};
     env.times = 1000000;
     env.nonEmptyArray = [ 1, 2, 3 ];
@@ -231,48 +208,38 @@ function isPerformance( test )
 
   function run( env )
   {
-    let _ = wTools;
-    let __ = wTools;
     let r = [];
-    r.push( _.long[ env.method ]( [] ) );
-    r.push( _.long[ env.method ]( env.nonEmptyArray ) );
-    r.push( _.long[ env.method ]( arguments ) );
-    r.push( _.long[ env.method ]( env.float32Array ) );
-    r.push( _.long[ env.method ]( env.int32Array ) );
-    r.push( _.long[ env.method ]( env.uint16Array ) );
-    r.push( _.long[ env.method ]( env.uint8Array ) );
-    r.push( _.long[ env.method ]( env.uint8ClampedArray ) );
-    r.push( _.long[ env.method ]( env.derivedArray ) );
-    r.push( _.long[ env.method ]( env.arrayProtoType ) );
-    r.push( _.long[ env.method ]( env.multiDimensionalArray ) );
-    r.push( _.long[ env.method ]( env.constructedArray ) );
-    r.push( _.long[ env.method ]( env.rawBuffer ) );
-    r.push( _.long[ env.method ]() );
-    r.push( _.long[ env.method ]( null ) );
-    r.push( _.long[ env.method ]( undefined ) );
-    r.push( _.long[ env.method ]( NaN ) );
-    r.push( _.long[ env.method ]( new Date() ) );
-    r.push( _.long[ env.method ]( env.anEmptyRoutine ) );
-    r.push( _.long[ env.method ]( env.aString ) );
-    r.push( _.long[ env.method ]( env.aNumber ) );
-    r.push( _.long[ env.method ]( env.aBoolean ) );
-    r.push( _.long[ env.method ]( env.anEmptyObject ) );
-    r.push( _.long[ env.method ]( env.routine ) );
+    r.push( _.long[ env.name ]( [] ) );
+    r.push( _.long[ env.name ]( env.nonEmptyArray ) );
+    r.push( _.long[ env.name ]( arguments ) );
+    r.push( _.long[ env.name ]( env.float32Array ) );
+    r.push( _.long[ env.name ]( env.int32Array ) );
+    r.push( _.long[ env.name ]( env.uint16Array ) );
+    r.push( _.long[ env.name ]( env.uint8Array ) );
+    r.push( _.long[ env.name ]( env.uint8ClampedArray ) );
+    r.push( _.long[ env.name ]( env.derivedArray ) );
+    r.push( _.long[ env.name ]( env.arrayProtoType ) );
+    r.push( _.long[ env.name ]( env.multiDimensionalArray ) );
+    r.push( _.long[ env.name ]( env.constructedArray ) );
+    r.push( _.long[ env.name ]( env.rawBuffer ) );
+    r.push( _.long[ env.name ]() );
+    r.push( _.long[ env.name ]( null ) );
+    r.push( _.long[ env.name ]( undefined ) );
+    r.push( _.long[ env.name ]( NaN ) );
+    r.push( _.long[ env.name ]( new Date() ) );
+    r.push( _.long[ env.name ]( env.anEmptyRoutine ) );
+    r.push( _.long[ env.name ]( env.aString ) );
+    r.push( _.long[ env.name ]( env.aNumber ) );
+    r.push( _.long[ env.name ]( env.aBoolean ) );
+    r.push( _.long[ env.name ]( env.anEmptyObject ) );
+    r.push( _.long[ env.name ]( env.routine ) );
 
     return r;
   }
-
-  /* */
-
-  function programRoutine()
-  {
-    const _ = require( toolsPath );
-    methodMeasure( { method : process.argv[ 2 ] } );
-  }
 }
 
-isPerformance.timeOut = 1e7;
-isPerformance.experimental = true;
+dichotomyPerformance.timeOut = 1e7;
+dichotomyPerformance.experimental = true;
 
 // --
 //
@@ -8861,7 +8828,7 @@ const Proto =
     // dichotomy
 
     dichotomy,
-    isPerformance,
+    dichotomyPerformance,
 
     // make
 
