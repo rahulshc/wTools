@@ -403,41 +403,12 @@ function lengthOf( test )
 
 function hasKey( test )
 {
-  test.case = 'empty set, no key';
-  var src = new Set([]);
-  var got = _.set.hasKey( src );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'empty set, with key';
-  var src = new Set([]);
-  var got = _.set.hasKey( src, 1 );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'number set, with key';
+  test.case = 'ordinary';
   var src = new Set([ 1, 2, 3 ]);
-  var got = _.set.hasKey( src, 1 );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'number set, with wrong key';
-  var src = new Set([ 1, 2, 3 ]);
-  var got = _.set.hasKey( src, 4 );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'set of strings, with key';
-  var src = new Set([ 'a', 'b', 'c' ]);
-  var got = _.set.hasKey( src, 'a' );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'string, with key';
-  var src = new Set('a');
-  var got = _.set.hasKey( src, 'a' );
-  var expected = true;
-  test.identical( got, expected );
+  test.identical( _.set.hasKey( src, 0 ), false );
+  test.identical( _.set.hasKey( src, 1 ), true );
+  test.identical( _.set.hasKey( src, 2 ), true );
+  test.identical( _.set.hasKey( src, 3 ), true );
 
   test.case = 'undefined key';
   var src = new Set([ 1, 2, 3, [ 1, 3 ] ]);
