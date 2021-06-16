@@ -312,6 +312,19 @@ function fileIs( src )
 
 //
 
+function fileUniversalFrom( src )
+{
+
+  if( _.module.fileUniversalIs( src ) )
+  return src;
+  if( _.module.fileNativeIs( src ) )
+  return src.universal || null;
+
+  _.assert( 0, `Not clear how to deduce module file from ${_.entity.strType( src )}` );
+}
+
+//
+
 function _fileUniversalFinit( file )
 {
   _.assert( _.module.fileUniversalIs( file ) );
@@ -346,7 +359,7 @@ function _fileUniversalFinit( file )
 
 //
 
-function _fileUniversalFrom( o )
+function _fileUniversalInit( o )
 {
   try
   {
@@ -383,7 +396,7 @@ function _fileUniversalFrom( o )
   }
   catch( err )
   {
-    err = _.err( err, `\nError in _.module._fileUniversalFrom of ${o.sourcePath}` );
+    err = _.err( err, `\nError in _.module._fileUniversalInit of ${o.sourcePath}` );
     throw err;
   }
 
@@ -522,7 +535,7 @@ xxx : test to check the module file has universal file for each children
 
 }
 
-_fileUniversalFrom.defaults =
+_fileUniversalInit.defaults =
 {
   sourcePath : null,
   nativeSourcePath : null,
@@ -536,12 +549,12 @@ _fileUniversalFrom.defaults =
 
 //
 
-function _filesUniversalFrom( o )
+function _filesUniversalInit( o )
 {
   let visited = new Set;
   let stack = [];
 
-  _.routine.options( _filesUniversalFrom, o );
+  _.routine.options( _filesUniversalInit, o );
   o.files = _.array.as( o.files );
   stack.push( ... o.files );
 
@@ -564,7 +577,7 @@ function _filesUniversalFrom( o )
     _.assert( _.module.fileNativeIs( file ) );
 
     if( !file.universal && _.module.nativeFilesMap[ file.filename || file.id ] === file )
-    _.module._fileUniversalFrom
+    _.module._fileUniversalInit
     ({
       sourcePath : file.filename || file.id,
       nativeSourcePath : file.filename || file.id,
@@ -593,7 +606,7 @@ function _filesUniversalFrom( o )
 
 }
 
-_filesUniversalFrom.defaults =
+_filesUniversalInit.defaults =
 {
   files : null,
 }
@@ -1006,28 +1019,35 @@ function fileExportString( file, o )
 
   _.assert( _.module.fileUniversalIs( file ), () => `Expects module file, but got ${_.strType( file )}` );
   o = _.routine.options( fileExportString, o || null );
+  let it = o.it = _.stringer.it( o.it || { verbosity : 1 } );
 
-  if( !o.verbosity )
-  return '';
+  if( !it.verbosity )
+  return it;
 
-  if( o.verbosity === 1 )
-  return String( file );
+  it.lineWrite( String( file ) );
 
-  let result = String( file );
+  if( it.verbosity === 1 )
+  return it;
 
   if( file.modules.size > 0 )
-  result += '\n  modules\n    ' + [ ... file.modules ].join( '\n    ' );
+  it.titleWrite( 'modules' ).elementsWrite( file.modules );
   if( file.downFiles.size > 0 )
-  result += '\n  downFiles\n    ' + [ ... file.downFiles ].join( '\n    ' );
+  it.titleWrite( 'downFiles' ).elementsWrite( file.downFiles );
   if( file.upFiles.size > 0 )
-  result += '\n  upFiles\n    ' + [ ... file.upFiles ].join( '\n    ' );
+  it.titleWrite( 'upFiles' ).elementsWrite( file.upFiles );
 
-  return result;
+  // if( file.modules.size > 0 )
+  // result += '\n  modules\n    ' + [ ... file.modules ].join( '\n    ' );
+  // if( file.downFiles.size > 0 )
+  // result += '\n  downFiles\n    ' + [ ... file.downFiles ].join( '\n    ' );
+  // if( file.upFiles.size > 0 )
+  // result += '\n  upFiles\n    ' + [ ... file.upFiles ].join( '\n    ' );
+
+  return it;
 }
 
 fileExportString.defaults =
 {
-  verbosity : 1,
   it : null,
 }
 
@@ -1980,7 +2000,7 @@ function _trackingEnable()
 
     let result;
     let native = this
-    let moduleFile = _.module._fileUniversalFrom
+    let moduleFile = _.module._fileUniversalInit
     ({
       sourcePath : nativeSourcePath,
       nativeSourcePath,
@@ -2059,7 +2079,7 @@ function _Setup()
   // return;
 
   _.module._trackingEnable();
-  _.module._filesUniversalFrom({ files : [ _.module.rootFileNative ] });
+  _.module._filesUniversalInit({ files : [ _.module.rootFileNative ] });
 
   if( _.module.rootFileNative.universal )
   _.module.rootFile = _.module.rootFileNative.universal;
@@ -2154,11 +2174,11 @@ var ModuleExtension =
   // file
 
   fileIs,
-  fileNativeIs : __.module.fileNativeIs,
   fileUniversalIs : __.module.fileUniversalIs,
+  fileUniversalFrom,
   _fileUniversalFinit,
-  _fileUniversalFrom,
-  _filesUniversalFrom,
+  _fileUniversalInit,
+  _filesUniversalInit,
   _fileUniversalAssociateFile,
   _fileUniversalDisassociateFile,
   _fileUniversalAssociateModule,
@@ -2170,6 +2190,7 @@ var ModuleExtension =
   fileWithResolvedPath,
   fileWith,
 
+  fileNativeIs : __.module.fileNativeIs,
   fileNativeFrom : __.module.fileNativeFrom,
   fileNativeParent : __.module.fileNativeParent,
   _fileNativeWithResolvedNativePath,

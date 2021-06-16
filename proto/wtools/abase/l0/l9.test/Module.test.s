@@ -462,7 +462,7 @@ modulesMap wTools wTools wTesting wTesting
     let moduleFile = _.module.fileWith( filePath );
     if( !moduleFile )
     return console.log( `${filePath} : ${moduleFile}` );
-    let output = _.module.fileExportString( moduleFile, { verbosity : 2 } );
+    let output = _.module.fileExportString( moduleFile, { it : { verbosity : 2 } } ).resultExportString();
     output = _.strReplace( output, _.path.normalize( __dirname ), '.' );
     console.log( `${filePath} : ${output}` );
   }
@@ -1096,7 +1096,7 @@ programRoutine1 : ./program6 : undefined
       let moduleFile = _.module.fileWith( filePath );
       if( !moduleFile )
       return console.log( `${prefix} : ${filePath} : ${moduleFile}` );
-      let output = _.module.fileExportString( moduleFile, { verbosity : 2 } );
+      let output = _.module.fileExportString( moduleFile, { it : { verbosity : 2 } } ).resultExportString();
       output = _.strReplace( output, _.path.normalize( __dirname ), '.' );
       console.log( `${prefix} : ${filePath} : ${output}` );
     }
@@ -1184,7 +1184,7 @@ programRoutine1 : ./program6 : undefined
       let moduleFile = _.module.fileWith( filePath );
       if( !moduleFile )
       return console.log( `${prefix} : ${filePath} : ${moduleFile}` );
-      let output = _.module.fileExportString( moduleFile, { verbosity : 2 } );
+      let output = _.module.fileExportString( moduleFile, { it : { verbosity : 2 } } ).resultExportString();
       output = _.strReplace( output, _.path.normalize( __dirname ), '.' );
       console.log( `${prefix} : ${filePath} : ${output}` );
     }
@@ -3502,7 +3502,7 @@ file2
       let moduleFile = _.module.fileWith( filePath );
       if( !moduleFile )
       return console.log( `${filePath} : ${moduleFile}` );
-      let output = _.module.fileExportString( moduleFile, { verbosity : 2 } );
+      let output = _.module.fileExportString( moduleFile, { it : { verbosity : 2 } } ).resultExportString();
       output = _.strReplace( output, _.path.normalize( __dirname ), '.' );
       console.log( `${filePath} : ${output}` );
     }
@@ -3714,7 +3714,7 @@ file3
       let moduleFile = _.module.fileWith( filePath );
       if( !moduleFile )
       return console.log( `${filePath} : ${moduleFile}` );
-      let output = _.module.fileExportString( moduleFile, { verbosity : 2 } );
+      let output = _.module.fileExportString( moduleFile, { it : { verbosity : 2 } } ).resultExportString();
       output = _.strReplace( output, _.path.normalize( __dirname ), '.' );
       console.log( `${filePath} : ${output}` );
     }
@@ -5020,18 +5020,58 @@ function moduleFileExport( test )
   let program2 = a.program( r2 );
   let program3 = a.program( r3 );
   let program4 = a.program( r4 );
+  let verbosityProgram = a.program( verbosityRoutine );
 
   /* */
 
-  program1.start()
+  verbosityProgram.start()
   .then( ( op ) =>
   {
+    test.case = 'verbosity';
     test.identical( op.exitCode, 0 );
+    var basePath = _.path.normalize( _.module.toolsPathGet() + '/../../wtools/abase' );
+    var baseAbs = __.routine.join( __.path, __.path.join, [ basePath ] );
     var exp =
 `
-xxx
+== ${ a.abs( 'verbosityRoutine' )}
+
+= v:undefined f:verbosityRoutine
+{- ModuleFile ${ a.abs( 'verbosityRoutine' )} -}
+= v:0 f:verbosityRoutine
+
+= v:1 f:verbosityRoutine
+{- ModuleFile ${ a.abs( 'verbosityRoutine' )} -}
+= v:2 f:verbosityRoutine
+{- ModuleFile ${ a.abs( 'verbosityRoutine' )} -}
+  upFiles
+    {- ModuleFile ${ _.module.toolsPathGet() } -}
+= v:3 f:verbosityRoutine
+{- ModuleFile ${ a.abs( 'verbosityRoutine' )} -}
+  upFiles
+    {- ModuleFile ${ _.module.toolsPathGet() } -}
+
+== ${baseAbs( 'l0/l5/Array.s' )}
+
+= v:undefined f:Array.s
+{- ModuleFile ${baseAbs( 'l0/l5/Array.s' )} -}
+= v:0 f:Array.s
+
+= v:1 f:Array.s
+{- ModuleFile ${baseAbs( 'l0/l5/Array.s' )} -}
+= v:2 f:Array.s
+{- ModuleFile ${baseAbs( 'l0/l5/Array.s' )} -}
+  modules
+    {- Module wTools -}
+  downFiles
+    {- ModuleFile ${baseAbs( 'l0/Include5.s' )} -}
+= v:3 f:Array.s
+{- ModuleFile ${baseAbs( 'l0/l5/Array.s' )} -}
+  modules
+    {- Module wTools -}
+  downFiles
+    {- ModuleFile ${baseAbs( 'l0/Include5.s' )} -}
 `
-    test.equivalent( op.output, exp );
+    test.identical( op.output, exp );
     return null;
   });
 
@@ -5044,8 +5084,6 @@ xxx
   function r1()
   {
     const _ = require( toolsPath );
-    debugger;
-    console.log( _.module.fileExportString( module ) );
     require( './r2' );
   }
 
@@ -5067,15 +5105,47 @@ xxx
 
   function r4()
   {
-    console.log( `r4` );
+    const _ = require( toolsPath );
+    console.log( _.module.fileExportString( _.module.fileUniversalFrom( module ) ).resultExportString() );
+  }
+
+  function verbosityRoutine()
+  {
+    const _ = require( toolsPath );
+
+    var moduleFile = _.module.fileUniversalFrom( module );
+    console.log( `\n== ${moduleFile.sourcePath}\n` );
+    log( moduleFile, undefined );
+    log( moduleFile, 0 );
+    log( moduleFile, 1 );
+    log( moduleFile, 2 );
+    log( moduleFile, 3 );
+
+    var modulePath = _.path.normalize( _.module.toolsPathGet() + '/../../wtools/abase/l0/l5/Array.s' );
+    var moduleFile = _.module.fileWith( modulePath );
+    console.log( `\n== ${moduleFile.sourcePath}\n` );
+    log( moduleFile, undefined );
+    log( moduleFile, 0 );
+    log( moduleFile, 1 );
+    log( moduleFile, 2 );
+    log( moduleFile, 3 );
+
+    function log( moduleFile, verbosity )
+    {
+      let prefix = `v:${verbosity} f:${_.path.fullName( moduleFile.sourcePath )}`;
+      if( verbosity !== undefined )
+      console.log( `= ${prefix}\n${_.module.fileExportString( moduleFile, { it : { verbosity } } ).resultExportString()}` );
+      else
+      console.log( `= ${prefix}\n${_.module.fileExportString( moduleFile ).resultExportString()}` );
+    }
+
   }
 
 }
 
-environmentWithL1.description =
+moduleFileExport.description =
 `
-- r4 should be included only once and only in namespace::test1
-- if real namespace include only l1 then "ModuleFileNative._load = _loadEnvironment" should be assigned anyway in secondary namespace
+- change of option verbosity change level of verbosity of the output
 `
 
 // --
@@ -5139,10 +5209,10 @@ const Proto =
 
     requireModuleFileWithAccessor,
     testingOnL1,
-    environmentWithL1,
+    // environmentWithL1, /* xxx2 : switch on */
     // requireSameModuleTwice, /* xxx2 : switch on */
 
-    // moduleFileExport,
+    moduleFileExport, /* xxx2 : implement */
 
   }
 
