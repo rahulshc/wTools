@@ -3227,6 +3227,7 @@ function refine( test )
 {
   act({ method : 'refine' });
   act({ method : 'refineOld' });
+  act({ method : 'refineFast' });
   act({ method : 'refineFaster' });
 
   function act( env )
@@ -3663,9 +3664,10 @@ function refinePerformance( test )
 
   /* */
 
-  refinePerformanceTemplate( { method : 'refine' } );
-  refinePerformanceTemplate( { method : 'refineOld' } );
-  refinePerformanceTemplate( { method : 'refineFaster' } );
+  //refinePerformanceTemplate( { method : 'refine' } );
+  //refinePerformanceTemplate( { method : 'refineOld' } );
+  refinePerformanceTemplate( { method : 'refineFast' } );
+  //refinePerformanceTemplate( { method : 'refineFaster' } );
 
   /* */
 

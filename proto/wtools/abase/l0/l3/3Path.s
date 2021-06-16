@@ -321,7 +321,7 @@ function refineOld( src )
 
 //
 
-function refineFaster( src )
+function refineFast( src )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -329,8 +329,8 @@ function refineFaster( src )
 
   let result = src;
 
-  var hasBackSlash = result.includes( '\\' );
-  var hasColon = result[ 1 ] === ':';
+  const hasBackSlash = result.includes( '\\' );
+  const hasColon = result[ 1 ] === ':';
 
   if( !hasBackSlash && !hasColon )
   return result;
@@ -348,6 +348,43 @@ function refineFaster( src )
     {
       result = '/' + result[ 0 ];
     }
+  }
+
+  if( hasBackSlash )
+  return result.replace( /\\/g, '/' );
+  else
+  return result;
+}
+
+//
+
+function refineFaster( src )
+{
+
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.strIs( src ) );
+
+  let result = src;
+
+  const hasBackSlash = result.indexOf( '\\' ) !== -1;
+  const hasColon = result[ 1 ] === ':';
+  const secondIndex = result[ 2 ];
+  const zeroIndex = result[ 0 ];
+
+  if( !hasBackSlash && !hasColon )
+  return result;
+
+  if( hasColon )
+  {
+    if( result.length > 3 )
+    {
+      if( secondIndex === '\\' || secondIndex === '/' )
+      {
+        result = `/${zeroIndex}/${result.substring( 3 )}`;
+      }
+    }
+    else
+    result = `/${zeroIndex}`
   }
 
   if( hasBackSlash )
@@ -1228,6 +1265,7 @@ let Extension =
 
   refine,
   refineOld,
+  refineFast,
   refineFaster,
 
   _normalize,
