@@ -3664,10 +3664,10 @@ function refinePerformance( test )
 
   /* */
 
-  refinePerformanceTemplate({ method : 'refine' });
-  refinePerformanceTemplate({ method : 'refineOld' });
-  refinePerformanceTemplate({ method : 'refineFast' });
-  refinePerformanceTemplate({ method : 'refineFaster' });
+  act({ method : 'refine' });
+  act({ method : 'refineOld' });
+  act({ method : 'refineFast' });
+  act({ method : 'refineFaster' });
 
   /* */
 
@@ -3676,7 +3676,7 @@ function refinePerformance( test )
 
   /* */
 
-  function refinePerformanceTemplate( data )
+  function act( data )
   {
     test.case = `${data.method}`;
     var took, time;
