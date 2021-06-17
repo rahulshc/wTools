@@ -16,6 +16,9 @@ const Parent = _.seeker.Seeker;
 function head( o )
 {
 
+  if( o === null )
+  o = Object.create( null );
+
   if( _.prototype.has( o, _.stringer.Stringer ) )
   return o;
 
@@ -39,6 +42,14 @@ function iteratorInitBegin( iterator )
   iterator.resultNode = [];
 
   return iterator;
+}
+
+//
+
+function resultExportString()
+{
+  let it = this;
+  return it.iterator.result;
 }
 
 //
@@ -94,6 +105,33 @@ function lineWrite( src )
   it.iterator.result += `${it.tab}${src}`;
   it.resultNode.push( `${it.tab}${src}` );
   return it;
+}
+
+//
+
+function titleWrite( src )
+{
+  let it = this;
+  _.assert( arguments.length === 1 );
+
+  let it2 = it.itUp();
+  it2.lineWrite( src );
+  return it2;
+}
+
+//
+
+function elementsWrite( src )
+{
+  let it = this;
+  _.assert( arguments.length === 1 );
+
+  let it2 = it.itUp();
+  for( let e of src )
+  {
+    it2.lineWrite( e );
+  }
+  return it2;
 }
 
 //
@@ -176,10 +214,10 @@ nodesExportString.defaults =
 // --
 
 const StringerClassExtension = Object.create( null );
-
 StringerClassExtension.constructor = function Stringer(){};
 StringerClassExtension.head = head;
 StringerClassExtension.iteratorInitBegin = iteratorInitBegin;
+StringerClassExtension.resultExportString = resultExportString;
 StringerClassExtension.itUp = itUp;
 StringerClassExtension.itDown = itDown;
 StringerClassExtension.levelUp = levelUp;
@@ -188,12 +226,15 @@ StringerClassExtension.write = write;
 StringerClassExtension.eolWrite = eolWrite;
 StringerClassExtension.tabWrite = tabWrite;
 StringerClassExtension.lineWrite = lineWrite;
+StringerClassExtension.titleWrite = titleWrite;
+StringerClassExtension.elementsWrite = elementsWrite;
 
 const Iterator = StringerClassExtension.Iterator = Object.create( null );
 Iterator.result = '';
 Iterator.resultNode = null;
 Iterator.dtab = '  ';
 Iterator.eol = _.str.lines.Eol.default;
+Iterator.recursive = Infinity;
 _.assert( !!Iterator.eol );
 
 const Iteration = StringerClassExtension.Iteration = Object.create( null );
@@ -203,6 +244,7 @@ const IterationPreserve = StringerClassExtension.IterationPreserve = Object.crea
 IterationPreserve.tab = '';
 IterationPreserve.verbosity = 2;
 IterationPreserve.tabLevel = 0;
+IterationPreserve.level = 0;
 
 const Prime = {};
 const Stringer = _.seeker.classDefine

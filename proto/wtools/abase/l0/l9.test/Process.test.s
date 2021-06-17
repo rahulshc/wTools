@@ -12,24 +12,6 @@ if( typeof module !== 'undefined' )
 const _ = _global_.wTools;
 const __ = _globals_.testing.wTools;
 
-//
-
-// function onSuiteBegin( test )
-// {
-//   let context = this;
-//   _.process._edispatcher.events.event1 = [];
-//   _.process._edispatcher.events.event2 = [];
-//   /* aaa : for Dmytro : ? */ /* Dmytro : fixed */
-// }
-//
-// //
-//
-// function onSuiteEnd( test )
-// {
-//   delete _.process._edispatcher.events.event1;
-//   delete _.process._edispatcher.events.event2;
-// }
-
 // --
 // events
 // --
@@ -693,6 +675,8 @@ function onWithOptionsMap( test )
   }
 }
 
+onWithOptionsMap.timeOut = 30000;
+
 //
 
 function onWithChain( test )
@@ -1021,16 +1005,13 @@ const Proto =
   name : 'Tools.Process.l0.l9',
   silencing : 1,
   enabled : 1,
-
-  // onSuiteBegin,
-  // onSuiteEnd,
+  routineTimeOut : 15000,
 
   tests :
   {
 
     // events
 
-    /* aaa2 : for Dmytro : bad : rewrite */ /* Dmytro : fixed, programs is used */
     onWithArguments,
     onWithOptionsMap,
     onWithChain,

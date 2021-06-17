@@ -504,8 +504,8 @@ function begin( /* delay, procedure, onTime, onCancel */ )
 
   if( !_.procedureIs( procedure ) )
   {
-    onTime = arguments[ 1 ];
-    onCancel = arguments[ 2 ]
+    onTime = arguments[ 1 ] === undefined ? null : arguments[ 1 ];
+    onCancel = arguments[ 2 ] === undefined ? null : arguments[ 2 ];
   }
 
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4 );
@@ -556,7 +556,7 @@ function finally_( delay, procedure, onTime )
 {
   if( arguments.length === 2 )
   if( !_.procedureIs( procedure ) )
-  onTime = arguments[ 1 ];
+  onTime = arguments[ 1 ] === undefined ? null : arguments[ 1 ];
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.number.is( delay ) );
@@ -633,8 +633,8 @@ function periodic( /* delay, procedure, onTime, onCancel */ )
 
   if( !_.procedureIs( procedure ) )
   {
-    onTime = arguments[ 1 ];
-    onCancel = arguments[ 2 ]
+    onTime = arguments[ 1 ] === undefined ? null : arguments[ 1 ];
+    onCancel = arguments[ 2 ] === undefined ? null : arguments[ 2 ];
   }
 
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4 );

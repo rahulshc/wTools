@@ -422,11 +422,11 @@ Seeker.iterationMake = iterationMake;
 Seeker.iterationProper = iterationProper;
 Seeker.onUp = null;
 Seeker.onDown = null;
+Seeker.iterationPrototype = null;
+Seeker.firstIterationPrototype = null;
 
 /* xxx : remove Iterator? */
 const Iterator = Seeker.Iterator = Object.create( null );
-Iterator.iterationPrototype = null;
-Iterator.firstIterationPrototype = null;
 
 const Iteration = Seeker.Iteration = Object.create( null );
 Iteration.down = null;
