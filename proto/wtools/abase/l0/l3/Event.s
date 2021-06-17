@@ -923,16 +923,22 @@ function eventGiveHead( edispatcher, routine, args )
 {
   let o = args[ 0 ];
 
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments.' );
   _.assert( args.length > 0 );
+  _.assert( _.aux.is( edispatcher.events ), 'Expects events dispatcher.' );
 
   if( _.strIs( o ) )
-  o = { event : o }
+  o = { event : o };
+  _.assert( _.aux.is( o ), 'Expects string or options map in {-o.args[ 1 ]-}.' ); /* Dmytro : restrict using options map in first argument */
+
   if( o.onError === null || o.onError === undefined )
   o.onError = onError;
 
   _.map.assertHasOnly( o, routine.defaults );
 
+  if( o.args )
+  _.assert( args.length === 1 ); /* Dmytro : restrict using options map in first argument */
+  else /* Dmytro : do not overwrite arguments if the field exists */
   o.args = args;
 
   // if( o.args === null )
@@ -949,7 +955,6 @@ function eventGiveHead( edispatcher, routine, args )
   {
     throw _.err( `Error on handing event ${o.event}\n`, err );
   }
-
 }
 
 //
