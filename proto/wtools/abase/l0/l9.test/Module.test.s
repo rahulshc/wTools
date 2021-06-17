@@ -1015,23 +1015,27 @@ program6 : ./programRoutine2b : undefined
 program6 : ./program3 : undefined
 program6 : ./program4 : undefined
 program6 : ./program5 : {- ModuleFile ./program5 -}
+  global : space2
   downFiles
     {- ModuleFile ./program4 -}
   upFiles
     {- ModuleFile ${_.module.toolsPathGet()} -}
     {- ModuleFile ./program6 -}
 program6 : ./program6 : {- ModuleFile ./program6 -}
+  global : space2
   downFiles
     {- ModuleFile ./program5 -}
 
 programRoutine2b
 
 programRoutine1 : ./programRoutine1 : {- ModuleFile ./programRoutine1 -}
+  global : real
   upFiles
     {- ModuleFile ${_.module.toolsPathGet()} -}
     {- ModuleFile ./programRoutine2 -}
     {- ModuleFile ./programRoutine2b -}
 programRoutine1 : ./programRoutine2 : {- ModuleFile ./programRoutine2 -}
+  global : real
   ${ env.adeclaration === 'none' ? '' : 'modules' }
   ${ env.adeclaration === 'none' ? '' : '{- Module Module1 -}' }
   downFiles
@@ -1039,6 +1043,7 @@ programRoutine1 : ./programRoutine2 : {- ModuleFile ./programRoutine2 -}
   upFiles
     {- ModuleFile ./program3 -}
 programRoutine1 : ./programRoutine2b : {- ModuleFile ./programRoutine2b -}
+  global : real
   modules
     {- Module Module1 -}
   downFiles
@@ -1046,6 +1051,7 @@ programRoutine1 : ./programRoutine2b : {- ModuleFile ./programRoutine2b -}
   upFiles
     {- ModuleFile ./program3 -}
 programRoutine1 : ./program3 : {- ModuleFile ./program3 -}
+  global : real
   modules
     {- Module Module1 -}
   downFiles
@@ -1054,6 +1060,8 @@ programRoutine1 : ./program3 : {- ModuleFile ./program3 -}
   upFiles
     {- ModuleFile ./program4 -}
 programRoutine1 : ./program4 : {- ModuleFile ./program4 -}
+  virtualEnvironment : space2
+  global : real
   modules
     {- Module Module1 -}
   downFiles
@@ -1199,6 +1207,120 @@ modulingGlobalNamespaces.description =
 - virtual environment in inherited from parent modules
 - module is stay in its environment
 - no error or unhandled case
+`
+
+//
+
+function moduleRedeclare( test )
+{
+  let a = test.assetFor( false );
+  let program1 = a.program( r1 );
+  let program2 = a.program( r2 );
+
+  /* */
+
+  program1.start()
+  .then( ( op ) =>
+  {
+    test.case = 'same entry path';
+    test.identical( op.exitCode, 0 );
+    var exp =
+`
+{- Module Module1 -}
+name : Module1
+alias : Module1,module1
+entryPath : ${ a.abs( 'r1' ) }
+filePath : ${ a.abs( 'r1' ) }
+lookPath : ${ a.abs( 'r1' ) },Module1,module1
+files : ${ a.abs( 'r1' ) }
+`
+    test.equivalent( op.output, exp );
+    return null;
+  });
+
+  /* */
+
+  program2.start()
+  .then( ( op ) =>
+  {
+    test.case = 'different entry path';
+    test.identical( op.exitCode, 0 );
+    var exp =
+`
+{- Module Module1 -}
+name : Module1
+alias : Module1,module1
+entryPath : ${ a.abs( 'r2' ) },${ a.abs( 'r1' ) }
+filePath : ${ a.abs( 'r2' ) },${ a.abs( 'r1' ) }
+lookPath : ${ a.abs( 'r2' ) },Module1,module1,${ a.abs( 'r1' ) }
+files : ${ a.abs( 'r2' ) }
+`
+    test.equivalent( op.output, exp );
+    return null;
+  });
+
+  /* */
+
+  return a.ready;
+
+  /* */
+
+  function r1()
+  {
+    const _ = require( toolsPath );
+    _.debugger = 1;
+    _.module.predeclare
+    ({
+      alias : [ 'Module1', 'module1' ],
+      entryPath : __filename,
+    });
+    _.module.predeclare
+    ({
+      alias : [ 'Module1', 'module1' ],
+      entryPath : __filename,
+      // entryPath : __dirname + '/r2',
+    });
+    let module1 = _.module.with( 'Module1' );
+    console.log( module1 );
+    console.log( `name : ${module1.name}` );
+    console.log( `alias : ${module1.alias}` );
+    console.log( `entryPath : ${module1.entryPath}` );
+    console.log( `filePath : ${module1.filePath}` );
+    console.log( `lookPath : ${module1.lookPath}` );
+    console.log( `files : ${_.container.keys( module1.files )}` );
+  }
+
+  /* */
+
+  function r2()
+  {
+    const _ = require( toolsPath );
+    _.debugger = 1;
+    _.module.predeclare
+    ({
+      alias : [ 'Module1', 'module1' ],
+      entryPath : __filename,
+    });
+    _.module.predeclare
+    ({
+      alias : [ 'Module1', 'module1' ],
+      entryPath : __dirname + '/r1',
+    });
+    let module1 = _.module.with( 'Module1' );
+    console.log( module1 );
+    console.log( `name : ${module1.name}` );
+    console.log( `alias : ${module1.alias}` );
+    console.log( `entryPath : ${module1.entryPath}` );
+    console.log( `filePath : ${module1.filePath}` );
+    console.log( `lookPath : ${module1.lookPath}` );
+    console.log( `files : ${_.container.keys( module1.files )}` );
+  }
+
+}
+
+moduleRedeclare.description =
+`
+- redeclaring of a module does not throw an error
 `
 
 //
@@ -3448,6 +3570,7 @@ main
 file1
 file2
 ./main1 : {- ModuleFile ./main1 -}
+  global : real
   modules
     {- Module Module1 -}
   upFiles
@@ -3455,12 +3578,14 @@ file2
     {- ModuleFile ./file1 -}
     {- ModuleFile ./file2 -}
 ./file1 : {- ModuleFile ./file1 -}
+  global : real
   modules
     {- Module Module1 -}
   downFiles
     {- ModuleFile ./main1 -}
     {- ModuleFile ./file2 -}
 ./file2 : {- ModuleFile ./file2 -}
+  global : real
   modules
     {- Module Module1 -}
   downFiles
@@ -3587,6 +3712,7 @@ file1
 module2
 file2
 ./module1 : {- ModuleFile ./module1 -}
+  global : real
   modules
     {- Module Module1 -}
   upFiles
@@ -3594,6 +3720,7 @@ file2
     {- ModuleFile ./file1 -}
     {- ModuleFile ./module2 -}
 ./module2 : {- ModuleFile ./module2 -}
+  global : real
   modules
     {- Module Module2 -}
   downFiles
@@ -3602,6 +3729,7 @@ file2
     {- ModuleFile ./file2 -}
     {- ModuleFile ./file1 -}
 ./file1 : {- ModuleFile ./file1 -}
+  global : real
   modules
     {- Module Module1 -}
     {- Module Module2 -}
@@ -3609,6 +3737,7 @@ file2
     {- ModuleFile ./module1 -}
     {- ModuleFile ./module2 -}
 ./file2 : {- ModuleFile ./file2 -}
+  global : real
   modules
     {- Module Module2 -}
   downFiles
@@ -3647,6 +3776,7 @@ module2
 file2
 file3
 ./module1 : {- ModuleFile ./module1 -}
+  global : real
   modules
     {- Module Module1 -}
   upFiles
@@ -3655,6 +3785,7 @@ file3
     {- ModuleFile ./module2 -}
     {- ModuleFile ./file3 -}
 ./module2 : {- ModuleFile ./module2 -}
+  global : real
   modules
     {- Module Module2 -}
   downFiles
@@ -3663,6 +3794,7 @@ file3
     {- ModuleFile ./file2 -}
     {- ModuleFile ./file1 -}
 ./file1 : {- ModuleFile ./file1 -}
+  global : real
   modules
     {- Module Module1 -}
     {- Module Module2 -}
@@ -3671,6 +3803,7 @@ file3
     {- ModuleFile ./module2 -}
     {- ModuleFile ./file3 -}
 ./file2 : {- ModuleFile ./file2 -}
+  global : real
   modules
     {- Module Module2 -}
   downFiles
@@ -4786,7 +4919,7 @@ testingOnL1.description =
 
 //
 
-function environmentWithL1( test )
+function l1Environment( test )
 {
   let a = test.assetFor( false );
   let tools1Path = __.path.normalize( __dirname + '/../../../../node_modules/wTools.l1' );
@@ -4886,10 +5019,207 @@ r1.test1.theStatus : r4
 
 }
 
-environmentWithL1.description =
+l1Environment.description =
 `
 - r4 should be included only once and only in namespace::test1
 - if real namespace include only l1 then "ModuleFileNative._load = _loadEnvironment" should be assigned anyway in secondary namespace
+`
+
+//
+
+function l1SecondRequire( test )
+{
+  let a = test.assetFor( false );
+  let tools1Path = __.path.normalize( __dirname + '/../../../../node_modules/wTools.l1' );
+  let toolsPath = _.module.toolsPathGet();
+  let locals =
+  {
+    tools1Path,
+    toolsPath,
+  }
+  let program = a.program({ routine : r1, locals });
+  a.program({ routine : r2, locals });
+  a.program({ routine : r3, locals });
+  a.program({ routine : includeTools, locals });
+
+  test.true( a.fileProvider.fileExists( toolsPath ) );
+  console.log( `r1.toolsPath : ${toolsPath}` );
+
+  /* */
+
+  program.start()
+  .then( ( op ) =>
+  {
+    test.identical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, 'nhandled' ), 0 );
+    test.identical( _.strCount( op.output, 'error' ), 0 );
+
+    var exp =
+`
+r2
+r3
+r2
+_ = __ : true
+r1.real.name : real
+{- ModuleFile ${a.abs( 'r1' )} -}
+  {- ModuleFile ${__.path.dir( _.module.toolsPathGet() )}/wTools.l1 -}
+  {- ModuleFile ${a.abs( 'r2' )} -}
+  {- ModuleFile ${a.abs( 'includeTools' )} -}
+  {- ModuleFile ${_.module.toolsPathGet()} -}
+  {- ModuleFile ${a.abs( 'r3' )} -}
+`
+    test.equivalent( op.output, exp );
+
+    return null;
+  });
+
+  /* */
+
+  return a.ready;
+
+  /* */
+
+  function r1()
+  {
+    let _ = require( tools1Path );
+    require( './r2' );
+    require( './includeTools' );
+    let __ = require( toolsPath );
+    console.log( `_ = __ : ${_ === __}` );
+    console.log( `r1.${_global_.__GLOBAL_NAME__}.name : ${_global_.__GLOBAL_NAME__}` );
+    require( './r3' );
+
+    console.log( module.universal );
+    module.universal.upFiles.forEach( ( file ) => console.log( `  ${file}` ) );
+    debugger;
+
+  }
+
+  function r2()
+  {
+    console.log( `r2` );
+    require( './r3' );
+  }
+
+  function r3()
+  {
+    console.log( `r3` );
+  }
+
+  function includeTools()
+  {
+    const __ = wTools;
+    const _global = __.global.makeAndOpen( module, 'test1' );
+    const _ = require( toolsPath );
+    console.log( `r2` );
+    _.global.close( 'test1' );
+  }
+
+}
+
+l1SecondRequire.description =
+`
+- second require in the main namespace should add up even if _loadEnvironment is registered in secondary namespace
+`
+
+//
+
+function secondaryNamespaceSecondRequire( test )
+{
+  let a = test.assetFor( false );
+  let routines =
+  {
+    r1,
+    r2,
+    r3,
+    secondary1,
+    secondary2,
+    secondary3,
+    common2,
+    common3,
+  }
+  let program = a.program({ routine : r1, routines });
+
+  /* */
+
+  program.start()
+  .then( ( op ) =>
+  {
+    test.identical( op.exitCode, 0 );
+    var exp =
+`
+xxx
+`
+    test.equivalent( op.output, exp );
+
+    return null;
+  });
+
+  /* */
+
+  return a.ready;
+
+  /* */
+
+  function r1()
+  {
+    const _ = require( toolsPath );
+    require( './secondary1' );
+    require( './r2' );
+    require( './r3' );
+
+    console.log( module.universal );
+    module.universal.upFiles.forEach( ( file ) => console.log( `  ${file}` ) );
+    debugger;
+
+  }
+
+  function r2()
+  {
+    console.log( `r2` );
+    require( './r3' );
+  }
+
+  function r3()
+  {
+    console.log( `r3` );
+  }
+
+  function secondary1()
+  {
+    const __ = wTools;
+    const _global = __.global.makeAndOpen( module, 'test1' );
+    const _ = require( toolsPath );
+    require( './secondary2' );
+    require( './secondary3' );
+    require( './common2' );
+    require( './common3' );
+    _.global.close( 'test1' );
+  }
+
+  function secondary2()
+  {
+    require( './secondary3' );
+  }
+
+  function secondary3()
+  {
+  }
+
+  function common2()
+  {
+    require( './common3' );
+  }
+
+  function common3()
+  {
+  }
+
+}
+
+secondaryNamespaceSecondRequire.description =
+`
+- second require in both main and secondary namespace should add element to upFiles of down module file
 `
 
 //
@@ -5012,25 +5342,100 @@ requireSameModuleTwice.description =
 
 //
 
-function moduleFileExport( test )
+function moduleFileExportBasic( test )
+{
+  const basePath = _.path.normalize( _.module.toolsPathGet() + '/../../wtools/abase' );
+  const baseAbs = __.routine.join( __.path, __.path.join, [ basePath ] );
+
+  console.log( '' );
+  console.log( _.module.rootFile.sourcePath );
+  console.log( _.module.fileExportString( _.module.rootFile, { it : { verbosity : 2, recursive : 4 } } ).resultExportString() );
+  console.log( '' );
+  console.log( _.module.resolve( 'wTesting' ) );
+  console.log( _.module.fileExportString( _.module.fileWith( _.module.resolve( 'wTesting' ) ), { it : { verbosity : 2, recursive : 4 } } ).resultExportString() );
+
+  console.log( '' );
+  console.log( _.module.resolve( 'wTesting' ) );
+  console.log( _.module.exportString( _.module.fileWith( _.module.resolve( 'wTesting' ) ).module, { it : { verbosity : 2, recursive : 4 } } ).resultExportString() );
+
+  // console.log( '' );
+  // console.log( _globals_.testing.wTools.module.resolve( 'wTesting' ) );
+  // console.log( _.module.exportString( __.module.fileWith( _globals_.testing.wTools.module.resolve( 'wTesting' ) ).module, { it : { verbosity : 2, recursive : 4 } } ).resultExportString() );
+
+  /* */
+
+  test.case = 'Array.s v:implicit';
+  var modulePath = baseAbs( 'l0/l5/Array.s' );
+  var moduleFile = _.module.fileWith( modulePath );
+  var got = _.module.fileExportString( moduleFile ).resultExportString();
+  var exp = `{- ModuleFile ${baseAbs( 'l0/l5/Array.s' )} -}`;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'Array.s v:1';
+  var modulePath = baseAbs( 'l0/l5/Array.s' );
+  var moduleFile = _.module.fileWith( modulePath );
+  var got = _.module.fileExportString( moduleFile, { it : { verbosity : 1 } } ).resultExportString();
+  var exp = `{- ModuleFile ${baseAbs( 'l0/l5/Array.s' )} -}`;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'Array.s v:2';
+  var modulePath = baseAbs( 'l0/l5/Array.s' );
+  var moduleFile = _.module.fileWith( modulePath );
+  var got = _.module.fileExportString( moduleFile, { it : { verbosity : 2 } } ).resultExportString();
+  var exp =
+`{- ModuleFile ${baseAbs( 'l0/l5/Array.s' )} -}
+  global : real
+  modules
+    {- Module wTools -}
+  downFiles
+    {- ModuleFile ${baseAbs( 'l0/Include5.s' )} -}`;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'Array.s v:3';
+  var modulePath = baseAbs( 'l0/l5/Array.s' );
+  var moduleFile = _.module.fileWith( modulePath );
+  var got = _.module.fileExportString( moduleFile, { it : { verbosity : 3 } } ).resultExportString();
+  var exp =
+`{- ModuleFile ${baseAbs( 'l0/l5/Array.s' )} -}
+  global : real
+  modules
+    {- Module wTools -}
+  downFiles
+    {- ModuleFile ${baseAbs( 'l0/Include5.s' )} -}`;
+  test.identical( got, exp );
+
+  /* */
+
+}
+
+//
+
+function moduleFileExportExternal( test )
 {
   let a = test.assetFor( false );
-
   let program1 = a.program( r1 );
   let program2 = a.program( r2 );
   let program3 = a.program( r3 );
-  let program4 = a.program( r4 );
+  let program4a = a.program( r4a );
+  let program4b = a.program( r4b );
+  let program5 = a.program( r5 );
   let verbosityProgram = a.program( verbosityRoutine );
+  let basePath = _.path.normalize( _.module.toolsPathGet() + '/../../wtools/abase' );
+  let baseAbs = __.routine.join( __.path, __.path.join, [ basePath ] );
 
   /* */
 
   verbosityProgram.start()
   .then( ( op ) =>
   {
-    test.case = 'verbosity';
+    test.case = 'recursive:1';
     test.identical( op.exitCode, 0 );
-    var basePath = _.path.normalize( _.module.toolsPathGet() + '/../../wtools/abase' );
-    var baseAbs = __.routine.join( __.path, __.path.join, [ basePath ] );
     var exp =
 `
 == ${ a.abs( 'verbosityRoutine' )}
@@ -5043,10 +5448,12 @@ function moduleFileExport( test )
 {- ModuleFile ${ a.abs( 'verbosityRoutine' )} -}
 = v:2 f:verbosityRoutine
 {- ModuleFile ${ a.abs( 'verbosityRoutine' )} -}
+  global : real
   upFiles
     {- ModuleFile ${ _.module.toolsPathGet() } -}
 = v:3 f:verbosityRoutine
 {- ModuleFile ${ a.abs( 'verbosityRoutine' )} -}
+  global : real
   upFiles
     {- ModuleFile ${ _.module.toolsPathGet() } -}
 
@@ -5060,17 +5467,169 @@ function moduleFileExport( test )
 {- ModuleFile ${baseAbs( 'l0/l5/Array.s' )} -}
 = v:2 f:Array.s
 {- ModuleFile ${baseAbs( 'l0/l5/Array.s' )} -}
+  global : real
   modules
     {- Module wTools -}
   downFiles
     {- ModuleFile ${baseAbs( 'l0/Include5.s' )} -}
 = v:3 f:Array.s
 {- ModuleFile ${baseAbs( 'l0/l5/Array.s' )} -}
+  global : real
   modules
     {- Module wTools -}
   downFiles
     {- ModuleFile ${baseAbs( 'l0/Include5.s' )} -}
 `
+    test.identical( op.output, exp );
+    return null;
+  });
+  /* */
+
+  program1.start({ args : [ '1', '1' ] })
+  .then( ( op ) =>
+  {
+    test.case = 'verbosity:1 recursive:1';
+    test.identical( op.exitCode, 0 );
+    var basePath = _.path.normalize( _.module.toolsPathGet() + '/../../wtools/abase' );
+    var exp = `{- ModuleFile ${a.abs( 'r3' )} -}
+`;
+    test.identical( op.output, exp );
+    return null;
+  });
+
+  /* */
+
+  program1.start({ args : [ '1', '2' ] })
+  .then( ( op ) =>
+  {
+    test.case = 'verbosity:1 recursive:2';
+    test.identical( op.exitCode, 0 );
+    var basePath = _.path.normalize( _.module.toolsPathGet() + '/../../wtools/abase' );
+    var exp = `{- ModuleFile ${a.abs( 'r3' )} -}
+  {- ModuleFile ${a.abs( 'r4a' )} -}
+  {- ModuleFile ${a.abs( 'r4b' )} -}
+`;
+    test.identical( op.output, exp );
+    return null;
+  });
+
+  /* */
+
+  program1.start({ args : [ '1', '3' ] })
+  .then( ( op ) =>
+  {
+    test.case = 'verbosity:1 recursive:3';
+    test.identical( op.exitCode, 0 );
+    var basePath = _.path.normalize( _.module.toolsPathGet() + '/../../wtools/abase' );
+    var exp = `{- ModuleFile ${a.abs( 'r3' )} -}
+  {- ModuleFile ${a.abs( 'r4a' )} -}
+  {- ModuleFile ${a.abs( 'r4b' )} -}
+    {- ModuleFile ${a.abs( 'r5' )} -}
+`;
+    test.identical( op.output, exp );
+    return null;
+  });
+
+  /* */
+
+  program1.start({ args : [ '1', '4' ] })
+  .then( ( op ) =>
+  {
+    test.case = 'verbosity:1 recursive:4';
+    test.identical( op.exitCode, 0 );
+    var basePath = _.path.normalize( _.module.toolsPathGet() + '/../../wtools/abase' );
+    var exp = `{- ModuleFile ${a.abs( 'r3' )} -}
+  {- ModuleFile ${a.abs( 'r4a' )} -}
+  {- ModuleFile ${a.abs( 'r4b' )} -}
+    {- ModuleFile ${a.abs( 'r5' )} -}
+`;
+    test.identical( op.output, exp );
+    return null;
+  });
+
+  /* */
+
+  program1.start({ args : [ '2', '1' ] })
+  .then( ( op ) =>
+  {
+    test.case = 'verbosity:2 recursive:1';
+    test.identical( op.exitCode, 0 );
+    var basePath = _.path.normalize( _.module.toolsPathGet() + '/../../wtools/abase' );
+    var exp = `{- ModuleFile ${a.abs( 'r3' )} -}
+  global : test1
+  downFiles
+    {- ModuleFile ${a.abs( 'r2' )} -}
+  upFiles
+    {- ModuleFile ${a.abs( 'r4a' )} -}
+    {- ModuleFile ${a.abs( 'r4b' )} -}
+`;
+    test.identical( op.output, exp );
+    return null;
+  });
+
+  /* */
+
+  program1.start({ args : [ '2', '2' ] })
+  .then( ( op ) =>
+  {
+    test.case = 'verbosity:2 recursive:2';
+    test.identical( op.exitCode, 0 );
+    var basePath = _.path.normalize( _.module.toolsPathGet() + '/../../wtools/abase' );
+    var exp = `{- ModuleFile ${a.abs( 'r3' )} -}
+  global : test1
+  downFiles
+    {- ModuleFile ${a.abs( 'r2' )} -}
+  upFiles
+    {- ModuleFile ${a.abs( 'r4a' )} -}
+    {- ModuleFile ${a.abs( 'r4b' )} -}
+  ups
+    {- ModuleFile ${a.abs( 'r4a' )} -}
+      global : test1
+      downFiles
+        {- ModuleFile ${a.abs( 'r3' )} -}
+    {- ModuleFile ${a.abs( 'r4b' )} -}
+      global : test1
+      downFiles
+        {- ModuleFile ${a.abs( 'r3' )} -}
+      upFiles
+        {- ModuleFile ${a.abs( 'r5' )} -}
+`;
+    test.identical( op.output, exp );
+    return null;
+  });
+
+  /* */
+
+  program1.start({ args : [ '2', '3' ] })
+  .then( ( op ) =>
+  {
+    test.case = 'verbosity:2 recursive:3';
+    test.identical( op.exitCode, 0 );
+    var basePath = _.path.normalize( _.module.toolsPathGet() + '/../../wtools/abase' );
+    var exp = `{- ModuleFile ${a.abs( 'r3' )} -}
+  global : test1
+  downFiles
+    {- ModuleFile ${a.abs( 'r2' )} -}
+  upFiles
+    {- ModuleFile ${a.abs( 'r4a' )} -}
+    {- ModuleFile ${a.abs( 'r4b' )} -}
+  ups
+    {- ModuleFile ${a.abs( 'r4a' )} -}
+      global : test1
+      downFiles
+        {- ModuleFile ${a.abs( 'r3' )} -}
+    {- ModuleFile ${a.abs( 'r4b' )} -}
+      global : test1
+      downFiles
+        {- ModuleFile ${a.abs( 'r3' )} -}
+      upFiles
+        {- ModuleFile ${a.abs( 'r5' )} -}
+      ups
+        {- ModuleFile ${a.abs( 'r5' )} -}
+          global : test1
+          downFiles
+            {- ModuleFile ${a.abs( 'r4b' )} -}
+`;
     test.identical( op.output, exp );
     return null;
   });
@@ -5092,21 +5651,32 @@ function moduleFileExport( test )
     const _ = wTools;
     const _global = _.global.makeAndOpen( module, 'test1' );
     const __ = require( toolsPath );
-    console.log( `r2` );
     require( './r3' );
     _.global.close( 'test1' );
   }
 
   function r3()
   {
-    console.log( `r3` );
-    require( './r4' );
+    require( './r4a' );
+    require( './r4b' );
   }
 
-  function r4()
+  function r4a()
   {
-    const _ = require( toolsPath );
-    console.log( _.module.fileExportString( _.module.fileUniversalFrom( module ) ).resultExportString() );
+  }
+
+  function r4b()
+  {
+    require( './r5' );
+  }
+
+  function r5()
+  {
+    const _ = _globals_.real.wTools;
+    let verbosity = Number( process.argv[ 2 ] );
+    let recursive = Number( process.argv[ 3 ] );
+    let moduleFile = _.module.fileUniversalFrom( module.parent.parent );
+    console.log( _.module.fileExportString( moduleFile, { it : { verbosity, recursive } } ).resultExportString() );
   }
 
   function verbosityRoutine()
@@ -5143,7 +5713,7 @@ function moduleFileExport( test )
 
 }
 
-moduleFileExport.description =
+moduleFileExportExternal.description =
 `
 - change of option verbosity change level of verbosity of the output
 `
@@ -5184,6 +5754,7 @@ const Proto =
     modulingNativeIncludeErrors,
     modulingSourcePathValid,
     modulingGlobalNamespaces,
+    moduleRedeclare,
     preload,
     preloadIncludeModule,
 
@@ -5209,10 +5780,13 @@ const Proto =
 
     requireModuleFileWithAccessor,
     testingOnL1,
-    // environmentWithL1, /* xxx2 : switch on */
+    // l1Environment, /* xxx2 : switch on */
+    // l1SecondRequire, /* xxx2 : switch on */
+    // secondaryNamespaceSecondRequire, /* xxx2 : switch on */
     // requireSameModuleTwice, /* xxx2 : switch on */
 
-    moduleFileExport, /* xxx2 : implement */
+    moduleFileExportBasic,
+    moduleFileExportExternal, /* xxx2 : implement */
 
   }
 

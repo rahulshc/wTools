@@ -1,5 +1,4 @@
-
-( function _l3_Module_s_()
+( function _l5_Module_s_()
 {
 
 'use strict';
@@ -153,6 +152,12 @@ function predeclare_body( o )
   _.arrayPrependOnce( o.alias, o.name );
   _.assert( _.arrayIs( o.entryPath ) );
 
+  // if( o.name === 'wTesting' )
+  // {
+  //   console.log( `wTesting : ${o.entryPath}` );
+  //   debugger;
+  // }
+
   o.entryPath.forEach( ( entryPath, i ) =>
   {
     if( _.path.isDotted( entryPath ) )
@@ -199,7 +204,7 @@ function predeclare_body( o )
   {
     _.assert( o.name === module2.name );
     _.arrayAppendArrayOnce( module2.entryPath, o.entryPath );
-    _.arrayAppendArrayOnce( module2.alias, o.alias );
+    _.arrayAppendArrayOnce( module2.alias, o.alias ); /* xxx : rename to names */
     _.arrayAppendArrayOnce( module2.filePath, o.entryPath );
     _.arrayAppendArrayOnce( module2.lookPath, o.entryPath );
     _.arrayAppendArrayOnce( module2.lookPath, o.alias );
@@ -221,6 +226,8 @@ function predeclare_body( o )
   _.arrayAppendArray( o.filePath, o.entryPath );
   _.assert( o.lookPath === undefined );
   o.lookPath = [ ... o.entryPath, ... o.alias ];
+  o.ups = new Set();
+  o.downs = new Set();
 
   delete o.basePath;
   o.status = 0;
@@ -625,8 +632,12 @@ function _fileUniversalAssociateFile( upFile, downFile )
 
   upFile.downFile = upFile.downFile || downFile;
   upFile.downFiles.add( downFile );
+  for( let module of upFile.modules )
+  module.downs.add( _.set.butElement( null, downFile.modules, module ) ); /* qqq : cover and implement deleting */
 
   downFile.upFiles.add( upFile );
+  for( let module of downFile.modules )
+  module.ups.add( _.set.butElement( null, upFile.modules, module ) );
 
 }
 
@@ -723,14 +734,6 @@ function _fileUniversalDisassociateModules( file, reassociating )
   function moduleDisassociate( module )
   {
     module.files.delete( file.sourcePath );
-    if( module.files.size === 0 )
-    debugger; /* xxx : qqq : cover */
-    if( module.files.size === 0 )
-    module.alias.forEach( ( name ) =>
-    {
-      debugger; /* xxx : qqq : cover */
-      _.module.modulesMap.delete( name );
-    });
   }
 
   function deassociate()
@@ -986,22 +989,63 @@ function fileNativeWith( relativeSourcePath, nativeFilesMap )
 // export string
 // --
 
+function _exportString( module, it )
+{
+
+  if( !it.verbosity )
+  return it;
+
+  it.lineWrite( String( module ) );
+
+  if( it.verbosity === 1 )
+  return it;
+
+  if( module.downs.size > 0 )
+  it.titleWrite( 'downs' ).elementsWrite( module.downs );
+  if( module.ups.size > 0 )
+  it.titleWrite( 'ups' ).elementsWrite( module.ups );
+
+  return it;
+}
+
+_exportString.defaults =
+{
+  it : null,
+}
+
+//
+
 function exportString( module, o )
 {
 
   o = _.routine.options( exportString, o || null );
-
-  let it = o.it = _.stringer.it( o.it );
+  let it = o.it = _.stringer.it( o.it, { verbosity : 1, recursive : 1 } );
   it.opts = o;
   it.src = module;
+  _export( module, it );
+  return it;
 
-  let result = String( file );
-  if( o.verbosity <= 1 )
-  return result;
+  function _export( module, it )
+  {
+    _.module._exportString( module, it );
 
-  debugger;
+    // if( it.verbosity > 0 )
+    // if( it.recursive - it.level > 1 )
+    // if( module.upFiles.size > 0 )
+    // {
+    //   let it2 = it.iterationMake().tabLevelUp();
+    //   if( it.verbosity > 1 )
+    //   {
+    //     it2.lineWrite( 'ups' ).tabLevelUp();
+    //   }
+    //   for( let file2 of module.upFiles )
+    //   {
+    //     _export( file2, it2.iterationMake().levelUp() );
+    //   }
+    // }
 
-  return result;
+  }
+
 }
 
 exportString.defaults =
@@ -1013,13 +1057,8 @@ exportString.defaults =
 
 //
 
-/* xxx : cover please */
-function fileExportString( file, o )
+function _fileExportString( file, it )
 {
-
-  _.assert( _.module.fileUniversalIs( file ), () => `Expects module file, but got ${_.strType( file )}` );
-  o = _.routine.options( fileExportString, o || null );
-  let it = o.it = _.stringer.it( o.it || { verbosity : 1 } );
 
   if( !it.verbosity )
   return it;
@@ -1029,6 +1068,12 @@ function fileExportString( file, o )
   if( it.verbosity === 1 )
   return it;
 
+  if( file.native._virtualEnvironment )
+  it.titleWrite( `virtualEnvironment : ${file.native._virtualEnvironment.global.__GLOBAL_NAME__}` );
+  if( file.global )
+  it.titleWrite( `global : ${file.global.__GLOBAL_NAME__}` );
+  if( file.error )
+  it.titleWrite( `error : ${!!file.error}` );
   if( file.modules.size > 0 )
   it.titleWrite( 'modules' ).elementsWrite( file.modules );
   if( file.downFiles.size > 0 )
@@ -1036,14 +1081,46 @@ function fileExportString( file, o )
   if( file.upFiles.size > 0 )
   it.titleWrite( 'upFiles' ).elementsWrite( file.upFiles );
 
-  // if( file.modules.size > 0 )
-  // result += '\n  modules\n    ' + [ ... file.modules ].join( '\n    ' );
-  // if( file.downFiles.size > 0 )
-  // result += '\n  downFiles\n    ' + [ ... file.downFiles ].join( '\n    ' );
-  // if( file.upFiles.size > 0 )
-  // result += '\n  upFiles\n    ' + [ ... file.upFiles ].join( '\n    ' );
-
   return it;
+}
+
+_fileExportString.defaults =
+{
+  it : null,
+}
+
+//
+
+function fileExportString( file, o )
+{
+
+  _.assert( _.module.fileUniversalIs( file ), () => `Expects module file, but got ${_.strType( file )}` );
+  o = _.routine.options( fileExportString, o || null );
+  let it = o.it = _.stringer.it( o.it, { verbosity : 1, recursive : 1 } );
+  _export( file, it );
+  return it;
+
+  function _export( file, it )
+  {
+    _.module._fileExportString( file, it );
+
+    if( it.verbosity > 0 )
+    if( it.recursive - it.level > 1 )
+    if( file.upFiles.size > 0 )
+    {
+      let it2 = it.iterationMake().tabLevelUp();
+      if( it.verbosity > 1 )
+      {
+        it2.lineWrite( 'ups' ).tabLevelUp();
+      }
+      for( let file2 of file.upFiles )
+      {
+        _export( file2, it2.iterationMake().levelUp() );
+      }
+    }
+
+  }
+
 }
 
 fileExportString.defaults =
@@ -1594,8 +1671,8 @@ function _fileResolve( o )
     let sourcePath = o.sourcePaths[ a ];
     let resolved;
 
-    if( _.strHas( sourcePath, '/Main.s' ) )
-    debugger;
+    // if( _.strHas( sourcePath, '/Main.s' ) )
+    // debugger;
 
     resolved = nativeResolve( sourcePath );
     if( resolved === undefined && o.withAlternatives )
@@ -1821,10 +1898,6 @@ function _trackingEnable()
 
   ModuleFileNative._resolveFilename = _resolveFilename;
 
-  // yyy
-  // debugger;
-  // if( _global === _realGlobal_ )
-  // ModuleFileNative._load = _loadEnvironment;
   if( !_realGlobal_.__loadEnvironment )
   {
     ModuleFileNative._load = _loadEnvironment;
@@ -1841,9 +1914,6 @@ function _trackingEnable()
     let parent = arguments[ 1 ];
     let isMain = arguments[ 2 ];
     let options = arguments[ 3 ];
-
-    // if( request.endsWith( '/r4' ) )
-    // debugger;
 
     if( resolving.parent === parent && resolving.request === request )
     return resolving.resolvedPath;
@@ -1899,10 +1969,16 @@ function _trackingEnable()
   function second( request, parent )
   {
 
+    // if( request.endsWith( 'testing/entry/Main.s' ) )
+    // debugger;
+
     if( !parent.universal )
     return;
     if( parent.universal.moduleNativeFilesMap !== _.module.nativeFilesMap )
-    return;
+    {
+      debugger;
+      return;
+    }
     if( parent.universal.moduleNativeFilesMap !== ModuleFileNative._cache )
     return;
     if( !_.path.isDotted( request ) )
@@ -1928,7 +2004,7 @@ function _trackingEnable()
     if( _.module.fileNativeParent( native ) !== parent )
     {
       _.module._fileUniversalAssociateFile( native.universal, parent.universal );
-      _.module._filesUniversalAssociateModule( native.universal, parent.universal.modules );
+      _.module._filesUniversalAssociateModule( native.universal, parent.universal.modules, false );
     }
   }
 
@@ -1940,8 +2016,10 @@ function _trackingEnable()
     const originalModuleNativeFiles = ModuleFileNative._cache;
     const originalGlobal = _realGlobal_._global_;
 
-    if( request.endsWith( '/r4' ) )
-    debugger;
+    // if( request.endsWith( 'wTesting' ) )
+    // debugger;
+    // if( request.endsWith( 'testing/entry/Main.s' ) )
+    // debugger;
 
     if( parent )
     if( parent._virtualEnvironment )
@@ -1987,8 +2065,10 @@ function _trackingEnable()
   {
     loading.counter += 1;
 
-    if( nativeSourcePath.endsWith( '/r4' ) )
-    debugger;
+    // if( nativeSourcePath.endsWith( 'wTesting' ) )
+    // debugger;
+    // if( nativeSourcePath.endsWith( 'testing/entry/Main.s' ) )
+    // debugger;
 
     /*
     ignore includes of other global namespaces
@@ -2035,7 +2115,6 @@ function _trackingEnable()
     if( moduleFile.status !== -1 )
     {
       moduleFile.status = 2;
-      // _.assert( Object.is( moduleFile.returned, native.exports ) );
     }
 
     return result;
@@ -2198,7 +2277,9 @@ var ModuleExtension =
 
   // export string
 
+  _exportString,
   exportString,
+  _fileExportString,
   fileExportString,
   recursiveExportString,
 

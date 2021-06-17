@@ -35,7 +35,39 @@ function exportStringDiagnosticShallow( src, o )
 }
 
 // --
+// properties
+// --
+
+function keys( src )
+{
+  _.assert( arguments.length === 1 );
+  return keys.functor.call( this, src )();
+}
+
+keys.functor = _functor_functor( 'keys' );
+
 //
+
+function vals( src )
+{
+  _.assert( arguments.length === 1 );
+  return vals.functor.call( this, src )();
+}
+
+vals.functor = _functor_functor( 'vals' );
+
+//
+
+function pairs( src )
+{
+  _.assert( arguments.length === 1 );
+  return pairs.functor.call( this, src )();
+}
+
+pairs.functor = _functor_functor( 'pairs' );
+
+// --
+// inspector
 // --
 
 function lengthOf( src ) /* qqq for junior : cover please */
@@ -483,6 +515,13 @@ let ContainerExtension =
   _exportStringCodeShallow : _exportStringDiagnosticShallow,
   exportStringCodeShallow : exportStringDiagnosticShallow,
   exportString : exportStringDiagnosticShallow,
+
+  // properties
+
+  /* xxx : review */
+  keys,
+  vals,
+  pairs,
 
   // inspector
 

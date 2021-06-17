@@ -33,12 +33,12 @@ function basic( test )
   var exp =
   {
     'verbosity' : 5,
-    'resultNode' : [],
+    'dstNode' : [],
   }
   test.identical( _.props.onlyOwn( _.prototype.each( it )[ 1 ] ), exp );
-  var exp = new Set([ 'resultNode', 'tab', 'verbosity', 'tabLevel', 'level' ]);
+  var exp = new Set([ 'dstNode', 'tab', 'verbosity', 'tabLevel', 'level' ]);
   test.identical( new Set( _.props.keys( _.props.onlyOwn( _.prototype.each( it )[ 2 ] ) ) ), exp );
-  var exp = new Set([ 'resultNode', 'verbosity', 'Seeker', 'iterator', 'iterationPrototype', 'firstIterationPrototype' ]);
+  var exp = new Set([ 'dstNode', 'verbosity', 'Seeker', 'iterator', 'iterationPrototype', 'firstIterationPrototype' ]);
   test.identical( new Set( _.props.keys( _.props.onlyOwn( _.prototype.each( it )[ 3 ] ) ) ), exp );
 
   test.identical( _.prototype.each( it ).length, 5 );

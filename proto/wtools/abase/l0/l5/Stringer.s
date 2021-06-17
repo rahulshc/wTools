@@ -13,11 +13,14 @@ const Parent = _.seeker.Seeker;
 
 /* xxx : add to the list of types */
 
-function head( o )
+function head( o, o2 )
 {
 
   if( o === null )
   o = Object.create( null );
+
+  if( o2 )
+  _.props.supplement( o, o2 );
 
   if( _.prototype.has( o, _.stringer.Stringer ) )
   return o;
@@ -28,7 +31,7 @@ function head( o )
   let it = o.Seeker.optionsToIteration( null, o );
 
   _.assert( _.number.is( it.verbosity ) );
-  _.assert( _.routine.is( it.levelDown ) );
+  _.assert( _.routine.is( it.tabLevelDown ) );
 
   return it;
 }
@@ -39,7 +42,7 @@ function iteratorInitBegin( iterator )
 {
   Parent.iteratorInitBegin.call( this, iterator );
 
-  iterator.resultNode = [];
+  iterator.dstNode = [];
 
   return iterator;
 }
@@ -54,20 +57,42 @@ function resultExportString()
 
 //
 
-function itUp()
+function verbosityUp()
 {
   let it = this;
   let it2 = it.iterationMake();
-  it2.levelUp();
+  it2.tabLevelUp();
   it2.verbosity -= 1;
   return it2;
 }
 
 //
 
-function itDown()
+function verbosityDown()
 {
   let it = this;
+  return it;
+}
+
+//
+
+function tabLevelUp()
+{
+  let it = this;
+  it.tab += it.dtab;
+  it.tabLevel += 1;
+  it.dstNode = [];
+  it.iterator.dstNode.push( it.dstNode );
+  return it;
+}
+
+//
+
+function tabLevelDown()
+{
+  let it = this;
+  it.tab = it.tab.slice( 0, it.tab.length - it.dtab.length );
+  it.tabLevel -= 1;
   return it;
 }
 
@@ -76,10 +101,7 @@ function itDown()
 function levelUp()
 {
   let it = this;
-  it.tab += it.dtab;
-  it.tabLevel += 1;
-  it.resultNode = [];
-  it.iterator.resultNode.push( it.resultNode );
+  it.level += 1;
   return it;
 }
 
@@ -88,8 +110,7 @@ function levelUp()
 function levelDown()
 {
   let it = this;
-  it.tab = it.tab.slice( 0, it.tab.length - it.dtab.length );
-  it.tabLevel -= 1;
+  it.level -= 1;
   return it;
 }
 
@@ -103,7 +124,7 @@ function lineWrite( src )
   it.iterator.result += `${it.eol}${it.tab}${src}`;
   else
   it.iterator.result += `${it.tab}${src}`;
-  it.resultNode.push( `${it.tab}${src}` );
+  it.dstNode.push( `${it.tab}${src}` );
   return it;
 }
 
@@ -114,7 +135,7 @@ function titleWrite( src )
   let it = this;
   _.assert( arguments.length === 1 );
 
-  let it2 = it.itUp();
+  let it2 = it.verbosityUp();
   it2.lineWrite( src );
   return it2;
 }
@@ -126,7 +147,7 @@ function elementsWrite( src )
   let it = this;
   _.assert( arguments.length === 1 );
 
-  let it2 = it.itUp();
+  let it2 = it.verbosityUp();
   for( let e of src )
   {
     it2.lineWrite( e );
@@ -142,10 +163,10 @@ function write( src )
   _.assert( arguments.length === 1 );
   _.assert( _.str.is( src ) );
   it.iterator.result += src;
-  if( it.resultNode.length )
-  it.resultNode[ it.iterator.resultNode.length-1 ] += src;
+  if( it.dstNode.length )
+  it.dstNode[ it.iterator.dstNode.length-1 ] += src;
   else
-  it.resultNode.push( src );
+  it.dstNode.push( src );
   return it;
 }
 
@@ -218,8 +239,10 @@ StringerClassExtension.constructor = function Stringer(){};
 StringerClassExtension.head = head;
 StringerClassExtension.iteratorInitBegin = iteratorInitBegin;
 StringerClassExtension.resultExportString = resultExportString;
-StringerClassExtension.itUp = itUp;
-StringerClassExtension.itDown = itDown;
+StringerClassExtension.verbosityUp = verbosityUp;
+StringerClassExtension.verbosityDown = verbosityDown;
+StringerClassExtension.tabLevelUp = tabLevelUp;
+StringerClassExtension.tabLevelDown = tabLevelDown;
 StringerClassExtension.levelUp = levelUp;
 StringerClassExtension.levelDown = levelDown;
 StringerClassExtension.write = write;
@@ -231,20 +254,20 @@ StringerClassExtension.elementsWrite = elementsWrite;
 
 const Iterator = StringerClassExtension.Iterator = Object.create( null );
 Iterator.result = '';
-Iterator.resultNode = null;
+Iterator.dstNode = null;
 Iterator.dtab = '  ';
 Iterator.eol = _.str.lines.Eol.default;
 Iterator.recursive = Infinity;
 _.assert( !!Iterator.eol );
 
 const Iteration = StringerClassExtension.Iteration = Object.create( null );
-Iteration.resultNode = null;
 
 const IterationPreserve = StringerClassExtension.IterationPreserve = Object.create( null );
 IterationPreserve.tab = '';
 IterationPreserve.verbosity = 2;
 IterationPreserve.tabLevel = 0;
 IterationPreserve.level = 0;
+IterationPreserve.dstNode = null;
 
 const Prime = {};
 const Stringer = _.seeker.classDefine
