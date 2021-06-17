@@ -206,7 +206,7 @@ function isUnfoldedSmarter_functor()
     return false;
   }
 
-  function isUnfoldedSmarterNrowser( src )
+  function isUnfoldedSmarterBrowser( src )
   {
     if( Array.isArray( src ) )
     return true
@@ -1238,9 +1238,9 @@ function _functor_functor( methodName, typer, which )
   if( !which )
   which = 0;
   if( which === 0 )
-  return _functor0;
+  return end( _functor0 );
   if( which === 1 )
-  return _functor1;
+  return end( _functor1 );
   _.assert( 0 );
 
   function _functor0( container )
@@ -1264,6 +1264,12 @@ function _functor_functor( methodName, typer, which )
     {
       return routine0.call( this, arg1, container, ... args );
     }
+  }
+
+  function end( result )
+  {
+    result.functor = new Function( `return _.long._functor_functor( '${methodName}', '${typer}', ${which} )` );
+    return result;
   }
 
 }
