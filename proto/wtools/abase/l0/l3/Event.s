@@ -927,12 +927,13 @@ function eventGiveHead( edispatcher, routine, args )
   _.assert( args.length > 0 );
 
   if( _.strIs( o ) )
-  o = { event : o }
+  o = { event : o };
   if( o.onError === null || o.onError === undefined )
   o.onError = onError;
 
   _.map.assertHasOnly( o, routine.defaults );
 
+  if( !o.args ) /* Dmytro : do not overwrite arguments if the field exists */
   o.args = args;
 
   // if( o.args === null )
@@ -949,7 +950,6 @@ function eventGiveHead( edispatcher, routine, args )
   {
     throw _.err( `Error on handing event ${o.event}\n`, err );
   }
-
 }
 
 //
