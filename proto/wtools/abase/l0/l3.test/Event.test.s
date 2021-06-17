@@ -1511,6 +1511,112 @@ function eventHasHandler( test )
 
 //
 
+function eventGiveHead( test )
+{
+  var edispatcher = { events : { event : [] } };
+
+  /* */
+
+  test.case = 'args contains single string';
+  var got = _.event.eventGiveHead( edispatcher, _.event.eventGive, [ 'event' ] );
+  test.identical( _.props.keys( got ), [ 'event', 'onError', 'args' ] );
+  test.identical( got.event, 'event' );
+  test.identical( got.args, [ 'event' ] );
+  test.true( _.routine.is( got.onError ) );
+
+  test.case = 'args contains many arguments';
+  var got = _.event.eventGiveHead( edispatcher, _.event.eventGive, [ 'event', 1, 2 ] );
+  test.identical( _.props.keys( got ), [ 'event', 'onError', 'args' ] );
+  test.identical( got.event, 'event' );
+  test.identical( got.args, [ 'event', 1, 2 ] );
+  test.true( _.routine.is( got.onError ) );
+
+  /* */
+
+  test.case = 'args contains options map with only field event';
+  var got = _.event.eventGiveHead( edispatcher, _.event.eventGive, [ { event : 'event' } ] );
+  test.identical( _.props.keys( got ), [ 'event', 'onError', 'args' ] );
+  test.identical( got.event, 'event' );
+  test.identical( got.args.length, 1 );
+  test.identical( got.args[ 0 ], got );
+  test.true( _.routine.is( got.onError ) );
+
+  test.case = 'args contains options map with fields event and onError';
+  var onError = ( err ) => { _.errAttend( err ); return 0 };
+  var got = _.event.eventGiveHead( edispatcher, _.event.eventGive, [ { event : 'event', onError } ] );
+  test.identical( _.props.keys( got ), [ 'event', 'onError', 'args' ] );
+  test.identical( got.event, 'event' );
+  test.identical( got.args.length, 1 );
+  test.identical( got.args[ 0 ], got );
+  test.identical( got.onError, onError );
+
+  test.case = 'args contains options map with fields event and args';
+  var got = _.event.eventGiveHead( edispatcher, _.event.eventGive, [ { event : 'event', args : [ 1, 2 ] } ] );
+  test.identical( _.props.keys( got ), [ 'event', 'args', 'onError' ] );
+  test.identical( got.event, 'event' );
+  test.identical( got.args, [ 1, 2 ] );
+  test.true( _.routine.is( got.onError ) );
+
+  test.case = 'args contains options map with fields event, args and onError';
+  var onError = ( err ) => { _.errAttend( err ); return 0 };
+  var got = _.event.eventGiveHead( edispatcher, _.event.eventGive, [ { event : 'event', args : [ 1, 2 ], onError } ] );
+  test.identical( _.props.keys( got ), [ 'event', 'args', 'onError' ] );
+  test.identical( got.event, 'event' );
+  test.identical( got.args, [ 1, 2 ] );
+  test.identical( got.onError, onError );
+
+  /* */
+
+  test.case = 'options map in args[ 0 ] contains fields of routine.defaults';
+  var routine = ( arg ) =>  arg;
+  routine.defaults = { event : null, args : null, onError : null, additional : null };
+  var got = _.event.eventGiveHead( edispatcher, routine, [ { event : 'event', additional : 1 } ] );
+  test.identical( _.props.keys( got ), [ 'event', 'additional', 'onError', 'args' ] );
+  test.identical( got.event, 'event' );
+  test.identical( got.additional, 1 );
+  test.identical( got.args.length, 1 );
+  test.identical( got.args[ 0 ], got );
+  test.true( _.routine.is( got.onError ) );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  var handler = { events : { event : [] } };
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead( handler ) );
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead( handler, _.event.eventGive ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead( handler, _.event.eventGive, [ 'event' ], [ 'extra' ] ) );
+
+  test.case = 'edispatcher has no field events';
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead( {}, _.event.eventGive, [ 'event' ] ) );
+
+  test.case = 'routine has no defaults';
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead( handler, _.long.is, [ 'event' ] ) );
+
+  test.case = 'args - empty array';
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead( handler, _.event.eventGive, [] ) );
+
+  test.case = 'wrong type of args[ 0 ]';
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead( handler, _.event.eventGive, [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead( handler, _.event.eventGive, [ [] ] ) );
+
+  test.case = 'optons map in args[ 0 ] has extra fields in relation to routine';
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead( handler, _.event.eventGive, [ { event : 'exit', unknown : 1 } ] ) );
+
+  test.case = 'optons map in args[ 0 ] has field args, args length > 1';
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead( handler, _.event.eventGive, [ { event : 'exit', args : [] }, 1 ] ) );
+}
+
+//
+
 function eventGive( test )
 {
   test.open( 'event type - on' );
@@ -1752,7 +1858,6 @@ function eventGive( test )
       test.identical( _.strCount( err.message, 'event err' ), 2 );
     }
   );
-
 }
 
 // --
@@ -1790,6 +1895,7 @@ const Proto =
     off,
 
     eventHasHandler,
+    eventGiveHead,
     eventGive,
 
   }
