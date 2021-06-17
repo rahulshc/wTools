@@ -73,16 +73,8 @@ function countablesAreEqShallow( test )
   test.true( _.countable.equivalentShallow( src1, src2 ) );
   test.true( _.countable.equivalentShallow( src2, src1 ) );
 
-  test.case = `map with iterator, not same elements`;
-  var src1 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1, new : 0 });
-  var src2 = __.diagnostic.objectMake({ elements : [ '1', '2', '4' ], countable : 1, new : 0 });
-  test.true( !_.countable.identicalShallow( src1, src2 ) );
-  test.true( !_.countable.identicalShallow( src2, src1 ) );
-  test.true( !_.countable.equivalentShallow( src1, src2 ) );
-  test.true( !_.countable.equivalentShallow( src2, src1 ) );
-
-  test.case = `map with generator as iterator, different  elements`;/* Special case*/
-  var src1 = __.diagnostic.objectMake({ elements : [ '4', '5', '6' ], countable : 1, new : 0, iteratorIsGenerator : 1 });
+  test.case = `map with generator as iterator, same  elements`;
+  var src1 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1, new : 0, iteratorIsGenerator : 1 });
   var src2 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1, new : 0, iteratorIsGenerator : 1 });
   test.true( _.countable.identicalShallow( src1, src2 ) );
   test.true( _.countable.identicalShallow( src2, src1 ) );
@@ -120,14 +112,6 @@ function countablesAreEqShallow( test )
   test.true( _.countable.identicalShallow( src2, src1 ) );
   test.true( _.countable.equivalentShallow( src1, src2 ) );
   test.true( _.countable.equivalentShallow( src2, src1 ) );
-
-  test.case = `vector & vectorLike & false`;
-  var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
-  var src2 = __.diagnostic.objectMake({ new : 1, elements : [ '1', 10 ], countable : 1, length : 2 });
-  test.true( !_.countable.identicalShallow( src1, src2 ) );
-  test.true( !_.countable.identicalShallow( src2, src1 ) );
-  test.true( !_.countable.equivalentShallow( src1, src2 ) );
-  test.true( !_.countable.equivalentShallow( src2, src1 ) );
 
   test.case = `object countable - non empty, non-vector`;
   var src1 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1, new : 1 });
@@ -223,6 +207,14 @@ function countablesAreEqShallow( test )
   test.true( !_.countable.equivalentShallow( src1, src2 ) );
   test.true( !_.countable.equivalentShallow( src2, src1 ) );
 
+  test.case = `vector & vectorLike & false`;
+  var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
+  var src2 = __.diagnostic.objectMake({ new : 1, elements : [ '1', 10 ], countable : 1, length : 2 });
+  test.true( !_.countable.identicalShallow( src1, src2 ) );
+  test.true( !_.countable.identicalShallow( src2, src1 ) );
+  test.true( !_.countable.equivalentShallow( src1, src2 ) );
+  test.true( !_.countable.equivalentShallow( src2, src1 ) );
+
   test.case = `typed buffer`;
   var src1 = new F32x( 5 );
   var src2 = new F32x( 6 );
@@ -234,6 +226,22 @@ function countablesAreEqShallow( test )
   test.case = `argumentsArray`;
   var src1 = _.argumentsArray.make([ 1, 2, 3 ]);
   var src2 = _.argumentsArray.make([ 1, 2, 4 ]);
+  test.true( !_.countable.identicalShallow( src1, src2 ) );
+  test.true( !_.countable.identicalShallow( src2, src1 ) );
+  test.true( !_.countable.equivalentShallow( src1, src2 ) );
+  test.true( !_.countable.equivalentShallow( src2, src1 ) );
+
+  test.case = `map with iterator, not same elements`;
+  var src1 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1, new : 0 });
+  var src2 = __.diagnostic.objectMake({ elements : [ '1', '2', '4' ], countable : 1, new : 0 });
+  test.true( !_.countable.identicalShallow( src1, src2 ) );
+  test.true( !_.countable.identicalShallow( src2, src1 ) );
+  test.true( !_.countable.equivalentShallow( src1, src2 ) );
+  test.true( !_.countable.equivalentShallow( src2, src1 ) );
+
+  test.case = `map with generator as iterator, different  elements`;
+  var src1 = __.diagnostic.objectMake({ elements : [ '4', '5', '6' ], countable : 1, new : 0, iteratorIsGenerator : 1 });
+  var src2 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1, new : 0, iteratorIsGenerator : 1 });
   test.true( !_.countable.identicalShallow( src1, src2 ) );
   test.true( !_.countable.identicalShallow( src2, src1 ) );
   test.true( !_.countable.equivalentShallow( src1, src2 ) );
@@ -302,14 +310,6 @@ function countablesAreEqShallow( test )
   test.true( _.countable.equivalentShallow( src2, src1 ) );
 
   test.case = `countable and array`;
-  var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1 });
-  var src2 = [ '1', '10' ];
-  test.true( !_.countable.identicalShallow( src1, src2 ) );
-  test.true( !_.countable.identicalShallow( src2, src1 ) );
-  test.true( _.countable.equivalentShallow( src1, src2 ) );
-  test.true( _.countable.equivalentShallow( src2, src1 ) );
-
-  test.case = `countable made and array`;
   var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1 });
   var src2 = [ '1', '10' ];
   test.true( !_.countable.identicalShallow( src1, src2 ) );
