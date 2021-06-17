@@ -15,7 +15,7 @@ function anyIs( src )
 {
   if( src instanceof ArrayBuffer )
   return true;
-  if( src instanceof SharedArrayBuffer )
+  if( _global.BufferRawShared && src instanceof SharedArrayBuffer )
   return true;
   if( ArrayBuffer.isView( src ) )
   return true;
