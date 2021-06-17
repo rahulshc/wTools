@@ -2716,14 +2716,6 @@ function eqShallowAllTypes( test )
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
   test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
-  test.case = `countable made and array`;
-  var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1 });
-  var src2 = [ '1', '10' ];
-  test.identical( _.entity.identicalShallow( src1, src2 ), false );
-  test.identical( _.entity.identicalShallow( src2, src1 ), false );
-  test.identical( _.entity.equivalentShallow( src1, src2 ), true );
-  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
-
   test.case = `vector and array`;
   var src1 = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
   var src2 = [ '1', '10' ];
