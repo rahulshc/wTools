@@ -1471,6 +1471,7 @@ function unite_body( o )
       let result = _head.apply( this, arguments );
       return result[ result.length-1 ];
     }
+    o.head.composed = _head.composed;
   }
   else if( _.number.is( o.head ) )
   {

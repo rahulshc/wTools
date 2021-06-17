@@ -1511,6 +1511,112 @@ function eventHasHandler( test )
 
 //
 
+function eventGiveHead( test )
+{
+  var edispatcher = { events : { event : [] } };
+
+  /* */
+
+  test.case = 'args contains single string';
+  var got = _.event.eventGiveHead( edispatcher, _.event.eventGive, [ 'event' ] );
+  test.identical( _.props.keys( got ), [ 'event', 'onError', 'args' ] );
+  test.identical( got.event, 'event' );
+  test.identical( got.args, [ 'event' ] );
+  test.true( _.routine.is( got.onError ) );
+
+  test.case = 'args contains many arguments';
+  var got = _.event.eventGiveHead( edispatcher, _.event.eventGive, [ 'event', 1, 2 ] );
+  test.identical( _.props.keys( got ), [ 'event', 'onError', 'args' ] );
+  test.identical( got.event, 'event' );
+  test.identical( got.args, [ 'event', 1, 2 ] );
+  test.true( _.routine.is( got.onError ) );
+
+  /* */
+
+  test.case = 'args contains options map with only field event';
+  var got = _.event.eventGiveHead( edispatcher, _.event.eventGive, [ { event : 'event' } ] );
+  test.identical( _.props.keys( got ), [ 'event', 'onError', 'args' ] );
+  test.identical( got.event, 'event' );
+  test.identical( got.args.length, 1 );
+  test.identical( got.args[ 0 ], got );
+  test.true( _.routine.is( got.onError ) );
+
+  test.case = 'args contains options map with fields event and onError';
+  var onError = ( err ) => { _.errAttend( err ); return 0 };
+  var got = _.event.eventGiveHead( edispatcher, _.event.eventGive, [ { event : 'event', onError } ] );
+  test.identical( _.props.keys( got ), [ 'event', 'onError', 'args' ] );
+  test.identical( got.event, 'event' );
+  test.identical( got.args.length, 1 );
+  test.identical( got.args[ 0 ], got );
+  test.identical( got.onError, onError );
+
+  test.case = 'args contains options map with fields event and args';
+  var got = _.event.eventGiveHead( edispatcher, _.event.eventGive, [ { event : 'event', args : [ 1, 2 ] } ] );
+  test.identical( _.props.keys( got ), [ 'event', 'args', 'onError' ] );
+  test.identical( got.event, 'event' );
+  test.identical( got.args, [ 1, 2 ] );
+  test.true( _.routine.is( got.onError ) );
+
+  test.case = 'args contains options map with fields event, args and onError';
+  var onError = ( err ) => { _.errAttend( err ); return 0 };
+  var got = _.event.eventGiveHead( edispatcher, _.event.eventGive, [ { event : 'event', args : [ 1, 2 ], onError } ] );
+  test.identical( _.props.keys( got ), [ 'event', 'args', 'onError' ] );
+  test.identical( got.event, 'event' );
+  test.identical( got.args, [ 1, 2 ] );
+  test.identical( got.onError, onError );
+
+  /* */
+
+  test.case = 'options map in args[ 0 ] contains fields of routine.defaults';
+  var routine = ( arg ) =>  arg;
+  routine.defaults = { event : null, args : null, onError : null, additional : null };
+  var got = _.event.eventGiveHead( edispatcher, routine, [ { event : 'event', additional : 1 } ] );
+  test.identical( _.props.keys( got ), [ 'event', 'additional', 'onError', 'args' ] );
+  test.identical( got.event, 'event' );
+  test.identical( got.additional, 1 );
+  test.identical( got.args.length, 1 );
+  test.identical( got.args[ 0 ], got );
+  test.true( _.routine.is( got.onError ) );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  var handler = { events : { event : [] } };
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead( handler ) );
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead( handler, _.event.eventGive ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead( handler, _.event.eventGive, [ 'event' ], [ 'extra' ] ) );
+
+  test.case = 'edispatcher has no field events';
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead( {}, _.event.eventGive, [ 'event' ] ) );
+
+  test.case = 'routine has no defaults';
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead( handler, _.long.is, [ 'event' ] ) );
+
+  test.case = 'args - empty array';
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead( handler, _.event.eventGive, [] ) );
+
+  test.case = 'wrong type of args[ 0 ]';
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead( handler, _.event.eventGive, [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead( handler, _.event.eventGive, [ [] ] ) );
+
+  test.case = 'optons map in args[ 0 ] has extra fields in relation to routine';
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead( handler, _.event.eventGive, [ { event : 'exit', unknown : 1 } ] ) );
+
+  test.case = 'optons map in args[ 0 ] has field args, args length > 1';
+  test.shouldThrowErrorSync( () => _.event.eventGiveHead( handler, _.event.eventGive, [ { event : 'exit', args : [] }, 1 ] ) );
+}
+
+//
+
 function eventGive( test )
 {
   test.open( 'event type - on' );
@@ -1523,9 +1629,9 @@ function eventGive( test )
   var result = [];
   var onEvent = () => result.push( result.length );
   _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( edispatcher, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
-  _.event.eventGive( edispatcher, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
 
   /* */
@@ -1538,9 +1644,9 @@ function eventGive( test )
   var result = [];
   var onEvent = () => result.push( result.length );
   _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( edispatcher, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( edispatcher, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, 1 ] );
 
   /* */
@@ -1555,60 +1661,11 @@ function eventGive( test )
   var onEvent2 = () => result.push( -1 * result.length );
   _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
   _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent2 } } );
-  _.event.eventGive( edispatcher, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, -1 ] );
-  _.event.eventGive( edispatcher, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0, -1 ] );
-  _.event.eventGive( edispatcher, 'event' );
-  test.identical( result, [ 0, -1, 2, -3 ] );
-
-  /* */
-
-  test.case = 'give event for event without callbacks';
-  var edispatcher =
-  {
-    events : { 'event' : [], 'event2' : [] },
-  };
-  var result = [];
-  var onEvent = () => result.push( result.length );
-  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( edispatcher, { event : 'event2' } );
-  test.identical( result, [] );
-  _.event.eventGive( edispatcher, { event : 'event2' } );
-  test.identical( result, [] );
-
-  /* */
-
-  test.case = 'give event for event with single callback';
-  var edispatcher =
-  {
-    events : { 'event' : [], 'event2' : [] },
-  };
-  var result = [];
-  var onEvent = () => result.push( result.length );
-  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( edispatcher, { event : 'event' } );
-  test.identical( result, [ 0 ] );
-  _.event.eventGive( edispatcher, { event : 'event' } );
-  test.identical( result, [ 0, 1 ] );
-
-  /* */
-
-  test.case = 'give event for event with several callbacks for event';
-  var edispatcher =
-  {
-    events : { 'event' : [], 'event2' : [] },
-  };
-  var result = [];
-  var onEvent = () => result.push( result.length );
-  var onEvent2 = () => result.push( -1 * result.length );
-  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent2 } } );
-  _.event.eventGive( edispatcher, { event : 'event' } );
-  test.identical( result, [ 0, -1 ] );
-  _.event.eventGive( edispatcher, { event : 'event2' } );
-  test.identical( result, [ 0, -1 ] );
-  _.event.eventGive( edispatcher, { event : 'event' } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, -1, 2, -3 ] );
 
   /* */
@@ -1619,12 +1676,12 @@ function eventGive( test )
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
-  var onEvent = ( o ) => result.push( o.event );
+  var onEvent = ( arg ) => result.push( arg );
   _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( edispatcher, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [ 'event', 1 ] } );
   test.identical( result, [ 'event' ] );
-  _.event.eventGive( edispatcher, { event : 'event' } );
-  test.identical( result, [ 'event', 'event' ] );
+  _.event.eventGive( edispatcher, { event : 'event', args : [ 'event2', 2 ] } );
+  test.identical( result, [ 'event', 'event2' ] );
 
   /* */
 
@@ -1638,8 +1695,8 @@ function eventGive( test )
   _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
   _.event.eventGive( edispatcher, { event : 'event', args : [ 1, 2 ] } );
   test.identical( result, [ 1, 2 ] );
-  _.event.eventGive( edispatcher, { event : 'event' } );
-  test.identical( result, [ 1, 2, { event : 'event' }, undefined ] );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
+  test.identical( result, [ 1, 2, undefined, undefined ] );
 
   test.close( 'event type - on' );
 
@@ -1655,9 +1712,9 @@ function eventGive( test )
   var result = [];
   var onEvent = () => result.push( result.length );
   _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( edispatcher, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
-  _.event.eventGive( edispatcher, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [] );
 
   /* */
@@ -1670,9 +1727,9 @@ function eventGive( test )
   var result = [];
   var onEvent = () => result.push( result.length );
   _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( edispatcher, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( edispatcher, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0 ] );
 
   /* */
@@ -1687,60 +1744,11 @@ function eventGive( test )
   var onEvent2 = () => result.push( -1 * result.length );
   _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
   _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent2 } } );
-  _.event.eventGive( edispatcher, 'event' );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, -1 ] );
-  _.event.eventGive( edispatcher, 'event2' );
+  _.event.eventGive( edispatcher, { event : 'event2', args : [] } );
   test.identical( result, [ 0, -1 ] );
-  _.event.eventGive( edispatcher, 'event' );
-  test.identical( result, [ 0, -1 ] );
-
-  /* */
-
-  test.case = 'give event for event without callbacks';
-  var edispatcher =
-  {
-    events : { 'event' : [], 'event2' : [] },
-  };
-  var result = [];
-  var onEvent = () => result.push( result.length );
-  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( edispatcher, { event : 'event2' } );
-  test.identical( result, [] );
-  _.event.eventGive( edispatcher, { event : 'event2' } );
-  test.identical( result, [] );
-
-  /* */
-
-  test.case = 'give event for event with single callback';
-  var edispatcher =
-  {
-    events : { 'event' : [], 'event2' : [] },
-  };
-  var result = [];
-  var onEvent = () => result.push( result.length );
-  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( edispatcher, { event : 'event' } );
-  test.identical( result, [ 0 ] );
-  _.event.eventGive( edispatcher, { event : 'event' } );
-  test.identical( result, [ 0 ] );
-
-  /* */
-
-  test.case = 'give event for event with several callbacks for event';
-  var edispatcher =
-  {
-    events : { 'event' : [], 'event2' : [] },
-  };
-  var result = [];
-  var onEvent = () => result.push( result.length );
-  var onEvent2 = () => result.push( -1 * result.length );
-  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent2 } } );
-  _.event.eventGive( edispatcher, { event : 'event' } );
-  test.identical( result, [ 0, -1 ] );
-  _.event.eventGive( edispatcher, { event : 'event2' } );
-  test.identical( result, [ 0, -1 ] );
-  _.event.eventGive( edispatcher, { event : 'event' } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 0, -1 ] );
 
   /* */
@@ -1751,12 +1759,12 @@ function eventGive( test )
     events : { 'event' : [], 'event2' : [] },
   };
   var result = [];
-  var onEvent = ( o ) => result.push( o.event );
+  var onEvent = ( arg ) => result.push( arg );
   _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
-  _.event.eventGive( edispatcher, 'event' );
-  test.identical( result, [ 'event' ] );
-  _.event.eventGive( edispatcher, { event : 'event' } );
-  test.identical( result, [ 'event' ] );
+  _.event.eventGive( edispatcher, { event : 'event', args : [ 'event1', 1 ] } );
+  test.identical( result, [ 'event1' ] );
+  _.event.eventGive( edispatcher, { event : 'event', args : [ 'event2', 2 ] } );
+  test.identical( result, [ 'event1' ] );
 
   /* */
 
@@ -1770,10 +1778,38 @@ function eventGive( test )
   _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
   _.event.eventGive( edispatcher, { event : 'event', args : [ 1, 2 ] } );
   test.identical( result, [ 1, 2 ] );
-  _.event.eventGive( edispatcher, { event : 'event' } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [] } );
   test.identical( result, [ 1, 2 ] );
 
   test.close( 'event type - once' );
+
+  /* - */
+
+  test.case = 'event - on, callback throws error, onError attends error';
+  var edispatcher =
+  {
+    events : { event : [] },
+  };
+  var result = [];
+  var onEvent = () => { throw _.err( 'event err' ) };
+  var onError = ( err ) => { _.error.attend( err ); result.push( err ) };
+  _.event.on( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [ 1, 2 ], onError } );
+  test.identical( result.length, 1 );
+  test.true( _.error.is( result[ 0 ] ) );
+
+  test.case = 'event - once, callback throws error, onError attends error';
+  var edispatcher =
+  {
+    events : { event : [] },
+  };
+  var result = [];
+  var onEvent = () => { throw _.err( 'event err' ) };
+  var onError = ( err ) => { _.error.attend( err ); result.push( err ) };
+  _.event.once( edispatcher, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( edispatcher, { event : 'event', args : [ 1, 2 ], onError } );
+  test.identical( result.length, 1 );
+  test.true( _.error.is( result[ 0 ] ) );
 
   /* - */
 
@@ -1795,7 +1831,7 @@ function eventGive( test )
   test.case = 'wrong type of o.args';
   test.shouldThrowErrorSync( () => _.event.eventGive( { events : { 'event' : [] } }, { event : 'event', args : 'wrong' } ) );
 
-  test.case = 'callback throws error';
+  // test.case = 'callback throws error';
   // test.shouldThrowErrorSync( () =>
   // {
   //   var handler = { events : { event : [ () => { throw _.err( 'err' ) } ] } };
@@ -1808,20 +1844,20 @@ function eventGive( test )
   // });
   // qqq2 : for Dmytro : ask
 
+  test.case = 'callback throws error, onError handler does not attend error';
   test.shouldThrowErrorSync
   (
     () =>
     {
-      var handler = { events : { event : [ () => { throw _.err( 'err' ) } ] } };
-      _.event.eventGive( handler, 'event' );
+      var handler = { events : { event : [ () => { throw _.err( 'event err' ) } ] } };
+      _.event.eventGive( handler, { event : 'event', args : [], onError : ( err ) => { throw _.err( err ) } } );
     },
     ( err, arg ) =>
     {
       test.true( _.error.is( err ) );
-      test.identical( err.originalMEssage, 'Error on handing event event' );
+      test.identical( _.strCount( err.message, 'event err' ), 2 );
     }
   );
-
 }
 
 // --
@@ -1832,7 +1868,7 @@ function eventGive( test )
 const Proto =
 {
 
-  name : 'Tools.Event.l0.l9',
+  name : 'Tools.Event.l0.l3',
   silencing : 1,
   enabled : 1,
 
@@ -1859,7 +1895,8 @@ const Proto =
     off,
 
     eventHasHandler,
-    // eventGive,
+    eventGiveHead,
+    eventGive,
 
   }
 

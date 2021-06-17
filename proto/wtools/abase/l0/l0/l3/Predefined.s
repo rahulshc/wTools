@@ -74,6 +74,7 @@ _realGlobal_.Fx = _realGlobal_.F32x;
 if( typeof Buffer !== 'undefined' )
 _realGlobal_.BufferNode = Buffer;
 _realGlobal_.BufferRaw = ArrayBuffer;
+if( typeof SharedArrayBuffer !== 'undefined' )
 _realGlobal_.BufferRawShared = SharedArrayBuffer;
 _realGlobal_.BufferView = DataView;
 

@@ -35,7 +35,7 @@ let BufferNodeExtension =
   TypeName : 'BufferNode',
   TypeNames : [ 'BufferNode' ],
   // SecondTypeName : 'ArrayNode',
-  InstanceConstructor : Buffer,
+  InstanceConstructor : _global.BufferNode,
   tools : _,
 
   // dichotomy
