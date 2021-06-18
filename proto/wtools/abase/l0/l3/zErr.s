@@ -383,7 +383,7 @@ function error_functor( name, onErrorMake )
     onErrorMake = function onErrorMake()
     {
       debugger;
-      let arg = _.arrayAppendArrays( [], [ prepend, arguments ] );
+      let args = _.arrayAppendArrays( [], [ prepend, arguments ] );
       return args;
     }
   }
