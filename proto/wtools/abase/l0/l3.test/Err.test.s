@@ -94,7 +94,9 @@ function errorFunctorBasic( test )
   var got = SomeError( 'abc' )
   test.true( _.errIs( got ) );
   test.true( got instanceof SomeError );
+  test.true( got instanceof Error );
   test.identical( got.originalMessage, 'arg1 abc arg2' );
+  test.identical( got.name, 'SomeError' );
   test.identical( got.SomeError, true );
   var exp =
   {
@@ -113,7 +115,9 @@ function errorFunctorBasic( test )
   var got = new SomeError( 'abc' );
   test.true( _.errIs( got ) );
   test.true( got instanceof SomeError );
+  test.true( got instanceof Error );
   test.identical( got.originalMessage, 'arg1 abc arg2' );
+  test.identical( got.name, 'SomeError' );
   test.identical( got.SomeError, true );
   var exp =
   {
@@ -132,9 +136,13 @@ function errorFunctorBasic( test )
   var err1 = SomeError( 'abc' );
   var err2 = SomeError( err1 );
   test.true( err1 instanceof SomeError );
+  test.true( err1 instanceof Error );
   test.true( err2 instanceof SomeError );
+  test.true( err2 instanceof Error );
   test.identical( err1.originalMessage, 'arg1 abc arg2' );
   test.identical( err2.originalMessage, 'arg1 abc arg2' );
+  test.identical( err1.name, 'SomeError' );
+  test.identical( err2.name, 'SomeError' );
   test.true( err1 === err2 );
 
   /* */
@@ -144,9 +152,13 @@ function errorFunctorBasic( test )
   var err1 = SomeError( 'abc' );
   var err2 = new SomeError( err1 );
   test.true( err1 instanceof SomeError );
+  test.true( err1 instanceof Error );
   test.true( err2 instanceof SomeError );
+  test.true( err2 instanceof Error );
   test.identical( err1.originalMessage, 'arg1 abc arg2' );
   test.identical( err2.originalMessage, 'arg1 arg1 abc arg2 arg2' );
+  test.identical( err1.name, 'SomeError' );
+  test.identical( err2.name, 'SomeError' );
   test.true( err1 !== err2 );
 
   /* */
@@ -156,9 +168,13 @@ function errorFunctorBasic( test )
   var err1 = SomeError( 'abc' );
   var err2 = SomeError( err1, 'def' );
   test.true( err1 instanceof SomeError );
+  test.true( err1 instanceof Error );
   test.true( err2 instanceof SomeError );
+  test.true( err2 instanceof Error );
   test.identical( err1.originalMessage, 'arg1 abc arg2 def' );
   test.identical( err2.originalMessage, 'arg1 abc arg2 def' );
+  test.identical( err1.name, 'SomeError' );
+  test.identical( err2.name, 'SomeError' );
   test.true( err1 === err2 );
 
   /* */
@@ -168,9 +184,13 @@ function errorFunctorBasic( test )
   var err1 = SomeError( 'abc' );
   var err2 = SomeError( 'def', err1 );
   test.true( err1 instanceof SomeError );
+  test.true( err1 instanceof Error );
   test.true( err2 instanceof SomeError );
+  test.true( err2 instanceof Error );
   test.identical( err1.originalMessage, 'def arg1 abc arg2' );
   test.identical( err2.originalMessage, 'def arg1 abc arg2' );
+  test.identical( err1.name, 'SomeError' );
+  test.identical( err2.name, 'SomeError' );
   test.true( err1 === err2 );
 
   /* */
@@ -180,9 +200,13 @@ function errorFunctorBasic( test )
   var err1 = SomeError( 'abc' );
   var err2 = new SomeError( err1, 'def' );
   test.true( err1 instanceof SomeError );
+  test.true( err1 instanceof Error );
   test.true( err2 instanceof SomeError );
+  test.true( err2 instanceof Error );
   test.identical( err1.originalMessage, 'arg1 abc arg2' );
   test.identical( err2.originalMessage, 'arg1 arg1 abc arg2 def arg2' );
+  test.identical( err1.name, 'SomeError' );
+  test.identical( err2.name, 'SomeError' );
   test.true( err1 !== err2 );
 
   /* */
@@ -192,9 +216,148 @@ function errorFunctorBasic( test )
   var err1 = SomeError( 'abc' );
   var err2 = new SomeError( 'def', err1 );
   test.true( err1 instanceof SomeError );
+  test.true( err1 instanceof Error );
   test.true( err2 instanceof SomeError );
+  test.true( err2 instanceof Error );
   test.identical( err1.originalMessage, 'arg1 abc arg2' );
   test.identical( err2.originalMessage, 'arg1 def arg1 abc arg2 arg2' );
+  test.identical( err1.name, 'SomeError' );
+  test.identical( err2.name, 'SomeError' );
+  test.true( err1 !== err2 );
+
+  /* */
+
+  test.case = 'onErrorMake as string';
+  var SomeError = _.error.error_functor( 'SomeError', 'xyz' );
+  var err1 = SomeError( 'abc' );
+  var err2 = new SomeError( 'def', err1 );
+  test.true( err1 instanceof SomeError );
+  test.true( err1 instanceof Error );
+  test.true( err2 instanceof SomeError );
+  test.true( err2 instanceof Error );
+  test.identical( err1.originalMessage, 'xyz abc' );
+  test.identical( err2.originalMessage, 'xyz def xyz abc' );
+  test.identical( err1.name, 'SomeError' );
+  test.identical( err2.name, 'SomeError' );
+  test.true( err1 !== err2 );
+
+  /* */
+
+  test.case = 'onErrorMake as array';
+  var SomeError = _.error.error_functor( 'SomeError', [ 'xyz' ] );
+  var err1 = SomeError( 'abc' );
+  var err2 = new SomeError( 'def', err1 );
+  test.true( err1 instanceof SomeError );
+  test.true( err1 instanceof Error );
+  test.true( err2 instanceof SomeError );
+  test.true( err2 instanceof Error );
+  test.identical( err1.originalMessage, 'xyz abc' );
+  test.identical( err2.originalMessage, 'xyz def xyz abc' );
+  test.identical( err1.name, 'SomeError' );
+  test.identical( err2.name, 'SomeError' );
+  test.true( err1 !== err2 );
+
+  /* */
+
+  test.case = 'onErrorMake as array, multiple items';
+  var SomeError = _.error.error_functor( 'SomeError', [ 'xyz', 'pqr' ] );
+  var err1 = SomeError( 'abc' );
+  var err2 = new SomeError( 'def', err1 );
+  test.true( err1 instanceof SomeError );
+  test.true( err1 instanceof Error );
+  test.true( err2 instanceof SomeError );
+  test.true( err2 instanceof Error );
+  test.identical( err1.originalMessage, 'xyz pqr abc' );
+  test.identical( err2.originalMessage, 'xyz pqr def xyz pqr abc' );
+  test.identical( err1.name, 'SomeError' );
+  test.identical( err2.name, 'SomeError' );
+  test.true( err1 !== err2 );
+
+  /* */
+
+  test.case = 'onErrorMake missing';
+  var SomeError = _.error.error_functor( 'SomeError' );
+  var err1 = SomeError( 'abc' );
+  var err2 = new SomeError( 'def', err1 );
+  test.true( err1 instanceof SomeError );
+  test.true( err1 instanceof Error );
+  test.true( err2 instanceof SomeError );
+  test.true( err2 instanceof Error );
+  test.identical( err1.originalMessage, 'abc' );
+  test.identical( err2.originalMessage, 'def abc' );
+  test.identical( err1.name, 'SomeError' );
+  test.identical( err2.name, 'SomeError' );
+  test.true( err1 !== err2 );
+
+  /* */
+
+  test.case = 'no instance of Errorconstructor in the arguments of Error class instance';
+  var SomeError = _.error.error_functor( 'SomeError' );
+  var err1 = SomeError( 'abc' );
+  var err2 = new SomeError( 'def' );
+  test.true( err1 instanceof SomeError );
+  test.true( err1 instanceof Error );
+  test.true( err2 instanceof SomeError );
+  test.true( err2 instanceof Error );
+  test.identical( err1.originalMessage, 'abc' );
+  test.identical( err2.originalMessage, 'def' );
+  test.identical( err1.name, 'SomeError' );
+  test.identical( err2.name, 'SomeError' );
+  test.true( err1 !== err2 );
+
+  /* */
+
+  test.case = 'no arguments in Error class instance';
+  var SomeError = _.error.error_functor( 'SomeError' );
+  var err1 = SomeError( 'abc' );
+  var err2 = new SomeError();
+  test.true( err1 instanceof SomeError );
+  test.true( err1 instanceof Error );
+  test.true( err2 instanceof SomeError );
+  test.true( err2 instanceof Error );
+  test.identical( err1.originalMessage, 'abc' );
+  test.identical( err2.originalMessage, 'SomeError' );
+  test.identical( err1.name, 'SomeError' );
+  test.identical( err2.name, 'SomeError' );
+  test.true( err1 !== err2 );
+
+  /* */
+
+  test.case = 'multiple instance of Errorconstructor in the arguments of Error class instance';
+  var SomeError = _.error.error_functor( 'SomeError', 'xyz' );
+  var err1 = SomeError( 'abc' );
+  var err2 = SomeError( 'JKL' );
+  var err3 = new SomeError( 'def', err1, err2 );
+  test.true( err1 instanceof SomeError );
+  test.true( err1 instanceof Error );
+  test.true( err2 instanceof SomeError );
+  test.true( err2 instanceof Error );
+  test.true( err3 instanceof SomeError );
+  test.true( err3 instanceof Error );
+  test.identical( err1.originalMessage, 'xyz abc' );
+  test.identical( err2.originalMessage, 'xyz JKL' );
+  test.identical( err3.originalMessage, 'xyz def xyz abc xyz JKL' );
+  test.identical( err1.name, 'SomeError' );
+  test.identical( err2.name, 'SomeError' );
+  test.identical( err3.name, 'SomeError' );
+  test.true( err1 !== err2 );
+
+  /* */
+
+  test.case = 'multiple instance of Errorconstructor in the arguments of Error class instance, diferent order';
+  var SomeError = _.error.error_functor( 'SomeError', 'xyz' );
+  var err1 = SomeError( 'abc' );
+  var err2 = SomeError( 'JKL' );
+  var err3 = new SomeError( 'def', err2, err1 );
+  test.true( err1 instanceof Error );
+  test.true( err2 instanceof Error );
+  test.true( err3 instanceof Error );
+  test.identical( err1.originalMessage, 'xyz abc' );
+  test.identical( err2.originalMessage, 'xyz JKL' );
+  test.identical( err3.originalMessage, 'xyz def xyz JKL xyz abc' );
+  test.identical( err1.name, 'SomeError' );
+  test.identical( err2.name, 'SomeError' );
+  test.identical( err3.name, 'SomeError' );
   test.true( err1 !== err2 );
 
   /* */
