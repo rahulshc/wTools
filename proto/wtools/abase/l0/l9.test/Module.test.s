@@ -5371,6 +5371,7 @@ function requireThirdPartyModule( test )
   {
     console.log( 'programRoutine1.begin' );
     const _ = require( _ToolsPath_ );
+    debugger;
     require( 'jsdom' );
     console.log( 'programRoutine1.end' );
   }
@@ -5837,8 +5838,7 @@ const Proto =
     // l1SecondRequire, /* xxx2 : switch on */
     // secondaryNamespaceSecondRequire, /* xxx2 : switch on */
     // requireSameModuleTwice, /* xxx2 : switch on */
-
-    requireThirdPartyModule,
+    // requireThirdPartyModule, /* xxx2 : switch on */
 
     moduleFileExportBasic,
     moduleFileExportExternal, /* xxx2 : implement */
@@ -5857,4 +5857,3 @@ if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 
 })();
-  
