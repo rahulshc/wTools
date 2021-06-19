@@ -63,7 +63,7 @@ function is_functor()
 {
   let result;
   const TypedArray = Object.getPrototypeOf( Int8Array );
-  const iteratorSymbol = Symbol.iterator;
+  //const iteratorSymbol = Symbol.iterator;
 
   if( _global_.BufferNode )
   result = isNjs;
@@ -180,7 +180,7 @@ function isUnfoldedSmarter_functor()
 {
 
   const TypedArray = Object.getPrototypeOf( Int8Array );
-  const iteratorSymbol = Symbol.iterator;
+  //const iteratorSymbol = Symbol.iterator;
 
   if( _global_.BufferNode )
   return isUnfoldedSmarterNjs;
