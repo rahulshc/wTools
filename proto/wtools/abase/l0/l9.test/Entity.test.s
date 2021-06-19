@@ -434,13 +434,12 @@ function exportStringShallow( test )
   test.identical( _.entity.exportStringDiagnosticShallow( src, { widthLimit : 100 } ), expected );
   test.identical( _.entity.exportStringCodeShallow( src, { widthLimit : 100 } ), expected );
 
-
   test.close( 'option::widthLimit' );
 
   /* - */
 
   function routine () {}
-
+  
 }
 
 //
