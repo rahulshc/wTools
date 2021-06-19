@@ -439,7 +439,7 @@ function exportStringShallow( test )
   /* - */
 
   function routine () {}
-  
+
 }
 
 //
