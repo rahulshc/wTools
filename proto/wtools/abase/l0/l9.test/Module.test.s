@@ -5342,6 +5342,59 @@ requireSameModuleTwice.description =
 
 //
 
+function requireThirdPartyModule( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let _ToolsPath_ = a.path.nativize( _.module.toolsPathGet() );
+  let programRoutine1Path = a.program({ routine : programRoutine1, locals : { _ToolsPath_ } }).programPath;
+
+  /* */
+
+  begin()
+  a.appStartNonThrowing({ execPath : programRoutine1Path })
+  .then( ( op ) =>
+  {
+    test.identical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, 'nhandled' ), 0 );
+    test.identical( _.strCount( op.output, 'error' ), 0 );
+    test.identical( _.strCount( op.output, 'programRoutine1.begin' ), 1 );
+    test.identical( _.strCount( op.output, 'programRoutine1.end' ), 1 );
+    return null;
+  });
+
+  /* */
+
+  return a.ready;
+
+  function programRoutine1()
+  {
+    console.log( 'programRoutine1.begin' );
+    const _ = require( _ToolsPath_ );
+    require( 'jsdom' );
+    console.log( 'programRoutine1.end' );
+  }
+
+  /* */
+
+  function begin()
+  {
+    let packageFile =
+    {
+      dependencies :
+      {
+        "jsdom": "16.4.0"
+      }
+    }
+
+    a.fileProvider.fileWrite({ filePath : a.abs( 'package.json' ), data : packageFile, encoding : 'json' })
+
+    a.shell( 'npm i' )
+  }
+}
+
+//
+
 function moduleFileExportBasic( test )
 {
   const basePath = _.path.normalize( _.module.toolsPathGet() + '/../../wtools/abase' );
@@ -5784,6 +5837,8 @@ const Proto =
     // l1SecondRequire, /* xxx2 : switch on */
     // secondaryNamespaceSecondRequire, /* xxx2 : switch on */
     // requireSameModuleTwice, /* xxx2 : switch on */
+
+    requireThirdPartyModule,
 
     moduleFileExportBasic,
     moduleFileExportExternal, /* xxx2 : implement */
