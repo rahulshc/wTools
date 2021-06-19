@@ -1976,7 +1976,7 @@ function _trackingEnable()
     return;
     if( parent.universal.moduleNativeFilesMap !== _.module.nativeFilesMap )
     {
-      debugger;
+      // debugger;
       return;
     }
     if( parent.universal.moduleNativeFilesMap !== ModuleFileNative._cache )
