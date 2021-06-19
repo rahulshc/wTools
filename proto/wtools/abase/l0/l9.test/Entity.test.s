@@ -50,7 +50,8 @@ function exportStringShallow( test )
 
   test.case = 'str & regexpLike';
   var src = 'str';
-  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), 'str' );
+  test.identical( _.entity.exportStringCodeShallow( src ), '\'str\'' );
 
   test.case = 'regexp & objectLike & constructible & constructibleLike';
   var src = /hello/g;
@@ -86,6 +87,7 @@ function exportStringShallow( test )
   var src = _.long.make([ 1, 2 ]);
   var expected = '{- Array with 2 elements -}';
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'vector & vectorLike';
   var src = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
@@ -272,8 +274,8 @@ function exportStringShallow( test )
   test.case = 'path & str';
   var src = '/a/b/';
   var expected = '/a/b/';
-  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
-  test.identical( _.entity.exportStringCodeShallow( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), '/a/b/' );
+  test.identical( _.entity.exportStringCodeShallow( src ), '\'/a/b/\'' );
 
   test.case = 'propertyTransformer & filter';
   var src = _.props.condition[ 'dstAndSrcOwn' ];
@@ -302,9 +304,8 @@ function exportStringShallow( test )
 
   test.case = 'date & objectLike';
   var src = new Date( '2021-02-19T11:26:42.840Z' );
-  var expected = '2021-02-19T11:26:42.840Z';
-  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
-  test.identical( _.entity.exportStringCodeShallow( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), '2021-02-19T11:26:42.840Z' );
+  test.identical( _.entity.exportStringCodeShallow( src ), 'new Date( \'2021-02-19T11:26:42.840Z\' )' );
 
   test.case = 'null';
   var src = null;
@@ -320,21 +321,18 @@ function exportStringShallow( test )
 
   test.case = 'Symbol null';
   var src = _.null;
-  var expected = '{- Symbol null -}';
-  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
-  test.identical( _.entity.exportStringCodeShallow( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), '{- Symbol null -}' );
+  test.identical( _.entity.exportStringCodeShallow( src ), 'Symbol.for( \'null\' )' );
 
   test.case = 'Symbol undefined';
   var src = _.undefined;
-  var expected = '{- Symbol undefined -}';
-  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
-  test.identical( _.entity.exportStringCodeShallow( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), '{- Symbol undefined -}' );
+  test.identical( _.entity.exportStringCodeShallow( src ), 'Symbol.for( \'undefined\' )' );
 
   test.case = 'Symbol Nothing';
   var src = _.nothing;
-  var expected = '{- Symbol nothing -}';
-  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
-  test.identical( _.entity.exportStringCodeShallow( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), '{- Symbol nothing -}' );
+  test.identical( _.entity.exportStringCodeShallow( src ), 'Symbol.for( \'nothing\' )' );
 
   test.case = 'primitive';
   var src = 5;
@@ -344,9 +342,8 @@ function exportStringShallow( test )
 
   test.case = 'Symbol';
   var src = Symbol( 'a' );
-  var expected = '{- Symbol a -}';
-  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
-  test.identical( _.entity.exportStringCodeShallow( src ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), '{- Symbol a -}' );
+  test.identical( _.entity.exportStringCodeShallow( src ), 'Symbol.for( \'a\' )' );
 
   test.case = 'ConsequenceLike & promiseLike & promise';
   var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
@@ -360,26 +357,26 @@ function exportStringShallow( test )
   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
   test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
-  // if( !_.Logger )
-  // {
-  //   test.case = 'Map polluted';
-  //   var src = _global.logger;
-  //   var expected = '{- Map.polluted with 9 elements -}';
-  //   test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
-  //   test.identical( _.entity.exportStringCodeShallow( src ), expected );
-  // }
+  if( !_.Logger )
+  {
+    test.case = 'Map polluted';
+    var src = _global.logger;
+    var expected = '{- Map.polluted with 9 elements -}';
+    test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
+    test.identical( _.entity.exportStringCodeShallow( src ), expected );
+  }
 
-  // test.case = 'printerLike';
-  // var src = new __.Logger();
-  // var expected = '{- wLoggerTop.constructible -}';
-  // test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
-  // test.identical( _.entity.exportStringCodeShallow( src ), expected );
+  test.case = 'printerLike';
+  var src = new __.Logger();
+  var expected = '{- wLoggerTop.constructible -}';
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
-  // test.case = 'printerLike with output to console';
-  // var src = new __.Logger({ output : console });
-  // var expected = '{- wLoggerTop.constructible -}';
-  // test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
-  // test.identical( _.entity.exportStringCodeShallow( src ), expected );
+  test.case = 'printerLike with output to console';
+  var src = new __.Logger({ output : console });
+  var expected = '{- wLoggerTop.constructible -}';
+  test.identical( _.entity.exportStringDiagnosticShallow( src ), expected );
+  test.identical( _.entity.exportStringCodeShallow( src ), expected );
 
   test.case = 'process';
   var src = process;
@@ -393,27 +390,23 @@ function exportStringShallow( test )
 
   test.case = 'string, widthLimit 0';
   var src = '0123456'
-  var expected = '0123456';
-  test.identical( _.entity.exportStringDiagnosticShallow( src, { widthLimit : 0 } ), expected );
-  test.identical( _.entity.exportStringCodeShallow( src, { widthLimit : 0 } ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src, { widthLimit : 0 } ), '0123456' );
+  test.identical( _.entity.exportStringCodeShallow( src, { widthLimit : 0 } ), '\'0123456\'' );
 
   test.case = 'string, widthLimit 1';
   var src = '0123456'
-  var expected = '0';
-  test.identical( _.entity.exportStringDiagnosticShallow( src, { widthLimit : 1 } ), expected );
-  test.identical( _.entity.exportStringCodeShallow( src, { widthLimit : 1 } ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src, { widthLimit : 1 } ), '0' );
+  test.identical( _.entity.exportStringCodeShallow( src, { widthLimit : 1 } ), '\'' );
 
   test.case = 'string, widthLimit 5';
   var src = '0123456'
-  var expected = '01256';
-  test.identical( _.entity.exportStringDiagnosticShallow( src, { widthLimit : 5 } ), expected );
-  test.identical( _.entity.exportStringCodeShallow( src, { widthLimit : 5 } ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src, { widthLimit : 5 } ), '01256' );
+  test.identical( _.entity.exportStringCodeShallow( src, { widthLimit : 5 } ), '\'016\'' );
 
   test.case = 'string, widthLimit > str.length';
   var src = '0123456'
-  var expected = '0123456';
-  test.identical( _.entity.exportStringDiagnosticShallow( src, { widthLimit : 10 } ), expected );
-  test.identical( _.entity.exportStringCodeShallow( src, { widthLimit : 10 } ), expected );
+  test.identical( _.entity.exportStringDiagnosticShallow( src, { widthLimit : 10 } ), '0123456' );
+  test.identical( _.entity.exportStringCodeShallow( src, { widthLimit : 10 } ), '\'0123456\'');
 
   /* */
 
