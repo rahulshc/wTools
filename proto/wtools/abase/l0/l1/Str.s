@@ -1303,7 +1303,7 @@ let ToolsExtension =
 
   // converter
 
-  strstrShort_ : strShort_, /* xxx : remove */
+  strstrShort_ : short_, /* xxx : remove */
   strShort_ : short_,
   strShortWidth : shortWidth,
   _strShortWidth : _shortWidth,
