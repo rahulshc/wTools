@@ -1163,7 +1163,7 @@ function strip( o )
   o = { src : o };
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routine.options( strStrip, o );
+  _.routine.options( strip, o );
 
   o.stripper = stripperNormalize();
   let stripRoutine = _.regexpIs( o.stripper ) ? singleStripByRegexp : singleStripByArrayOfStrings;
@@ -1337,7 +1337,7 @@ function stripLeft( o )
   if( _.strIs( o ) || _.arrayIs( o ) )
   o = { src : o };
 
-  _.routine.options( strStripLeft, o );
+  _.routine.options( stripLeft, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   return _.strStrip( o );
