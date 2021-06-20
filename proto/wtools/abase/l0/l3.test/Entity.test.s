@@ -1992,121 +1992,145 @@ function eqShallowAllTypes( test )
   var src1 = 1;
   var src2 = 1;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'bool & boolLike & fuzzy';
   var src1 = true;
   var src2 = true;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'boolLike & number & fuzzyLike';
   var src1 = 0;
   var src2 = 0;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'fuzzy';
   var src1 = _.maybe;
   var src2 = _.maybe;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'bigint';
   var src1 = 10n;
   var src2 = 10n;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'str & regexpLike';
   var src1 = 'str';
   var src2 = 'str';
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'regexp & objectLike & constructible & constructibleLike';
   var src1 = /hello/g;
   var src2 = /hello/g;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
-
-  test.case = 'regexp & objectLike & constructible & constructibleLike';
-  var src1 = /hello/g;
-  var src2 = /hello/i;
-  test.identical( _.entity.identicalShallow( src1, src2 ), false );
-  test.identical( _.entity.equivalentShallow( src1, src2 ), false );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'ArgumentsArray & arrayLike';
   var src1 = _.argumentsArray.make();
   var src2 = _.argumentsArray.make();
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'ArgumentsArray & arrayLike with 3 elems';
   var src1 = _.argumentsArray.make([ 1, 2, 3 ]);
   var src2 = _.argumentsArray.make([ 1, 2, 3 ]);
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'unroll';
   var src1 = _.unroll.make([ 2, 3, 4 ]);
   var src2 = _.unroll.make([ 2, 3, 4 ]);
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'array';
   var src1 = [ 2, 3, 4 ];
   var src2 = [ 2, 3, 4 ];
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'long & longLike';
   var src1 = _.long.make([ 1, 2 ]);
   var src2 = _.long.make([ 1, 2 ]);
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = `object countable - non empty, non-vector, not same array`;
   var src1 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
   var src2 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '4' ], countable : 1 } );
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
+  test.identical( _.entity.identicalShallow( src2, src1 ), false );
   test.identical( _.entity.equivalentShallow( src1, src2 ), false );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), false );
 
   test.case = `object countable - non empty, non-vector, same array`;
   var src1 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
   var src2 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'vector & vectorLike';
   var src1 = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1, length : 2 });
   var src2 = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1, length : 2 });
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'countable & countableLike';
   var src1 = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   var src2 = __.diagnostic.objectMake({ elements : [ '1', '10' ], countable : 1 });
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
-
-  test.case = `object countable - non empty, non-vector, no iterator`;
-  var src1 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 0 } );
-  var src2 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 0 } );
-  test.identical( _.entity.identicalShallow( src1, src2 ), false );
-  test.identical( _.entity.equivalentShallow( src1, src2 ), false );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'Global & GlobalReal';
   var src1 = global;
   var src2 = global;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'Global & GlobalDerived';
   var src1 = Object.create( global );
   var src2 = Object.create( global );
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPrototyped & auxiliaryPolluted';
   var src1 = { a : 1 };
@@ -2114,13 +2138,17 @@ function eqShallowAllTypes( test )
   var src2 = { a : 1 };
   Object.setPrototypeOf( src2, { b : 2 } );
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure';
   var src1 = Object.create( null );
   var src2 = Object.create( null );
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'Object & ObjectLike & auxiliary & map & mapPure with 2 elems';
   var src1 = Object.create( null );
@@ -2130,193 +2158,257 @@ function eqShallowAllTypes( test )
   src2.a = 1;
   src2.b = 2;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped';
   var src1 = {};
   var src2 = {};
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'Object & ObjectLike & auxiliary & auxiliaryPolluted & map & mapPolluted & mapPrototyped with 3 elems';
   var src1 = { a : 1, b : 2, c : 3 };
   var src2 = { a : 1, b : 2, c : 3 };
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'HashMap';
   var src1 = new HashMap();
   var src2 = new HashMap();
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'HashMap with 2 elems';
   var src1 = new HashMap([ [ 'a', 1 ], [ 'b', 2 ] ]);
   var src2 = new HashMap([ [ 'a', 1 ], [ 'b', 2 ] ]);
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'Set & SetLike';
   var src1 = new Set();
   var src2 = new Set();
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'Set with 3 elems';
   var src1 = new Set([ 1, 2, 3 ]);
   var src2 = new Set([ 1, 2, 3 ]);
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'Set with different elements same set';
   var src1 = new Set([ 1, 2, 3, 3, 3 ]);
   var src2 = new Set([ 1, 2, 3 ]);
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'BufferNode';
   var src1 = BufferNode.from( 'str' );
   var src2 = BufferNode.from( 'str' );
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'BufferRaw';
   var src1 = new BufferRaw( 5 );
   var src2 = new BufferRaw( 5 );
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'BufferRawShared';
   var src1 = new BufferRawShared( 10 );
   var src2 = new BufferRawShared( 10 );
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'BufferTyped';
   var src1 = new I8x( 20 );
   var src2 = new I8x( 20 );
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'BufferView';
   var src1 = new BufferView( new BufferRaw( 20 ) );
   var src2 = new BufferView( new BufferRaw( 20 ) );
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'BufferBytes & BufferTyped';
   var src1 = new U8x( 20 );
   var src2 = new U8x( 20 );
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'escape';
   var src1 = _.escape.make( 1 );
   var src2 = _.escape.make( 1 );
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'interval & BufferTyped';
   var src1 = new F32x( 2 );
   var src2 = new F32x( 2 );
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'pair';
   var src1 = _.pair.make( 1, 2 );
   var src2 = _.pair.make( 1, 2 );
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'path & str';
   var src1 = '/a/b/';
   var src2 = '/a/b/';
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'routine & routineLike';
   var src1 = routine;
   var src2 = routine;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'date & objectLike';
   var src1 = new Date( '2021-02-19T11:26:42.840Z' );
   var src2 = new Date( '2021-02-19T11:26:42.840Z' );
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'null';
   var src1 = null;
   var src2 = null;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'undefined';
   var src1 = undefined;
   var src2 = undefined;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'Symbol null';
   var src1 = _.null;
   var src2 = _.null;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'Symbol undefined';
   var src1 = _.undefined;
   var src2 = _.undefined;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'Symbol Nothing';
   var src1 = _.nothing;
   var src2 = _.nothing;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'primitive';
   var src1 = 5;
   var src2 = 5;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'stream';
   var src1 = require( 'stream' ).Readable();
   var src2 = src1;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'printerLike';
   var src1 = _global.logger;
   var src2 = _global.logger;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'console';
   var src1 = console;
   var src2 = console;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'printerLike';
   var src1 = _global.logger;
   var src2 = _global.logger;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'process';
   var src1 = process;
   var src2 = process;
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.case = 'Object & ObjectLike & Container & ContainerLike';
   var src1 = { [ Symbol.iterator ] : 1 };
   var src2 = { [ Symbol.iterator ] : 1 };
   test.identical( _.entity.identicalShallow( src1, src2 ), true );
+  test.identical( _.entity.identicalShallow( src2, src1 ), true );
   test.identical( _.entity.equivalentShallow( src1, src2 ), true );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), true );
 
   test.close( 'identical and equivalent' );
 
@@ -2407,6 +2499,14 @@ function eqShallowAllTypes( test )
   test.case = 'long & longLike';
   var src1 = _.long.make([ 1, 2, [ 5 ] ]);
   var src2 = _.long.make([ 1, 2, [ 5 ] ]);
+  test.identical( _.entity.identicalShallow( src1, src2 ), false );
+  test.identical( _.entity.identicalShallow( src2, src1 ), false );
+  test.identical( _.entity.equivalentShallow( src1, src2 ), false );
+  test.identical( _.entity.equivalentShallow( src2, src1 ), false );
+
+  test.case = `object countable - non empty, non-vector, no iterator`;
+  var src1 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 0 } );
+  var src2 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 0 } );
   test.identical( _.entity.identicalShallow( src1, src2 ), false );
   test.identical( _.entity.identicalShallow( src2, src1 ), false );
   test.identical( _.entity.equivalentShallow( src1, src2 ), false );
