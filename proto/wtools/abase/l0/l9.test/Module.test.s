@@ -5216,6 +5216,7 @@ xxx
 
 }
 
+secondaryNamespaceSecondRequire.experimental = 1;
 secondaryNamespaceSecondRequire.description =
 `
 - second require in both main and secondary namespace should add element to upFiles of down module file
@@ -5835,7 +5836,7 @@ const Proto =
     testingOnL1,
     // l1Environment, /* xxx2 : switch on */
     // l1SecondRequire, /* xxx2 : switch on */
-    // secondaryNamespaceSecondRequire, /* xxx2 : switch on */
+    secondaryNamespaceSecondRequire, /* xxx2 : switch on */
     // requireSameModuleTwice, /* xxx2 : switch on */
     // requireThirdPartyModule, /* xxx2 : switch on */
 
