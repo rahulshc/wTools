@@ -5147,7 +5147,15 @@ function secondaryNamespaceSecondRequire( test )
     test.identical( op.exitCode, 0 );
     var exp =
 `
-xxx
+r2
+r3
+{- ModuleFile ${ a.abs( 'r1' ) } -}
+  r1  {- ModuleFile ${ _.module.toolsPathGet() } -}
+  r1  {- ModuleFile ${ a.abs( 'secondary1' ) } -}
+  r1  {- ModuleFile ${ a.abs( 'r2' ) } -}
+  r1  {- ModuleFile ${ a.abs( 'r3' ) } -}
+  r1  {- ModuleFile ${ a.abs( 'common2' ) } -}
+  r1  {- ModuleFile ${ a.abs( 'common3' ) } -}
 `
     test.equivalent( op.output, exp );
 
@@ -5166,10 +5174,11 @@ xxx
     require( './secondary1' );
     require( './r2' );
     require( './r3' );
+    require( './common2' );
+    require( './common3' );
 
     console.log( module.universal );
-    module.universal.upFiles.forEach( ( file ) => console.log( `  ${file}` ) );
-    debugger;
+    module.universal.upFiles.forEach( ( file ) => console.log( `  r1  ${file}` ) );
 
   }
 
