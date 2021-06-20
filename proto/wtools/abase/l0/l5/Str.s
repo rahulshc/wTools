@@ -46,7 +46,7 @@ function exportStringCodeShallow( src, o )
 // decorator
 // --
 
-function strQuote( o )
+function quote( o )
 {
 
   if( !_.mapIs( o ) )
@@ -84,7 +84,7 @@ strQuote.defaults =
 
 //
 
-function strUnquote( o )
+function unquote( o )
 {
 
   if( !_.mapIs( o ) )
@@ -179,11 +179,11 @@ strUnquote.defaults =
  * @throws { Exception } If { -quote- } is not of String or Array type.
  * @throws { Exception } If { -quote- } is of Array type and includes an array with not exactly 2 elements.
  * @throws { Exception } If ( arguments.length ) is not exactly equals 1.
- * @function strQuotePairsNormalize
+ * @function quotePairsNormalize
  * @namespace Tools
  */
 
-function strQuotePairsNormalize( quote )
+function quotePairsNormalize( quote )
 {
 
   if( ( _.bool.like( quote ) && quote ) )
@@ -244,11 +244,11 @@ function strQuotePairsNormalize( quote )
  * @returns { Object } Returns a map with 2 arrays: ranges, quotes.
  * @throws { Exception } If redundant arguments are provided.
  * @throws { Exception } If ( arguments.length ) is not equal 1 or 2.
- * @function strQuoteAnalyze
+ * @function quoteAnalyze
  * @namespace Tools
  */
 
-function strQuoteAnalyze( o )
+function quoteAnalyze( o )
 {
   let i = -1;
   let result = Object.create( null );
@@ -343,7 +343,7 @@ strQuoteAnalyze.defaults =
 // splitter
 // --
 
-function _strLeftSingle_( src, ins, cinterval )
+function _leftSingle_( src, ins, cinterval )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -409,7 +409,7 @@ function _strLeftSingle_( src, ins, cinterval )
 
 //
 
-function strLeft_( src, ins, cinterval )
+function left_( src, ins, cinterval )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -430,7 +430,7 @@ function strLeft_( src, ins, cinterval )
 
 //
 
-function _strRightSingle_( src, ins, cinterval )
+function _rightSingle_( src, ins, cinterval )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -539,7 +539,7 @@ function _strRightSingle_( src, ins, cinterval )
 
 //
 
-function strRight_( src, ins, cinterval )
+function right_( src, ins, cinterval )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -686,7 +686,7 @@ strInsideOf_body.defaults =
 
 //
 
-let strInsideOf = _.routine.unite( strInsideOf_head, strInsideOf_body );
+let insideOf = _.routine.unite( strInsideOf_head, strInsideOf_body );
 
 //
 
@@ -808,11 +808,11 @@ strInsideOf__body.defaults =
   pairing : 1, /* xxx : set to 1 */
 }
 
-let strInsideOf_ = _.routine.unite( strInsideOf__head, strInsideOf__body );
+let insideOf_ = _.routine.unite( strInsideOf__head, strInsideOf__body );
 
 //
 
-function strOutsideOf( src, begin, end )
+function outsideOf( src, begin, end )
 {
 
   _.assert( _.strIs( src ), 'Expects string {-src-}' );
@@ -837,7 +837,7 @@ function strOutsideOf( src, begin, end )
 // replacers
 //--
 
-function _strRemovedBegin( src, begin )
+function _removedBegin( src, begin )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( src ), 'Expects string {-src-}' );
@@ -868,7 +868,7 @@ function _strRemovedBegin( src, begin )
  * _.strRemoveBegin( 'example', 'abc' );
  * // returns example
  *
- * @function strRemoveBegin
+ * @function removeBegin
  * @throws { Exception } Throws a exception if( src ) is not a String.
  * @throws { Exception } Throws a exception if( prefix ) is not a String.
  * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
@@ -876,7 +876,7 @@ function _strRemovedBegin( src, begin )
  *
  */
 
-function strRemoveBegin( src, begin )
+function removeBegin( src, begin )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.longIs( src ) || _.strIs( src ), 'Expects string or array of strings {-src-}' );
@@ -913,7 +913,7 @@ function strRemoveBegin( src, begin )
 
 //
 
-function _strRemovedEnd( src, end )
+function _removedEnd( src, end )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( src ), 'Expects string {-src-}' );
@@ -943,7 +943,7 @@ function _strRemovedEnd( src, end )
  * _.strRemoveEnd( 'example', 'abc' );
  * // returns example
  *
- * @function strRemoveEnd
+ * @function removeEnd
  * @throws { Exception } Throws a exception if( src ) is not a String.
  * @throws { Exception } Throws a exception if( postfix ) is not a String.
  * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
@@ -951,7 +951,7 @@ function _strRemovedEnd( src, end )
  *
  */
 
-function strRemoveEnd( src, end )
+function removeEnd( src, end )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.longIs( src ) || _.strIs( src ), 'Expects string or array of strings {-src-}' );
@@ -989,7 +989,7 @@ function strRemoveEnd( src, end )
 
 //
 
-function strReplaceBegin( src, begin, ins )
+function replaceBegin( src, begin, ins )
 {
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( _.strIs( ins ) || _.longIs( ins ), 'Expects {-ins-} as string/array of strings' );
@@ -1017,7 +1017,7 @@ function strReplaceBegin( src, begin, ins )
 
 //
 
-function strReplaceEnd( src, end, ins )
+function replaceEnd( src, end, ins )
 {
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( _.strIs( ins ) || _.longIs( ins ), 'Expects {-ins-} as string/array of strings' );
@@ -1063,7 +1063,7 @@ function strReplaceEnd( src, end, ins )
 * _.strReplace( 'example', 's' );
 * // returns example
 *
-* @function strReplace
+* @function replace
 * @throws { Exception } Throws a exception if( srcStr ) is not a String.
 * @throws { Exception } Throws a exception if( insStr ) is not a String or a RegExp.
 * @throws { Exception } Throws a exception if( subStr ) is not a String.
@@ -1072,7 +1072,7 @@ function strReplaceEnd( src, end, ins )
 *
 */
 
-function strReplace( src, ins, sub )
+function replace( src, ins, sub )
 {
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( _.strsAreAll( sub ), 'Expects {-sub-} as string/array of strings' );
@@ -1114,7 +1114,7 @@ function strReplace( src, ins, sub )
 // --
 
 /**
- * Routine strStrip() removes entries of leading and trailing characters in source string {-o.src-},
+ * Routine strip() removes entries of leading and trailing characters in source string {-o.src-},
  * which is found by mask {-o.stripper-}.
  * If {-o.stripper-} is not defined function removes leading and trailing whitespaces and escaped
  * characters from begin and end of source string {-o.src-}.
@@ -1147,7 +1147,7 @@ function strReplace( src, ins, sub )
  * @param { String|RegExp|Array|BoolLike } o.stripper - Defines characters to remove.
  * @returns { String|Array } - Returns stripped string. If source string was an Array of strings, then routine
  * returns array with stripped strings.
- * @function strStrip
+ * @function strip
  * @throws { Exception } Throw an error if arguments.length is not equal 1.
  * @throws { Exception } Throw an error if options map {-o-} has not valid type.
  * @throws { Exception } Throw an error if options map {-o-} has unknown property.
@@ -1156,7 +1156,7 @@ function strReplace( src, ins, sub )
  * @namespace Tools
  */
 
-function strStrip( o )
+function strip( o )
 {
 
   if( _.strIs( o ) || _.arrayIs( o ) )
@@ -1326,12 +1326,12 @@ strStrip.defaults =
  * _.strStripLeft( ' a ' )
  * // returns 'a '
  *
- * @method strStripLeft
+ * @method stripLeft
  * @namespace Tools
  *
  */
 
-function strStripLeft( o )
+function stripLeft( o )
 {
 
   if( _.strIs( o ) || _.arrayIs( o ) )
@@ -3161,6 +3161,30 @@ let StrExtension =
   parseType, /* xxx : move */
   _parseType,
 
+  quote,
+  unquote,
+  quotePairsNormalize,
+  quoteAnalyze,
+  _leftSingle_,
+  left_,
+  right_,
+
+  insideOf,
+  insideOf_,
+  outsideOf,
+
+  _removedBegin,
+  removeBegin,
+  _removedEnd,
+  removeEnd,
+
+  replaceBegin,
+  replaceEnd,
+  replace,
+
+  strip,
+  stripLeft,
+
 }
 
 /* xxx : duplicate exportString in namespace::diagnostic? */
@@ -3202,41 +3226,41 @@ let ToolsExtension =
 
   // decorator
 
-  strQuote,
-  strUnquote,
-  strQuotePairsNormalize,
-  strQuoteAnalyze,
+  strQuote : quote,
+  strUnquote : unquote,
+  strQuotePairsNormalize : quotePairsNormalize,
+  strQuoteAnalyze : quoteAnalyze,
 
   // splitter
 
-  _strLeftSingle_,
-  strLeft_,
-  _strRightSingle_,
-  strRight_,
+  _strLeftSingle_ : _leftSingle_,
+  strLeft_ : left_,
+  _strRightSingle_ : _rightSingle_,
+  strRight_ : right_,
 
   strsEquivalentAll : _.vectorizeAll( _.str.equivalent.bind( _.str ), 2 ),
   strsEquivalentAny : _.vectorizeAny( _.str.equivalent.bind( _.str ), 2 ),
   strsEquivalentNone : _.vectorizeNone( _.str.equivalent.bind( _.str ), 2 ),
 
-  strInsideOf,
-  strInsideOf_,
-  strOutsideOf, /* !!! deprecate */
+  strInsideOf : insideOf,
+  strInsideOf_ : insideOf_,
+  strOutsideOf : outsideOf, /* !!! deprecate */
 
   // replacers
 
-  _strRemovedBegin,
-  strRemoveBegin,
-  _strRemovedEnd,
-  strRemoveEnd,
+  _strRemovedBegin : _removedBegin,
+  strRemoveBegin : removeBegin,
+  _strRemovedEnd : _removedEnd,
+  strRemoveEnd : removeEnd,
 
-  strReplaceBegin,
-  strReplaceEnd,
-  strReplace,
+  strReplaceBegin : replaceBegin,
+  strReplaceEnd : replaceEnd,
+  strReplace : replace,
 
   // stripper
 
-  strStrip,
-  strStripLeft,
+  strStrip : strip,
+  strStripLeft : stripLeft,
   strStripRight,
   _strRemoveAllSpaces,
   strRemoveAllSpaces : _.vectorize( _strRemoveAllSpaces ),
