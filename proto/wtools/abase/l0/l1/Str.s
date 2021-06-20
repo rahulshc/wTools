@@ -801,7 +801,7 @@ function concat( srcs, o )
 
   o = _.routine.options( concat, o || Object.create( null ) );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( this.concat === concat );
+  _.assert( this.strConcat === concat );
 
   if( o.onToStr === null )
   o.onToStr = onToStr;
