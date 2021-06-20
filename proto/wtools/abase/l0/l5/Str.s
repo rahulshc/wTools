@@ -52,8 +52,8 @@ function quote( o )
   if( !_.mapIs( o ) )
   o = { src : arguments[ 0 ], quote : ( arguments.length > 1 ? arguments[ 1 ] : null ) };
   if( o.quote === undefined || o.quote === null )
-  o.quote = strQuote.defaults.quote;
-  _.map.assertHasOnly( o, strQuote.defaults );
+  o.quote = quote.defaults.quote;
+  _.map.assertHasOnly( o, quote.defaults );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( _.arrayIs( o.src ) )
@@ -76,7 +76,7 @@ function quote( o )
   return result;
 }
 
-strQuote.defaults =
+quote.defaults =
 {
   src : null,
   quote : '"',
@@ -90,8 +90,8 @@ function unquote( o )
   if( !_.mapIs( o ) )
   o = { src : arguments[ 0 ], quote : ( arguments.length > 1 ? arguments[ 1 ] : null ) };
   if( o.quote === undefined || o.quote === null )
-  o.quote = strUnquote.defaults.quote;
-  _.map.assertHasOnly( o, strUnquote.defaults );
+  o.quote = unquote.defaults.quote;
+  _.map.assertHasOnly( o, unquote.defaults );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( _.arrayIs( o.src ) )
@@ -110,7 +110,7 @@ function unquote( o )
   return result;
 }
 
-strUnquote.defaults =
+unquote.defaults =
 {
   src : null,
   quote : [ '"', '`', '\'' ],
@@ -187,7 +187,7 @@ function quotePairsNormalize( quote )
 {
 
   if( ( _.bool.like( quote ) && quote ) )
-  quote = strQuoteAnalyze.defaults.quote;
+  quote = quoteAnalyze.defaults.quote;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( quote ) || _.arrayIs( quote ) );
@@ -258,8 +258,8 @@ function quoteAnalyze( o )
   if( !_.mapIs( o ) )
   o = { src : arguments[ 0 ], quote : ( arguments.length > 1 ? arguments[ 1 ] : null ) };
   if( o.quote === undefined || o.quote === null )
-  o.quote = strQuoteAnalyze.defaults.quote;
-  _.map.assertHasOnly( o, strQuoteAnalyze.defaults );
+  o.quote = quoteAnalyze.defaults.quote;
+  _.map.assertHasOnly( o, quoteAnalyze.defaults );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   o.quote = _.strQuotePairsNormalize( o.quote );
@@ -333,7 +333,7 @@ function quoteAnalyze( o )
 
 }
 
-strQuoteAnalyze.defaults =
+quoteAnalyze.defaults =
 {
   src : null,
   quote : [ '"', '`', '\'' ],
@@ -1188,7 +1188,7 @@ function strip( o )
     let stripper = o.stripper;
     if( _.bool.likeTrue( o.stripper ) )
     {
-      stripper = strStrip.defaults.stripper;
+      stripper = strip.defaults.stripper;
     }
     else if( _.arrayIs( o.stripper ) )
     {
@@ -1235,7 +1235,7 @@ function strip( o )
 
 }
 
-strStrip.defaults =
+strip.defaults =
 {
   src : null,
   stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g,
@@ -1265,7 +1265,7 @@ strStrip.defaults =
 //
 //   if( _.bool.likeTrue( o.stripper ) )
 //   {
-//     o.stripper = strStrip.defaults.stripper;
+//     o.stripper = strip.defaults.stripper;
 //   }
 //
 //   _.assert( _.strIs( o.src ), 'Expects string or array o.src, got', _.entity.strType( o.src ) );
@@ -1343,9 +1343,9 @@ function stripLeft( o )
   return _.strStrip( o );
 }
 
-strStripLeft.defaults =
+stripLeft.defaults =
 {
-  ... strStrip.defaults,
+  ... strip.defaults,
   stripper : /^(\s|\n|\0)+/gm,
 }
 
@@ -1378,7 +1378,7 @@ function strStripRight( o )
 
 strStripRight.defaults =
 {
-  ... strStrip.defaults,
+  ... strip.defaults,
   stripper : /(\s|\n|\0)+$/gm,
 }
 
