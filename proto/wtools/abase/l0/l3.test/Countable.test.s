@@ -239,13 +239,29 @@ function countablesAreEqShallow( test )
   test.true( !_.countable.equivalentShallow( src1, src2 ) );
   test.true( !_.countable.equivalentShallow( src2, src1 ) );
 
-  test.case = `map with generator as iterator, different  elements`;
-  var src1 = __.diagnostic.objectMake({ elements : [ '4', '5', '6' ], countable : 1, new : 0, iteratorIsGenerator : 1 });
-  var src2 = __.diagnostic.objectMake({ elements : [ '1', '2', '3' ], countable : 1, new : 0, iteratorIsGenerator : 1 });
+  test.case = `map with generator as iterator and normal iterator, same elements`;
+  var src1 = __.diagnostic.objectMake({ countable : 1, new : 0, iteratorIsGenerator : 1 });
+  var src2 = __.diagnostic.objectMake({ elements : [ 1, 2, 3 ], countable : 1, new : 0, iteratorIsGenerator : 0 });
+  test.true( _.countable.identicalShallow( src1, src2 ) );
+  test.true( _.countable.identicalShallow( src2, src1 ) );
+  test.true( _.countable.equivalentShallow( src1, src2 ) );
+  test.true( _.countable.equivalentShallow( src2, src1 ) );
+
+  test.case = `map with generator as iterator and normal iterator, different elements`;
+  var src1 = __.diagnostic.objectMake({ countable : 1, new : 0, iteratorIsGenerator : 1 });
+  var src2 = __.diagnostic.objectMake({ elements : [ 4, 5, 6 ], countable : 1, new : 0, iteratorIsGenerator : 0 });
   test.true( !_.countable.identicalShallow( src1, src2 ) );
   test.true( !_.countable.identicalShallow( src2, src1 ) );
   test.true( !_.countable.equivalentShallow( src1, src2 ) );
   test.true( !_.countable.equivalentShallow( src2, src1 ) );
+
+  test.case = `both map with generator as iterator`;
+  var src1 = __.diagnostic.objectMake({ countable : 1, new : 0, iteratorIsGenerator : 1 });
+  var src2 = __.diagnostic.objectMake({ countable : 1, new : 0, iteratorIsGenerator : 1 });
+  test.true( _.countable.identicalShallow( src1, src2 ) );
+  test.true( _.countable.identicalShallow( src2, src1 ) );
+  test.true( _.countable.equivalentShallow( src1, src2 ) );
+  test.true( _.countable.equivalentShallow( src2, src1 ) );
 
   test.case = `object countable - non empty, non-vector, not same array`;
   var src1 = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 });

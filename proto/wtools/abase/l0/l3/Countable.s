@@ -31,10 +31,7 @@ function _identicalShallow( src1, src2 )
       entity with method iterator and length
     */
 
-    let array1 = [];
-    for( let val of src1 )
-    array1.push( val );
-
+    let array1 = [ ... src1 ];
     for( let val of src2 )
     if( array1.indexOf( val ) === -1 )
     return false
@@ -64,19 +61,16 @@ function _equivalentShallow( src1, src2 )
     /* don't create new array if one of arguments is array */
     if( _.argumentsArray.like( src1 ) )
     {
-      result = isContain( src2, src1 );
+      result = check( src2, src1 );
     }
     else if( _.argumentsArray.like( src2 ) )
     {
-      result = isContain( src1, src2 );
+      result = check( src1, src2 );
     }
     else
     {
-      let array1 = [];
-      for( let val of src1 )
-      array1.push( val );
-
-      result = isContain( src2, array1 );
+      let array1 = [ ... src1 ];
+      result = check( src2, array1 );
     }
 
     return result;
@@ -84,7 +78,7 @@ function _equivalentShallow( src1, src2 )
 
   /* - */
 
-  function isContain( arrayLoop, arrayCheck )
+  function check( arrayLoop, arrayCheck )
   {
     for( let val of arrayLoop )
     if( Array.prototype.indexOf.call( arrayCheck, val ) === -1 )
