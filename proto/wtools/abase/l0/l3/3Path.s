@@ -384,7 +384,9 @@ function refineFaster( src )
       }
     }
     else
-    result = `/${charAtZeroIndex}`
+    {
+      result = `/${charAtZeroIndex}`;
+    }
   }
 
   if( hasBackSlash )
