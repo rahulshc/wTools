@@ -45,6 +45,7 @@ function nodeIsUsingFunctor_functor()
 }
 
 let nodeIsUsingFunctor = nodeIsUsingFunctor_functor();
+nodeIsUsingFunctor.functor = nodeIsUsingFunctor_functor;
 
 // --
 // declaration
