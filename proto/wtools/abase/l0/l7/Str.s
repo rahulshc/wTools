@@ -815,7 +815,7 @@ function strIsolateInside( src, begin, end )
 // extension
 // --
 
-let Extension =
+let ToolsExtension =
 {
 
   strIsolate : _.routine.unite( strIsolate_head, strIsolate_body ),
@@ -831,6 +831,6 @@ let Extension =
 
 }
 
-Object.assign( _, Extension );
+Object.assign( _, ToolsExtension );
 
 })();
