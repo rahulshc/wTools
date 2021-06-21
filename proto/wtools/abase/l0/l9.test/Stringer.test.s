@@ -32,54 +32,15 @@ function basic( test )
   test.identical( _.props.onlyOwn( _.prototype.each( it )[ 0 ] ), exp );
   var exp =
   {
-    // 'tab' : '',
     'verbosity' : 5,
-    // 'tabLevel' : 0,
+    'dstNode' : [],
   }
   test.identical( _.props.onlyOwn( _.prototype.each( it )[ 1 ] ), exp );
-  // var exp = new Set([ 'verbosity', 'Looker', 'iterator', 'iterationPrototype' ]);
-  var exp = new Set([ 'tab', 'verbosity', 'tabLevel' ]);
+  var exp = new Set([ 'dstNode', 'tab', 'verbosity', 'tabLevel', 'level' ]);
   test.identical( new Set( _.props.keys( _.props.onlyOwn( _.prototype.each( it )[ 2 ] ) ) ), exp );
-  var exp = new Set([ 'verbosity', 'Seeker', 'iterator', 'iterationPrototype', 'firstIterationPrototype' ]);
+  var exp = new Set([ 'dstNode', 'verbosity', 'Seeker', 'iterator', 'iterationPrototype', 'firstIterationPrototype' ]);
   test.identical( new Set( _.props.keys( _.props.onlyOwn( _.prototype.each( it )[ 3 ] ) ) ), exp );
 
-  // var exp = new Set
-  // ([
-  //   'OriginalSeeker',
-  //   'Seeker',
-  //   'constructor',
-  //   'head',
-  //   'optionsToIteration',
-  //   'optionsFromArguments',
-  //   'iteratorProper',
-  //   'iteratorRetype',
-  //   'iteratorInit',
-  //   'iteratorInitBegin',
-  //   'iteratorInitEnd',
-  //   'iteratorIterationMake',
-  //   'iterationMake',
-  //   'iterationProper',
-  //   'onUp',
-  //   'onDown',
-  //   'Iterator',
-  //   'Iteration',
-  //   'IterationPreserve',
-  //   'itUp',
-  //   'itDown',
-  //   'levelUp',
-  //   'levelDown',
-  //   'write',
-  //   'nlWrite',
-  //   'tabWrite',
-  //   'lineWrite',
-  //   'result',
-  //   'dtab',
-  //   'tab',
-  //   'verbosity',
-  //   'tabLevel',
-  //   'Prime'
-  // ]);
-  // test.identical( new Set( _.props.keys( _.props.onlyOwn( _.prototype.each( it )[ 4 ] ) ) ), exp );
   test.identical( _.prototype.each( it ).length, 5 );
 
   /* */

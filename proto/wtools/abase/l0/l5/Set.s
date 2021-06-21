@@ -10,6 +10,38 @@ const _ = _global_.wTools;
 // implementation
 // --
 
+function butElement( dst, src1, element )
+{
+  // if( arguments.length === 2 )
+  // {
+  //   dst = null;
+  //   src1 = arguments[ 0 ];
+  //   src2 = arguments[ 1 ];
+  // }
+
+  _.assert( arguments.length === 3 );
+  _.assert( dst === null || _.set.is( dst ) );
+  _.assert( _.countable.is( src1 ) );
+
+  if( dst === null )
+  dst = new Set();
+
+  if( dst === src1 )
+  {
+    dst.delete( element );
+  }
+  else
+  {
+    for( let e of src1 )
+    if( e !== element )
+    dst.add( e );
+  }
+
+  return dst;
+}
+
+//
+
 /* qqq : cover */
 /* qqq : src1 could be countable or unroll */
 /* qqq : src2 could be countable or unroll */
@@ -189,6 +221,8 @@ Object.assign( _, ToolsExtension );
 let SetExtension =
 {
 
+  /* xxx2 : review */
+  butElement,
   but,
   only,
   union,

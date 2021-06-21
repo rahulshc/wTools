@@ -41,14 +41,14 @@ function eachLeftSingle( test )
   test.case = 'empty';
   clean();
   var src = ``;
-  _.str.lines.eachLeft( src, onEach );
+  _.str.lines.eachLeft({ src, onEach, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
       'src' : '',
       onEach,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'lineIndex' : 0,
       'nl' : '',
       'charInterval' : [ 0, -1 ],
@@ -63,14 +63,14 @@ function eachLeftSingle( test )
   test.case = 'single line';
   clean();
   var src = `abc`;
-  _.str.lines.eachLeft( src, onEach );
+  _.str.lines.eachLeft({ src, onEach, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
       'src' : 'abc',
       onEach,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'lineIndex' : 0,
       'charInterval' : [ 0, 2 ],
       'nl' : '',
@@ -85,13 +85,13 @@ function eachLeftSingle( test )
   test.case = '\\n';
   clean();
   var src = `\n`;
-  _.str.lines.eachLeft( src, onEach );
+  _.str.lines.eachLeft({ src, onEach, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
       src,
       onEach,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 0, 0 ],
       'lineIndex' : 0,
       'withLine' : true,
@@ -101,7 +101,7 @@ function eachLeftSingle( test )
     {
       src,
       onEach,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 1, 0 ],
       'lineIndex' : 1,
       'withLine' : true,
@@ -117,14 +117,14 @@ function eachLeftSingle( test )
   test.case = 'ab\\nabc\\nabcd';
   clean();
   var src = `ab\nabc\nabcd`;
-  _.str.lines.eachLeft( src, onEach );
+  _.str.lines.eachLeft({ src, onEach, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 0, 2 ],
       'lineIndex' : 0,
       'nl' : '\n',
@@ -134,7 +134,7 @@ function eachLeftSingle( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 3, 6 ],
       'lineIndex' : 1,
       'nl' : '\n',
@@ -144,7 +144,7 @@ function eachLeftSingle( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 7, 10 ],
       'lineIndex' : 2,
       'nl' : '',
@@ -159,14 +159,14 @@ function eachLeftSingle( test )
   test.case = '\\nab\\nabc\\nabcd\\n';
   clean();
   var src = `\nab\nabc\nabcd\n`;
-  _.str.lines.eachLeft( src, onEach );
+  _.str.lines.eachLeft({ src, onEach, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 0, 0 ],
       'lineIndex' : 0,
       'nl' : '\n',
@@ -176,7 +176,7 @@ function eachLeftSingle( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 1, 3 ],
       'lineIndex' : 1,
       'nl' : '\n',
@@ -186,7 +186,7 @@ function eachLeftSingle( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 4, 7 ],
       'lineIndex' : 2,
       'nl' : '\n',
@@ -196,7 +196,7 @@ function eachLeftSingle( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 8, 12 ],
       'lineIndex' : 3,
       'nl' : '\n',
@@ -206,7 +206,7 @@ function eachLeftSingle( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 13, 12 ],
       'lineIndex' : 4,
       'nl' : '',
@@ -222,7 +222,7 @@ function eachLeftSingle( test )
   {
     it = _.props.extend( null, it );
     it.charInterval = it.charInterval.slice();
-    it.nlTokens = it.nlTokens.slice();
+    it.eol = it.eol.slice();
     its.push( it );
   }
 
@@ -247,16 +247,16 @@ function eachLeftCustomToken( test )
 
   test.case = '\\n';
   clean();
-  var nlTokens = '\n';
+  var eol = '\n';
   var src = `\n`;
-  _.str.lines.eachLeft({ src, onEach, nlTokens });
+  _.str.lines.eachLeft({ src, onEach, eol });
   var exp =
   [
     {
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 0, 0 ],
       'lineIndex' : 0,
       'nl' : '\n',
@@ -266,7 +266,7 @@ function eachLeftCustomToken( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 1, 0 ],
       'lineIndex' : 1,
       'nl' : '',
@@ -280,16 +280,16 @@ function eachLeftCustomToken( test )
 
   test.case = 'ab\\nabc\\nabcd';
   clean();
-  var nlTokens = '\r\n';
+  var eol = '\r\n';
   var src = `ab\r\nabc\r\nabcd`;
-  _.str.lines.eachLeft({ src, onEach, nlTokens });
+  _.str.lines.eachLeft({ src, onEach, eol });
   var exp =
   [
     {
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\r\n',
+      'eol' : '\r\n',
       'charInterval' : [ 0, 3 ],
       'lineIndex' : 0,
       'nl' : '\r\n',
@@ -299,7 +299,7 @@ function eachLeftCustomToken( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\r\n',
+      'eol' : '\r\n',
       'charInterval' : [ 4, 8 ],
       'lineIndex' : 1,
       'nl' : '\r\n',
@@ -309,7 +309,7 @@ function eachLeftCustomToken( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\r\n',
+      'eol' : '\r\n',
       'charInterval' : [ 9, 12 ],
       'lineIndex' : 2,
       'nl' : '',
@@ -324,14 +324,14 @@ function eachLeftCustomToken( test )
   test.case = '\\r\\nab\\r\\nabc\\r\\nabcd\\r\\n';
   clean();
   var src = `\r\nab\r\nabc\r\nabcd\r\n`;
-  _.str.lines.eachLeft({ src, onEach, nlTokens });
+  _.str.lines.eachLeft({ src, onEach, eol });
   var exp =
   [
     {
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\r\n',
+      'eol' : '\r\n',
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 0,
       'nl' : '\r\n',
@@ -341,7 +341,7 @@ function eachLeftCustomToken( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\r\n',
+      'eol' : '\r\n',
       'charInterval' : [ 2, 5 ],
       'lineIndex' : 1,
       'nl' : '\r\n',
@@ -351,7 +351,7 @@ function eachLeftCustomToken( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\r\n',
+      'eol' : '\r\n',
       'charInterval' : [ 6, 10 ],
       'lineIndex' : 2,
       'nl' : '\r\n',
@@ -361,7 +361,7 @@ function eachLeftCustomToken( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\r\n',
+      'eol' : '\r\n',
       'charInterval' : [ 11, 16 ],
       'lineIndex' : 3,
       'nl' : '\r\n',
@@ -371,7 +371,7 @@ function eachLeftCustomToken( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\r\n',
+      'eol' : '\r\n',
       'charInterval' : [ 17, 16 ],
       'lineIndex' : 4,
       'nl' : '',
@@ -387,7 +387,7 @@ function eachLeftCustomToken( test )
   {
     it = _.props.extend( null, it );
     it.charInterval = it.charInterval.slice();
-    it.nlTokens = it.nlTokens.slice();
+    it.eol = it.eol.slice();
     its.push( it );
   }
 
@@ -413,14 +413,14 @@ function eachLeftMultiple( test )
   test.case = '\\nab\\nabc\\nabcd\\r\\n';
   clean();
   var src = `\nab\nabc\nabcd\r\n`;
-  _.str.lines.eachLeft( src, onEach );
+  _.str.lines.eachLeft({ src, onEach, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n', ],
+      'eol' : [ '\r\n', '\n', ],
       'charInterval' : [ 0, 0 ],
       'lineIndex' : 0,
       'nl' : '\n',
@@ -430,7 +430,7 @@ function eachLeftMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n', ],
+      'eol' : [ '\r\n', '\n', ],
       'charInterval' : [ 1, 3 ],
       'lineIndex' : 1,
       'nl' : '\n',
@@ -440,7 +440,7 @@ function eachLeftMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n', ],
+      'eol' : [ '\r\n', '\n', ],
       'charInterval' : [ 4, 7 ],
       'lineIndex' : 2,
       'nl' : '\n',
@@ -450,7 +450,7 @@ function eachLeftMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n', ],
+      'eol' : [ '\r\n', '\n', ],
       'charInterval' : [ 8, 13 ],
       'lineIndex' : 3,
       'nl' : '\r\n',
@@ -460,7 +460,7 @@ function eachLeftMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'charInterval' : [ 14, 13 ],
       'lineIndex' : 4,
       'nl' : '',
@@ -475,14 +475,14 @@ function eachLeftMultiple( test )
   test.case = '\\r\\nab\\nabc\\nabcd\\n';
   clean();
   var src = `\r\nab\nabc\nabcd\n`;
-  _.str.lines.eachLeft( src, onEach );
+  _.str.lines.eachLeft({ src, onEach, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n', ],
+      'eol' : [ '\r\n', '\n', ],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 0,
       'nl' : '\r\n',
@@ -492,7 +492,7 @@ function eachLeftMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\n' ],
+      'eol' : [ '\n' ],
       'charInterval' : [ 2, 4 ],
       'lineIndex' : 1,
       'nl' : '\n',
@@ -502,7 +502,7 @@ function eachLeftMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\n' ],
+      'eol' : [ '\n' ],
       'charInterval' : [ 5, 8 ],
       'lineIndex' : 2,
       'nl' : '\n',
@@ -512,7 +512,7 @@ function eachLeftMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\n' ],
+      'eol' : [ '\n' ],
       'charInterval' : [ 9, 13 ],
       'lineIndex' : 3,
       'nl' : '\n',
@@ -522,7 +522,7 @@ function eachLeftMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'charInterval' : [ 14, 13 ],
       'lineIndex' : 4,
       'nl' : '',
@@ -537,14 +537,14 @@ function eachLeftMultiple( test )
   test.case = '\\r\\nab\\n\\rabc\\nabcd\\n';
   clean();
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachLeft( src, onEach );
+  _.str.lines.eachLeft({ src, onEach, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n\r', '\n' ],
+      'eol' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 0,
       'nl' : '\r\n',
@@ -554,7 +554,7 @@ function eachLeftMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\n\r', '\n' ],
+      'eol' : [ '\n\r', '\n' ],
       'charInterval' : [ 2, 5 ],
       'lineIndex' : 1,
       'nl' : '\n\r',
@@ -564,7 +564,7 @@ function eachLeftMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\n' ],
+      'eol' : [ '\n' ],
       'charInterval' : [ 6, 9 ],
       'lineIndex' : 2,
       'nl' : '\n',
@@ -574,7 +574,7 @@ function eachLeftMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\n' ],
+      'eol' : [ '\n' ],
       'charInterval' : [ 10, 14 ],
       'lineIndex' : 3,
       'nl' : '\n',
@@ -584,7 +584,7 @@ function eachLeftMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'charInterval' : [ 15, 14 ],
       'lineIndex' : 4,
       'nl' : '',
@@ -600,7 +600,7 @@ function eachLeftMultiple( test )
   {
     it = _.props.extend( null, it );
     it.charInterval = it.charInterval.slice();
-    it.nlTokens = it.nlTokens.slice();
+    it.eol = it.eol.slice();
     its.push( it );
   }
 
@@ -627,7 +627,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var src = ``;
   var interval = [ -2, -2 ];
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval,  });
   var exp =
   [
   ]
@@ -640,7 +640,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var src = ``;
   var interval = [ -1, -1 ];
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -653,7 +653,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var src = ``;
   var interval = [ 1, 1 ];
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -666,7 +666,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var src = ``;
   var interval = [ 2, 2 ];
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -679,7 +679,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var src = ``;
   var interval = [ 0, 0 ];
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -687,7 +687,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'lineIndex' : 0,
       'charInterval' : [ 0, -1 ],
       'nl' : '',
@@ -703,7 +703,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var src = ``;
   var interval = [ -1, 0 ];
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -711,7 +711,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'lineIndex' : 0,
       'charInterval' : [ 0, -1 ],
       'nl' : '',
@@ -727,7 +727,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var src = ``;
   var interval = [ 0, 1 ];
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -735,7 +735,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'lineIndex' : 0,
       'charInterval' : [ 0, -1 ],
       'nl' : '',
@@ -751,7 +751,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var src = ``;
   var interval = [ -1, 1 ];
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -759,7 +759,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'lineIndex' : 0,
       'charInterval' : [ 0, -1 ],
       'nl' : '',
@@ -775,7 +775,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var src = ``;
   var interval = [ 1, 1 ];
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -788,7 +788,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var src = `aa\nbb`;
   var interval = [ -Infinity, +Infinity ];
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -796,7 +796,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 0, 2 ],
       'lineIndex' : 0,
       'nl' : '\n',
@@ -807,7 +807,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 3, 4 ],
       'lineIndex' : 1,
       'nl' : '',
@@ -823,7 +823,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var src = `aa\nbb`;
   var interval = [ 0, 1 ];
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -831,7 +831,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 0, 2 ],
       'lineIndex' : 0,
       'nl' : '\n',
@@ -842,7 +842,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 3, 4 ],
       'lineIndex' : 1,
       'nl' : '',
@@ -858,7 +858,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var src = `aa\nbb`;
   var interval = [ 0, 0 ];
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -866,7 +866,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 0, 2 ],
       'lineIndex' : 0,
       'nl' : '\n',
@@ -882,7 +882,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var src = `aa\nbb`;
   var interval = [ 1, 1 ];
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -890,7 +890,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 3, 4 ],
       'lineIndex' : 1,
       'nl' : '',
@@ -906,7 +906,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var src = `aa\nbb`;
   var interval = [ -2, -2 ];
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -919,7 +919,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var src = `aa\nbb`;
   var interval = [ -1, -1 ];
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -932,7 +932,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var src = `aa\nbb`;
   var interval = [ 0, -1 ];
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -945,7 +945,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var src = `aa\nbb`;
   var interval = [ 2, 1 ];
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -958,7 +958,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var src = `aa\nbb`;
   var interval = [ 2, 2 ];
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -971,7 +971,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var interval = [ 0, 4 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -979,7 +979,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n\r', '\n' ],
+      'eol' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 0,
       'nl' : '\r\n',
@@ -990,7 +990,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\n\r', '\n' ],
+      'eol' : [ '\n\r', '\n' ],
       'charInterval' : [ 2, 5 ],
       'lineIndex' : 1,
       'nl' : '\n\r',
@@ -1001,7 +1001,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\n' ],
+      'eol' : [ '\n' ],
       'charInterval' : [ 6, 9 ],
       'lineIndex' : 2,
       'nl' : '\n',
@@ -1012,7 +1012,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\n' ],
+      'eol' : [ '\n' ],
       'charInterval' : [ 10, 14 ],
       'lineIndex' : 3,
       'nl' : '\n',
@@ -1023,7 +1023,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'charInterval' : [ 15, 14 ],
       'lineIndex' : 4,
       'nl' : '',
@@ -1039,7 +1039,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var interval = [ -1, 5 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -1047,7 +1047,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n\r', '\n' ],
+      'eol' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 0,
       'nl' : '\r\n',
@@ -1058,7 +1058,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\n\r', '\n' ],
+      'eol' : [ '\n\r', '\n' ],
       'charInterval' : [ 2, 5 ],
       'lineIndex' : 1,
       'nl' : '\n\r',
@@ -1069,7 +1069,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\n' ],
+      'eol' : [ '\n' ],
       'charInterval' : [ 6, 9 ],
       'lineIndex' : 2,
       'nl' : '\n',
@@ -1080,7 +1080,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\n' ],
+      'eol' : [ '\n' ],
       'charInterval' : [ 10, 14 ],
       'lineIndex' : 3,
       'nl' : '\n',
@@ -1091,7 +1091,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'charInterval' : [ 15, 14 ],
       'lineIndex' : 4,
       'nl' : '',
@@ -1107,7 +1107,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var interval = [ 1, 3 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -1115,7 +1115,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\n\r', '\n' ],
+      'eol' : [ '\n\r', '\n' ],
       'charInterval' : [ 2, 5 ],
       'lineIndex' : 1,
       'nl' : '\n\r',
@@ -1126,7 +1126,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\n' ],
+      'eol' : [ '\n' ],
       'charInterval' : [ 6, 9 ],
       'lineIndex' : 2,
       'nl' : '\n',
@@ -1137,7 +1137,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\n' ],
+      'eol' : [ '\n' ],
       'charInterval' : [ 10, 14 ],
       'lineIndex' : 3,
       'nl' : '\n',
@@ -1153,7 +1153,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var interval = [ 2, 2 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -1161,7 +1161,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\n' ],
+      'eol' : [ '\n' ],
       'charInterval' : [ 6, 9 ],
       'lineIndex' : 2,
       'nl' : '\n',
@@ -1177,7 +1177,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var interval = [ -2, 0 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -1185,7 +1185,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n\r', '\n' ],
+      'eol' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 0,
       'nl' : '\r\n',
@@ -1201,7 +1201,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var interval = [ -2, 0 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -1209,7 +1209,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n\r', '\n' ],
+      'eol' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 0,
       'nl' : '\r\n',
@@ -1225,7 +1225,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var interval = [ 4, 4 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -1233,7 +1233,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'charInterval' : [ 15, 14 ],
       'lineIndex' : 4,
       'nl' : '',
@@ -1249,7 +1249,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var interval = [ 4, 6 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -1257,7 +1257,7 @@ function eachLeftMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'charInterval' : [ 15, 14 ],
       'lineIndex' : 4,
       'nl' : '',
@@ -1273,7 +1273,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var interval = [ 3, 2 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -1286,7 +1286,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var interval = [ 2, 1 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -1299,7 +1299,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var interval = [ -1, -1 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -1312,7 +1312,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var interval = [ 0, -1 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -1325,7 +1325,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var interval = [ -2, -1 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -1338,7 +1338,7 @@ function eachLeftMultipleInInterval( test )
   clean();
   var interval = [ 5, 6 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachLeft({ src, onEach, interval });
+  _.str.lines.eachLeft({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -1351,7 +1351,7 @@ function eachLeftMultipleInInterval( test )
   {
     it = _.props.extend( null, it );
     it.charInterval = it.charInterval.slice();
-    it.nlTokens = it.nlTokens.slice();
+    it.eol = it.eol.slice();
     it.interval = it.interval.slice();
     its.push( it );
   }
@@ -1386,7 +1386,7 @@ function eachLeftCallbacks( test )
 
     clean();
     var src = `aa\nbb\r\ncc`;
-    var o = { src, onEach, withLine : env.withLine };
+    var o = { src, onEach, withLine : env.withLine, eol : _.str.lines.Eol.any };
     if( env.interval )
     o.interval = [ 0, 2 ];
     var got = _.str.lines.eachLeft( o );
@@ -1396,7 +1396,7 @@ function eachLeftCallbacks( test )
       src,
       onEach,
       'withLine' : env.withLine,
-      'nlTokens' : [],
+      'eol' : [],
       'charInterval' : [ 9, 8 ],
       'lineIndex' : 3,
       'nl' : '',
@@ -1419,7 +1419,7 @@ function eachLeftCallbacks( test )
         src,
         onEach,
         'withLine' : env.withLine,
-        'nlTokens' : [ '\r\n', '\n' ],
+        'eol' : [ '\r\n', '\n' ],
         'charInterval' : [ 0, 2 ],
         'lineIndex' : 0,
         'nl' : '\n',
@@ -1428,7 +1428,7 @@ function eachLeftCallbacks( test )
         src,
         onEach,
         'withLine' : env.withLine,
-        'nlTokens' : [ '\r\n', '\n' ],
+        'eol' : [ '\r\n', '\n' ],
         'charInterval' : [ 3, 6 ],
         'lineIndex' : 1,
         'nl' : '\r\n',
@@ -1437,7 +1437,7 @@ function eachLeftCallbacks( test )
         src,
         onEach,
         'withLine' : env.withLine,
-        'nlTokens' : [],
+        'eol' : [],
         'charInterval' : [ 7, 8 ],
         'lineIndex' : 2,
         'nl' : '',
@@ -1466,7 +1466,7 @@ function eachLeftCallbacks( test )
   {
     it = _.props.extend( null, it );
     it.charInterval = it.charInterval.slice();
-    it.nlTokens = it.nlTokens.slice();
+    it.eol = it.eol.slice();
     if( it.interval )
     it.interval = it.interval.slice();
     its.push( it );
@@ -1941,7 +1941,7 @@ function atLeftMultiple( test )
     'lineIndex' : -1,
     'charInterval' : [ 0, -1 ],
   }
-  var got = _.str.lines.atLeft( src, -1 );
+  var got = _.str.lines.atLeft( src, -1, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -1951,7 +1951,7 @@ function atLeftMultiple( test )
     'line' : '',
     'nl' : '\n',
   }
-  var got = _.str.lines.atLeft( src, 0 );
+  var got = _.str.lines.atLeft( src, 0, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -1961,7 +1961,7 @@ function atLeftMultiple( test )
     'line' : 'ab',
     'nl' : '\n',
   }
-  var got = _.str.lines.atLeft( src, 1 );
+  var got = _.str.lines.atLeft( src, 1, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -1971,7 +1971,7 @@ function atLeftMultiple( test )
     'line' : 'abc',
     'nl' : '\n',
   }
-  var got = _.str.lines.atLeft( src, 2 );
+  var got = _.str.lines.atLeft( src, 2, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -1981,7 +1981,7 @@ function atLeftMultiple( test )
     'line' : 'abcd',
     'nl' : '\r\n',
   }
-  var got = _.str.lines.atLeft( src, 3 );
+  var got = _.str.lines.atLeft( src, 3, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -1991,7 +1991,7 @@ function atLeftMultiple( test )
     'line' : '',
     'nl' : '',
   }
-  var got = _.str.lines.atLeft( src, 4 );
+  var got = _.str.lines.atLeft( src, 4, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -1999,7 +1999,7 @@ function atLeftMultiple( test )
     'lineIndex' : 5,
     'charInterval' : [ 14, 13 ],
   }
-  var got = _.str.lines.atLeft( src, 5 );
+  var got = _.str.lines.atLeft( src, 5, _.str.lines.Eol.any );
   test.identical( got, exp );
   test.identical( src.length, 14 );
 
@@ -2013,7 +2013,7 @@ function atLeftMultiple( test )
     'lineIndex' : -1,
     'charInterval' : [ 0, -1 ],
   }
-  var got = _.str.lines.atLeft( src, -1 );
+  var got = _.str.lines.atLeft( src, -1, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -2023,7 +2023,7 @@ function atLeftMultiple( test )
     'line' : '',
     'nl' : '\r\n',
   }
-  var got = _.str.lines.atLeft( src, 0 );
+  var got = _.str.lines.atLeft( src, 0, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -2033,7 +2033,7 @@ function atLeftMultiple( test )
     'line' : 'ab',
     'nl' : '\n',
   }
-  var got = _.str.lines.atLeft( src, 1 );
+  var got = _.str.lines.atLeft( src, 1, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -2043,7 +2043,7 @@ function atLeftMultiple( test )
     'line' : 'abc',
     'nl' : '\n',
   }
-  var got = _.str.lines.atLeft( src, 2 );
+  var got = _.str.lines.atLeft( src, 2, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -2053,7 +2053,7 @@ function atLeftMultiple( test )
     'line' : 'abcd',
     'nl' : '\n',
   }
-  var got = _.str.lines.atLeft( src, 3 );
+  var got = _.str.lines.atLeft( src, 3, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -2063,7 +2063,7 @@ function atLeftMultiple( test )
     'line' : '',
     'nl' : '',
   }
-  var got = _.str.lines.atLeft( src, 4 );
+  var got = _.str.lines.atLeft( src, 4, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -2071,7 +2071,7 @@ function atLeftMultiple( test )
     'lineIndex' : 5,
     'charInterval' : [ 14, 13 ],
   }
-  var got = _.str.lines.atLeft( src, 5 );
+  var got = _.str.lines.atLeft( src, 5, _.str.lines.Eol.any );
   test.identical( got, exp );
   test.identical( src.length, 14 );
 
@@ -2085,7 +2085,7 @@ function atLeftMultiple( test )
     'lineIndex' : -1,
     'charInterval' : [ 0, -1 ],
   }
-  var got = _.str.lines.atLeft( src, -1 );
+  var got = _.str.lines.atLeft( src, -1, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -2095,7 +2095,7 @@ function atLeftMultiple( test )
     'line' : '',
     'nl' : '\r\n',
   }
-  var got = _.str.lines.atLeft( src, 0 );
+  var got = _.str.lines.atLeft( src, 0, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -2105,7 +2105,7 @@ function atLeftMultiple( test )
     'line' : 'ab',
     'nl' : '\n\r',
   }
-  var got = _.str.lines.atLeft( src, 1 );
+  var got = _.str.lines.atLeft( src, 1, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -2115,7 +2115,7 @@ function atLeftMultiple( test )
     'line' : 'abc',
     'nl' : '\n',
   }
-  var got = _.str.lines.atLeft( src, 2 );
+  var got = _.str.lines.atLeft( src, 2, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -2125,7 +2125,7 @@ function atLeftMultiple( test )
     'line' : 'abcd',
     'nl' : '\n',
   }
-  var got = _.str.lines.atLeft( src, 3 );
+  var got = _.str.lines.atLeft( src, 3, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -2135,7 +2135,7 @@ function atLeftMultiple( test )
     'line' : '',
     'nl' : '',
   }
-  var got = _.str.lines.atLeft( src, 4 );
+  var got = _.str.lines.atLeft( src, 4, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -2143,7 +2143,7 @@ function atLeftMultiple( test )
     'lineIndex' : 5,
     'charInterval' : [ 15, 14 ],
   }
-  var got = _.str.lines.atLeft( src, 5 );
+  var got = _.str.lines.atLeft( src, 5, _.str.lines.Eol.any );
   test.identical( got, exp );
   test.identical( src.length, 15 );
 
@@ -2162,7 +2162,7 @@ function eachRightSingle( test )
   test.case = 'empty';
   clean();
   var src = ``;
-  _.str.lines.eachRight( src, onEach );
+  _.str.lines.eachRight({ src, onEach, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -2170,7 +2170,7 @@ function eachRightSingle( test )
       onEach,
       'withLine' : true,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'lineIndex' : 0,
       'charInterval' : [ 0, -1 ],
       'nl' : '',
@@ -2185,7 +2185,7 @@ function eachRightSingle( test )
   test.case = 'single line';
   clean();
   var src = `abc`;
-  _.str.lines.eachRight( src, onEach );
+  _.str.lines.eachRight({ src, onEach, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -2193,7 +2193,7 @@ function eachRightSingle( test )
       onEach,
       'withLine' : true,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'lineIndex' : 0,
       'charInterval' : [ 0, 2 ],
       'nl' : '',
@@ -2208,14 +2208,14 @@ function eachRightSingle( test )
   test.case = '\\n';
   clean();
   var src = `\n`;
-  _.str.lines.eachRight( src, onEach );
+  _.str.lines.eachRight({ src, onEach, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 1, 0 ],
       'lineIndex' : 0,
       'nl' : '',
@@ -2225,7 +2225,7 @@ function eachRightSingle( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 0, 0 ],
       'lineIndex' : 1,
       'nl' : '\n',
@@ -2240,14 +2240,14 @@ function eachRightSingle( test )
   test.case = 'aa\\nbb';
   clean();
   var src = `aa\nbb`;
-  _.str.lines.eachRight( src, onEach );
+  _.str.lines.eachRight({ src, onEach, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 3, 4 ],
       'lineIndex' : 0,
       'nl' : '',
@@ -2257,7 +2257,7 @@ function eachRightSingle( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 0, 2 ],
       'lineIndex' : 1,
       'nl' : '\n',
@@ -2272,14 +2272,14 @@ function eachRightSingle( test )
   test.case = 'ab\\nabc\\nabcd';
   clean();
   var src = `ab\nabc\nabcd`;
-  _.str.lines.eachRight( src, onEach );
+  _.str.lines.eachRight({ src, onEach, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 7, 10 ],
       'lineIndex' : 0,
       'nl' : '',
@@ -2289,7 +2289,7 @@ function eachRightSingle( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 3, 6 ],
       'lineIndex' : 1,
       'nl' : '\n',
@@ -2299,7 +2299,7 @@ function eachRightSingle( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 0, 2 ],
       'lineIndex' : 2,
       'nl' : '\n',
@@ -2314,14 +2314,14 @@ function eachRightSingle( test )
   test.case = '\\nab\\nabc\\nabcd\\n';
   clean();
   var src = `\nab\nabc\nabcd\n`;
-  _.str.lines.eachRight( src, onEach );
+  _.str.lines.eachRight({ src, onEach, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 13, 12 ],
       'lineIndex' : 0,
       'nl' : '',
@@ -2331,7 +2331,7 @@ function eachRightSingle( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 8, 12 ],
       'lineIndex' : 1,
       'nl' : '\n',
@@ -2341,7 +2341,7 @@ function eachRightSingle( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 4, 7 ],
       'lineIndex' : 2,
       'nl' : '\n',
@@ -2351,7 +2351,7 @@ function eachRightSingle( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 1, 3 ],
       'lineIndex' : 3,
       'nl' : '\n',
@@ -2361,7 +2361,7 @@ function eachRightSingle( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 0, 0 ],
       'lineIndex' : 4,
       'nl' : '\n',
@@ -2377,7 +2377,7 @@ function eachRightSingle( test )
   {
     it = _.props.extend( null, it );
     it.charInterval = it.charInterval.slice();
-    it.nlTokens = it.nlTokens.slice();
+    it.eol = it.eol.slice();
     its.push( it );
   }
 
@@ -2402,16 +2402,16 @@ function eachRightCustomToken( test )
 
   test.case = '\\n';
   clean();
-  var nlTokens = '\n';
+  var eol = '\n';
   var src = `\n`;
-  _.str.lines.eachRight({ src, onEach, nlTokens });
+  _.str.lines.eachRight({ src, onEach, eol });
   var exp =
   [
     {
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 1, 0 ],
       'lineIndex' : 0,
       'nl' : '',
@@ -2421,7 +2421,7 @@ function eachRightCustomToken( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 0, 0 ],
       'lineIndex' : 1,
       'nl' : '\n',
@@ -2435,16 +2435,16 @@ function eachRightCustomToken( test )
 
   test.case = 'ab\\nabc\\nabcd';
   clean();
-  var nlTokens = '\r\n';
+  var eol = '\r\n';
   var src = `ab\r\nabc\r\nabcd`;
-  _.str.lines.eachRight({ src, onEach, nlTokens });
+  _.str.lines.eachRight({ src, onEach, eol });
   var exp =
   [
     {
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\r\n',
+      'eol' : '\r\n',
       'charInterval' : [ 9, 12 ],
       'lineIndex' : 0,
       'nl' : '',
@@ -2454,7 +2454,7 @@ function eachRightCustomToken( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\r\n',
+      'eol' : '\r\n',
       'charInterval' : [ 4, 8 ],
       'lineIndex' : 1,
       'nl' : '\r\n',
@@ -2464,7 +2464,7 @@ function eachRightCustomToken( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\r\n',
+      'eol' : '\r\n',
       'charInterval' : [ 0, 3 ],
       'lineIndex' : 2,
       'nl' : '\r\n',
@@ -2479,14 +2479,14 @@ function eachRightCustomToken( test )
   test.case = '\\r\\nab\\r\\nabc\\r\\nabcd\\r\\n';
   clean();
   var src = `\r\nab\r\nabc\r\nabcd\r\n`;
-  _.str.lines.eachRight({ src, onEach, nlTokens });
+  _.str.lines.eachRight({ src, onEach, eol });
   var exp =
   [
     {
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\r\n',
+      'eol' : '\r\n',
       'charInterval' : [ 17, 16 ],
       'lineIndex' : 0,
       'nl' : '',
@@ -2496,7 +2496,7 @@ function eachRightCustomToken( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\r\n',
+      'eol' : '\r\n',
       'charInterval' : [ 11, 16 ],
       'lineIndex' : 1,
       'nl' : '\r\n',
@@ -2506,7 +2506,7 @@ function eachRightCustomToken( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\r\n',
+      'eol' : '\r\n',
       'charInterval' : [ 6, 10 ],
       'lineIndex' : 2,
       'nl' : '\r\n',
@@ -2516,7 +2516,7 @@ function eachRightCustomToken( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\r\n',
+      'eol' : '\r\n',
       'charInterval' : [ 2, 5 ],
       'lineIndex' : 3,
       'nl' : '\r\n',
@@ -2526,7 +2526,7 @@ function eachRightCustomToken( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : '\r\n',
+      'eol' : '\r\n',
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 4,
       'nl' : '\r\n',
@@ -2542,7 +2542,7 @@ function eachRightCustomToken( test )
   {
     it = _.props.extend( null, it );
     it.charInterval = it.charInterval.slice();
-    it.nlTokens = it.nlTokens.slice();
+    it.eol = it.eol.slice();
     its.push( it );
   }
 
@@ -2568,14 +2568,14 @@ function eachRightMultiple( test )
   test.case = 'aa\\nbb\\r\\ncc';
   clean();
   var src = `aa\nbb\r\ncc`;
-  _.str.lines.eachRight( src, onEach );
+  _.str.lines.eachRight({ src, onEach, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n' ],
+      'eol' : [ '\r\n', '\n' ],
       'charInterval' : [ 7, 8 ],
       'lineIndex' : 0,
       'nl' : '',
@@ -2585,7 +2585,7 @@ function eachRightMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\n' ],
+      'eol' : [ '\n' ],
       'charInterval' : [ 3, 6 ],
       'lineIndex' : 1,
       'nl' : '\r\n',
@@ -2595,7 +2595,7 @@ function eachRightMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'charInterval' : [ 0, 2 ],
       'lineIndex' : 2,
       'nl' : '\n',
@@ -2610,14 +2610,14 @@ function eachRightMultiple( test )
   test.case = '\\nab\\nabc\\nabcd\\r\\n';
   clean();
   var src = `\nab\nabc\nabcd\r\n`;
-  _.str.lines.eachRight( src, onEach );
+  _.str.lines.eachRight({ src, onEach, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n', ],
+      'eol' : [ '\r\n', '\n', ],
       'charInterval' : [ 14, 13 ],
       'lineIndex' : 0,
       'nl' : '',
@@ -2627,7 +2627,7 @@ function eachRightMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\n', ],
+      'eol' : [ '\n', ],
       'charInterval' : [ 8, 13 ],
       'lineIndex' : 1,
       'nl' : '\r\n',
@@ -2637,7 +2637,7 @@ function eachRightMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\n', ],
+      'eol' : [ '\n', ],
       'charInterval' : [ 4, 7 ],
       'lineIndex' : 2,
       'nl' : '\n',
@@ -2647,7 +2647,7 @@ function eachRightMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\n', ],
+      'eol' : [ '\n', ],
       'charInterval' : [ 1, 3 ],
       'lineIndex' : 3,
       'nl' : '\n',
@@ -2657,7 +2657,7 @@ function eachRightMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'charInterval' : [ 0, 0 ],
       'lineIndex' : 4,
       'nl' : '\n',
@@ -2672,14 +2672,14 @@ function eachRightMultiple( test )
   test.case = '\\r\\nab\\nabc\\nabcd\\n';
   clean();
   var src = `\r\nab\nabc\nabcd\n`;
-  _.str.lines.eachRight( src, onEach );
+  _.str.lines.eachRight({ src, onEach, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n', ],
+      'eol' : [ '\r\n', '\n', ],
       'charInterval' : [ 14, 13 ],
       'lineIndex' : 0,
       'nl' : '',
@@ -2689,7 +2689,7 @@ function eachRightMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n', ],
+      'eol' : [ '\r\n', '\n', ],
       'charInterval' : [ 9, 13 ],
       'lineIndex' : 1,
       'nl' : '\n',
@@ -2699,7 +2699,7 @@ function eachRightMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n', ],
+      'eol' : [ '\r\n', '\n', ],
       'charInterval' : [ 5, 8 ],
       'lineIndex' : 2,
       'nl' : '\n',
@@ -2709,7 +2709,7 @@ function eachRightMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n', ],
+      'eol' : [ '\r\n', '\n', ],
       'charInterval' : [ 2, 4 ],
       'lineIndex' : 3,
       'nl' : '\n',
@@ -2719,7 +2719,7 @@ function eachRightMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 4,
       'nl' : '\r\n',
@@ -2734,14 +2734,14 @@ function eachRightMultiple( test )
   test.case = '\\r\\nab\\n\\rabc\\nabcd\\n';
   clean();
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachRight( src, onEach );
+  _.str.lines.eachRight({ src, onEach, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n\r', '\n' ],
+      'eol' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 15, 14 ],
       'lineIndex' : 0,
       'nl' : '',
@@ -2751,7 +2751,7 @@ function eachRightMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n\r', '\n' ],
+      'eol' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 10, 14 ],
       'lineIndex' : 1,
       'nl' : '\n',
@@ -2761,7 +2761,7 @@ function eachRightMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n\r', '\n' ],
+      'eol' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 6, 9 ],
       'lineIndex' : 2,
       'nl' : '\n',
@@ -2771,7 +2771,7 @@ function eachRightMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n' ],
+      'eol' : [ '\r\n', '\n' ],
       'charInterval' : [ 2, 5 ],
       'lineIndex' : 3,
       'nl' : '\n\r',
@@ -2781,7 +2781,7 @@ function eachRightMultiple( test )
       src,
       onEach,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 4,
       'nl' : '\r\n',
@@ -2797,7 +2797,7 @@ function eachRightMultiple( test )
   {
     it = _.props.extend( null, it );
     it.charInterval = it.charInterval.slice();
-    it.nlTokens = it.nlTokens.slice();
+    it.eol = it.eol.slice();
     its.push( it );
     debugger;
   }
@@ -2825,7 +2825,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var src = ``;
   var interval = [ -2, -2 ];
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -2838,7 +2838,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var src = ``;
   var interval = [ -1, -1 ];
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -2851,7 +2851,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var src = ``;
   var interval = [ 1, 1 ];
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -2864,7 +2864,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var src = ``;
   var interval = [ 2, 2 ];
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -2877,7 +2877,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var src = ``;
   var interval = [ 0, 0 ];
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -2885,7 +2885,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'lineIndex' : 0,
       'nl' : '',
       'charInterval' : [ 0, -1 ],
@@ -2901,7 +2901,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var src = ``;
   var interval = [ -1, 0 ];
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -2909,7 +2909,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'lineIndex' : 0,
       'nl' : '',
       'charInterval' : [ 0, -1 ],
@@ -2925,7 +2925,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var src = ``;
   var interval = [ 0, 1 ];
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -2933,7 +2933,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'lineIndex' : 0,
       'nl' : '',
       'charInterval' : [ 0, -1 ],
@@ -2949,7 +2949,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var src = ``;
   var interval = [ -1, 1 ];
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -2957,7 +2957,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'lineIndex' : 0,
       'nl' : '',
       'charInterval' : [ 0, -1 ],
@@ -2973,7 +2973,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var src = ``;
   var interval = [ 1, 1 ];
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -2986,7 +2986,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var src = `aa\nbb`;
   var interval = [ -Infinity, +Infinity ];
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -2994,7 +2994,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 3, 4 ],
       'lineIndex' : 0,
       'nl' : '',
@@ -3005,7 +3005,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 0, 2 ],
       'lineIndex' : 1,
       'nl' : '\n',
@@ -3021,7 +3021,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var src = `aa\nbb`;
   var interval = [ 0, 1 ];
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -3029,7 +3029,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 3, 4 ],
       'lineIndex' : 0,
       'nl' : '',
@@ -3040,7 +3040,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 0, 2 ],
       'lineIndex' : 1,
       'nl' : '\n',
@@ -3056,7 +3056,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var src = `aa\nbb`;
   var interval = [ 0, 0 ];
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -3064,7 +3064,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 3, 4 ],
       'lineIndex' : 0,
       'nl' : '',
@@ -3080,7 +3080,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var src = `aa\nbb`;
   var interval = [ 1, 1 ];
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -3088,7 +3088,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : '\n',
+      'eol' : '\n',
       'charInterval' : [ 0, 2 ],
       'lineIndex' : 1,
       'nl' : '\n',
@@ -3104,7 +3104,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var src = `aa\nbb`;
   var interval = [ -2, -2 ];
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -3117,7 +3117,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var src = `aa\nbb`;
   var interval = [ -1, -1 ];
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -3130,7 +3130,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var src = `aa\nbb`;
   var interval = [ 0, -1 ];
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -3143,7 +3143,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var src = `aa\nbb`;
   var interval = [ 2, 1 ];
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -3156,7 +3156,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var src = `aa\nbb`;
   var interval = [ 2, 2 ];
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -3169,7 +3169,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var interval = [ 0, 4 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -3177,7 +3177,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n\r', '\n' ],
+      'eol' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 15, 14 ],
       'lineIndex' : 0,
       'nl' : '',
@@ -3188,7 +3188,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n\r', '\n' ],
+      'eol' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 10, 14 ],
       'lineIndex' : 1,
       'nl' : '\n',
@@ -3199,7 +3199,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n\r', '\n' ],
+      'eol' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 6, 9 ],
       'lineIndex' : 2,
       'nl' : '\n',
@@ -3210,7 +3210,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n' ],
+      'eol' : [ '\r\n', '\n' ],
       'charInterval' : [ 2, 5 ],
       'lineIndex' : 3,
       'nl' : '\n\r',
@@ -3221,7 +3221,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 4,
       'nl' : '\r\n',
@@ -3237,7 +3237,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var interval = [ -1, 5 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -3245,7 +3245,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n\r', '\n' ],
+      'eol' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 15, 14 ],
       'lineIndex' : 0,
       'nl' : '',
@@ -3256,7 +3256,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n\r', '\n' ],
+      'eol' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 10, 14 ],
       'lineIndex' : 1,
       'nl' : '\n',
@@ -3267,7 +3267,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n\r', '\n' ],
+      'eol' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 6, 9 ],
       'lineIndex' : 2,
       'nl' : '\n',
@@ -3278,7 +3278,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n' ],
+      'eol' : [ '\r\n', '\n' ],
       'charInterval' : [ 2, 5 ],
       'lineIndex' : 3,
       'nl' : '\n\r',
@@ -3289,7 +3289,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 4,
       'nl' : '\r\n',
@@ -3305,7 +3305,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var interval = [ 1, 3 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -3313,7 +3313,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n\r', '\n' ],
+      'eol' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 10, 14 ],
       'lineIndex' : 1,
       'nl' : '\n',
@@ -3324,7 +3324,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n\r', '\n' ],
+      'eol' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 6, 9 ],
       'lineIndex' : 2,
       'nl' : '\n',
@@ -3335,7 +3335,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n' ],
+      'eol' : [ '\r\n', '\n' ],
       'charInterval' : [ 2, 5 ],
       'lineIndex' : 3,
       'nl' : '\n\r',
@@ -3351,7 +3351,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var interval = [ 2, 2 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -3359,7 +3359,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n\r', '\n' ],
+      'eol' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 6, 9 ],
       'lineIndex' : 2,
       'nl' : '\n',
@@ -3375,7 +3375,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var interval = [ -2, 0 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -3383,7 +3383,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n\r', '\n' ],
+      'eol' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 15, 14 ],
       'lineIndex' : 0,
       'nl' : '',
@@ -3399,7 +3399,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var interval = [ -2, 0 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -3407,7 +3407,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [ '\r\n', '\n\r', '\n' ],
+      'eol' : [ '\r\n', '\n\r', '\n' ],
       'charInterval' : [ 15, 14 ],
       'lineIndex' : 0,
       'nl' : '',
@@ -3423,7 +3423,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var interval = [ 4, 4 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -3431,7 +3431,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 4,
       'nl' : '\r\n',
@@ -3447,7 +3447,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var interval = [ 4, 6 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
     {
@@ -3455,7 +3455,7 @@ function eachRightMultipleInInterval( test )
       onEach,
       interval,
       'withLine' : true,
-      'nlTokens' : [],
+      'eol' : [],
       'charInterval' : [ 0, 1 ],
       'lineIndex' : 4,
       'nl' : '\r\n',
@@ -3471,7 +3471,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var interval = [ 3, 2 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -3484,7 +3484,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var interval = [ 2, 1 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -3497,7 +3497,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var interval = [ -1, -1 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -3510,7 +3510,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var interval = [ 0, -1 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -3523,7 +3523,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var interval = [ -2, -1 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -3536,7 +3536,7 @@ function eachRightMultipleInInterval( test )
   clean();
   var interval = [ 5, 6 ];
   var src = `\r\nab\n\rabc\nabcd\n`;
-  _.str.lines.eachRight({ src, onEach, interval });
+  _.str.lines.eachRight({ src, onEach, interval, eol : _.str.lines.Eol.any });
   var exp =
   [
   ]
@@ -3549,7 +3549,7 @@ function eachRightMultipleInInterval( test )
   {
     it = _.props.extend( null, it );
     it.charInterval = it.charInterval.slice();
-    it.nlTokens = it.nlTokens.slice();
+    it.eol = it.eol.slice();
     it.interval = it.interval.slice();
     its.push( it );
   }
@@ -3584,7 +3584,7 @@ function eachRightCallbacks( test )
 
     clean();
     var src = `aa\nbb\r\ncc`;
-    var o = { src, onEach, withLine : env.withLine };
+    var o = { src, onEach, withLine : env.withLine, eol : _.str.lines.Eol.any };
     if( env.interval )
     o.interval = [ 0, 2 ];
 
@@ -3595,7 +3595,7 @@ function eachRightCallbacks( test )
       src,
       onEach,
       'withLine' : env.withLine,
-      'nlTokens' : [],
+      'eol' : [],
       'charInterval' : [ 0, -1 ],
       'lineIndex' : 3,
       'nl' : '\n',
@@ -3618,7 +3618,7 @@ function eachRightCallbacks( test )
         src,
         onEach,
         'withLine' : env.withLine,
-        'nlTokens' : [ '\r\n', '\n' ],
+        'eol' : [ '\r\n', '\n' ],
         'charInterval' : [ 7, 8 ],
         'lineIndex' : 0,
         'nl' : '',
@@ -3627,7 +3627,7 @@ function eachRightCallbacks( test )
         src,
         onEach,
         'withLine' : env.withLine,
-        'nlTokens' : [ '\n' ],
+        'eol' : [ '\n' ],
         'charInterval' : [ 3, 6 ],
         'lineIndex' : 1,
         'nl' : '\r\n',
@@ -3636,7 +3636,7 @@ function eachRightCallbacks( test )
         src,
         onEach,
         'withLine' : env.withLine,
-        'nlTokens' : [],
+        'eol' : [],
         'charInterval' : [ 0, 2 ],
         'lineIndex' : 2,
         'nl' : '\n',
@@ -3665,7 +3665,7 @@ function eachRightCallbacks( test )
   {
     it = _.props.extend( null, it );
     it.charInterval = it.charInterval.slice();
-    it.nlTokens = it.nlTokens.slice();
+    it.eol = it.eol.slice();
     if( it.interval )
     it.interval = it.interval.slice();
     its.push( it );
@@ -4140,7 +4140,7 @@ function atRightMultiple( test )
     'lineIndex' : -1,
     'charInterval' : [ 14, 13 ],
   }
-  var got = _.str.lines.atRight( src, -1 );
+  var got = _.str.lines.atRight( src, -1, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -4150,7 +4150,7 @@ function atRightMultiple( test )
     'line' : '',
     'nl' : '',
   }
-  var got = _.str.lines.atRight( src, 0 );
+  var got = _.str.lines.atRight( src, 0, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -4160,7 +4160,7 @@ function atRightMultiple( test )
     'line' : 'abcd',
     'nl' : '\r\n',
   }
-  var got = _.str.lines.atRight( src, 1 );
+  var got = _.str.lines.atRight( src, 1, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -4170,7 +4170,7 @@ function atRightMultiple( test )
     'line' : 'abc',
     'nl' : '\n',
   }
-  var got = _.str.lines.atRight( src, 2 );
+  var got = _.str.lines.atRight( src, 2, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -4180,7 +4180,7 @@ function atRightMultiple( test )
     'line' : 'ab',
     'nl' : '\n',
   }
-  var got = _.str.lines.atRight( src, 3 );
+  var got = _.str.lines.atRight( src, 3, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -4190,7 +4190,7 @@ function atRightMultiple( test )
     'line' : '',
     'nl' : '\n',
   }
-  var got = _.str.lines.atRight( src, 4 );
+  var got = _.str.lines.atRight( src, 4, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -4198,7 +4198,7 @@ function atRightMultiple( test )
     'lineIndex' : 5,
     'charInterval' : [ 0, -1 ],
   }
-  var got = _.str.lines.atRight( src, 5 );
+  var got = _.str.lines.atRight( src, 5, _.str.lines.Eol.any );
   test.identical( got, exp );
   test.identical( src.length, 14 );
 
@@ -4212,7 +4212,7 @@ function atRightMultiple( test )
     'lineIndex' : -1,
     'charInterval' : [ 14, 13 ],
   }
-  var got = _.str.lines.atRight( src, -1 );
+  var got = _.str.lines.atRight( src, -1, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -4222,7 +4222,7 @@ function atRightMultiple( test )
     'line' : '',
     'nl' : '',
   }
-  var got = _.str.lines.atRight( src, 0 );
+  var got = _.str.lines.atRight( src, 0, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -4232,7 +4232,7 @@ function atRightMultiple( test )
     'line' : 'abcd',
     'nl' : '\n',
   }
-  var got = _.str.lines.atRight( src, 1 );
+  var got = _.str.lines.atRight( src, 1, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -4242,7 +4242,7 @@ function atRightMultiple( test )
     'line' : 'abc',
     'nl' : '\n',
   }
-  var got = _.str.lines.atRight( src, 2 );
+  var got = _.str.lines.atRight( src, 2, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -4252,7 +4252,7 @@ function atRightMultiple( test )
     'line' : 'ab',
     'nl' : '\n',
   }
-  var got = _.str.lines.atRight( src, 3 );
+  var got = _.str.lines.atRight( src, 3, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -4262,7 +4262,7 @@ function atRightMultiple( test )
     'line' : '',
     'nl' : '\r\n',
   }
-  var got = _.str.lines.atRight( src, 4 );
+  var got = _.str.lines.atRight( src, 4, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -4270,7 +4270,7 @@ function atRightMultiple( test )
     'lineIndex' : 5,
     'charInterval' : [ 0, -1 ],
   }
-  var got = _.str.lines.atRight( src, 5 );
+  var got = _.str.lines.atRight( src, 5, _.str.lines.Eol.any );
   test.identical( got, exp );
   test.identical( src.length, 14 );
 
@@ -4284,7 +4284,7 @@ function atRightMultiple( test )
     'lineIndex' : -1,
     'charInterval' : [ 15, 14 ],
   }
-  var got = _.str.lines.atRight( src, -1 );
+  var got = _.str.lines.atRight( src, -1, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -4294,7 +4294,7 @@ function atRightMultiple( test )
     'line' : '',
     'nl' : '',
   }
-  var got = _.str.lines.atRight( src, 0 );
+  var got = _.str.lines.atRight( src, 0, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -4304,7 +4304,7 @@ function atRightMultiple( test )
     'line' : 'abcd',
     'nl' : '\n',
   }
-  var got = _.str.lines.atRight( src, 1 );
+  var got = _.str.lines.atRight( src, 1, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -4314,7 +4314,7 @@ function atRightMultiple( test )
     'line' : 'abc',
     'nl' : '\n',
   }
-  var got = _.str.lines.atRight( src, 2 );
+  var got = _.str.lines.atRight( src, 2, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -4324,7 +4324,7 @@ function atRightMultiple( test )
     'line' : 'ab',
     'nl' : '\n\r',
   }
-  var got = _.str.lines.atRight( src, 3 );
+  var got = _.str.lines.atRight( src, 3, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -4334,7 +4334,7 @@ function atRightMultiple( test )
     'line' : '',
     'nl' : '\r\n',
   }
-  var got = _.str.lines.atRight( src, 4 );
+  var got = _.str.lines.atRight( src, 4, _.str.lines.Eol.any );
   test.identical( got, exp );
   var exp  =
   {
@@ -4342,7 +4342,7 @@ function atRightMultiple( test )
     'lineIndex' : 5,
     'charInterval' : [ 0, -1 ],
   }
-  var got = _.str.lines.atRight( src, 5 );
+  var got = _.str.lines.atRight( src, 5, _.str.lines.Eol.any );
   test.identical( got, exp );
   test.identical( src.length, 15 );
 

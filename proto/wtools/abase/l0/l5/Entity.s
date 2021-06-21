@@ -10,56 +10,6 @@ const _ = _global_.wTools;
 // exporter
 // --
 
-// /**
-//  * Return in one string value of all arguments.
-//  *
-//  * @example
-//  * let args = _.entity.exportStringDiagnosticShallow/*exportStringSimple*/( 'test2' );
-//  *
-//  * @return {string}
-//  * If no arguments return empty string
-//  * @function exportStringSimple
-//  * @namespace Tools
-//  */
-//
-// function exportStringSimple()
-// {
-//   let result = '';
-//   let line;
-//
-//   if( !arguments.length )
-//   return result;
-//
-//   _.assert( arguments.length === 1 );
-//
-//   for( let a = 0 ; a < arguments.length ; a++ )
-//   {
-//     let src = arguments[ a ];
-//
-//     if( src && src.toStr && !Object.hasOwnProperty.call( src, 'constructor' ) )
-//     {
-//       line = src.toStr();
-//     }
-//     else try
-//     {
-//       line = String( src );
-//     }
-//     catch( err )
-//     {
-//       line = _.entity.strType( src );
-//     }
-//
-//     result += line;
-//     if( a < arguments.length-1 )
-//     result += ' ';
-//
-//   }
-//
-//   return result;
-// }
-
-//
-
 function exportStringDiagnosticShallow( src, opts )
 {
   let result = '';
@@ -75,7 +25,6 @@ function exportStringDiagnosticShallow( src, opts )
 function _exportStringShallow( src, o )
 {
 
-  // _.routine.assertOptions( _exportStringShallow, o );
   _.assert( arguments.length === 2 );
   _.assert( _.number.is( o.widthLimit ) && o.widthLimit >= 0 );
   _.assert( _.number.is( o.heightLimit ) && o.heightLimit >= 0 );
@@ -88,7 +37,7 @@ function _exportStringShallow( src, o )
   try
   {
 
-    let namespace = this.namespaceOfEntity( src );
+    let namespace = this.namespaceForExporting( src );
     if( namespace === null )
     {
       _.assert( 0, 'not tested' );
@@ -96,48 +45,6 @@ function _exportStringShallow( src, o )
     }
 
     result = namespace[ method ]( src );
-
-    // if( _.primitive.is( src ) )
-    // {
-    //   result = _.primitive[ method ]( src );
-    // }
-    // else if( _.set.like( src ) )
-    // {
-    //   result = _.set[ method ]( src );
-    // }
-    // else if( _.hashMap.like( src ) )
-    // {
-    //   result = _.hashMap[ method ]( src );
-    // }
-    // else if( _.vector.like( src ) )
-    // {
-    //   result = _.vector[ method ]( src );
-    // }
-    // else if( _.date.is( src ) )
-    // {
-    //   result = _.date[ method ]( src );
-    // }
-    // else if( _.regexpIs( src ) )
-    // {
-    //   result = _.regexp[ method ]( src );
-    // }
-    // else if( _.routine.is( src ) )
-    // {
-    //   result = _.routine[ method ]( src );
-    // }
-    // else if( _.aux.like( src ) )
-    // {
-    //   result = _.aux[ method ]( src );
-    // }
-    // else if( _.object.like( src ) )
-    // {
-    //   result = _.object[ method ]( src );
-    // }
-    // else
-    // {
-    //   result = String( src );
-    // }
-
     result = _.strShort_({ src : result, widthLimit : o.widthLimit, heightLimit : o.heightLimit }).result;
 
   }
@@ -181,11 +88,8 @@ exportStringCodeShallow.defaults =
 function exportStringDiagnosticShallow( src, o ) /* */
 {
   _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
-
-  // o = _.routine.options_( exportStringDiagnosticShallow, o || null );
   o = _.aux.supplement( o || null, exportStringDiagnosticShallow.defaults );
   o.format = o.format || exportStringDiagnosticShallow.defaults.format;
-
   return _.entity._exportStringShallow( src, o );
 }
 
@@ -505,16 +409,12 @@ let EntityExtension =
 
   // exporter
 
-  // exportStringSimple, /* xxx : deprecate? */
   exportStringDiagnosticShallow,
 
   _exportStringShallow,
   exportString : exportStringDiagnosticShallow,
   exportStringCodeShallow,
   exportStringDiagnosticShallow,
-
-  // exportStringShallowFine : exportStringDiagnosticShallow, /* xxx : remove */
-  // exportStringSolo,
 
   // etc
 

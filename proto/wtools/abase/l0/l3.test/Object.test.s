@@ -65,7 +65,7 @@ function exportStringDiagnosticShallow( test )
 
   test.case = `strange map`;
   var src = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
-  var expected = '{- Map.polluted with 3 elements -}';
+  var expected = '{- Map.polluted.countable with 3 elements -}';
   var got = _.object.exportStringDiagnosticShallow( src );
   test.identical( got, expected );
 

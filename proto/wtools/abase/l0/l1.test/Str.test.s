@@ -395,7 +395,7 @@ function strShort_( test )
   test.identical( got.changed, false );
   test.identical( got.src, 'string' );
 
-  //
+  /* */
 
   test.case = 'nothing to cut = limit, with delimeter';
   var src = { src : 'string', widthLimit : 6, delimeter : '.' }
@@ -413,7 +413,7 @@ function strShort_( test )
   test.identical( got.changed, false );
   test.identical( got.src, 'string' );
 
-  //
+  /* */
 
   test.open( 'change src' );
 
@@ -1161,7 +1161,7 @@ function strShort_OptionHeightCutting( test )
   var expected = 'b\ng';
   test.identical( got.result, expected );
 
-  //
+  /* */
 
   test.case = 'cut 1 symbol right, cut 1 line left';
   var src = { src : 'ab\ncd\neg', widthLimit : 1, heightLimit : 2, cutting : 'right', heightCutting : 'left' }
@@ -1181,7 +1181,7 @@ function strShort_OptionHeightCutting( test )
   var expected = 'a\ne';
   test.identical( got.result, expected );
 
-  //
+  /* */
 
   test.case = 'cut 1 symbol center, cut 1 line left';
   var src = { src : 'ab1\ncd2\neg3', widthLimit : 2, heightLimit : 2, cutting : 'center', heightCutting : 'left' }
@@ -1584,7 +1584,7 @@ function strShort_OptionsCombination( test )
   var expected = '.12\n*\n.90';
   test.identical( got.result, expected );
 
-  //
+  /* */
 
   test.case = 'cutting : right, heightCutting : left';
   var src =
@@ -1631,7 +1631,7 @@ function strShort_OptionsCombination( test )
   var expected = 'ab.\n*\nkl.';
   test.identical( got.result, expected );
 
-  //
+  /* */
 
   test.case = 'cutting : center, heightCutting : left';
   var src =
@@ -2037,7 +2037,7 @@ function strShortWidthOptionDelimeter( test )
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
-  //
+  /* */
 
   test.case = 'cut 1 letter, delimeter = o.src';
   var src = { src : 'st\nst\nst', limit : 2, cutting : 'left', delimeter : '..' }
@@ -2060,7 +2060,7 @@ function strShortWidthOptionDelimeter( test )
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
-  //
+  /* */
 
   test.case = 'cut 1 letter, delimeter > o.src';
   var src = { src : 'st\nst\nst', limit : 2, cutting : 'left', delimeter : '...' }
@@ -2348,7 +2348,7 @@ function strShortHeightOptionDelimeter( test )
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
-  //
+  /* */
 
   test.case = 'cut left, o.limit=2';
   var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 2, cutting : 'left', delimeter : '.' }
@@ -2371,7 +2371,7 @@ function strShortHeightOptionDelimeter( test )
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
-  //
+  /* */
 
   test.case = 'cut left, o.limit=3';
   var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 3, cutting : 'left', delimeter : '.' }
@@ -2394,7 +2394,7 @@ function strShortHeightOptionDelimeter( test )
   test.identical( got.result, expected );
   test.identical( got.changed, true );
 
-  //
+  /* */
 
   test.case = 'cut left, o.limit=4';
   var src = { src : 'string\nstring\nstring\nstring\nstring\nstring\nstring\nstring', limit : 4, cutting : 'left', delimeter : '.' }
@@ -2418,7 +2418,7 @@ function strShortHeightOptionDelimeter( test )
   test.identical( got.changed, true );
 
 
-  //
+  /* */
 
   test.case = 'cut left, o.limit > str.length, delimeter is not placed';
   var src = { src : 'string\nstring', limit : 4, cutting : 'left', delimeter : '.' }
@@ -2441,7 +2441,7 @@ function strShortHeightOptionDelimeter( test )
   test.identical( got.result, expected );
   test.identical( got.changed, false );
 
-  //
+  /* */
 
   test.case = 'cut left, o.limit = str.length, delimeter is not placed';
   var src = { src : 'string\nstring', limit : 4, cutting : 'left', delimeter : '.' }

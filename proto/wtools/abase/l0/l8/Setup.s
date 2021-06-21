@@ -106,7 +106,7 @@ function _setupTesterPlaceholder()
       {
         debugger;
         if( _realGlobal_.wTester.test === test )
-        throw _.err( 'Cant wTesting.test, missing wTesting package' );
+        throw _.err( 'Cant run tests. Include module::wTesting.' );
         _realGlobal_.wTester.test.call( _realGlobal_.wTester, testSuitName );
       });
     }

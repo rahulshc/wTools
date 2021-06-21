@@ -154,6 +154,170 @@ function strip( test )
   test.shouldThrowErrorSync( () => _.ct.strip( {} ) );
 }
 
+//
+
+function parse( test )
+{
+  test.open( 'without space symbols' );
+
+  test.case = 'full parse, closing delimeter';
+  var got = _.ct.parse( 'this❮background:red❯is❮background:default❯text' );
+  var expected = [ 'this', [ 'background:red' ], 'is', [ 'background:default' ], 'text' ];
+  test.identical( got, expected );
+
+  test.case = 'opening delimiter, does not have closing';
+  var got = _.ct.parse( 'this❮background:red❯is❮background:default❯text❮is' );
+  var expected = [ 'this', [ 'background:red' ], 'is', [ 'background:default' ], 'text❮is' ];
+  test.identical( got, expected );
+
+  test.case = 'inlined at the beginning and false inlined';
+  var got = _.ct.parse( '❮background:red❯i❯s❮background:default❯❮text' );
+  var expected = [ [ 'background:red' ], 'i❯s', [ 'background:default' ], '❮text' ];
+  test.identical( got, expected );
+  var got = _.ct.parse( '❮background:red❯i❮s❮background:default❯❮text' );
+  var expected = [ [ 'background:red' ], 'i❮s', [ 'background:default' ], '❮text' ];
+  test.identical( got, expected );
+  var got = _.ct.parse( '❮background:red❯❮is❮background:default❯❯text' );
+  var expected = [ [ 'background:red' ], '❮is', [ 'background:default' ], '❯text' ];
+  test.identical( got, expected );
+
+  test.case = 'inlined at the begining and the end';
+  var got = _.ct.parse( '❮background:red❯i❮s❮background:default❯' );
+  var expected = [ [ 'background:red' ], 'i❮s', [ 'background:default' ] ];
+  test.identical( got, expected );
+  var got = _.ct.parse( '❮background:red❯i❯s❮background:default❯' );
+  var expected = [ [ 'background:red' ], 'i❯s', [ 'background:default' ] ];
+  test.identical( got, expected );
+
+  test.close( 'without space symbols' );
+
+  /* - */
+
+  test.open( 'no stripping, with space symbols' );
+
+  test.case = 'full parse, closing delimeter';
+  var got = _.ct.parse( 'this ❮\nbackground:red\t❯ is ❮background:default❯ text and is not\n' );
+  var expected = [ 'this ', [ '\nbackground:red\t' ], ' is ', [ 'background:default' ], ' text and is not\n' ];
+  test.identical( got, expected );
+
+  test.case = 'opening delimiter, does not have closing';
+  var got = _.ct.parse( 'this ❮\nbackground:red\t❯ is ❮background:default❯ text and ❮is not\n' );
+  var expected = [ 'this ', [ '\nbackground:red\t' ], ' is ', [ 'background:default' ], ' text and ❮is not\n' ];
+  test.identical( got, expected );
+
+  test.case = 'inlined at the beginning and false inlined';
+  var got = _.ct.parse( '❮\n\nbackground:red\t\t❯ \n\ni\t\t❯ s ❮\n\nbackground:default\t\t❯ ❮\n\ntext' );
+  var expected = [ [ '\n\nbackground:red\t\t' ], ' \n\ni\t\t❯ s ', [ '\n\nbackground:default\t\t' ], ' ❮\n\ntext' ];
+  test.identical( got, expected );
+  var got = _.ct.parse( '❮\n\nbackground:red\t\t❯ \n\ni\t\t❮ s ❮\n\nbackground:default\t\t❯ ❮\n\ntext' );
+  var expected = [ [ '\n\nbackground:red\t\t' ], ' \n\ni\t\t❮ s ', [ '\n\nbackground:default\t\t' ], ' ❮\n\ntext' ];
+  test.identical( got, expected );
+  var got = _.ct.parse( '❮\nbackground:red\t❯ ❮\nis ❮\nbackground:default\t❯ \t❯ \n' );
+  var expected = [ [ '\nbackground:red\t' ], ' ❮\nis ', [ '\nbackground:default\t' ], ' \t❯ \n' ];
+  test.identical( got, expected );
+
+  test.case = 'inlined at the begining and the end';
+  var got = _.ct.parse( '❮\nbackground:red\n\t\r❯ i ❮\n s ❮\nbackground:default\n\t\r❯' );
+  var expected = [ [ '\nbackground:red\n\t\r' ], ' i ❮\n s ', [ '\nbackground:default\n\t\r' ] ];
+  test.identical( got, expected );
+  var got = _.ct.parse( '❮\nbackground:red\n\t\r❯ i ❯\n s ❮\nbackground:default\n\t\r❯' );
+  var expected = [ [ '\nbackground:red\n\t\r' ], ' i ❯\n s ', [ '\nbackground:default\n\t\r' ] ];
+  test.identical( got, expected );
+
+  test.close( 'no stripping, with space symbols' );
+
+  /* - */
+
+  test.open( 'stripping, with space symbols' );
+
+  test.case = 'full parse, closing delimeter';
+  var srcStr = 'this ❮\nbackground:red\t❯ is ❮background:default❯ text and is not\n';
+  var got = _.ct.parse( { src : srcStr, stripping : 1 } );
+  var expected = [ 'this', [ 'background:red' ], 'is', [ 'background:default' ], 'text and is not' ];
+  test.identical( got, expected );
+
+  test.case = 'opening delimiter, does not have closing';
+  var srcStr = 'this ❮\nbackground:red\t❯ is ❮background:default❯ text and ❮is not\n';
+  var got = _.ct.parse( { src : srcStr, stripping : 1 } );
+  var expected = [ 'this', [ 'background:red' ], 'is', [ 'background:default' ], 'text and ❮is not' ];
+  test.identical( got, expected );
+
+  test.case = 'inlined at the beginning and false inlined';
+  var srcStr = '❮\n\nbackground:red\t\t❯ \n\ni\t\t❯ s ❮\n\nbackground:default\t\t❯ ❮\n\ntext';
+  var got = _.ct.parse( { src : srcStr, stripping : 1 } );
+  var expected = [ [ 'background:red' ], 'i\t\t❯ s', [ 'background:default' ], '❮\n\ntext' ];
+  test.identical( got, expected );
+  var srcStr = '❮\n\nbackground:red\t\t❯ \n\ni\t\t❮ s ❮\n\nbackground:default\t\t❯ ❮\n\ntext';
+  var got = _.ct.parse( { src : srcStr, stripping : 1 } );
+  var expected = [ [ 'background:red' ], 'i\t\t❮ s', [ 'background:default' ], '❮\n\ntext' ];
+  test.identical( got, expected );
+  var srcStr = '❮\nbackground:red\t❯ ❮\nis\t ❮\nbackground:default\t❯ \t❯ \n';
+  var got = _.ct.parse( { src : srcStr, stripping : 1 } );
+  var expected = [ [ 'background:red' ], '❮\nis', [ 'background:default' ], '❯' ];
+  test.identical( got, expected );
+
+  test.case = 'inlined at the begining and the end';
+  var srcStr = '❮\nbackground:red\n\t\r❯ i ❮\n s ❮\nbackground:default\n\t\r❯';
+  var got = _.ct.parse( { src : srcStr, stripping : 1 } );
+  var expected = [ [ 'background:red' ], 'i ❮\n s', [ 'background:default' ] ];
+  test.identical( got, expected );
+  var srcStr = '❮\nbackground:red\n\t\r❯ i ❯\n s ❮\nbackground:default\n\t\r❯';
+  var got = _.ct.parse( { src : srcStr, stripping : 1 } );
+  var expected = [ [ 'background:red' ], 'i ❯\n s', [ 'background:default' ] ];
+  test.identical( got, expected );
+
+  test.close( 'stripping, with space symbols' );
+
+  /* - */
+
+  test.open( 'prefix, postfix are same' );
+
+  test.case = 'full parse, closing delimeter';
+  var srcStr = 'this#background:red#is#background:default#text';
+  var got = _.ct.parse( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected = [ 'this', [ 'background:red' ], 'is', [ 'background:default' ], 'text' ];
+  test.identical( got, expected );
+
+  test.case = 'opening delimiter, does not have closing';
+  var srcStr = 'this#background:red#is#background:default#text#is';
+  var got = _.ct.parse( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected = [ 'this', [ 'background:red' ], 'is', [ 'background:default' ], 'text#is' ];
+  test.identical( got, expected );
+
+  test.case = 'inlined at the beginning and false inlined';
+  var srcStr = '#background:red#i#s#background:default##text';
+  var got = _.ct.parse( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected = [ [ 'background:red' ], 'i', [ 's' ], 'background:default', [ '' ], 'text' ];
+  test.identical( got, expected );
+
+  test.case = 'inlined at the begining and the end';
+  var srcStr = '#background:red#i#s#background:default#';
+  var got = _.ct.parse( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected = [ [ 'background:red' ], 'i', [ 's' ], 'background:default#' ];
+  test.identical( got, expected );
+
+  test.close( 'prefix, postfix are same' );
+
+  /* - */
+
+  test.open( 'preserving Delimeters' );
+
+  test.case = 'full parse, closing delimeter';
+  var srcStr = 'this ❮background:red❯is❮background:default❯ text and is not';
+  var got = _.ct.parse( { src : srcStr, preservingDelimeters : 1 } );
+  var expected = [ 'this ', [ '❮background:red❯' ], 'is', [ '❮background:default❯' ], ' text and is not' ];
+  test.identical( got, expected );
+
+  test.case = 'openning delimeter does not have closing';
+  var srcStr = 'this ❮background:red❯is❮background:default❯ text and ❮ is not';
+  var got = _.ct.parse( { src : srcStr, preservingDelimeters : 1 } );
+  var expected = [ 'this ', [ '❮background:red❯' ], 'is', [ '❮background:default❯' ], ' text and ❮ is not' ];
+  test.identical( got, expected );
+
+  test.close( 'preserving Delimeters' );
+
+}
+
 // --
 // declaration
 // --
@@ -171,6 +335,7 @@ const Proto =
     // l0/l8/Ct.s
 
     strip,
+    parse,
 
   }
 

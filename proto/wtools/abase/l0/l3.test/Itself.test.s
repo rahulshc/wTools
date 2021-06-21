@@ -46,26 +46,26 @@ function exportStringDiagnosticShallow( test )
   test.identical( got, exp );
 
   test.case = 'vector & vectorLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
+  var src = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1, length : 2 });
   var exp = '{- countableConstructorPolluted.countable -}';
   var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = 'countable & countableLike';
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [ '1', '10' ], countable : 1 });
+  var src = __.diagnostic.objectMake({ new : 1, elements : [ '1', '10' ], countable : 1 });
   var exp = '{- countableConstructorPolluted.countable.constructible -}';
   var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = `object countable - empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 1, elements : [], countable : 1 } );
+  var src = __.diagnostic.objectMake({ new : 1, elements : [], countable : 1 } );
   var exp = '{- countableConstructorPolluted.countable.constructible -}';
   var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 
   test.case = `object countable - non empty, non-vector`;
-  var src = __.diagnostic.objectMake({ /* ttt */ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
-  var exp = '{- Map.polluted -}';
+  var src = __.diagnostic.objectMake({ new : 0, elements : [ '1', '2', '3' ], countable : 1 } );
+  var exp = '{- Map.polluted.countable -}';
   var got = _.blank.exportStringDiagnosticShallow( src );
   test.identical( got, exp );
 

@@ -92,8 +92,8 @@ function exportStringDiagnosticShallow( src )
 let ToolsExtension =
 {
 
-  regexpIdentical : identicalShallow, /* qqq : cover please */
-  regexpEquivalent : equivalentShallow, /* qqq : cover please | Done. Yevhen S. */
+  regexpIdentical : identicalShallow,
+  regexpEquivalent : equivalentShallow,
 
 }
 
@@ -116,11 +116,8 @@ let RegexpExtension =
   // exporter
 
   exportString : exportStringDiagnosticShallow,
-  // exportStringDiagnosticShallow : exportStringDiagnosticShallow,
   exportStringDiagnosticShallow,
   exportStringCodeShallow : exportStringDiagnosticShallow,
-  // exportStringDiagnostic : exportStringDiagnosticShallow,
-  // exportStringCode : exportStringDiagnosticShallow,
 
 }
 

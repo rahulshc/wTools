@@ -168,6 +168,10 @@ module:
           - ../proto/node_modules
           - ../proto/node_modules/Tools
           - ../proto/node_modules/wTools
+          - ../proto/node_modules/wTools.l1
+          - ../proto/node_modules/wTools.l3
+          - ../proto/node_modules/wTools.l5
+          - ../proto/node_modules/wTools.l7
           - ../proto/wtools
           - ../proto/wtools/abase
           - ../proto/wtools/abase/l0
@@ -244,6 +248,7 @@ module:
           - ../proto/wtools/abase/l0/l1/Sorted.s
           - ../proto/wtools/abase/l0/l1/Str.s
           - ../proto/wtools/abase/l0/l1/Stringer.s
+          - ../proto/wtools/abase/l0/l1/StrLines.s
           - ../proto/wtools/abase/l0/l1/Symbol.s
           - ../proto/wtools/abase/l0/l1/Time.s
           - ../proto/wtools/abase/l0/l1/Type.s
@@ -340,6 +345,7 @@ module:
           - ../proto/wtools/abase/l0/l3.test/Countable.test.s
           - ../proto/wtools/abase/l0/l3.test/Entity.test.s
           - ../proto/wtools/abase/l0/l3.test/Err.test.s
+          - ../proto/wtools/abase/l0/l3.test/Event.test.s
           - ../proto/wtools/abase/l0/l3.test/HashMap.test.s
           - ../proto/wtools/abase/l0/l3.test/Introspector.test.s
           - ../proto/wtools/abase/l0/l3.test/Itself.test.s
@@ -393,7 +399,6 @@ module:
           - ../proto/wtools/abase/l0/l5/Logic.s
           - ../proto/wtools/abase/l0/l5/Long.s
           - ../proto/wtools/abase/l0/l5/Map.s
-          - ../proto/wtools/abase/l0/l5/Module.s
           - ../proto/wtools/abase/l0/l5/Number.s
           - ../proto/wtools/abase/l0/l5/Object.s
           - ../proto/wtools/abase/l0/l5/Pair.s
@@ -417,6 +422,7 @@ module:
           - ../proto/wtools/abase/l0/l5/Units.s
           - ../proto/wtools/abase/l0/l5/Unroll.s
           - ../proto/wtools/abase/l0/l5/Vector.s
+          - ../proto/wtools/abase/l0/l5/zModule.s
           - ../proto/wtools/abase/l0/l6
           - ../proto/wtools/abase/l0/l6/Compose.s
           - ../proto/wtools/abase/l0/l6/PropertyTransformers.s

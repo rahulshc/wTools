@@ -1081,7 +1081,7 @@ function name_body( o )
   if( _.strIs( o ) )
   o = { path : o };
 
-  _.routine.assertOptions( name, arguments );
+  _.routine.assertOptions( name_body, arguments );
 
   o.path = this.canonize( o.path );
 

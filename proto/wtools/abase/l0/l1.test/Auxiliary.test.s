@@ -21,6 +21,56 @@ const __ = _globals_.testing.wTools;
 function make( test )
 {
 
+  /* */
+
+  test.case = 'map.pure';
+  var src = Object.create( null );
+  src.x = 1;
+  var exp = Object.create( null );
+  exp.x = 1;
+  var got = _.aux.make( src );
+  test.identical( got, exp );
+  test.true( _.prototype.of( got ) === null );
+
+  /* */
+
+  test.case = 'map.polluted';
+  var src = {};
+  src.x = 1;
+  var exp = Object.create( null );
+  exp.x = 1;
+  var got = _.aux.make( src );
+  test.identical( got, exp );
+  test.true( _.prototype.of( got ) === null );
+
+  /* */
+
+  test.case = 'aux.pure';
+  var src = Object.create( Object.create( null ) );
+  src.x = 1;
+  _.prototype.of( src ).y = 2;
+  var exp = Object.create( {} );
+  exp.x = 1;
+  _.prototype.of( exp ).y = 2;
+  var got = _.aux.make( src );
+  test.identical( got, exp );
+  test.true( _.map.isPure( _.prototype.of( got ) ) );
+
+  /* */
+
+  test.case = 'aux.polluted';
+  var src = Object.create( {} );
+  src.x = 1;
+  _.prototype.of( src ).y = 2;
+  var exp = Object.create( {} );
+  exp.x = 1;
+  _.prototype.of( exp ).y = 2;
+  var got = _.aux.make( src );
+  test.identical( got, exp );
+  test.true( _.map.isPure( _.prototype.of( got ) ) );
+
+  /* */
+
   test.case = 'without arguments';
   var got = _.aux.make();
   var expected = {};
@@ -32,12 +82,6 @@ function make( test )
   var expected = {};
   test.identical( got, expected );
   test.true( _.mapIsPure( got ) );
-
-  // test.case = 'src - undefined';
-  // var got = _.aux.make( undefined );
-  // var expected = {};
-  // test.identical( got, expected );
-  // test.true( _.mapIsPure( got ) );
 
   /* */
 
@@ -101,22 +145,6 @@ function make( test )
   test.true( _.mapIsPure( got ) );
   test.true( got !== src );
 
-  // test.case = 'src - array with primitives';
-  // var src = [ 0, 'str', null, undefined ];
-  // var got = _.aux.make( src );
-  // var expected = { 0 : 0, 1 : 'str', 2 : null, 3 : undefined };
-  // test.identical( got, expected );
-  // test.true( _.mapIsPure( got ) );
-  // test.true( got !== src );
-  //
-  // test.case = 'src - array with maps';
-  // var src = [ { a : 7 }, { b : 13 } ];
-  // var got = _.aux.make( src );
-  // var expected = { 0 : { a : 7 }, 1 : { b : 13 } };
-  // test.identical( got, expected );
-  // test.true( _.mapIsPure( got ) );
-  // test.true( got !== src );
-
   /* - */
 
   if( !Config.debug )
@@ -137,8 +165,44 @@ function make( test )
 
 //
 
+function makeEmpty( test )
+{
+
+  test.case = 'map.pure';
+  var src = Object.create( null );
+  src.x = 1;
+  var got = _.aux.makeEmpty( src );
+  test.identical( got, Object.create( null ) );
+  test.true( _.prototype.of( got ) === null );
+
+  test.case = 'map.polluted';
+  var src = {};
+  src.x = 1;
+  var got = _.aux.makeEmpty( src );
+  test.identical( got, Object.create( null ) );
+  test.true( _.prototype.of( got ) === null );
+
+  test.case = 'aux.pure';
+  var src = Object.create( Object.create( null ) );
+  src.x = 1;
+  var got = _.aux.makeEmpty( src );
+  test.identical( got, Object.create( Object.create( null ) ) );
+  test.true( _.map.isPure( _.prototype.of( got ) ) );
+
+  test.case = 'aux.polluted';
+  var src = Object.create( {} );
+  src.x = 1;
+  var got = _.aux.makeEmpty( src );
+  test.identical( got, Object.create( Object.create( null ) ) );
+  test.true( _.map.isPure( _.prototype.of( got ) ) );
+
+}
+
+//
+
 function dichotomy( test )
 {
+
   test.case = 'undefined';
   var src = undefined;
   test.identical( _.aux.is( src ), false );
@@ -1156,6 +1220,7 @@ const Proto =
   {
 
     make,
+    makeEmpty,
     dichotomy,
 
     keys,

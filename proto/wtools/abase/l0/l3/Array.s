@@ -1659,7 +1659,7 @@ function arrayAppendArraysOnce( /* dstArray, insArray, evaluator1, evaluator2 */
     }
   }
 
-  arrayAppendedArraysOnce.apply( this, arguments );
+  _.arrayAppendedArraysOnce.apply( this, arguments );
 
   return dstArray;
 }
@@ -1701,7 +1701,7 @@ function arrayAppendArraysOnceStrictly( /* dstArray, insArray, evaluator1, evalu
       expected += 1;
     }
 
-    result = arrayAppendedArraysOnce.apply( this, arguments );
+    result = _.arrayAppendedArraysOnce.apply( this, arguments );
 
     _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
   }
@@ -1838,7 +1838,7 @@ function arrayAppendedArraysOnceStrictly( dstArray, ins )
       else
       expected += 1;
     }
-    result = arrayAppendedArraysOnce.apply( this, arguments );
+    result = _.arrayAppendedArraysOnce.apply( this, arguments );
     _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
   }
   else

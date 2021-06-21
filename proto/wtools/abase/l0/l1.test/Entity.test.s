@@ -155,8 +155,9 @@ function makeEmpty( test )
   test.identical( got, new F64x() );
 
   test.case = 'empty map';
+  debugger;
   var got = _.entity.makeEmpty( {} );
-  test.identical( got, {} );
+  test.identical( got, {} ); debugger;
   test.true( _.mapIsPure( got ) );
 
   test.case = 'not empty map';

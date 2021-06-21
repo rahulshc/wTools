@@ -39,7 +39,6 @@ if( typeof module !== 'undefined' )
   require( './l5/Logic.s' );
   require( './l5/Long.s' );
   require( './l5/Map.s' );
-  require( './l5/Module.s' );
   require( './l5/Number.s' );
   require( './l5/Object.s' );
   require( './l5/Pair.s' );
@@ -53,8 +52,8 @@ if( typeof module !== 'undefined' )
   require( './l5/Prototype.s' );
   require( './l5/Regexp.s' );
   require( './l5/Routine.s' );
-  require( './l5/Sorted.s' );
   require( './l5/Set.s' );
+  require( './l5/Sorted.s' );
   require( './l5/Str.s' );
   require( './l5/Stringer.s' );
   require( './l5/Symbol.s' );
@@ -63,6 +62,7 @@ if( typeof module !== 'undefined' )
   require( './l5/Units.s' );
   require( './l5/Unroll.s' );
   require( './l5/Vector.s' );
+  require( './l5/zModule.s' );
 
 }
 
