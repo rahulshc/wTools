@@ -584,7 +584,7 @@ strIsolateRightOrAll_body.defaults =
 //
 
 /**
-  * Routine strIsolateInsideSignle() split source strings {-src-} into parts separated by delimeters {-begin-} and {-end-}. Routine returns
+  * Routine isolateInsideSignle() split source strings {-src-} into parts separated by delimeters {-begin-} and {-end-}. Routine returns
   * an array with parts of source string {-src-}.
   * The array contains of five parts:
   * - substring from start of source string to begin of first delimeter {-begin-}.
@@ -629,7 +629,7 @@ strIsolateRightOrAll_body.defaults =
   * // returns [ 'ca', 'b', 'dcd', 'c', '' ]
   *
   * @returns { Array } - Returns array with parts of source string.
-  * @function strIsolateInsideSignle
+  * @function isolateInsideSignle
   * @throws { Exception } If arguments.length is less then one or more then three.
   * @throws { Exception } If source string {-str-} is not a String.
   * @throws { Exception } If delimeter {-begin-} is not a String or an Array of strings.
@@ -637,7 +637,7 @@ strIsolateRightOrAll_body.defaults =
   * @namespace Tools
   */
 
-function strIsolateInsideSignle( src, begin, end )
+function isolateInsideSignle( src, begin, end )
 {
 
   _.assert( _.strIs( src ), 'Expects string {-src-}' );
@@ -729,7 +729,7 @@ function strIsolateInsideSignle( src, begin, end )
 //
 
 /**
-  * Routine strIsolateInside() split source strings of vector {-src-} into parts separated by delimeters {-begin-} and {-end-}. Routine
+  * Routine isolateInside() split source strings of vector {-src-} into parts separated by delimeters {-begin-} and {-end-}. Routine
   * returns a vector with arrays. Each array of vector corresponds to element of vector {-src-}.
   * Each array contains of five parts:
   * - substring from start of source string to begin of first delimeter {-begin-}.
@@ -784,7 +784,7 @@ function strIsolateInsideSignle( src, begin, end )
   *
   * @returns { Array|ArraysVector } - If source string is a scalar, then routine returns array with parts of source string.
   * If source string is a vector, then routine returns vector of arrays.
-  * @function strIsolateInside
+  * @function isolateInside
   * @throws { Exception } If arguments.length is less then one or more then three.
   * @throws { Exception } If source string {-str-} is not a String.
   * @throws { Exception } If delimeter {-begin-} is not a String or an Array of strings.
@@ -792,7 +792,7 @@ function strIsolateInsideSignle( src, begin, end )
   * @namespace Tools
   */
 
-function strIsolateInside( src, begin, end )
+function isolateInside( src, begin, end )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -812,6 +812,28 @@ function strIsolateInside( src, begin, end )
 }
 
 // --
+// str extension
+// --
+
+let StrExtension =
+{
+
+  isolate : _.routine.unite( strIsolate_head, strIsolate_body ),
+  isolateLeftOrNone : _.routine.unite( strIsolate_head, strIsolateLeftOrNone_body ),
+  isolateLeftOrAll : _.routine.unite( strIsolate_head, strIsolateLeftOrAll_body ),
+  isolateRightOrNone : _.routine.unite( strIsolate_head, strIsolateRightOrNone_body ),
+  isolateRightOrAll : _.routine.unite( strIsolate_head, strIsolateRightOrAll_body ),
+
+  // strIsolateInsideOrNoneSingle,
+  // strIsolateInsideOrNone,
+  isolateInsideSignle,
+  isolateInside,
+
+}
+
+Object.assign( _.str, StrExtension );
+
+// --
 // extension
 // --
 
@@ -826,8 +848,8 @@ let ToolsExtension =
 
   // strIsolateInsideOrNoneSingle,
   // strIsolateInsideOrNone,
-  strIsolateInsideSignle,
-  strIsolateInside,
+  strIsolateInsideSignle : isolateInsideSignle,
+  strIsolateInside : isolateInside,
 
 }
 
