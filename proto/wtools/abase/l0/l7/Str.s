@@ -824,8 +824,6 @@ let StrExtension =
   isolateRightOrNone : _.routine.unite( strIsolate_head, strIsolateRightOrNone_body ),
   isolateRightOrAll : _.routine.unite( strIsolate_head, strIsolateRightOrAll_body ),
 
-  // strIsolateInsideOrNoneSingle,
-  // strIsolateInsideOrNone,
   isolateInsideSignle,
   isolateInside,
 
