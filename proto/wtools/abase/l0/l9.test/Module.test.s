@@ -6020,7 +6020,7 @@ const Proto =
     testingOnL1,
     l1Environment, /* xxx2 : switch on */
     l1SecondRequire,
-    secondaryNamespaceSecondRequire,
+    // secondaryNamespaceSecondRequire,
     // requireSameModuleTwice, /* xxx2 : switch on */
     // requireThirdPartyModule, /* xxx2 : switch on */
 

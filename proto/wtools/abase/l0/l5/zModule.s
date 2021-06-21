@@ -822,8 +822,8 @@ function _filesUniversalAssociateModule( files, modules, disassociating )
     let module2 = _.module._predeclaredWithEntryPath( file.sourcePath );
     if( module2 && !modules.has( module2 ) )
     return;
-    if( module2 && modules.size > 1 )
-    _.assert( 0, 'not tested' ); /* xxx qqq : cover and fix */
+    // if( module2 && modules.size > 1 ) /* xxx2*/
+    // _.assert( 0, 'not tested' ); /* xxx qqq : cover and fix */
 
     if( _.set.identicalShallow( file.modules, modules ) )
     return;
@@ -1974,22 +1974,22 @@ function _trackingEnable()
 
     if( !parent.universal )
     return;
-    // if( parent.universal.moduleNativeFilesMap !== _.module.nativeFilesMap )
-    // {
-    //   // debugger;
-    //   return;
-    // }
-    // if( parent.universal.moduleNativeFilesMap !== ModuleFileNative._cache )
-    // {
-    //   debugger;
-    //   return;
-    // }
-    // if( !_.path.isDotted( request ) )
-    // {
-    //   _.debugger;
-    //   // debugger; /* xxx : check */
-    //   return;
-    // }
+    if( parent.universal.moduleNativeFilesMap !== _.module.nativeFilesMap )
+    {
+      // debugger;
+      return;
+    }
+    if( parent.universal.moduleNativeFilesMap !== ModuleFileNative._cache )
+    {
+      // debugger;
+      return;
+    }
+    if( !_.path.isDotted( request ) )
+    {
+      // _.debugger;
+      // debugger; /* xxx : check */
+      return;
+    }
 
     let native;
     if( loading.request === request && loading.parent === parent )
