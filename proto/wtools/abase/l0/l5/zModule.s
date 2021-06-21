@@ -1974,15 +1974,22 @@ function _trackingEnable()
 
     if( !parent.universal )
     return;
-    if( parent.universal.moduleNativeFilesMap !== _.module.nativeFilesMap )
-    {
-      // debugger;
-      return;
-    }
-    if( parent.universal.moduleNativeFilesMap !== ModuleFileNative._cache )
-    return;
-    if( !_.path.isDotted( request ) )
-    return;
+    // if( parent.universal.moduleNativeFilesMap !== _.module.nativeFilesMap )
+    // {
+    //   // debugger;
+    //   return;
+    // }
+    // if( parent.universal.moduleNativeFilesMap !== ModuleFileNative._cache )
+    // {
+    //   debugger;
+    //   return;
+    // }
+    // if( !_.path.isDotted( request ) )
+    // {
+    //   _.debugger;
+    //   // debugger; /* xxx : check */
+    //   return;
+    // }
 
     let native;
     if( loading.request === request && loading.parent === parent )
@@ -2003,6 +2010,9 @@ function _trackingEnable()
 
     if( _.module.fileNativeParent( native ) !== parent )
     {
+      /* xxx2 : check */
+      // debugger;
+      _.debugger;
       _.module._fileUniversalAssociateFile( native.universal, parent.universal );
       _.module._filesUniversalAssociateModule( native.universal, parent.universal.modules, false );
     }
@@ -2090,7 +2100,7 @@ function _trackingEnable()
     });
 
     _.assert( native === ModuleFileNative._cache[ moduleFile.nativeSourcePath ] );
-    _.assert( native === moduleFile.native );
+    // _.assert( native === moduleFile.native ); /* xxx2 : uncomment */
     _.assert( resolving.resolvedPath === nativeSourcePath );
 
     try

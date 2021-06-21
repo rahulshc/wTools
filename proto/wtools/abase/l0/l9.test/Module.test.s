@@ -5134,6 +5134,7 @@ function secondaryNamespaceSecondRequire( test )
     secondary1,
     secondary2,
     secondary3,
+    secondary4,
     common2,
     common3,
   }
@@ -5141,26 +5142,115 @@ function secondaryNamespaceSecondRequire( test )
 
   /* */
 
-  program.start()
-  .then( ( op ) =>
-  {
-    test.identical( op.exitCode, 0 );
-    var exp =
-`
-r2
-r3
-{- ModuleFile ${ a.abs( 'r1' ) } -}
-  r1  {- ModuleFile ${ _.module.toolsPathGet() } -}
-  r1  {- ModuleFile ${ a.abs( 'secondary1' ) } -}
-  r1  {- ModuleFile ${ a.abs( 'r2' ) } -}
-  r1  {- ModuleFile ${ a.abs( 'r3' ) } -}
-  r1  {- ModuleFile ${ a.abs( 'common2' ) } -}
-  r1  {- ModuleFile ${ a.abs( 'common3' ) } -}
-`
-    test.equivalent( op.output, exp );
+  act({ method : 'require' });
+  // act({ method : 'include' });
 
-    return null;
-  });
+  return a.ready;
+
+  /* - */
+
+  function act( env )
+  {
+
+    program.start({ args : [ 0, env.method ] })
+    .then( ( op ) =>
+    {
+      test.case = `without tree, ${__.entity.exportStringSolo( env )}`;
+      test.identical( op.exitCode, 0 );
+      var exp =
+  `
+  secondary3
+  secondary4
+  {- ModuleFile ${ a.abs( 'secondary2' ) } -}
+    secondary2  {- ModuleFile ${ a.abs( 'secondary3' ) } -}
+    secondary2  {- ModuleFile ${ a.abs( 'secondary4' ) } -}
+  common2
+  common3
+  {- ModuleFile ${ a.abs( 'secondary1' ) } -}
+    secondary1  {- ModuleFile ${ _.module.toolsPathGet() } -}
+    secondary1  {- ModuleFile ${ a.abs( 'secondary2' ) } -}
+    secondary1  {- ModuleFile ${ a.abs( 'secondary3' ) } -}
+    secondary1  {- ModuleFile ${ a.abs( 'common2' ) } -}
+    secondary1  {- ModuleFile ${ a.abs( 'common3' ) } -}
+  r2
+  r3
+  common2
+  common3
+  {- ModuleFile ${ a.abs( 'r1' ) } -}
+    r1  {- ModuleFile ${ _.module.toolsPathGet() } -}
+    r1  {- ModuleFile ${ a.abs( 'secondary1' ) } -}
+    r1  {- ModuleFile ${ a.abs( 'r2' ) } -}
+    r1  {- ModuleFile ${ a.abs( 'r3' ) } -}
+    r1  {- ModuleFile ${ a.abs( 'common2' ) } -}
+    r1  {- ModuleFile ${ a.abs( 'common3' ) } -}
+  `
+      test.equivalent( op.output, exp );
+
+      return null;
+    });
+
+    /* */
+
+    program.start({ args : [ 1, env.method ] })
+    .then( ( op ) =>
+    {
+      test.case = `with tree, ${__.entity.exportStringSolo( env )}`;
+      test.identical( op.exitCode, 0 );
+      var exp =
+  `
+  secondary3
+  secondary4
+
+  secondary2:
+  {- ModuleFile ${ a.abs( 'secondary2' ) } -}
+    {- ModuleFile ${ a.abs( 'secondary3' ) } -}
+      {- ModuleFile ${ a.abs( 'secondary4' ) } -}
+    {- ModuleFile ${ a.abs( 'secondary4' ) } -}
+
+  common2
+  common3
+
+  secondary1:
+  {- ModuleFile ${ a.abs( 'secondary1' ) } -}
+    {- ModuleFile ${ _.module.toolsPathGet() } -}
+      {- ModuleFile ${ __.path.join( _.module.toolsPathGet(), '../wTools' ) } -}
+    {- ModuleFile ${ a.abs( 'secondary2' ) } -}
+      {- ModuleFile ${ a.abs( 'secondary3' ) } -}
+      {- ModuleFile ${ a.abs( 'secondary4' ) } -}
+    {- ModuleFile ${ a.abs( 'secondary3' ) } -}
+      {- ModuleFile ${ a.abs( 'secondary4' ) } -}
+    {- ModuleFile ${ a.abs( 'common2' ) } -}
+      {- ModuleFile ${ a.abs( 'common3' ) } -}
+    {- ModuleFile ${ a.abs( 'common3' ) } -}
+
+  r2
+  r3
+  common2
+  common3
+
+  r1:
+  {- ModuleFile ${ a.abs( 'r1' ) } -}
+    {- ModuleFile ${ _.module.toolsPathGet() } -}
+      {- ModuleFile ${ __.path.join( _.module.toolsPathGet(), '../wTools' ) } -}
+    {- ModuleFile ${ a.abs( 'secondary1' ) } -}
+      {- ModuleFile ${ _.module.toolsPathGet() } -}
+      {- ModuleFile ${ a.abs( 'secondary2' ) } -}
+      {- ModuleFile ${ a.abs( 'secondary3' ) } -}
+      {- ModuleFile ${ a.abs( 'common2' ) } -}
+      {- ModuleFile ${ a.abs( 'common3' ) } -}
+    {- ModuleFile ${ a.abs( 'r2' ) } -}
+      {- ModuleFile ${ a.abs( 'r3' ) } -}
+    {- ModuleFile ${ a.abs( 'r3' ) } -}
+    {- ModuleFile ${ a.abs( 'common2' ) } -}
+      {- ModuleFile ${ a.abs( 'common3' ) } -}
+    {- ModuleFile ${ a.abs( 'common3' ) } -}
+  `
+      test.equivalent( op.output, exp );
+
+      return null;
+    });
+
+  }
 
   /* */
 
@@ -5171,14 +5261,28 @@ r3
   function r1()
   {
     const _ = require( toolsPath );
+    _realGlobal_.withTree = Number( process.argv[ 2 ] );
+    _realGlobal_.method = process.argv[ 3 ];
     require( './secondary1' );
     require( './r2' );
+    if( method === 'require' )
     require( './r3' );
+    else
+    _.include( 'moduleR3' );
     require( './common2' );
-    require( './common3' );
 
-    console.log( module.universal );
-    module.universal.upFiles.forEach( ( file ) => console.log( `  r1  ${file}` ) );
+    if( method === 'require' )
+    require( './common3' );
+    else
+    _.include( 'moduleCommon3' );
+
+    if( !_realGlobal_.withTree )
+    {
+      console.log( module.universal );
+      module.universal.upFiles.forEach( ( file ) => console.log( `  r1  ${file}` ) );
+    }
+    if( _realGlobal_.withTree )
+    console.log( '\nr1:\n' + _.module.fileExportString( module.universal, { it : { verbosity : 1, recursive : 3 } } ).resultExportString() + '\n' );
 
   }
 
@@ -5190,6 +5294,12 @@ r3
 
   function r3()
   {
+    const _ = wTools;
+    _.module.predeclare
+    ({
+      alias : [ 'moduleR3' ],
+      entryPath : __filename,
+    });
     console.log( `r3` );
   }
 
@@ -5198,34 +5308,98 @@ r3
     const __ = wTools;
     const _global = __.global.makeAndOpen( module, 'test1' );
     const _ = require( toolsPath );
+
+    debugger;
     require( './secondary2' );
+    debugger;
+    if( method === 'require' )
     require( './secondary3' );
+    else
+    _.include( 'moduleSecondary3' );
+
     require( './common2' );
+    if( method === 'require' )
     require( './common3' );
+    else
+    _.include( 'moduleCommon3' );
+
+    if( _realGlobal_.withTree )
+    {
+      console.log( '\nsecondary1:\n' + _.module.fileExportString( module.universal, { it : { verbosity : 1, recursive : 3 } } ).resultExportString() + '\n' );
+    }
+    else
+    {
+      console.log( module.universal );
+      module.universal.upFiles.forEach( ( file ) => console.log( `  secondary1  ${file}` ) );
+    }
+
     _.global.close( 'test1' );
   }
 
   function secondary2()
   {
+    const _ = wTools;
     require( './secondary3' );
+    if( method === 'require' )
+    require( './secondary4' );
+    else
+    _.include( 'moduleSecondary4' );
+
+    if( _realGlobal_.withTree )
+    {
+      console.log( '\nsecondary2:\n' + _.module.fileExportString( module.universal, { it : { verbosity : 1, recursive : 3 } } ).resultExportString() + '\n' );
+    }
+    else
+    {
+      console.log( module.universal );
+      module.universal.upFiles.forEach( ( file ) => console.log( `  secondary2  ${file}` ) );
+    }
+
   }
 
   function secondary3()
   {
+    const _ = wTools;
+    debugger;
+    _.module.predeclare
+    ({
+      alias : [ 'moduleSecondary3' ],
+      entryPath : __filename,
+    });
+    console.log( `secondary3` );
+    require( './secondary4' );
+  }
+
+  function secondary4()
+  {
+    const _ = wTools;
+    _.module.predeclare
+    ({
+      alias : [ 'moduleSecondary4' ],
+      entryPath : __filename,
+    });
+    console.log( `secondary4` );
   }
 
   function common2()
   {
+    console.log( `common2` );
     require( './common3' );
   }
 
   function common3()
   {
+    const _ = wTools;
+    _.module.predeclare
+    ({
+      alias : [ 'moduleCommon3' ],
+      entryPath : __filename,
+    });
+    console.log( `common3` );
   }
 
 }
 
-secondaryNamespaceSecondRequire.experimental = 1;
 secondaryNamespaceSecondRequire.description =
 `
 - second require in both main and secondary namespace should add element to upFiles of down module file
@@ -5238,12 +5412,12 @@ function requireSameModuleTwice( test )
   let context = this;
   let a = test.assetFor( false );
   let _ToolsPath_ = a.path.nativize( _.module.toolsPathGet() );
-  let programRoutine1Path = a.program({ entry : programRoutine1 });
+  let program = a.program( programRoutine1 );
 
   /* */
 
   begin()
-  a.appStartNonThrowing({ execPath : programRoutine1Path })
+  program.start()
   .then( ( op ) =>
   {
     test.identical( op.exitCode, 0 );
@@ -5271,6 +5445,7 @@ function requireSameModuleTwice( test )
   {
     let modulea =
     `
+    debugger;
     const _ToolsPath_ = '${_ToolsPath_}'
     const _ = require( _ToolsPath_ );
     _.include( 'moduleB' );
@@ -5300,9 +5475,9 @@ function requireSameModuleTwice( test )
   {
     let moduleb =
     `
+    debugger;
     const _ToolsPath_ = '${_ToolsPath_}'
     const _ = require( _ToolsPath_ );
-    debugger;
     _.include( 'moduleA' );
     _.assert( !_.moduleb, 'Module moduleb is included for the second time' );
     _.moduleb = Object.create( null );
@@ -5843,9 +6018,9 @@ const Proto =
 
     requireModuleFileWithAccessor,
     testingOnL1,
-    // l1Environment, /* xxx2 : switch on */
-    // l1SecondRequire, /* xxx2 : switch on */
-    secondaryNamespaceSecondRequire, /* xxx2 : switch on */
+    l1Environment, /* xxx2 : switch on */
+    l1SecondRequire,
+    secondaryNamespaceSecondRequire,
     // requireSameModuleTwice, /* xxx2 : switch on */
     // requireThirdPartyModule, /* xxx2 : switch on */
 
