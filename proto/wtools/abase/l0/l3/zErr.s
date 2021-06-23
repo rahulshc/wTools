@@ -382,7 +382,7 @@ function error_functor( name, onErrorMake )
     let prepend = onErrorMake;
     onErrorMake = function onErrorMake()
     {
-      debugger;
+      debugger; /* eslint-disable-line no-debugger */
       let args = _.arrayAppendArrays( [], [ prepend, arguments ] );
       return args;
     }
