@@ -5979,6 +5979,36 @@ moduleFileExportExternal.description =
 - change of option verbosity change level of verbosity of the output
 `
 
+//
+
+function requireModuleProcess( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let program = a.program( program1 );
+
+  /* */
+
+  a.shell( `npm add wprocess@gamma` )
+  program.start()
+  .then( ( op ) =>
+  {
+    test.identical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, 'nhandled' ), 0 );
+    test.identical( _.strCount( op.output, 'error' ), 0 );
+    return null;
+  });
+
+  return a.ready;
+
+  /* */
+
+  function program1()
+  {
+    require( 'wprocess' )
+  }
+}
+
 // --
 // test suite declaration
 // --
@@ -6047,6 +6077,8 @@ const Proto =
 
     moduleFileExportBasic,
     moduleFileExportExternal,
+
+    requireModuleProcess
 
   }
 
