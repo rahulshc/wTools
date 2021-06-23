@@ -376,7 +376,10 @@ function _fileUniversalInit( o )
     let moduleFile2 = _.module.filesMap.get( o.sourcePath );
     if( moduleFile2 )
     {
-      debugger; /* xxx : qqq : cover */
+      if( moduleFile2.native !== o.native )
+      {
+        moduleFile2.native = o.native;
+      }
       return moduleFile2;
     }
 
@@ -565,6 +568,9 @@ function _filesUniversalInit( o )
   o.files = _.array.as( o.files );
   stack.push( ... o.files );
 
+  if( _.__GLOBAL_NAME__ === 'test1' )
+  debugger;
+
   for( let i = 0 ; i < stack.length ; i++ )
   up( stack[ i ] );
 
@@ -583,11 +589,12 @@ function _filesUniversalInit( o )
 
     _.assert( _.module.fileNativeIs( file ) );
 
-    if( !file.universal && _.module.nativeFilesMap[ file.filename || file.id ] === file )
+    let fileName = file.filename || file.id ;
+    if( !file.universal && _.module.nativeFilesMap[ fileName ] === file ) /* yyy */
     _.module._fileUniversalInit
     ({
-      sourcePath : file.filename || file.id,
-      nativeSourcePath : file.filename || file.id,
+      sourcePath : fileName,
+      nativeSourcePath : fileName,
       requestedSourcePath : null,
       native : file,
       status : 2,
@@ -633,11 +640,11 @@ function _fileUniversalAssociateFile( upFile, downFile )
   upFile.downFile = upFile.downFile || downFile;
   upFile.downFiles.add( downFile );
   for( let module of upFile.modules )
-  module.downs.add( _.set.butElement( null, downFile.modules, module ) ); /* qqq : cover and implement deleting */
+  module.downs.add( ... _.set.butElement( null, downFile.modules, module ) ); /* qqq : cover and implement deleting */
 
   downFile.upFiles.add( upFile );
   for( let module of downFile.modules )
-  module.ups.add( _.set.butElement( null, upFile.modules, module ) );
+  module.ups.add( ... _.set.butElement( null, upFile.modules, module ) );
 
 }
 
@@ -822,8 +829,8 @@ function _filesUniversalAssociateModule( files, modules, disassociating )
     let module2 = _.module._predeclaredWithEntryPath( file.sourcePath );
     if( module2 && !modules.has( module2 ) )
     return;
-    if( module2 && modules.size > 1 )
-    _.assert( 0, 'not tested' ); /* xxx qqq : cover and fix */
+    // if( module2 && modules.size > 1 ) /* xxx2*/
+    // _.assert( 0, 'not tested' ); /* xxx qqq : cover and fix */
 
     if( _.set.identicalShallow( file.modules, modules ) )
     return;
@@ -892,7 +899,31 @@ function _filesUniversalAssociateModule( files, modules, disassociating )
 function _fileWithResolvedPath( caninicalSourcePath )
 {
   _.assert( _.strIs( caninicalSourcePath ) );
-  var result = _.module.filesMap.get( caninicalSourcePath );
+  let result = _.module.filesMap.get( caninicalSourcePath );
+  return result;
+}
+
+//
+
+/*
+this solution has limitations
+is not going to work for special cases of multiple global namespace n > 2
+better solution might not exist
+*/
+
+function _fileWithResolvedPathAnyNamespace( caninicalSourcePath )
+{
+  _.assert( _.strIs( caninicalSourcePath ) );
+  let result = _.module.filesMap.get( caninicalSourcePath );
+  if( !result ) /* yyy */
+  for( let globalName in _globals_ )
+  {
+    if( !_globals_[ globalName ].wTools || !_globals_[ globalName ].wTools.module || !_globals_[ globalName ].wTools.module.filesMap )
+    continue;
+    result = _globals_[ globalName ].wTools.module.filesMap.get( caninicalSourcePath );
+    if( result )
+    return result;
+  }
   return result;
 }
 
@@ -1797,8 +1828,11 @@ function _fileIncludeSingle( downPath, filePath )
   if( !hasModuleFileDescriptor )
   throw _.err( 'Cant include, routine "require" does not exist.' );
 
+  if( downPath.endsWith( 'secondary1' ) && filePath.endsWith( 'secondary3' ) )
+  debugger;
+
   let normalizedPath = _.path.nativizeMinimal( filePath );
-  let moduleFile = _.module._fileWithResolvedPath( downPath );
+  let moduleFile = _.module._fileWithResolvedPathAnyNamespace( downPath );
   if( moduleFile )
   return moduleFile.native.require( normalizedPath );
   return _.module.__fileNativeInclude( normalizedPath );
@@ -1971,18 +2005,28 @@ function _trackingEnable()
 
     // if( request.endsWith( 'testing/entry/Main.s' ) )
     // debugger;
+    if( request.endsWith( 'secondary3' ) )
+    debugger;
 
     if( !parent.universal )
     return;
-    if( parent.universal.moduleNativeFilesMap !== _.module.nativeFilesMap )
-    {
-      debugger;
-      return;
-    }
-    if( parent.universal.moduleNativeFilesMap !== ModuleFileNative._cache )
-    return;
-    if( !_.path.isDotted( request ) )
-    return;
+    // yyy
+    // if( parent.universal.moduleNativeFilesMap !== _.module.nativeFilesMap )
+    // {
+    //   // debugger;
+    //   return;
+    // }
+    // if( parent.universal.moduleNativeFilesMap !== ModuleFileNative._cache )
+    // {
+    //   debugger;
+    //   return;
+    // }
+    // if( !_.path.isDotted( request ) )
+    // {
+    //   _.debugger;
+    //   // debugger; /* xxx : check */
+    //   return;
+    // }
 
     let native;
     if( loading.request === request && loading.parent === parent )
@@ -2003,7 +2047,11 @@ function _trackingEnable()
 
     if( _.module.fileNativeParent( native ) !== parent )
     {
+      // if( native.universal.sourcePath.endsWith( 'wFiles' ) )
+      // debugger;
+      // _.debugger;
       _.module._fileUniversalAssociateFile( native.universal, parent.universal );
+      if( !_.module._predeclaredWithEntryPath( native.universal.sourcePath ) ) /* yyy */
       _.module._filesUniversalAssociateModule( native.universal, parent.universal.modules, false );
     }
   }
@@ -2065,9 +2113,7 @@ function _trackingEnable()
   {
     loading.counter += 1;
 
-    // if( nativeSourcePath.endsWith( 'wTesting' ) )
-    // debugger;
-    // if( nativeSourcePath.endsWith( 'testing/entry/Main.s' ) )
+    // if( nativeSourcePath.endsWith( 'psl/index.js' ) )
     // debugger;
 
     /*
@@ -2079,7 +2125,7 @@ function _trackingEnable()
     }
 
     let result;
-    let native = this
+    let native = this;
     let moduleFile = _.module._fileUniversalInit
     ({
       sourcePath : nativeSourcePath,
@@ -2090,7 +2136,7 @@ function _trackingEnable()
     });
 
     _.assert( native === ModuleFileNative._cache[ moduleFile.nativeSourcePath ] );
-    _.assert( native === moduleFile.native );
+    _.assert( native === moduleFile.native ); /* xxx2 : uncomment */
     _.assert( resolving.resolvedPath === nativeSourcePath );
 
     try
@@ -2266,6 +2312,7 @@ var ModuleExtension =
 
   _filesWithResolvedPath,
   _fileWithResolvedPath,
+  _fileWithResolvedPathAnyNamespace,
   fileWithResolvedPath,
   fileWith,
 

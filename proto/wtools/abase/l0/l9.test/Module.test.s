@@ -46,7 +46,7 @@ function modulePredeclareBasic( test )
   let a = test.assetFor( false );
   let _ToolsPath_ = a.path.nativize( _.module.toolsPathGet() );
   let programRoutine1Path = a.program( programRoutine1 ).programPath;
-  let programRoutine2Path = a.program({ routine : programRoutine2, locals : { _ToolsPath_, programRoutine1Path } }).programPath;
+  let programRoutine2Path = a.program({ entry : programRoutine2, locals : { _ToolsPath_, programRoutine1Path } }).programPath;
 
   /* */
 
@@ -102,7 +102,7 @@ function modulePredeclareBasic2( test )
   let a = test.assetFor( false );
   let _ToolsPath_ = a.path.nativize( _.module.toolsPathGet() );
   let programRoutine1Path = a.program( programRoutine1 ).programPath;
-  let programRoutine2Path = a.program({ routine : programRoutine2, locals : { _ToolsPath_, programRoutine1Path } }).programPath;
+  let programRoutine2Path = a.program({ entry : programRoutine2, locals : { _ToolsPath_, programRoutine1Path } }).programPath;
 
   /* */
 
@@ -213,79 +213,6 @@ resolveBasic.description  =
   Routine _.module.resolve return path to include path of module::wTools.
 `
 
-// //
-//
-// function toolsPathGetBasic( test )
-// {
-//   let context = this;
-//
-//   /* */
-//
-//   test.case = 'toolsPathGet';
-//   var got = _.module.toolsPathGet();
-//   // var exp = _.path.nativize( __.path.join( __dirname, '../../../../node_modules/Tools' ) );
-//   var exp = __.path.join( __dirname, '../../../../node_modules/Tools' );
-//   test.identical( got, exp );
-//   console.log( `toolsPathGet : ${got}` );
-//
-//   /* */
-//
-//   test.case = 'toolsDirGet';
-//   var got = _.module.toolsDirGet();
-//   // var exp = __.path.nativize( __.path.join( __dirname, '../../..' ) );
-//   var exp = __.path.join( __dirname, '../../..' );
-//   test.identical( got, exp );
-//   console.log( `toolsDirGet : ${got}` );
-//
-//   /* */
-//
-//   test.case = 'resolve wTools';
-//   var got = _.module.resolve( 'wTools' );
-//   // var exp = __.path.nativize( __.path.join( __dirname, '../../../../node_modules/Tools' ) );
-//   var exp = __.path.join( __dirname, '../../../../node_modules/Tools' );
-//   test.identical( got, exp );
-//   console.log( `resolved : ${got}` );
-//
-//   /* */
-//
-// }
-//
-// //
-//
-// function toolsPathGetProgram( test )
-// {
-//   let context = this;
-//   let a = test.assetFor( false );
-//   let programPath = a.program( program ).programPath;
-//
-//   console.log( 'programPath', programPath );
-//
-//   return a.forkNonThrowing({ execPath : programPath })
-//   .then( ( op ) =>
-//   {
-//     test.identical( op.exitCode, 0 );
-//     var exp =
-// `
-// toolsPath : ${__.path.nativize( __.path.join( __dirname, '../../../../node_modules/Tools' ) )}
-// module.resolve( wTools ) : ${__.path.join( __dirname, '../../../../node_modules/Tools' )}
-// module.toolsPathGet : ${__.path.join( __dirname, '../../../../node_modules/Tools' )}
-// module.toolsirGet : ${__.path.join( __dirname, '../../..' )}
-// `
-//     test.equivalent( op.output, exp );
-//     return op;
-//   });
-//
-//   function program()
-//   {
-//     console.log( `toolsPath : ${toolsPath}` );
-//     const _ = require( toolsPath );
-//     console.log( `module.resolve( wTools ) : ${_.module.resolve( 'wTools' )}` );
-//     console.log( `module.toolsPathGet : ${_.module.toolsPathGet()}` );
-//     console.log( `module.toolsirGet : ${_.module.toolsDirGet()}` );
-//   }
-//
-// }
-
 //
 
 /* xxx : duplicate test in utility::Testing */
@@ -329,7 +256,6 @@ function modulingLogistic( test )
 
   var module = _.module.withName( 'wTools' );
   test.gt( _.entity.lengthOf( module.files ), 100 );
-  // test.identical( _.entity.lengthOf( module.files ), 232 );
   test.identical( _.entity.lengthOf( module.alias ), 2 );
   test.true( _.module.filesMap.has( toolsPath ) );
   test.true( module.files.has( toolsPath ) );
@@ -578,7 +504,7 @@ throwing1`
       `
 
       var programPath = a.program( mainSyntax ).programPath;
-      a.program({ sourceCode : syntax1, name : 'syntax1' })
+      a.program({ routineCode : syntax1, name : 'syntax1' })
 
       return a.forkNonThrowing
       ({
@@ -618,7 +544,7 @@ throwing1`
       `
 
       var programPath = a.program( mainSyntaxCatching ).programPath;
-      a.program({ sourceCode : syntax1, name : 'syntax1' })
+      a.program({ routineCode : syntax1, name : 'syntax1' })
 
       return a.forkNonThrowing
       ({
@@ -755,29 +681,29 @@ function modulingSourcePathValid( test )
 
       let program0 = __.program.make
       ({
-        routine : _program0,
+        entry : _program0,
         tempPath : a.abs( '.' ),
         moduleFile : _.module.fileWith( 0 ),
       });
 
       let programRoutine1 = __.program.make
       ({
-        routine : _programRoutine1,
+        entry : _programRoutine1,
         tempPath : a.abs( '.' ),
         moduleFile : _.module.fileWith( 0 ),
       });
-      console.log( _.strLinesNumber( programRoutine1.sourceCode ) );
+      console.log( _.strLinesNumber( programRoutine1.entry.routineCode ) );
 
       let programRoutine2 = __.program.make
       ({
-        routine : _programRoutine2,
+        entry : _programRoutine2,
         tempPath : a.abs( '.' ),
         moduleFile : _.module.fileWith( 0 ),
       });
 
       let program3 = __.program.make
       ({
-        routine : _program3,
+        entry : _program3,
         tempPath : a.abs( '.' ),
         moduleFile : _.module.fileWith( 0 ),
       });
@@ -980,14 +906,14 @@ function modulingGlobalNamespaces( test )
       test.case = `basic, ${__.entity.exportStringSolo( env )}`;
 
       debugger;
-      var programPath = a.program({ routine : programRoutine1, locals : env }).programPath;
+      var programPath = a.program({ entry : programRoutine1, locals : env }).programPath;
       debugger;
-      a.program({ routine : programRoutine2, locals : env });
-      a.program({ routine : programRoutine2b, locals : env });
-      a.program({ routine : program3, locals : env });
-      a.program({ routine : program4, locals : env });
-      a.program({ routine : program5, locals : env });
-      a.program({ routine : program6, locals : env });
+      a.program({ entry : programRoutine2, locals : env });
+      a.program({ entry : programRoutine2b, locals : env });
+      a.program({ entry : program3, locals : env });
+      a.program({ entry : program4, locals : env });
+      a.program({ entry : program5, locals : env });
+      a.program({ entry : program6, locals : env });
 
       return a.forkNonThrowing
       ({
@@ -1424,7 +1350,7 @@ function predeclareBasic( test )
 
       a.program
       ({
-        routine : programRoutine1,
+        entry : programRoutine1,
         dirPath : 'dir',
       });
 
@@ -1620,9 +1546,9 @@ function predeclarePrime( test )
     {
       test.case = `before, single level, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainSingleBefore, locals : localsFrom( env ) }).programPath;
-      a.program({ routine : single1, locals : localsFrom( env ) });
-      a.program({ routine : single2, locals : localsFrom( env ) });
+      var programPath = a.program({ entry : mainSingleBefore, locals : localsFrom( env ) }).programPath;
+      a.program({ entry : single1, locals : localsFrom( env ) });
+      a.program({ entry : single2, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -1662,12 +1588,12 @@ orphans
     {
       test.case = `before, deep, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainDeepBefore, locals : localsFrom( env ) }).programPath;
-      a.program({ routine : deep1a, locals : localsFrom( env ) });
-      a.program({ routine : deep1b, locals : localsFrom( env ) });
-      a.program({ routine : deep1c, locals : localsFrom( env ) });
-      a.program({ routine : deep1d, locals : localsFrom( env ) });
-      a.program({ routine : deep1e, locals : localsFrom( env ) });
+      var programPath = a.program({ entry : mainDeepBefore, locals : localsFrom( env ) }).programPath;
+      a.program({ entry : deep1a, locals : localsFrom( env ) });
+      a.program({ entry : deep1b, locals : localsFrom( env ) });
+      a.program({ entry : deep1c, locals : localsFrom( env ) });
+      a.program({ entry : deep1d, locals : localsFrom( env ) });
+      a.program({ entry : deep1e, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -1714,10 +1640,10 @@ orphans
     {
       test.case = `before, common sub file, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainBeforeCommonSubFile, locals : localsFrom( env ) }).programPath;
-      a.program({ routine : common, locals : localsFrom( env ) });
-      a.program({ routine : common1, locals : localsFrom( env ) });
-      a.program({ routine : common2, locals : localsFrom( env ) });
+      var programPath = a.program({ entry : mainBeforeCommonSubFile, locals : localsFrom( env ) }).programPath;
+      a.program({ entry : common, locals : localsFrom( env ) });
+      a.program({ entry : common1, locals : localsFrom( env ) });
+      a.program({ entry : common2, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -1754,12 +1680,12 @@ orphans
     {
       test.case = `before, common sub file deep, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainBeforeCommonSubFileDeep, locals : localsFrom( env ) }).programPath;
-      a.program({ routine : common, locals : localsFrom( env ) });
-      a.program({ routine : deep2a, locals : localsFrom( env ) });
-      a.program({ routine : deep2b, locals : localsFrom( env ) });
-      a.program({ routine : deep3a, locals : localsFrom( env ) });
-      a.program({ routine : deep3b, locals : localsFrom( env ) });
+      var programPath = a.program({ entry : mainBeforeCommonSubFileDeep, locals : localsFrom( env ) }).programPath;
+      a.program({ entry : common, locals : localsFrom( env ) });
+      a.program({ entry : deep2a, locals : localsFrom( env ) });
+      a.program({ entry : deep2b, locals : localsFrom( env ) });
+      a.program({ entry : deep3a, locals : localsFrom( env ) });
+      a.program({ entry : deep3b, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -1809,12 +1735,12 @@ orphans
     {
       test.case = `before, branching1, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainBranchingBefore1, locals : localsFrom( env ) }).programPath;
-      a.program({ routine : branching1a, locals : localsFrom( env ) });
-      a.program({ routine : branching1b, locals : localsFrom( env ) });
-      a.program({ routine : branching2a, locals : localsFrom( env ) });
-      a.program({ routine : branching2b, locals : localsFrom( env ) });
-      a.program({ routine : branchingCommon, locals : localsFrom( env ) });
+      var programPath = a.program({ entry : mainBranchingBefore1, locals : localsFrom( env ) }).programPath;
+      a.program({ entry : branching1a, locals : localsFrom( env ) });
+      a.program({ entry : branching1b, locals : localsFrom( env ) });
+      a.program({ entry : branching2a, locals : localsFrom( env ) });
+      a.program({ entry : branching2b, locals : localsFrom( env ) });
+      a.program({ entry : branchingCommon, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -1859,12 +1785,12 @@ orphans
     {
       test.case = `before, branching2, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainBranchingBefore2, locals : localsFrom( env ) }).programPath;
-      a.program({ routine : branching1a, locals : localsFrom( env ) });
-      a.program({ routine : branching1b, locals : localsFrom( env ) });
-      a.program({ routine : branching2a, locals : localsFrom( env ) });
-      a.program({ routine : branching2b, locals : localsFrom( env ) });
-      a.program({ routine : branchingCommon, locals : localsFrom( env ) });
+      var programPath = a.program({ entry : mainBranchingBefore2, locals : localsFrom( env ) }).programPath;
+      a.program({ entry : branching1a, locals : localsFrom( env ) });
+      a.program({ entry : branching1b, locals : localsFrom( env ) });
+      a.program({ entry : branching2a, locals : localsFrom( env ) });
+      a.program({ entry : branching2b, locals : localsFrom( env ) });
+      a.program({ entry : branchingCommon, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -1916,9 +1842,9 @@ orphans
     {
       test.case = `after, single, top first, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainSingleAfterTopFirst, locals : localsFrom( env ) }).programPath;
-      a.program({ routine : singleAfter1, locals : localsFrom( env ) });
-      a.program({ routine : singleAfter2, locals : localsFrom( env ) });
+      var programPath = a.program({ entry : mainSingleAfterTopFirst, locals : localsFrom( env ) }).programPath;
+      a.program({ entry : singleAfter1, locals : localsFrom( env ) });
+      a.program({ entry : singleAfter2, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -1954,9 +1880,9 @@ orphans
     {
       test.case = `after, single, bottom first, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainSingleAfterBottomFirst, locals : localsFrom( env ) }).programPath;
-      a.program({ routine : singleAfter1, locals : localsFrom( env ) });
-      a.program({ routine : singleAfter2, locals : localsFrom( env ) });
+      var programPath = a.program({ entry : mainSingleAfterBottomFirst, locals : localsFrom( env ) }).programPath;
+      a.program({ entry : singleAfter1, locals : localsFrom( env ) });
+      a.program({ entry : singleAfter2, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -1992,12 +1918,12 @@ orphans
     {
       test.case = `after, deep, b, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainDeepAfterB, locals : localsFrom( env ) }).programPath;
-      a.program({ routine : deep11a, locals : localsFrom( env ) });
-      a.program({ routine : deep11b, locals : localsFrom( env ) });
-      a.program({ routine : deep11c, locals : localsFrom( env ) });
-      a.program({ routine : deep11d, locals : localsFrom( env ) });
-      a.program({ routine : deep11e, locals : localsFrom( env ) });
+      var programPath = a.program({ entry : mainDeepAfterB, locals : localsFrom( env ) }).programPath;
+      a.program({ entry : deep11a, locals : localsFrom( env ) });
+      a.program({ entry : deep11b, locals : localsFrom( env ) });
+      a.program({ entry : deep11c, locals : localsFrom( env ) });
+      a.program({ entry : deep11d, locals : localsFrom( env ) });
+      a.program({ entry : deep11e, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -2037,12 +1963,12 @@ orphans
     {
       test.case = `after, deep, d, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainDeepAfterD, locals : localsFrom( env ) }).programPath;
-      a.program({ routine : deep11a, locals : localsFrom( env ) });
-      a.program({ routine : deep11b, locals : localsFrom( env ) });
-      a.program({ routine : deep11c, locals : localsFrom( env ) });
-      a.program({ routine : deep11d, locals : localsFrom( env ) });
-      a.program({ routine : deep11e, locals : localsFrom( env ) });
+      var programPath = a.program({ entry : mainDeepAfterD, locals : localsFrom( env ) }).programPath;
+      a.program({ entry : deep11a, locals : localsFrom( env ) });
+      a.program({ entry : deep11b, locals : localsFrom( env ) });
+      a.program({ entry : deep11c, locals : localsFrom( env ) });
+      a.program({ entry : deep11d, locals : localsFrom( env ) });
+      a.program({ entry : deep11e, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -2082,10 +2008,10 @@ orphans
     {
       test.case = `after, common sub file, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainAfterCommonSubFile, locals : localsFrom( env ) }).programPath;
-      a.program({ routine : common, locals : localsFrom( env ) });
-      a.program({ routine : common1, locals : localsFrom( env ) });
-      a.program({ routine : common2, locals : localsFrom( env ) });
+      var programPath = a.program({ entry : mainAfterCommonSubFile, locals : localsFrom( env ) }).programPath;
+      a.program({ entry : common, locals : localsFrom( env ) });
+      a.program({ entry : common1, locals : localsFrom( env ) });
+      a.program({ entry : common2, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -2129,12 +2055,12 @@ orphans
     {
       test.case = `after, common sub file deep, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainAfterCommonSubFileDeep, locals : localsFrom( env ) }).programPath;
-      a.program({ routine : common, locals : localsFrom( env ) });
-      a.program({ routine : deep2a, locals : localsFrom( env ) });
-      a.program({ routine : deep2b, locals : localsFrom( env ) });
-      a.program({ routine : deep3a, locals : localsFrom( env ) });
-      a.program({ routine : deep3b, locals : localsFrom( env ) });
+      var programPath = a.program({ entry : mainAfterCommonSubFileDeep, locals : localsFrom( env ) }).programPath;
+      a.program({ entry : common, locals : localsFrom( env ) });
+      a.program({ entry : deep2a, locals : localsFrom( env ) });
+      a.program({ entry : deep2b, locals : localsFrom( env ) });
+      a.program({ entry : deep3a, locals : localsFrom( env ) });
+      a.program({ entry : deep3b, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -2184,12 +2110,12 @@ orphans
     {
       test.case = `after, branching1, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainBranchingAfter1, locals : localsFrom( env ) }).programPath;
-      a.program({ routine : branching1a, locals : localsFrom( env ) });
-      a.program({ routine : branching1b, locals : localsFrom( env ) });
-      a.program({ routine : branching2a, locals : localsFrom( env ) });
-      a.program({ routine : branching2b, locals : localsFrom( env ) });
-      a.program({ routine : branchingCommon, locals : localsFrom( env ) });
+      var programPath = a.program({ entry : mainBranchingAfter1, locals : localsFrom( env ) }).programPath;
+      a.program({ entry : branching1a, locals : localsFrom( env ) });
+      a.program({ entry : branching1b, locals : localsFrom( env ) });
+      a.program({ entry : branching2a, locals : localsFrom( env ) });
+      a.program({ entry : branching2b, locals : localsFrom( env ) });
+      a.program({ entry : branchingCommon, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -2232,12 +2158,12 @@ orphans
     {
       test.case = `after, branching2, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : mainBranchingAfter2, locals : localsFrom( env ) }).programPath;
-      a.program({ routine : branching1a, locals : localsFrom( env ) });
-      a.program({ routine : branching1b, locals : localsFrom( env ) });
-      a.program({ routine : branching2a, locals : localsFrom( env ) });
-      a.program({ routine : branching2b, locals : localsFrom( env ) });
-      a.program({ routine : branchingCommon, locals : localsFrom( env ) });
+      var programPath = a.program({ entry : mainBranchingAfter2, locals : localsFrom( env ) }).programPath;
+      a.program({ entry : branching1a, locals : localsFrom( env ) });
+      a.program({ entry : branching1b, locals : localsFrom( env ) });
+      a.program({ entry : branching2a, locals : localsFrom( env ) });
+      a.program({ entry : branching2b, locals : localsFrom( env ) });
+      a.program({ entry : branchingCommon, locals : localsFrom( env ) });
 
       return a.forkNonThrowing
       ({
@@ -3153,7 +3079,7 @@ function predeclareRelative( test )
       var programPath = a.program( mainWithFullPath ).programPath;
       a.program
       ({
-        routine : module1,
+        entry : module1,
         dirPath : 'node_modules',
       });
 
@@ -3184,7 +3110,7 @@ module1
       var programPath = a.program( mainWithRequireName ).programPath;
       a.program
       ({
-        routine : module1,
+        entry : module1,
         dirPath : 'node_modules',
       });
 
@@ -3266,7 +3192,7 @@ function predeclareAbsolute( test )
       var programPath = a.program( mainAssuption ).programPath;
       a.program
       ({
-        routine : file1,
+        entry : file1,
         dirPath : 'node_modules',
       });
 
@@ -3297,7 +3223,7 @@ file1
       var programPath = a.program( mainProperCasedModule ).programPath;
       a.program
       ({
-        routine : file1,
+        entry : file1,
         dirPath : 'node_modules',
       });
 
@@ -3328,7 +3254,7 @@ file1
       var programPath = a.program( mainUpperCasedModule ).programPath;
       a.program
       ({
-        routine : file1,
+        entry : file1,
         dirPath : 'node_modules',
       });
 
@@ -3359,7 +3285,7 @@ file1
       var programPath = a.program( mainLowerCasedModule ).programPath;
       a.program
       ({
-        routine : file1,
+        entry : file1,
         dirPath : 'node_modules',
       });
 
@@ -3390,7 +3316,7 @@ file1
       var programPath = a.program( mainUpperCaseInclude ).programPath;
       a.program
       ({
-        routine : file1,
+        entry : file1,
         dirPath : 'node_modules',
       });
 
@@ -3421,7 +3347,7 @@ file1
       var programPath = a.program( mainRelative ).programPath;
       a.program
       ({
-        routine : file1,
+        entry : file1,
         dirPath : 'dir1',
       });
 
@@ -3591,6 +3517,7 @@ file2
   downFiles
     {- ModuleFile ./main1 -}
   upFiles
+    {- ModuleFile ${_.module.toolsPathGet()} -}
     {- ModuleFile ./file1 -}
 `
       test.identical( op.exitCode, 0 );
@@ -3692,10 +3619,10 @@ function predeclareRedeclaringSharedFile( test )
     {
       test.case = `without redeclaring, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : module1, locals : _.props.extend( null, env, { withRedeclaring : 0 } ) }).programPath;
-      a.program({ routine : module2, locals : _.props.extend( null, env, { withRedeclaring : 0 } ) });
-      a.program({ routine : file1, locals : _.props.extend( null, env, { withRedeclaring : 0 } ) });
-      a.program({ routine : file2, locals : _.props.extend( null, env, { withRedeclaring : 0 } ) });
+      var programPath = a.program({ entry : module1, locals : _.props.extend( null, env, { withRedeclaring : 0 } ) }).programPath;
+      a.program({ entry : module2, locals : _.props.extend( null, env, { withRedeclaring : 0 } ) });
+      a.program({ entry : file1, locals : _.props.extend( null, env, { withRedeclaring : 0 } ) });
+      a.program({ entry : file2, locals : _.props.extend( null, env, { withRedeclaring : 0 } ) });
 
       return a.forkNonThrowing
       ({
@@ -3754,11 +3681,11 @@ file2
     {
       test.case = `without redeclaring, ${__.entity.exportStringSolo( env )}`;
 
-      var programPath = a.program({ routine : module1, locals : _.props.extend( null, env, { withRedeclaring : 1 } ) }).programPath;
-      a.program({ routine : module2, locals : _.props.extend( null, env, { withRedeclaring : 1 } ) });
-      a.program({ routine : file1, locals : _.props.extend( null, env, { withRedeclaring : 1 } ) });
-      a.program({ routine : file2, locals : _.props.extend( null, env, { withRedeclaring : 1 } ) });
-      a.program({ routine : file3, locals : _.props.extend( null, env, { withRedeclaring : 1 } ) });
+      var programPath = a.program({ entry : module1, locals : _.props.extend( null, env, { withRedeclaring : 1 } ) }).programPath;
+      a.program({ entry : module2, locals : _.props.extend( null, env, { withRedeclaring : 1 } ) });
+      a.program({ entry : file1, locals : _.props.extend( null, env, { withRedeclaring : 1 } ) });
+      a.program({ entry : file2, locals : _.props.extend( null, env, { withRedeclaring : 1 } ) });
+      a.program({ entry : file3, locals : _.props.extend( null, env, { withRedeclaring : 1 } ) });
 
       return a.forkNonThrowing
       ({
@@ -3941,9 +3868,9 @@ function moduleIsIncluded( test )
   test.true( _.module.isIncluded( 'wTesting' ) );
   test.true( !_.module.isIncluded( 'abcdef123' ) );
 
-  act({ routine : _programWithRequire });
-  act({ routine : _programWithIncludeLower });
-  act({ routine : _programWithIncludeUpper });
+  act({ entry : _programWithRequire });
+  act({ entry : _programWithIncludeLower });
+  act({ entry : _programWithIncludeUpper });
 
   return ready;
 
@@ -3958,13 +3885,13 @@ function moduleIsIncluded( test )
 
       let program = __.program.make
       ({
-        routine : env.routine,
+        entry : env.entry,
         withSubmodules : 1,
         moduleFile : _.module.fileWith( 0 ),
         tempPath : a.abs( '.' ),
       });
 
-      console.log( _.strLinesNumber( program.sourceCode ) );
+      console.log( _.strLinesNumber( program.entry.routineCode ) );
 
       return start
       ({
@@ -4146,7 +4073,7 @@ function programWriteOptionWithSubmodule( test )
 
       let program = __.program.make
       ({
-        routine : env.routine,
+        entry : env.routine,
         moduleFile : _.module.fileWith( 0 ),
         withSubmodules : 1,
       });
@@ -4230,7 +4157,7 @@ function programInheritedModuleFilePaths( test )
 
       var programPath = a.program( programRoutine1 ).programPath;
       a.program( programRoutine2 );
-      a.program({ routine : program3, dirPath : 'dir', });
+      a.program({ entry : program3, dirPath : 'dir', });
       return a.forkNonThrowing
       ({
         execPath : programPath,
@@ -4333,29 +4260,29 @@ function programLocalsChanging( test )
       var locals = { local1 : { a : 1 } };
       var program1 = tools.program.make
       ({
-        routine : programRoutine1,
+        entry : programRoutine1,
         tempPath : a.abs( '.' ),
         locals,
       });
-      test.true( _.aux.is( program1.locals ) );
-      test.true( program1.locals.a === locals.a );
-      test.true( program1.locals === locals );
+      test.true( _.aux.is( program1.group.locals ) );
+      test.true( program1.group.locals.a === locals.a );
+      test.true( program1.group.locals === locals );
       locals.local1 = { a : 2 };
       var program2 = tools.program.make
       ({
-        routine : programRoutine2,
+        entry : programRoutine2,
         tempPath : a.abs( '.' ),
         locals,
       });
-      test.true( _.aux.is( program2.locals ) );
-      test.true( program2.locals.a === locals.a );
-      test.true( program2.locals === locals );
+      test.true( _.aux.is( program2.group.locals ) );
+      test.true( program2.group.locals.a === locals.a );
+      test.true( program2.group.locals === locals );
       locals.local1 = { a : 3 };
 
       return a.forkNonThrowing
       ({
         execPath : [ program1.programPath, program2.programPath ],
-        currentPath : program1.tempPath,
+        currentPath : program1.group.tempPath,
       });
     })
     .then( ( op ) =>
@@ -4429,16 +4356,16 @@ function programOptionLocalsRoutines( test )
       var locals = { a : 1, routine1 };
       var program1 = tools.program.make
       ({
-        routine : programRoutine1,
+        entry : programRoutine1,
         tempPath : a.abs( '.' ),
         locals,
       });
-      test.true( _.aux.is( program1.locals ) );
+      test.true( _.aux.is( program1.group.locals ) );
 
       return a.forkNonThrowing
       ({
         execPath : program1.programPath,
-        currentPath : program1.tempPath,
+        currentPath : program1.group.tempPath,
       });
     })
     .then( ( op ) =>
@@ -4767,9 +4694,9 @@ experiment.experimental = 1;
 function requireModuleFileWithAccessor( test )
 {
   let a = test.assetFor( false );
-  let programRoutine1Path = a.program({ routine : programRoutine1 }).programPath;
+  let programRoutine1Path = a.program({ entry : programRoutine1 }).programPath;
 
-  a.program({ routine : programRoutine2 });
+  a.program({ entry : programRoutine2 });
 
   /* */
 
@@ -4844,7 +4771,7 @@ function testingOnL1( test )
     test1,
     programRoutine2,
   }
-  let program = a.program({ routine : programRoutine1, locals });
+  let program = a.program({ entry : programRoutine1, locals });
 
   /* */
 
@@ -4891,7 +4818,7 @@ function testingOnL1( test )
   function test1( test )
   {
     let a = test.assetFor( false );
-    let program = a.program({ routine : programRoutine2 });
+    let program = a.program({ entry : programRoutine2 });
     test.true( true );
     console.log( 'test1!' );
 
@@ -4922,17 +4849,17 @@ testingOnL1.description =
 function l1Environment( test )
 {
   let a = test.assetFor( false );
-  let tools1Path = __.path.normalize( __dirname + '/../../../../node_modules/wTools.l1' );
+  let tools1Path = __.path.nativize( __.path.normalize( __dirname + '/../../../../node_modules/wTools.l1' ) );
   let toolsPath = _.module.toolsPathGet();
   let locals =
   {
     tools1Path,
     toolsPath,
   }
-  let program = a.program({ routine : r1, locals });
-  a.program({ routine : r2, locals });
-  a.program({ routine : r3, locals });
-  a.program({ routine : r4, locals });
+  let program = a.program({ entry : r1, locals });
+  a.program({ entry : r2, locals });
+  a.program({ entry : r3, locals });
+  a.program({ entry : r4, locals });
 
   test.true( a.fileProvider.fileExists( toolsPath ) );
   console.log( `r1.toolsPath : ${toolsPath}` );
@@ -5030,17 +4957,17 @@ l1Environment.description =
 function l1SecondRequire( test )
 {
   let a = test.assetFor( false );
-  let tools1Path = __.path.normalize( __dirname + '/../../../../node_modules/wTools.l1' );
+  let tools1Path = __.path.nativize( __.path.normalize( __dirname + '/../../../../node_modules/wTools.l1' ) );
   let toolsPath = _.module.toolsPathGet();
   let locals =
   {
     tools1Path,
     toolsPath,
   }
-  let program = a.program({ routine : r1, locals });
-  a.program({ routine : r2, locals });
-  a.program({ routine : r3, locals });
-  a.program({ routine : includeTools, locals });
+  let program = a.program({ entry : r1, locals });
+  a.program({ entry : r2, locals });
+  a.program({ entry : r3, locals });
+  a.program({ entry : includeTools, locals });
 
   test.true( a.fileProvider.fileExists( toolsPath ) );
   console.log( `r1.toolsPath : ${toolsPath}` );
@@ -5127,7 +5054,7 @@ l1SecondRequire.description =
 function secondaryNamespaceSecondRequire( test )
 {
   let a = test.assetFor( false );
-  let routines =
+  let files =
   {
     r1,
     r2,
@@ -5135,25 +5062,123 @@ function secondaryNamespaceSecondRequire( test )
     secondary1,
     secondary2,
     secondary3,
+    secondary4,
     common2,
     common3,
   }
-  let program = a.program({ routine : r1, routines });
+  let program = a.program({ entry : r1, files });
 
   /* */
 
-  program.start()
-  .then( ( op ) =>
-  {
-    test.identical( op.exitCode, 0 );
-    var exp =
-`
-xxx
-`
-    test.equivalent( op.output, exp );
+  act({ method : 'require' });
+  act({ method : 'include' });
 
-    return null;
-  });
+  return a.ready;
+
+  /* - */
+
+  function act( env )
+  {
+
+    program.start({ args : [ 0, env.method ] })
+    .then( ( op ) =>
+    {
+      test.case = `without tree, ${__.entity.exportStringSolo( env )}`;
+      test.identical( op.exitCode, 0 );
+      var exp =
+  `
+  secondary3
+  secondary4
+  {- ModuleFile ${ a.abs( 'secondary2' ) } -}
+    secondary2  {- ModuleFile ${ a.abs( 'secondary3' ) } -}
+    secondary2  {- ModuleFile ${ a.abs( 'secondary4' ) } -}
+  common2
+  common3
+  {- ModuleFile ${ a.abs( 'secondary1' ) } -}
+    secondary1  {- ModuleFile ${ _.module.toolsPathGet() } -}
+    secondary1  {- ModuleFile ${ a.abs( 'secondary2' ) } -}
+    secondary1  {- ModuleFile ${ a.abs( 'secondary3' ) } -}
+    secondary1  {- ModuleFile ${ a.abs( 'common2' ) } -}
+    secondary1  {- ModuleFile ${ a.abs( 'common3' ) } -}
+  r2
+  r3
+  common2
+  common3
+  {- ModuleFile ${ a.abs( 'r1' ) } -}
+    r1  {- ModuleFile ${ _.module.toolsPathGet() } -}
+    r1  {- ModuleFile ${ a.abs( 'secondary1' ) } -}
+    r1  {- ModuleFile ${ a.abs( 'r2' ) } -}
+    r1  {- ModuleFile ${ a.abs( 'r3' ) } -}
+    r1  {- ModuleFile ${ a.abs( 'common2' ) } -}
+    r1  {- ModuleFile ${ a.abs( 'common3' ) } -}
+  `
+      test.equivalent( op.output, exp );
+
+      return null;
+    });
+
+    /* */
+
+    program.start({ args : [ 1, env.method ] })
+    .then( ( op ) =>
+    {
+      test.case = `with tree, ${__.entity.exportStringSolo( env )}`;
+      test.identical( op.exitCode, 0 );
+      var exp =
+  `
+  secondary3
+  secondary4
+
+  secondary2:
+  {- ModuleFile ${ a.abs( 'secondary2' ) } -}
+    {- ModuleFile ${ a.abs( 'secondary3' ) } -}
+      {- ModuleFile ${ a.abs( 'secondary4' ) } -}
+    {- ModuleFile ${ a.abs( 'secondary4' ) } -}
+
+  common2
+  common3
+
+  secondary1:
+  {- ModuleFile ${ a.abs( 'secondary1' ) } -}
+    {- ModuleFile ${ _.module.toolsPathGet() } -}
+      {- ModuleFile ${ __.path.join( _.module.toolsPathGet(), '../wTools' ) } -}
+    {- ModuleFile ${ a.abs( 'secondary2' ) } -}
+      {- ModuleFile ${ a.abs( 'secondary3' ) } -}
+      {- ModuleFile ${ a.abs( 'secondary4' ) } -}
+    {- ModuleFile ${ a.abs( 'secondary3' ) } -}
+      {- ModuleFile ${ a.abs( 'secondary4' ) } -}
+    {- ModuleFile ${ a.abs( 'common2' ) } -}
+      {- ModuleFile ${ a.abs( 'common3' ) } -}
+    {- ModuleFile ${ a.abs( 'common3' ) } -}
+
+  r2
+  r3
+  common2
+  common3
+
+  r1:
+  {- ModuleFile ${ a.abs( 'r1' ) } -}
+    {- ModuleFile ${ _.module.toolsPathGet() } -}
+      {- ModuleFile ${ __.path.join( _.module.toolsPathGet(), '../wTools' ) } -}
+    {- ModuleFile ${ a.abs( 'secondary1' ) } -}
+      {- ModuleFile ${ _.module.toolsPathGet() } -}
+      {- ModuleFile ${ a.abs( 'secondary2' ) } -}
+      {- ModuleFile ${ a.abs( 'secondary3' ) } -}
+      {- ModuleFile ${ a.abs( 'common2' ) } -}
+      {- ModuleFile ${ a.abs( 'common3' ) } -}
+    {- ModuleFile ${ a.abs( 'r2' ) } -}
+      {- ModuleFile ${ a.abs( 'r3' ) } -}
+    {- ModuleFile ${ a.abs( 'r3' ) } -}
+    {- ModuleFile ${ a.abs( 'common2' ) } -}
+      {- ModuleFile ${ a.abs( 'common3' ) } -}
+    {- ModuleFile ${ a.abs( 'common3' ) } -}
+  `
+      test.equivalent( op.output, exp );
+
+      return null;
+    });
+
+  }
 
   /* */
 
@@ -5164,13 +5189,30 @@ xxx
   function r1()
   {
     const _ = require( toolsPath );
+    _realGlobal_.withTree = Number( process.argv[ 2 ] );
+    _realGlobal_.method = process.argv[ 3 ];
     require( './secondary1' );
     require( './r2' );
+    if( method === 'require' )
     require( './r3' );
+    else
+    _.include( 'moduleR3' );
+    require( './common2' );
 
-    console.log( module.universal );
-    module.universal.upFiles.forEach( ( file ) => console.log( `  ${file}` ) );
-    debugger;
+    if( method === 'require' )
+    require( './common3' );
+    else
+    _.include( 'moduleCommon3' );
+
+    if( withTree )
+    {
+      console.log( '\nr1:\n' + _.module.fileExportString( module.universal, { it : { verbosity : 1, recursive : 3 } } ).resultExportString() + '\n' );
+    }
+    else
+    {
+      console.log( module.universal );
+      module.universal.upFiles.forEach( ( file ) => console.log( `  r1  ${file}` ) );
+    }
 
   }
 
@@ -5182,6 +5224,12 @@ xxx
 
   function r3()
   {
+    const _ = _global_.wTools;
+    _.module.predeclare
+    ({
+      alias : [ 'moduleR3' ],
+      entryPath : __filename,
+    });
     console.log( `r3` );
   }
 
@@ -5190,29 +5238,91 @@ xxx
     const __ = wTools;
     const _global = __.global.makeAndOpen( module, 'test1' );
     const _ = require( toolsPath );
+
     require( './secondary2' );
+    if( method === 'require' )
     require( './secondary3' );
+    else
+    _.include( 'moduleSecondary3' );
+
     require( './common2' );
+    if( method === 'require' )
     require( './common3' );
+    else
+    _.include( 'moduleCommon3' );
+
+    if( withTree )
+    {
+      console.log( '\nsecondary1:\n' + _.module.fileExportString( module.universal, { it : { verbosity : 1, recursive : 3 } } ).resultExportString() + '\n' );
+    }
+    else
+    {
+      console.log( module.universal );
+      module.universal.upFiles.forEach( ( file ) => console.log( `  secondary1  ${file}` ) );
+    }
+
     _.global.close( 'test1' );
   }
 
   function secondary2()
   {
+    const _ = _global_.wTools;
     require( './secondary3' );
+    if( method === 'require' )
+    require( './secondary4' );
+    else
+    _.include( 'moduleSecondary4' );
+
+    if( withTree )
+    {
+      console.log( '\nsecondary2:\n' + _.module.fileExportString( module.universal, { it : { verbosity : 1, recursive : 3 } } ).resultExportString() + '\n' );
+    }
+    else
+    {
+      console.log( module.universal );
+      module.universal.upFiles.forEach( ( file ) => console.log( `  secondary2  ${file}` ) );
+    }
+
   }
 
   function secondary3()
   {
+    const _ = _global_.wTools;
+    _.module.predeclare
+    ({
+      alias : [ 'moduleSecondary3' ],
+      entryPath : __filename,
+    });
+    console.log( `secondary3` );
+    require( './secondary4' );
+  }
+
+  function secondary4()
+  {
+    const _ = _global_.wTools;
+    _.module.predeclare
+    ({
+      alias : [ 'moduleSecondary4' ],
+      entryPath : __filename,
+    });
+    console.log( `secondary4` );
   }
 
   function common2()
   {
+    console.log( `common2` );
     require( './common3' );
   }
 
   function common3()
   {
+    const _ = _global_.wTools;
+    _.module.predeclare
+    ({
+      alias : [ 'moduleCommon3' ],
+      entryPath : __filename,
+    });
+    console.log( `common3` );
   }
 
 }
@@ -5228,8 +5338,177 @@ function requireSameModuleTwice( test )
 {
   let context = this;
   let a = test.assetFor( false );
+  let program = a.program({ entry : moduleA, tempPath : a.abs( 'node_modules/modulea' ) });
+
+  /* */
+
+  a.ready.then( () =>
+  {
+    var packageFile = { name : 'modulea', main : 'modulea' }
+    a.fileProvider.fileWrite
+    ({
+      filePath : a.abs( `node_modules/modulea/package.json` ),
+      data : packageFile,
+      encoding : 'json'
+    })
+    return null;
+  });
+
+  program.start()
+  .then( ( op ) =>
+  {
+    test.identical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, 'nhandled' ), 0 );
+    test.identical( _.strCount( op.output, 'error' ), 0 );
+    return null;
+  });
+
+  /* */
+
+  return a.ready;
+
+  /* */
+
+  function moduleA()
+  {
+    const _ = require( toolsPath );
+    _.include( 'moduleA' );
+    _.assert( !_.modulea, 'Module moduleA is included for the second time' );
+    _.modulea = Object.create( null );
+    module.exports = _global_.wTools;
+  }
+}
+
+requireSameModuleTwice.description =
+`
+- Module moduleA includes itself via _.include( 'moduleA' )
+- Module moduleA should not be included for the second time, cached version should be used instead
+`
+
+/*
+
   let _ToolsPath_ = a.path.nativize( _.module.toolsPathGet() );
-  let programRoutine1Path = a.program({ routine : programRoutine1 });
+  let programRoutine1Path = a.program({ routine : programRoutine1, locals : { _ToolsPath_ } }).programPath;
+
+*/
+
+//
+
+function nativeModuleFileDeleting( test )
+{
+  let a = test.assetFor( false );
+  let files =
+  {
+    r1,
+    r2,
+  }
+  let locals =
+  {
+    log,
+  }
+  let program = a.program({ entry : r1, files, locals });
+
+  /* */
+
+  act({});
+
+  return a.ready;
+
+  /* - */
+
+  function act( env )
+  {
+
+    /* */
+
+    program.start({ args : [ 0 ] })
+    .then( ( op ) =>
+    {
+      test.case = `without deleting, ${__.entity.exportStringSolo( env )}`;
+      test.identical( op.exitCode, 0 );
+      var exp =
+`
+r2
+= f:r1
+{- ModuleFile ${ a.abs( 'r1' ) } -}
+  {- ModuleFile ${_.module.toolsPathGet()} -}
+  {- ModuleFile ${ a.abs( 'r2' ) } -}
+`
+
+      test.equivalent( op.output, exp );
+      return null;
+    });
+
+    /* */
+
+    program.start({ args : [ 1 ] })
+    .then( ( op ) =>
+    {
+      test.case = `with deleting, ${__.entity.exportStringSolo( env )}`;
+      test.identical( op.exitCode, 0 );
+      var exp =
+`
+r2
+r2
+= f:r1
+{- ModuleFile ${ a.abs( 'r1' ) } -}
+  {- ModuleFile ${_.module.toolsPathGet()} -}
+  {- ModuleFile ${ a.abs( 'r2' ) } -}
+`
+
+      test.equivalent( op.output, exp );
+      return null;
+    });
+
+    /* */
+
+  }
+
+  /* - */
+
+  function log( moduleFile, verbosity )
+  {
+    const _ = _global_.wTools;
+    let prefix = `f:${_.path.fullName( moduleFile.sourcePath )}`;
+    console.log( `= ${prefix}\n${_.module.fileExportString( moduleFile, { it : { verbosity : 1, recursive : 2 } } ).resultExportString()}` );
+  }
+
+  /* - */
+
+  function r1()
+  {
+    const _ = require( toolsPath );
+    _realGlobal_.deleting = Number( process.argv[ 2 ] );
+    require( './r2' );
+    if( deleting )
+    delete _.module.nativeFilesMap[ _.path.nativize( __dirname + '/r2' ) ];
+    require( './r2' );
+    log( _.module.fileUniversalFrom( module ) );
+  }
+
+  /* - */
+
+  function r2()
+  {
+    console.log( `r2` );
+  }
+
+  /* - */
+
+}
+
+nativeModuleFileDeleting.description =
+`
+- deleting native module file is possible by user land code. it should not cause problems
+`
+
+//
+
+function stealthyRequireIssue( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let programRoutine1Path = a.program( programRoutine1 ).programPath;
 
   /* */
 
@@ -5252,92 +5531,32 @@ function requireSameModuleTwice( test )
   function programRoutine1()
   {
     console.log( 'programRoutine1.begin' );
-    const _ = require( 'modulea' );
+    const _ = require( toolsPath );
+    require( 'jsdom' );
     console.log( 'programRoutine1.end' );
-  }
-
-  /* */
-
-  function module1Make()
-  {
-    let modulea =
-    `
-    const _ToolsPath_ = '${_ToolsPath_}'
-    const _ = require( _ToolsPath_ );
-    _.include( 'moduleB' );
-    _.assert( !_.modulea, 'Module modulea is included for the second time' );
-    _.modulea = Object.create( null );
-    module.exports = _global_.wTools;
-    _.module.predeclare
-    ({
-      alias : [ 'moduleA', 'modulea' ],
-      entryPath : __filename,
-    });
-    `
-
-    let packageFile =
-    {
-      name : 'modulea',
-      main : 'proto/node_modules/modulea',
-    }
-
-    a.fileProvider.fileWrite({ filePath : a.abs( 'node_modules/modulea/package.json' ), data : packageFile, encoding : 'json' })
-    a.fileProvider.fileWrite({ filePath : a.abs( 'node_modules/modulea/proto/node_modules/modulea' ), data : modulea })
-  }
-
-  /* */
-
-  function module2Make()
-  {
-    let moduleb =
-    `
-    const _ToolsPath_ = '${_ToolsPath_}'
-    const _ = require( _ToolsPath_ );
-    debugger;
-    _.include( 'moduleA' );
-    _.assert( !_.moduleb, 'Module moduleb is included for the second time' );
-    _.moduleb = Object.create( null );
-    module.exports = _global_.wTools;
-    _.module.predeclare
-    ({
-      alias : [ 'moduleB', 'moduleb' ],
-      entryPath : __filename,
-    });
-    `
-
-    let packageFile =
-    {
-      name : 'moduleb',
-      main : 'proto/node_modules/moduleb',
-    }
-
-    a.fileProvider.fileWrite({ filePath : a.abs( 'node_modules/moduleb/package.json' ), data : packageFile, encoding : 'json' })
-    a.fileProvider.fileWrite({ filePath : a.abs( 'node_modules/moduleb/proto/node_modules/moduleb' ), data : moduleb })
   }
 
   /* */
 
   function begin()
   {
-    a.ready.then( () =>
+    let packageFile =
     {
-      module1Make();
-      module2Make();
-      return null;
-    });
-    return a.ready;
+      dependencies :
+      {
+        "jsdom": "16.4.0"
+      }
+    }
 
+    a.fileProvider.fileWrite({ filePath : a.abs( 'package.json' ), data : packageFile, encoding : 'json' })
+
+    a.shell( 'npm i' )
   }
 }
 
-requireSameModuleTwice.description =
+stealthyRequireIssue.description =
 `
-- Both modules have lowercase and uppercase version of the name
-- Main script includes moduleA via require( 'modulea' )
-- Module moduleA is cached using lowercase name of the module
-- Module moduleA includes moduleB via _.include( 'moduleB' )
-- Module moduleB includes moduleA via _.include( 'moduleA' )
-- Module moduleA should not be included for the second time, cached version should be used instead
+- That https://github.com/analog-nico/stealthy-require is working
 `
 
 //
@@ -5648,7 +5867,7 @@ function moduleFileExportExternal( test )
 
   function r2()
   {
-    const _ = wTools;
+    const _ = _global_.wTools;
     const _global = _.global.makeAndOpen( module, 'test1' );
     const __ = require( toolsPath );
     require( './r3' );
@@ -5747,9 +5966,6 @@ const Proto =
     moduleExportsUndefined,
     resolveBasic,
 
-    // toolsPathGetBasic,
-    // toolsPathGetProgram,
-
     modulingLogistic,
     modulingNativeIncludeErrors,
     modulingSourcePathValid,
@@ -5780,10 +5996,12 @@ const Proto =
 
     requireModuleFileWithAccessor,
     testingOnL1,
-    // l1Environment, /* xxx2 : switch on */
-    // l1SecondRequire, /* xxx2 : switch on */
-    // secondaryNamespaceSecondRequire, /* xxx2 : switch on */
-    // requireSameModuleTwice, /* xxx2 : switch on */
+    l1Environment, /* xxx2 : switch on */
+    l1SecondRequire,
+    secondaryNamespaceSecondRequire,
+    requireSameModuleTwice, /* xxx2 : switch on */
+    nativeModuleFileDeleting,
+    stealthyRequireIssue,
 
     moduleFileExportBasic,
     moduleFileExportExternal, /* xxx2 : implement */

@@ -22,12 +22,15 @@ const __ = _globals_.testing.wTools;
 function dichotomy( test )
 {
 
-  dichotomyTemplate( { method : 'is' } );
-  dichotomyTemplate( { method : 'like' } );
-  dichotomyTemplate( { method : 'isCompact' } );
-  dichotomyTemplate( { method : 'isUnfolded' } );
+  act({ method : 'is' });
+  act({ method : 'isOld' });
+  act({ method : 'isCompact' });
+  act({ method : 'isUnfolded' });
+  act({ method : 'isUnfoldedSmartOrder' });
+  act({ method : 'isUnfoldedSmarter' });
+  act({ method : 'like' });
 
-  function dichotomyTemplate( env )
+  function act( env )
   {
     test.case = `${__.entity.exportStringSolo( env )}, an empty array`;
     var got = _.long[ env.method ]( [] );
@@ -114,34 +117,35 @@ function dichotomy( test )
 
 //
 
-function isPerformance( test )
+function dichotomyPerformance( test )
 {
    /*
     Average of 10 runs of 1 million iteration of 24 _.long.is variations
     Values below are in seconds
-    ╔═══════════════════╤═════╤═════════╤══════════╤══════════╗
-    ║                   │  is │ isOld ? │ isCompact│ isUnfolded │ isUnfoldedSmartOrder │ isUnfoldedSmarter ║
-    ╟───────────────────┼─────┼─────────┼──────────┼──────────╢
-    ║ **Njs : v10.24.1**│3.662│  1.209  │   1.109  │   ?  ║
-    ╟───────────────────┼─────┼─────────┼──────────┼──────────╢
-    ║ **Njs : v14.17.0**│4.244│  1.263  │   1.156  │   ?  ║
-    ╟───────────────────┼─────┼─────────┼──────────┼──────────╢
-    ║Kos : Njs : v12.9.1│5.053│  2.008  │   1.976  │   1.600  ║
-    ╚═══════════════════╧═════╧═════════╧══════════╧══════════╝
+    ╔════════════════════════╤═════╤═════╤═════════╤══════════╤════════════════════╤═════════════════╗
+    ║                        │  is │isOld│isCompact│isUnfolded│isUnfoldedSmartOrder│isUnfoldedSmarter║
+    ╟────────────────────────┼─────┼─────┼─────────┼──────────┼────────────────────┼─────────────────╢
+    ║Windows-10-21H1, 10.24.1│1.296│5.490│  1.973  │  1.907   │     1.756          │    1.190        ║
+    ╟────────────────────────┼─────┼─────┼─────────┼──────────┼────────────────────┼─────────────────╢
+    ║Windows-10-21H1, 14.17.0│1.189│6.644│  1.902  │  1.989   │     1.657          │    1.342        ║
+    ╟────────────────────────┼─────┼─────┼─────────┼──────────┼────────────────────┼─────────────────╢
+    ║    Linux-Kos, 12.9.1   │     │     │         │          │                    │                 ║
+    ╚════════════════════════╧═════╧═════╧═════════╧══════════╧════════════════════╧═════════════════╝
     qqq : for Rahul : update the table please
   */
+
   debugger; /* eslint-disable-line no-debugger */
   var debugFlag = Config.debug;
   Config.debug = false;
 
   /* */
 
-  isPerformanceTemplate( { method : 'is' } );
-  isPerformanceTemplate( { method : 'isOld' } );
-  isPerformanceTemplate( { method : 'isCompact' } );
-  isPerformanceTemplate( { method : 'isUnfolded' } );
-  isPerformanceTemplate( { method : 'isUnfoldedSmartOrder' } );
-  isPerformanceTemplate( { method : 'isUnfoldedSmarter' } );
+  act({ method : 'is' });
+  act({ method : 'isOld' });
+  act({ method : 'isCompact' });
+  act({ method : 'isUnfolded' });
+  act({ method : 'isUnfoldedSmartOrder' });
+  act({ method : 'isUnfoldedSmarter' });
 
   /* */
 
@@ -150,7 +154,7 @@ function isPerformance( test )
 
   /* */
 
-  function isPerformanceTemplate( data )
+  function act( data )
   {
     test.case = `${data.method}`;
     var took, time;
@@ -205,36 +209,38 @@ function isPerformance( test )
 
   function run( env )
   {
-    _.long[ env.name ]( [] );
-    _.long[ env.name ]( env.nonEmptyArray );
-    _.long[ env.name ]( arguments );
-    _.long[ env.name ]( env.float32Array );
-    _.long[ env.name ]( env.int32Array );
-    _.long[ env.name ]( env.uint16Array );
-    _.long[ env.name ]( env.uint8Array );
-    _.long[ env.name ]( env.uint8ClampedArray );
-    _.long[ env.name ]( env.derivedArray );
-    _.long[ env.name ]( env.arrayProtoType );
-    _.long[ env.name ]( env.multiDimensionalArray );
-    _.long[ env.name ]( env.constructedArray );
-    _.long[ env.name ]( env.rawBuffer );
-    _.long[ env.name ]();
-    _.long[ env.name ]( null );
-    _.long[ env.name ]( undefined );
-    _.long[ env.name ]( NaN );
-    _.long[ env.name ]( new Date() );
-    _.long[ env.name ]( env.anEmptyRoutine );
-    _.long[ env.name ]( env.aString );
-    _.long[ env.name ]( env.aNumber );
-    _.long[ env.name ]( env.aBoolean );
-    _.long[ env.name ]( env.anEmptyObject );
-    _.long[ env.name ]( env.routine );
-  }
+    let r = [];
+    r.push( _.long[ env.name ]( [] ) );
+    r.push( _.long[ env.name ]( env.nonEmptyArray ) );
+    r.push( _.long[ env.name ]( arguments ) );
+    r.push( _.long[ env.name ]( env.float32Array ) );
+    r.push( _.long[ env.name ]( env.int32Array ) );
+    r.push( _.long[ env.name ]( env.uint16Array ) );
+    r.push( _.long[ env.name ]( env.uint8Array ) );
+    r.push( _.long[ env.name ]( env.uint8ClampedArray ) );
+    r.push( _.long[ env.name ]( env.derivedArray ) );
+    r.push( _.long[ env.name ]( env.arrayProtoType ) );
+    r.push( _.long[ env.name ]( env.multiDimensionalArray ) );
+    r.push( _.long[ env.name ]( env.constructedArray ) );
+    r.push( _.long[ env.name ]( env.rawBuffer ) );
+    r.push( _.long[ env.name ]() );
+    r.push( _.long[ env.name ]( null ) );
+    r.push( _.long[ env.name ]( undefined ) );
+    r.push( _.long[ env.name ]( NaN ) );
+    r.push( _.long[ env.name ]( new Date() ) );
+    r.push( _.long[ env.name ]( env.anEmptyRoutine ) );
+    r.push( _.long[ env.name ]( env.aString ) );
+    r.push( _.long[ env.name ]( env.aNumber ) );
+    r.push( _.long[ env.name ]( env.aBoolean ) );
+    r.push( _.long[ env.name ]( env.anEmptyObject ) );
+    r.push( _.long[ env.name ]( env.routine ) );
 
+    return r;
+  }
 }
 
-isPerformance.timeOut = 1e7;
-isPerformance.experimental = true;
+dichotomyPerformance.timeOut = 1e7;
+dichotomyPerformance.experimental = true;
 
 // --
 //
@@ -8823,7 +8829,7 @@ const Proto =
     // dichotomy
 
     dichotomy,
-    isPerformance,
+    dichotomyPerformance,
 
     // make
 
