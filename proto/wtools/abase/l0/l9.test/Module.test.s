@@ -5347,15 +5347,14 @@ function requireSameModuleTwice( test )
   {
     test.case = 'with require';
     program = a.program({ entry : withRequire, tempPath : a.abs( 'node_modules/withrequire' ) });
-    var packageFile = { name : 'withrequire', main : 'withrequire' };
+    var packageFile = { name : 'withrequire', main : 'withRequire' };
     a.fileProvider.fileWrite
     ({
       filePath : a.abs( `node_modules/withrequire/package.json` ),
       data : packageFile,
       encoding : 'json',
     })
-    program.start();
-    return null;
+    return program.start({ ready : null });
   })
   .then( ( op ) =>
   {
@@ -5371,15 +5370,14 @@ function requireSameModuleTwice( test )
   {
     test.case = 'with include';
     program = a.program({ entry : withInclude, tempPath : a.abs( 'node_modules/withinclude' ) });
-    var packageFile = { name : 'withinclude', main : 'withinclude' };
+    var packageFile = { name : 'withinclude', main : 'withInclude' };
     a.fileProvider.fileWrite
     ({
       filePath : a.abs( `node_modules/withinclude/package.json` ),
       data : packageFile,
       encoding : 'json',
     })
-    program.start();
-    return null;
+    return program.start({ ready : null });
   })
   .then( ( op ) =>
   {
@@ -5399,6 +5397,9 @@ function requireSameModuleTwice( test )
   {
     _ = Object.create( null );
     debugger;
+    if( process.platform === 'linux' )
+    require( 'withrequire' );
+    else
     require( 'withRequire' );
     if( _.included )
     throw new Error( 'Module withRequire is included for the second time' );
@@ -5414,7 +5415,7 @@ function requireSameModuleTwice( test )
     debugger;
     _.include( 'withInclude' );
     if( _.included )
-    throw new Error( 'Module withRequire is included for the second time' );
+    throw new Error( 'Module withInclude is included for the second time' );
     _.included = Object.create( null );
     module.exports = _global_.wTools;
   }
