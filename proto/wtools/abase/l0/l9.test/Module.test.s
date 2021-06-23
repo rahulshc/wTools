@@ -5372,6 +5372,11 @@ function requireSameModuleTwice( test )
   function moduleA()
   {
     const _ = require( toolsPath );
+    _.module.predeclare
+    ({
+      alias : [ 'moduleA', 'modulea' ],
+      entryPath : __filename,
+    });
     _.include( 'moduleA' );
     _.assert( !_.modulea, 'Module moduleA is included for the second time' );
     _.modulea = Object.create( null );
