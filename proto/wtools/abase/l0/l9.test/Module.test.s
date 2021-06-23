@@ -5338,20 +5338,26 @@ function requireSameModuleTwice( test )
 {
   let context = this;
   let a = test.assetFor( false );
-  let _ToolsPath_ = a.path.nativize( _.module.toolsPathGet() );
-  let program = a.program( programRoutine1 );
+  let modulea = a.program({ routine : moduleA, tempPath : a.abs( 'node_modules/modulea' ) });
+  let moduleb = a.program({ routine : moduleB, tempPath : a.abs( 'node_modules/moduleb' ) });
+  let program = a.program( program1 );
 
   /* */
+  a.ready.then( () =>
+  {
+    var packageFile = { name : 'modulea', main : 'modulea' }
+    a.fileProvider.fileWrite({ filePath : a.abs( `node_modules/modulea/package.json` ), data : packageFile, encoding : 'json' })
+    var packageFile = { name : 'moduleb', main : 'moduleb' }
+    a.fileProvider.fileWrite({ filePath : a.abs( `node_modules/moduleb/package.json` ), data : packageFile, encoding : 'json' })
+    return null;
+  });
 
-  begin()
   program.start()
   .then( ( op ) =>
   {
     test.identical( op.exitCode, 0 );
     test.identical( _.strCount( op.output, 'nhandled' ), 0 );
     test.identical( _.strCount( op.output, 'error' ), 0 );
-    test.identical( _.strCount( op.output, 'programRoutine1.begin' ), 1 );
-    test.identical( _.strCount( op.output, 'programRoutine1.end' ), 1 );
     return null;
   });
 
@@ -5361,91 +5367,32 @@ function requireSameModuleTwice( test )
 
   /* */
 
-  function programRoutine1()
+  function program1()
   {
-    console.log( 'programRoutine1.begin' );
-    const _ = require( 'modulea' );
-    console.log( 'programRoutine1.end' );
+    require( 'modulea' )
   }
 
   /* */
 
-  function module1Make()
+  function moduleA()
   {
-    let modulea =
-    `
-    debugger;
-    const _ToolsPath_ = '${_ToolsPath_}'
-    const _ = require( _ToolsPath_ );
+    const _ = require( toolsPath );
     _.include( 'moduleB' );
-    _.assert( !_.modulea, 'Module modulea is included for the second time' );
+    _.assert( !_.modulea, 'Module moduleA is included for the second time' );
     _.modulea = Object.create( null );
     module.exports = _global_.wTools;
-    _.module.predeclare
-    ({
-      alias : [ 'moduleA', 'modulea' ],
-      entryPath : __filename,
-    });
-    `
-
-    let packageFile =
-    {
-      name : 'modulea',
-      main : 'proto/node_modules/modulea',
-    }
-
-    a.fileProvider.fileWrite({ filePath : a.abs( 'node_modules/modulea/package.json' ), data : packageFile, encoding : 'json' })
-    a.fileProvider.fileWrite({ filePath : a.abs( 'node_modules/modulea/proto/node_modules/modulea' ), data : modulea })
   }
 
-  /* */
-
-  function module2Make()
+  function moduleB()
   {
-    let moduleb =
-    `
-    debugger;
-    const _ToolsPath_ = '${_ToolsPath_}'
-    const _ = require( _ToolsPath_ );
+    const _ = require( toolsPath );
     _.include( 'moduleA' );
-    _.assert( !_.moduleb, 'Module moduleb is included for the second time' );
-    _.moduleb = Object.create( null );
-    module.exports = _global_.wTools;
-    _.module.predeclare
-    ({
-      alias : [ 'moduleB', 'moduleb' ],
-      entryPath : __filename,
-    });
-    `
-
-    let packageFile =
-    {
-      name : 'moduleb',
-      main : 'proto/node_modules/moduleb',
-    }
-
-    a.fileProvider.fileWrite({ filePath : a.abs( 'node_modules/moduleb/package.json' ), data : packageFile, encoding : 'json' })
-    a.fileProvider.fileWrite({ filePath : a.abs( 'node_modules/moduleb/proto/node_modules/moduleb' ), data : moduleb })
   }
 
-  /* */
-
-  function begin()
-  {
-    a.ready.then( () =>
-    {
-      module1Make();
-      module2Make();
-      return null;
-    });
-    return a.ready;
-
-  }
 }
 
 requireSameModuleTwice.description =
 `
-- Both modules have lowercase and uppercase version of the name
 - Main script includes moduleA via require( 'modulea' )
 - Module moduleA is cached using lowercase name of the module
 - Module moduleA includes moduleB via _.include( 'moduleB' )
