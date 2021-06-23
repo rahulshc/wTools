@@ -88,6 +88,7 @@ function errorFunctorBasic( test )
   //let context = this;
 
   act({ method : 'error_functor' });
+  act({ method : 'error_functorFast' });
 
   function act( env )
   {
@@ -378,42 +379,44 @@ function errorFunctorBasic( test )
 
 function errorFunctorBasicPerformance( test )
 {
-  let a = test.assetFor( false );
-  test.identical( true, true );
-  programRoutine.meta = {}
-  programRoutine.meta.locals = { methodMeasure, varsInit, run };
-  let program = a.program( programRoutine );
+  debugger; /* eslint-disable-line no-debugger */
+  var debugFlag = Config.debug;
+  Config.debug = false;
 
-  program.start( { args : [ 'error_functor' ] } );
-
-  return a.ready;
+  //methodMeasure({ method : 'error_functor' });
+  methodMeasure({ method : 'error_functorFast' });
 
   /* */
 
-  function methodMeasure( env )
+  function methodMeasure( data )
   {
-    let _ = wTools;
-    let __ = wTools;
-    let took, time;
-    Config.debug = false;
-    env = varsInit( env );
+    test.case = `${data.method}`;
+    var took, time;
+    var env = varsInit();
 
-    debugger; /* eslint-disable-line no-debugger */
     time = _.time.now();
     for( let i = env.times; i > 0; i-- )
-    run( env );
+    {
+      env.name = data.method;
+      run( env );
+    }
     took = __.time.spent( time );
-    console.log( `${env.times} iterations of ${env.method} took : ${took} on ${process.version}` );
-    debugger; /* eslint-disable-line no-debugger */
+
+    console.log( `${env.times} iterations of ${test.case} took : ${took} on ${process.version}` );
+    test.identical( true, true );
   }
 
   /* */
 
-  function varsInit( env )
+  Config.debug = debugFlag;
+  debugger; /* eslint-disable-line no-debugger */
+
+  /* */
+
+  function varsInit()
   {
-    let _ = wTools;
-    let __ = wTools;
-    env.times = 5000000;
+    const env = {};
+    env.times = 1000000;
     env.errorFunctionName = 'OnSomeError';
     env.onErrorMakeUserDefined = _onSomeError;
     env.onErrorMakeasString = 'xyz';
@@ -436,25 +439,14 @@ function errorFunctorBasicPerformance( test )
 
   function run( env )
   {
-    let _ = wTools;
-    let __ = wTools;
     let r = [];
-    r.push( _.env[ env.method ]( env.errorFunctionName, env.onErrorMakeUserDefined ) );
-    r.push( _.env[ env.method ]( env.errorFunctionName, env.onErrorMakeasString ) );
-    r.push( _.env[ env.method ]( env.errorFunctionName, env.onErrorMakeasArraySingleItem ) );
-    r.push( _.env[ env.method ]( env.errorFunctionName, env.onErrorMakeasArrayMultiItem ) );
-    r.push( _.env[ env.method ]( env.errorFunctionName ) );
+    r.push( _.error[ env.name ]( env.errorFunctionName, env.onErrorMakeUserDefined ) );
+    r.push( _.error[ env.name ]( env.errorFunctionName, env.onErrorMakeasString ) );
+    r.push( _.error[ env.name ]( env.errorFunctionName, env.onErrorMakeasArraySingleItem ) );
+    r.push( _.error[ env.name ]( env.errorFunctionName, env.onErrorMakeasArrayMultiItem ) );
+    r.push( _.error[ env.name ]( env.errorFunctionName ) );
     return r;
   }
-
-  /* */
-
-  function programRoutine()
-  {
-    const _ = require( toolsPath );
-    methodMeasure({ method : process.argv[ 2 ] });
-  }
-
 }
 
 errorFunctorBasicPerformance.timeOut = 1e7;
