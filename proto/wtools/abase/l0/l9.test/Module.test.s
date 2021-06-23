@@ -213,79 +213,6 @@ resolveBasic.description  =
   Routine _.module.resolve return path to include path of module::wTools.
 `
 
-// //
-//
-// function toolsPathGetBasic( test )
-// {
-//   let context = this;
-//
-//   /* */
-//
-//   test.case = 'toolsPathGet';
-//   var got = _.module.toolsPathGet();
-//   // var exp = _.path.nativize( __.path.join( __dirname, '../../../../node_modules/Tools' ) );
-//   var exp = __.path.join( __dirname, '../../../../node_modules/Tools' );
-//   test.identical( got, exp );
-//   console.log( `toolsPathGet : ${got}` );
-//
-//   /* */
-//
-//   test.case = 'toolsDirGet';
-//   var got = _.module.toolsDirGet();
-//   // var exp = __.path.nativize( __.path.join( __dirname, '../../..' ) );
-//   var exp = __.path.join( __dirname, '../../..' );
-//   test.identical( got, exp );
-//   console.log( `toolsDirGet : ${got}` );
-//
-//   /* */
-//
-//   test.case = 'resolve wTools';
-//   var got = _.module.resolve( 'wTools' );
-//   // var exp = __.path.nativize( __.path.join( __dirname, '../../../../node_modules/Tools' ) );
-//   var exp = __.path.join( __dirname, '../../../../node_modules/Tools' );
-//   test.identical( got, exp );
-//   console.log( `resolved : ${got}` );
-//
-//   /* */
-//
-// }
-//
-// //
-//
-// function toolsPathGetProgram( test )
-// {
-//   let context = this;
-//   let a = test.assetFor( false );
-//   let programPath = a.program( program ).programPath;
-//
-//   console.log( 'programPath', programPath );
-//
-//   return a.forkNonThrowing({ execPath : programPath })
-//   .then( ( op ) =>
-//   {
-//     test.identical( op.exitCode, 0 );
-//     var exp =
-// `
-// toolsPath : ${__.path.nativize( __.path.join( __dirname, '../../../../node_modules/Tools' ) )}
-// module.resolve( wTools ) : ${__.path.join( __dirname, '../../../../node_modules/Tools' )}
-// module.toolsPathGet : ${__.path.join( __dirname, '../../../../node_modules/Tools' )}
-// module.toolsirGet : ${__.path.join( __dirname, '../../..' )}
-// `
-//     test.equivalent( op.output, exp );
-//     return op;
-//   });
-//
-//   function program()
-//   {
-//     console.log( `toolsPath : ${toolsPath}` );
-//     const _ = require( toolsPath );
-//     console.log( `module.resolve( wTools ) : ${_.module.resolve( 'wTools' )}` );
-//     console.log( `module.toolsPathGet : ${_.module.toolsPathGet()}` );
-//     console.log( `module.toolsirGet : ${_.module.toolsDirGet()}` );
-//   }
-//
-// }
-
 //
 
 /* xxx : duplicate test in utility::Testing */
@@ -3590,6 +3517,7 @@ file2
   downFiles
     {- ModuleFile ./main1 -}
   upFiles
+    {- ModuleFile ${_.module.toolsPathGet()} -}
     {- ModuleFile ./file1 -}
 `
       test.identical( op.exitCode, 0 );
@@ -5143,7 +5071,7 @@ function secondaryNamespaceSecondRequire( test )
   /* */
 
   act({ method : 'require' });
-  // act({ method : 'include' });
+  act({ method : 'include' });
 
   return a.ready;
 
@@ -5276,13 +5204,15 @@ function secondaryNamespaceSecondRequire( test )
     else
     _.include( 'moduleCommon3' );
 
-    if( !_realGlobal_.withTree )
+    if( withTree )
+    {
+      console.log( '\nr1:\n' + _.module.fileExportString( module.universal, { it : { verbosity : 1, recursive : 3 } } ).resultExportString() + '\n' );
+    }
+    else
     {
       console.log( module.universal );
       module.universal.upFiles.forEach( ( file ) => console.log( `  r1  ${file}` ) );
     }
-    if( _realGlobal_.withTree )
-    console.log( '\nr1:\n' + _.module.fileExportString( module.universal, { it : { verbosity : 1, recursive : 3 } } ).resultExportString() + '\n' );
 
   }
 
@@ -5294,7 +5224,7 @@ function secondaryNamespaceSecondRequire( test )
 
   function r3()
   {
-    const _ = wTools;
+    const _ = _global_.wTools;
     _.module.predeclare
     ({
       alias : [ 'moduleR3' ],
@@ -5309,9 +5239,7 @@ function secondaryNamespaceSecondRequire( test )
     const _global = __.global.makeAndOpen( module, 'test1' );
     const _ = require( toolsPath );
 
-    debugger;
     require( './secondary2' );
-    debugger;
     if( method === 'require' )
     require( './secondary3' );
     else
@@ -5323,7 +5251,7 @@ function secondaryNamespaceSecondRequire( test )
     else
     _.include( 'moduleCommon3' );
 
-    if( _realGlobal_.withTree )
+    if( withTree )
     {
       console.log( '\nsecondary1:\n' + _.module.fileExportString( module.universal, { it : { verbosity : 1, recursive : 3 } } ).resultExportString() + '\n' );
     }
@@ -5338,14 +5266,14 @@ function secondaryNamespaceSecondRequire( test )
 
   function secondary2()
   {
-    const _ = wTools;
+    const _ = _global_.wTools;
     require( './secondary3' );
     if( method === 'require' )
     require( './secondary4' );
     else
     _.include( 'moduleSecondary4' );
 
-    if( _realGlobal_.withTree )
+    if( withTree )
     {
       console.log( '\nsecondary2:\n' + _.module.fileExportString( module.universal, { it : { verbosity : 1, recursive : 3 } } ).resultExportString() + '\n' );
     }
@@ -5359,8 +5287,7 @@ function secondaryNamespaceSecondRequire( test )
 
   function secondary3()
   {
-    const _ = wTools;
-    debugger;
+    const _ = _global_.wTools;
     _.module.predeclare
     ({
       alias : [ 'moduleSecondary3' ],
@@ -5372,7 +5299,7 @@ function secondaryNamespaceSecondRequire( test )
 
   function secondary4()
   {
-    const _ = wTools;
+    const _ = _global_.wTools;
     _.module.predeclare
     ({
       alias : [ 'moduleSecondary4' ],
@@ -5389,7 +5316,7 @@ function secondaryNamespaceSecondRequire( test )
 
   function common3()
   {
-    const _ = wTools;
+    const _ = _global_.wTools;
     _.module.predeclare
     ({
       alias : [ 'moduleCommon3' ],
@@ -5431,6 +5358,8 @@ function requireSameModuleTwice( test )
   /* */
 
   return a.ready;
+
+  /* */
 
   function programRoutine1()
   {
@@ -5524,14 +5453,130 @@ requireSameModuleTwice.description =
 - Module moduleA should not be included for the second time, cached version should be used instead
 `
 
+/*
+
+  let _ToolsPath_ = a.path.nativize( _.module.toolsPathGet() );
+  let programRoutine1Path = a.program({ routine : programRoutine1, locals : { _ToolsPath_ } }).programPath;
+
+*/
+
 //
 
-function requireThirdPartyModule( test )
+function nativeModuleFileDeleting( test )
+{
+  let a = test.assetFor( false );
+  let files =
+  {
+    r1,
+    r2,
+  }
+  let locals =
+  {
+    log,
+  }
+  let program = a.program({ entry : r1, files, locals });
+
+  /* */
+
+  act({});
+
+  return a.ready;
+
+  /* - */
+
+  function act( env )
+  {
+
+    /* */
+
+    program.start({ args : [ 0 ] })
+    .then( ( op ) =>
+    {
+      test.case = `without deleting, ${__.entity.exportStringSolo( env )}`;
+      test.identical( op.exitCode, 0 );
+      var exp =
+`
+r2
+= f:r1
+{- ModuleFile ${ a.abs( 'r1' ) } -}
+  {- ModuleFile ${_.module.toolsPathGet()} -}
+  {- ModuleFile ${ a.abs( 'r2' ) } -}
+`
+
+      test.equivalent( op.output, exp );
+      return null;
+    });
+
+    /* */
+
+    program.start({ args : [ 1 ] })
+    .then( ( op ) =>
+    {
+      test.case = `with deleting, ${__.entity.exportStringSolo( env )}`;
+      test.identical( op.exitCode, 0 );
+      var exp =
+`
+r2
+r2
+= f:r1
+{- ModuleFile ${ a.abs( 'r1' ) } -}
+  {- ModuleFile ${_.module.toolsPathGet()} -}
+  {- ModuleFile ${ a.abs( 'r2' ) } -}
+`
+
+      test.equivalent( op.output, exp );
+      return null;
+    });
+
+    /* */
+
+  }
+
+  /* - */
+
+  function log( moduleFile, verbosity )
+  {
+    const _ = _global_.wTools;
+    let prefix = `f:${_.path.fullName( moduleFile.sourcePath )}`;
+    console.log( `= ${prefix}\n${_.module.fileExportString( moduleFile, { it : { verbosity : 1, recursive : 2 } } ).resultExportString()}` );
+  }
+
+  /* - */
+
+  function r1()
+  {
+    const _ = require( toolsPath );
+    _realGlobal_.deleting = Number( process.argv[ 2 ] );
+    require( './r2' );
+    if( deleting )
+    delete _.module.nativeFilesMap[ _.path.nativize( __dirname + '/r2' ) ];
+    require( './r2' );
+    log( _.module.fileUniversalFrom( module ) );
+  }
+
+  /* - */
+
+  function r2()
+  {
+    console.log( `r2` );
+  }
+
+  /* - */
+
+}
+
+nativeModuleFileDeleting.description =
+`
+- deleting native module file is possible by user land code. it should not cause problems
+`
+
+//
+
+function stealthyRequireIssue( test )
 {
   let context = this;
   let a = test.assetFor( false );
-  let _ToolsPath_ = a.path.nativize( _.module.toolsPathGet() );
-  let programRoutine1Path = a.program({ routine : programRoutine1, locals : { _ToolsPath_ } }).programPath;
+  let programRoutine1Path = a.program( programRoutine1 ).programPath;
 
   /* */
 
@@ -5554,8 +5599,7 @@ function requireThirdPartyModule( test )
   function programRoutine1()
   {
     console.log( 'programRoutine1.begin' );
-    const _ = require( _ToolsPath_ );
-    debugger;
+    const _ = require( toolsPath );
     require( 'jsdom' );
     console.log( 'programRoutine1.end' );
   }
@@ -5577,6 +5621,11 @@ function requireThirdPartyModule( test )
     a.shell( 'npm i' )
   }
 }
+
+stealthyRequireIssue.description =
+`
+- That https://github.com/analog-nico/stealthy-require is working
+`
 
 //
 
@@ -5886,7 +5935,7 @@ function moduleFileExportExternal( test )
 
   function r2()
   {
-    const _ = wTools;
+    const _ = _global_.wTools;
     const _global = _.global.makeAndOpen( module, 'test1' );
     const __ = require( toolsPath );
     require( './r3' );
@@ -5985,9 +6034,6 @@ const Proto =
     moduleExportsUndefined,
     resolveBasic,
 
-    // toolsPathGetBasic,
-    // toolsPathGetProgram,
-
     modulingLogistic,
     modulingNativeIncludeErrors,
     modulingSourcePathValid,
@@ -6020,9 +6066,10 @@ const Proto =
     testingOnL1,
     l1Environment, /* xxx2 : switch on */
     l1SecondRequire,
-    // secondaryNamespaceSecondRequire,
-    // requireSameModuleTwice, /* xxx2 : switch on */
-    // requireThirdPartyModule, /* xxx2 : switch on */
+    secondaryNamespaceSecondRequire,
+    requireSameModuleTwice, /* xxx2 : switch on */
+    nativeModuleFileDeleting,
+    stealthyRequireIssue,
 
     moduleFileExportBasic,
     moduleFileExportExternal, /* xxx2 : implement */
