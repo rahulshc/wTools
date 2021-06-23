@@ -4849,7 +4849,7 @@ testingOnL1.description =
 function l1Environment( test )
 {
   let a = test.assetFor( false );
-  let tools1Path = __.path.normalize( __dirname + '/../../../../node_modules/wTools.l1' );
+  let tools1Path = __.path.nativize( __.path.normalize( __dirname + '/../../../../node_modules/wTools.l1' ) );
   let toolsPath = _.module.toolsPathGet();
   let locals =
   {
@@ -4957,7 +4957,7 @@ l1Environment.description =
 function l1SecondRequire( test )
 {
   let a = test.assetFor( false );
-  let tools1Path = __.path.normalize( __dirname + '/../../../../node_modules/wTools.l1' );
+  let tools1Path = __.path.nativize( __.path.normalize( __dirname + '/../../../../node_modules/wTools.l1' ) );
   let toolsPath = _.module.toolsPathGet();
   let locals =
   {
