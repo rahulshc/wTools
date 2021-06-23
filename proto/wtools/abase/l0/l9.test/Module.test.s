@@ -6014,7 +6014,7 @@ const Proto =
     l1Environment, /* xxx2 : switch on */
     l1SecondRequire,
     secondaryNamespaceSecondRequire,
-    // requireSameModuleTwice, /* xxx2 : switch on */
+    requireSameModuleTwice, /* xxx2 : switch on */
     nativeModuleFileDeleting,
     stealthyRequireIssue,
 
