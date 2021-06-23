@@ -200,6 +200,7 @@ moduleExportsUndefined.description  =
 /* qqq : write test with several programs in differen dirs and declaring of modules */
 function resolveBasic( test )
 {
+
   let context = this;
   var exp = _.path.normalize( __dirname + '../../../../../node_modules/Tools' );
   var got = _.module.resolve( 'wTools' );
@@ -247,7 +248,7 @@ function modulingLogistic( test )
   ]);
   var files = __.select( [ ... module.files.values() ], '*/sourcePath' );
   _.assert( files[ 0 ] !== undefined );
-  // test.identical( new Set( __.path.s.relative( testingPath + '/../../..', files ) ), exp ); /* xxx2 : investigate */
+  test.identical( new Set( __.path.s.relative( testingPath + '/../../..', files ) ), exp ); /* yyy */
   test.true( new Set( __.path.s.relative( testingPath + '/../../..', files ) ).has( 'proto/node_modules/wTesting' ) );
   var module2 = _.module.withName( 'wTesting' );
   test.true( module === module2 );
@@ -5338,23 +5339,48 @@ function requireSameModuleTwice( test )
 {
   let context = this;
   let a = test.assetFor( false );
-  let program = a.program({ entry : moduleA, tempPath : a.abs( 'node_modules/modulea' ) });
+  let program;
 
   /* */
 
   a.ready.then( () =>
   {
-    var packageFile = { name : 'modulea', main : 'modulea' }
+    test.case = 'with require';
+    program = a.program({ entry : withRequire, tempPath : a.abs( 'node_modules/withrequire' ) });
+    var packageFile = { name : 'withrequire', main : 'withrequire' };
     a.fileProvider.fileWrite
     ({
-      filePath : a.abs( `node_modules/modulea/package.json` ),
+      filePath : a.abs( `node_modules/withrequire/package.json` ),
       data : packageFile,
-      encoding : 'json'
+      encoding : 'json',
     })
+    program.start();
+    return null;
+  })
+  .then( ( op ) =>
+  {
+    test.identical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, 'nhandled' ), 0 );
+    test.identical( _.strCount( op.output, 'error' ), 0 );
     return null;
   });
 
-  program.start()
+  /* */
+
+  a.ready.then( () =>
+  {
+    test.case = 'with include';
+    program = a.program({ entry : withInclude, tempPath : a.abs( 'node_modules/withinclude' ) });
+    var packageFile = { name : 'withinclude', main : 'withinclude' };
+    a.fileProvider.fileWrite
+    ({
+      filePath : a.abs( `node_modules/withinclude/package.json` ),
+      data : packageFile,
+      encoding : 'json',
+    })
+    program.start();
+    return null;
+  })
   .then( ( op ) =>
   {
     test.identical( op.exitCode, 0 );
@@ -5369,24 +5395,34 @@ function requireSameModuleTwice( test )
 
   /* */
 
-  function moduleA()
+  function withRequire()
+  {
+    _ = Object.create( null );
+    debugger;
+    require( 'withRequire' );
+    if( _.included )
+    throw new Error( 'Module withRequire is included for the second time' );
+    _.included = Object.create( null );
+    module.exports = _;
+  }
+
+  /* */
+
+  function withInclude()
   {
     const _ = require( toolsPath );
-    _.module.predeclare
-    ({
-      alias : [ 'moduleA', 'modulea' ],
-      entryPath : __filename,
-    });
-    _.include( 'moduleA' );
-    _.assert( !_.modulea, 'Module moduleA is included for the second time' );
-    _.modulea = Object.create( null );
+    debugger;
+    _.include( 'withInclude' );
+    if( _.included )
+    throw new Error( 'Module withRequire is included for the second time' );
+    _.included = Object.create( null );
     module.exports = _global_.wTools;
   }
+
 }
 
 requireSameModuleTwice.description =
 `
-- Module moduleA includes itself via _.include( 'moduleA' )
 - Module moduleA should not be included for the second time, cached version should be used instead
 `
 
@@ -6001,7 +6037,7 @@ const Proto =
 
     requireModuleFileWithAccessor,
     testingOnL1,
-    l1Environment, /* xxx2 : switch on */
+    l1Environment,
     l1SecondRequire,
     secondaryNamespaceSecondRequire,
     requireSameModuleTwice, /* xxx2 : switch on */
@@ -6009,7 +6045,7 @@ const Proto =
     stealthyRequireIssue,
 
     moduleFileExportBasic,
-    moduleFileExportExternal, /* xxx2 : implement */
+    moduleFileExportExternal,
 
   }
 

@@ -1322,7 +1322,7 @@ function filePathAmend_body( o )
 
   function fileNativeFrom( src )
   {
-    if( _.module.fileNativeFrom )
+    if( _.module && _.module.fileNativeFrom )
     return _.module.fileNativeFrom( src );
     return src;
   }
