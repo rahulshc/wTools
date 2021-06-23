@@ -5338,8 +5338,8 @@ function requireSameModuleTwice( test )
 {
   let context = this;
   let a = test.assetFor( false );
-  let modulea = a.program({ routine : moduleA, tempPath : a.abs( 'node_modules/modulea' ) });
-  let moduleb = a.program({ routine : moduleB, tempPath : a.abs( 'node_modules/moduleb' ) });
+  let modulea = a.program({ entry : moduleA, tempPath : a.abs( 'node_modules/modulea' ) });
+  let moduleb = a.program({ entry : moduleB, tempPath : a.abs( 'node_modules/moduleb' ) });
   let program = a.program( program1 );
 
   /* */
