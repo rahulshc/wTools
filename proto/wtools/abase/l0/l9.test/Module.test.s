@@ -5338,17 +5338,19 @@ function requireSameModuleTwice( test )
 {
   let context = this;
   let a = test.assetFor( false );
-  let modulea = a.program({ entry : moduleA, tempPath : a.abs( 'node_modules/modulea' ) });
-  let moduleb = a.program({ entry : moduleB, tempPath : a.abs( 'node_modules/moduleb' ) });
-  let program = a.program( program1 );
+  let program = a.program({ entry : moduleA, tempPath : a.abs( 'node_modules/modulea' ) });
 
   /* */
+
   a.ready.then( () =>
   {
     var packageFile = { name : 'modulea', main : 'modulea' }
-    a.fileProvider.fileWrite({ filePath : a.abs( `node_modules/modulea/package.json` ), data : packageFile, encoding : 'json' })
-    var packageFile = { name : 'moduleb', main : 'moduleb' }
-    a.fileProvider.fileWrite({ filePath : a.abs( `node_modules/moduleb/package.json` ), data : packageFile, encoding : 'json' })
+    a.fileProvider.fileWrite
+    ({
+      filePath : a.abs( `node_modules/modulea/package.json` ),
+      data : packageFile,
+      encoding : 'json'
+    })
     return null;
   });
 
@@ -5367,36 +5369,19 @@ function requireSameModuleTwice( test )
 
   /* */
 
-  function program1()
-  {
-    require( 'modulea' )
-  }
-
-  /* */
-
   function moduleA()
   {
     const _ = require( toolsPath );
-    _.include( 'moduleB' );
+    _.include( 'moduleA' );
     _.assert( !_.modulea, 'Module moduleA is included for the second time' );
     _.modulea = Object.create( null );
     module.exports = _global_.wTools;
   }
-
-  function moduleB()
-  {
-    const _ = require( toolsPath );
-    _.include( 'moduleA' );
-  }
-
 }
 
 requireSameModuleTwice.description =
 `
-- Main script includes moduleA via require( 'modulea' )
-- Module moduleA is cached using lowercase name of the module
-- Module moduleA includes moduleB via _.include( 'moduleB' )
-- Module moduleB includes moduleA via _.include( 'moduleA' )
+- Module moduleA includes itself via _.include( 'moduleA' )
 - Module moduleA should not be included for the second time, cached version should be used instead
 `
 
