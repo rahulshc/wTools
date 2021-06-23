@@ -200,6 +200,7 @@ moduleExportsUndefined.description  =
 /* qqq : write test with several programs in differen dirs and declaring of modules */
 function resolveBasic( test )
 {
+
   let context = this;
   var exp = _.path.normalize( __dirname + '../../../../../node_modules/Tools' );
   var got = _.module.resolve( 'wTools' );
@@ -247,7 +248,7 @@ function modulingLogistic( test )
   ]);
   var files = __.select( [ ... module.files.values() ], '*/sourcePath' );
   _.assert( files[ 0 ] !== undefined );
-  // test.identical( new Set( __.path.s.relative( testingPath + '/../../..', files ) ), exp ); /* xxx2 : investigate */
+  test.identical( new Set( __.path.s.relative( testingPath + '/../../..', files ) ), exp ); /* yyy */
   test.true( new Set( __.path.s.relative( testingPath + '/../../..', files ) ).has( 'proto/node_modules/wTesting' ) );
   var module2 = _.module.withName( 'wTesting' );
   test.true( module === module2 );
@@ -6036,7 +6037,7 @@ const Proto =
 
     requireModuleFileWithAccessor,
     testingOnL1,
-    l1Environment, /* xxx2 : switch on */
+    l1Environment,
     l1SecondRequire,
     secondaryNamespaceSecondRequire,
     requireSameModuleTwice, /* xxx2 : switch on */
@@ -6044,7 +6045,7 @@ const Proto =
     stealthyRequireIssue,
 
     moduleFileExportBasic,
-    moduleFileExportExternal, /* xxx2 : implement */
+    moduleFileExportExternal,
 
   }
 
