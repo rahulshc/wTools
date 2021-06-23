@@ -5338,23 +5338,48 @@ function requireSameModuleTwice( test )
 {
   let context = this;
   let a = test.assetFor( false );
-  let program = a.program({ entry : moduleA, tempPath : a.abs( 'node_modules/modulea' ) });
+  let program;
 
   /* */
 
   a.ready.then( () =>
   {
-    var packageFile = { name : 'modulea', main : 'modulea' }
+    test.case = 'with require';
+    program = a.program({ entry : withRequire, tempPath : a.abs( 'node_modules/withrequire' ) });
+    var packageFile = { name : 'withrequire', main : 'withrequire' };
     a.fileProvider.fileWrite
     ({
-      filePath : a.abs( `node_modules/modulea/package.json` ),
+      filePath : a.abs( `node_modules/withrequire/package.json` ),
       data : packageFile,
-      encoding : 'json'
+      encoding : 'json',
     })
+    program.start();
+    return null;
+  })
+  .then( ( op ) =>
+  {
+    test.identical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, 'nhandled' ), 0 );
+    test.identical( _.strCount( op.output, 'error' ), 0 );
     return null;
   });
 
-  program.start()
+  /* */
+
+  a.ready.then( () =>
+  {
+    test.case = 'with include';
+    program = a.program({ entry : withInclude, tempPath : a.abs( 'node_modules/withinclude' ) });
+    var packageFile = { name : 'withinclude', main : 'withinclude' };
+    a.fileProvider.fileWrite
+    ({
+      filePath : a.abs( `node_modules/withinclude/package.json` ),
+      data : packageFile,
+      encoding : 'json',
+    })
+    program.start();
+    return null;
+  })
   .then( ( op ) =>
   {
     test.identical( op.exitCode, 0 );
@@ -5369,19 +5394,34 @@ function requireSameModuleTwice( test )
 
   /* */
 
-  function moduleA()
+  function withRequire()
+  {
+    _ = Object.create( null );
+    debugger;
+    require( 'withRequire' );
+    if( _.included )
+    throw new Error( 'Module withRequire is included for the second time' );
+    _.included = Object.create( null );
+    module.exports = _;
+  }
+
+  /* */
+
+  function withInclude()
   {
     const _ = require( toolsPath );
-    _.include( 'moduleA' );
-    _.assert( !_.modulea, 'Module moduleA is included for the second time' );
-    _.modulea = Object.create( null );
+    debugger;
+    _.include( 'withInclude' );
+    if( _.included )
+    throw new Error( 'Module withRequire is included for the second time' );
+    _.included = Object.create( null );
     module.exports = _global_.wTools;
   }
+
 }
 
 requireSameModuleTwice.description =
 `
-- Module moduleA includes itself via _.include( 'moduleA' )
 - Module moduleA should not be included for the second time, cached version should be used instead
 `
 
