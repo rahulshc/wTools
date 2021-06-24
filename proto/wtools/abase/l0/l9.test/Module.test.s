@@ -6009,6 +6009,43 @@ function requireModuleProcess( test )
   }
 }
 
+//
+
+function moduleLoadingExperiment( test )
+{
+  let a = test.assetFor( false );
+
+  a.shell.predefined.sync = 1;
+  a.shell.predefined.ready = null;
+
+  /* - */
+
+  a.ready.then( () =>
+  {
+    a.fileProvider.dirMake( a.abs( '.' ) );
+    a.shell( 'git init' );
+    require( 'wdeasync' );
+    return test.true( true );
+  });
+  a.ready.then( () =>
+  {
+    test.true( a.fileProvider.fileExists( a.abs( '.git' ) ) );
+    return null;
+  });
+
+  /* - */
+
+  return a.ready;
+}
+
+moduleLoadingExperiment.experimental = 1;
+moduleLoadingExperiment.description =
+`
+Demonstrate problem 'Module did not self-register'
+Works only on njs v10
+Maybe, the reason of the problem is loading native module from hard drive, not from cache
+`;
+
 // --
 // test suite declaration
 // --
@@ -6078,7 +6115,9 @@ const Proto =
     moduleFileExportBasic,
     moduleFileExportExternal,
 
-    requireModuleProcess
+    requireModuleProcess,
+
+    moduleLoadingExperiment,
 
   }
 
