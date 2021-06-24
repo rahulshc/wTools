@@ -12,19 +12,15 @@ const _ = _global_.wTools;
 
 function butElement( dst, src1, element )
 {
-  // if( arguments.length === 2 )
-  // {
-  //   dst = null;
-  //   src1 = arguments[ 0 ];
-  //   src2 = arguments[ 1 ];
-  // }
-
-  _.assert( arguments.length === 3 );
-  _.assert( dst === null || _.set.is( dst ) );
-  _.assert( _.countable.is( src1 ) );
 
   if( dst === null )
   dst = new Set();
+  else if( dst === _.self )
+  dst = src1;
+
+  _.assert( arguments.length === 3 );
+  _.assert( _.set.is( dst ) || dst === null );
+  _.assert( _.countable.is( src1 ) );
 
   if( dst === src1 )
   {
@@ -43,28 +39,34 @@ function butElement( dst, src1, element )
 //
 
 /* qqq : cover */
-/* qqq : src1 could be countable or unroll */
-/* qqq : src2 could be countable or unroll */
+/* qqq : add test cases src1/src2 is set/countable/array/unrolls */
 function but( dst, src1, src2 )
 {
-  // if( arguments.length === 2 )
-  // {
-  //   dst = null;
-  //   src1 = arguments[ 0 ];
-  //   src2 = arguments[ 1 ];
-  // }
-
-  _.assert( arguments.length === 3 );
-  _.assert( dst === null || _.set.is( dst ) );
-  _.assert( _.countable.is( src1 ) );
-  _.assert( _.set.is( src2 ) );
 
   if( dst === null )
   dst = new Set();
+  else if( dst === _.self )
+  dst = src1;
 
-  for( let e of src1 )
-  if( !src2.has( e ) )
-  dst.add( e );
+  _.assert( arguments.length === 3 );
+  _.assert( _.set.is( dst ) || dst === null );
+  _.assert( _.countable.is( src1 ) );
+  _.assert( _.countable.is( src2 ) );
+
+  if( dst === src1 )
+  {
+    for( let e of src2 )
+    if( dst.has( e ) )
+    dst.delete( e );
+  }
+  else
+  {
+    if( !_.set.is( src2 ) )
+    src2 = [ ... src2 ];
+    for( let e of src1 )
+    if( !src2.has( e ) )
+    dst.add( e );
+  }
 
   return dst;
 }

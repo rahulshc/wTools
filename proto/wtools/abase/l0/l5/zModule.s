@@ -2136,7 +2136,7 @@ function _trackingEnable()
     });
 
     _.assert( native === ModuleFileNative._cache[ moduleFile.nativeSourcePath ] );
-    _.assert( native === moduleFile.native ); /* xxx2 : uncomment */
+    _.assert( native === moduleFile.native );
     _.assert( resolving.resolvedPath === nativeSourcePath );
 
     try

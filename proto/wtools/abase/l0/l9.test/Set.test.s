@@ -243,21 +243,21 @@ function exportStringDiagnosticShallow( test )
 function but( test )
 {
 
-  // test.case = 'basic, 2 args';
-  // var src1 = new Set([ 1, 2, 3 ]);
-  // var src2 = new Set([ 2, 3, 4 ]);
-  // var got = _.set.but( src1, src2 );
-  // test.true( got !== src1 );
-  // test.true( got !== src2 );
-  // test.true( _.set.is( got ) );
-  // var exp = new Set([ 1 ]);
-  // test.identical( got, exp );
-
-  test.case = 'basic, 3 args';
+  test.case = 'basic, dst=null';
   var src1 = new Set([ 1, 2, 3 ]);
   var src2 = new Set([ 2, 3, 4 ]);
   var got = _.set.but( null, src1, src2 );
   test.true( got !== src1 );
+  test.true( got !== src2 );
+  test.true( _.set.is( got ) );
+  var exp = new Set([ 1 ]);
+  test.identical( got, exp );
+
+  test.case = 'basic, dst=src';
+  var src1 = new Set([ 1, 2, 3 ]);
+  var src2 = new Set([ 2, 3, 4 ]);
+  var got = _.set.but( src1, src1, src2 );
+  test.true( got === src1 );
   test.true( got !== src2 );
   test.true( _.set.is( got ) );
   var exp = new Set([ 1 ]);
