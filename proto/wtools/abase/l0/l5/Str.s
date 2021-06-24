@@ -46,14 +46,14 @@ function exportStringCodeShallow( src, o )
 // decorator
 // --
 
-function strQuote( o )
+function quote( o )
 {
 
   if( !_.mapIs( o ) )
   o = { src : arguments[ 0 ], quote : ( arguments.length > 1 ? arguments[ 1 ] : null ) };
   if( o.quote === undefined || o.quote === null )
-  o.quote = strQuote.defaults.quote;
-  _.map.assertHasOnly( o, strQuote.defaults );
+  o.quote = quote.defaults.quote;
+  _.map.assertHasOnly( o, quote.defaults );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( _.arrayIs( o.src ) )
@@ -76,7 +76,7 @@ function strQuote( o )
   return result;
 }
 
-strQuote.defaults =
+quote.defaults =
 {
   src : null,
   quote : '"',
@@ -84,14 +84,14 @@ strQuote.defaults =
 
 //
 
-function strUnquote( o )
+function unquote( o )
 {
 
   if( !_.mapIs( o ) )
   o = { src : arguments[ 0 ], quote : ( arguments.length > 1 ? arguments[ 1 ] : null ) };
   if( o.quote === undefined || o.quote === null )
-  o.quote = strUnquote.defaults.quote;
-  _.map.assertHasOnly( o, strUnquote.defaults );
+  o.quote = unquote.defaults.quote;
+  _.map.assertHasOnly( o, unquote.defaults );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( _.arrayIs( o.src ) )
@@ -110,7 +110,7 @@ function strUnquote( o )
   return result;
 }
 
-strUnquote.defaults =
+unquote.defaults =
 {
   src : null,
   quote : [ '"', '`', '\'' ],
@@ -179,15 +179,15 @@ strUnquote.defaults =
  * @throws { Exception } If { -quote- } is not of String or Array type.
  * @throws { Exception } If { -quote- } is of Array type and includes an array with not exactly 2 elements.
  * @throws { Exception } If ( arguments.length ) is not exactly equals 1.
- * @function strQuotePairsNormalize
+ * @function quotePairsNormalize
  * @namespace Tools
  */
 
-function strQuotePairsNormalize( quote )
+function quotePairsNormalize( quote )
 {
 
   if( ( _.bool.like( quote ) && quote ) )
-  quote = strQuoteAnalyze.defaults.quote;
+  quote = quoteAnalyze.defaults.quote;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( quote ) || _.arrayIs( quote ) );
@@ -244,11 +244,11 @@ function strQuotePairsNormalize( quote )
  * @returns { Object } Returns a map with 2 arrays: ranges, quotes.
  * @throws { Exception } If redundant arguments are provided.
  * @throws { Exception } If ( arguments.length ) is not equal 1 or 2.
- * @function strQuoteAnalyze
+ * @function quoteAnalyze
  * @namespace Tools
  */
 
-function strQuoteAnalyze( o )
+function quoteAnalyze( o )
 {
   let i = -1;
   let result = Object.create( null );
@@ -258,8 +258,8 @@ function strQuoteAnalyze( o )
   if( !_.mapIs( o ) )
   o = { src : arguments[ 0 ], quote : ( arguments.length > 1 ? arguments[ 1 ] : null ) };
   if( o.quote === undefined || o.quote === null )
-  o.quote = strQuoteAnalyze.defaults.quote;
-  _.map.assertHasOnly( o, strQuoteAnalyze.defaults );
+  o.quote = quoteAnalyze.defaults.quote;
+  _.map.assertHasOnly( o, quoteAnalyze.defaults );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   o.quote = _.strQuotePairsNormalize( o.quote );
@@ -333,7 +333,7 @@ function strQuoteAnalyze( o )
 
 }
 
-strQuoteAnalyze.defaults =
+quoteAnalyze.defaults =
 {
   src : null,
   quote : [ '"', '`', '\'' ],
@@ -343,7 +343,7 @@ strQuoteAnalyze.defaults =
 // splitter
 // --
 
-function _strLeftSingle_( src, ins, cinterval )
+function _leftSingle_( src, ins, cinterval )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -409,7 +409,7 @@ function _strLeftSingle_( src, ins, cinterval )
 
 //
 
-function strLeft_( src, ins, cinterval )
+function left_( src, ins, cinterval )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -430,7 +430,7 @@ function strLeft_( src, ins, cinterval )
 
 //
 
-function _strRightSingle_( src, ins, cinterval )
+function _rightSingle_( src, ins, cinterval )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -539,7 +539,7 @@ function _strRightSingle_( src, ins, cinterval )
 
 //
 
-function strRight_( src, ins, cinterval )
+function right_( src, ins, cinterval )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -686,7 +686,7 @@ strInsideOf_body.defaults =
 
 //
 
-let strInsideOf = _.routine.unite( strInsideOf_head, strInsideOf_body );
+let insideOf = _.routine.unite( strInsideOf_head, strInsideOf_body );
 
 //
 
@@ -808,11 +808,11 @@ strInsideOf__body.defaults =
   pairing : 1, /* xxx : set to 1 */
 }
 
-let strInsideOf_ = _.routine.unite( strInsideOf__head, strInsideOf__body );
+let insideOf_ = _.routine.unite( strInsideOf__head, strInsideOf__body );
 
 //
 
-function strOutsideOf( src, begin, end )
+function outsideOf( src, begin, end )
 {
 
   _.assert( _.strIs( src ), 'Expects string {-src-}' );
@@ -837,7 +837,7 @@ function strOutsideOf( src, begin, end )
 // replacers
 //--
 
-function _strRemovedBegin( src, begin )
+function _removedBegin( src, begin )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( src ), 'Expects string {-src-}' );
@@ -868,7 +868,7 @@ function _strRemovedBegin( src, begin )
  * _.strRemoveBegin( 'example', 'abc' );
  * // returns example
  *
- * @function strRemoveBegin
+ * @function removeBegin
  * @throws { Exception } Throws a exception if( src ) is not a String.
  * @throws { Exception } Throws a exception if( prefix ) is not a String.
  * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
@@ -876,7 +876,7 @@ function _strRemovedBegin( src, begin )
  *
  */
 
-function strRemoveBegin( src, begin )
+function removeBegin( src, begin )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.longIs( src ) || _.strIs( src ), 'Expects string or array of strings {-src-}' );
@@ -913,7 +913,7 @@ function strRemoveBegin( src, begin )
 
 //
 
-function _strRemovedEnd( src, end )
+function _removedEnd( src, end )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( src ), 'Expects string {-src-}' );
@@ -943,7 +943,7 @@ function _strRemovedEnd( src, end )
  * _.strRemoveEnd( 'example', 'abc' );
  * // returns example
  *
- * @function strRemoveEnd
+ * @function removeEnd
  * @throws { Exception } Throws a exception if( src ) is not a String.
  * @throws { Exception } Throws a exception if( postfix ) is not a String.
  * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
@@ -951,7 +951,7 @@ function _strRemovedEnd( src, end )
  *
  */
 
-function strRemoveEnd( src, end )
+function removeEnd( src, end )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.longIs( src ) || _.strIs( src ), 'Expects string or array of strings {-src-}' );
@@ -989,7 +989,7 @@ function strRemoveEnd( src, end )
 
 //
 
-function strReplaceBegin( src, begin, ins )
+function replaceBegin( src, begin, ins )
 {
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( _.strIs( ins ) || _.longIs( ins ), 'Expects {-ins-} as string/array of strings' );
@@ -1017,7 +1017,7 @@ function strReplaceBegin( src, begin, ins )
 
 //
 
-function strReplaceEnd( src, end, ins )
+function replaceEnd( src, end, ins )
 {
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( _.strIs( ins ) || _.longIs( ins ), 'Expects {-ins-} as string/array of strings' );
@@ -1063,7 +1063,7 @@ function strReplaceEnd( src, end, ins )
 * _.strReplace( 'example', 's' );
 * // returns example
 *
-* @function strReplace
+* @function replace
 * @throws { Exception } Throws a exception if( srcStr ) is not a String.
 * @throws { Exception } Throws a exception if( insStr ) is not a String or a RegExp.
 * @throws { Exception } Throws a exception if( subStr ) is not a String.
@@ -1072,7 +1072,7 @@ function strReplaceEnd( src, end, ins )
 *
 */
 
-function strReplace( src, ins, sub )
+function replace( src, ins, sub )
 {
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( _.strsAreAll( sub ), 'Expects {-sub-} as string/array of strings' );
@@ -1114,7 +1114,7 @@ function strReplace( src, ins, sub )
 // --
 
 /**
- * Routine strStrip() removes entries of leading and trailing characters in source string {-o.src-},
+ * Routine strip() removes entries of leading and trailing characters in source string {-o.src-},
  * which is found by mask {-o.stripper-}.
  * If {-o.stripper-} is not defined function removes leading and trailing whitespaces and escaped
  * characters from begin and end of source string {-o.src-}.
@@ -1147,7 +1147,7 @@ function strReplace( src, ins, sub )
  * @param { String|RegExp|Array|BoolLike } o.stripper - Defines characters to remove.
  * @returns { String|Array } - Returns stripped string. If source string was an Array of strings, then routine
  * returns array with stripped strings.
- * @function strStrip
+ * @function strip
  * @throws { Exception } Throw an error if arguments.length is not equal 1.
  * @throws { Exception } Throw an error if options map {-o-} has not valid type.
  * @throws { Exception } Throw an error if options map {-o-} has unknown property.
@@ -1156,14 +1156,14 @@ function strReplace( src, ins, sub )
  * @namespace Tools
  */
 
-function strStrip( o )
+function strip( o )
 {
 
   if( _.strIs( o ) || _.arrayIs( o ) )
   o = { src : o };
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routine.options( strStrip, o );
+  _.routine.options( strip, o );
 
   o.stripper = stripperNormalize();
   let stripRoutine = _.regexpIs( o.stripper ) ? singleStripByRegexp : singleStripByArrayOfStrings;
@@ -1188,7 +1188,7 @@ function strStrip( o )
     let stripper = o.stripper;
     if( _.bool.likeTrue( o.stripper ) )
     {
-      stripper = strStrip.defaults.stripper;
+      stripper = strip.defaults.stripper;
     }
     else if( _.arrayIs( o.stripper ) )
     {
@@ -1235,7 +1235,7 @@ function strStrip( o )
 
 }
 
-strStrip.defaults =
+strip.defaults =
 {
   src : null,
   stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/g,
@@ -1265,7 +1265,7 @@ strStrip.defaults =
 //
 //   if( _.bool.likeTrue( o.stripper ) )
 //   {
-//     o.stripper = strStrip.defaults.stripper;
+//     o.stripper = strip.defaults.stripper;
 //   }
 //
 //   _.assert( _.strIs( o.src ), 'Expects string or array o.src, got', _.entity.strType( o.src ) );
@@ -1326,26 +1326,26 @@ strStrip.defaults =
  * _.strStripLeft( ' a ' )
  * // returns 'a '
  *
- * @method strStripLeft
+ * @method stripLeft
  * @namespace Tools
  *
  */
 
-function strStripLeft( o )
+function stripLeft( o )
 {
 
   if( _.strIs( o ) || _.arrayIs( o ) )
   o = { src : o };
 
-  _.routine.options( strStripLeft, o );
+  _.routine.options( stripLeft, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   return _.strStrip( o );
 }
 
-strStripLeft.defaults =
+stripLeft.defaults =
 {
-  ... strStrip.defaults,
+  ... strip.defaults,
   stripper : /^(\s|\n|\0)+/gm,
 }
 
@@ -1359,26 +1359,26 @@ strStripLeft.defaults =
  * _.strStripRight( ' a ' )
  * // returns ' a'
  *
- * @method strStripRight
+ * @method stripRight
  * @namespace Tools
  *
  */
 
-function strStripRight( o )
+function stripRight( o )
 {
 
   if( _.strIs( o ) || _.arrayIs( o ) )
   o = { src : o };
 
-  _.routine.options( strStripRight, o );
+  _.routine.options( stripRight, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   return _.strStrip( o );
 }
 
-strStripRight.defaults =
+stripRight.defaults =
 {
-  ... strStrip.defaults,
+  ... strip.defaults,
   stripper : /(\s|\n|\0)+$/gm,
 }
 
@@ -1400,12 +1400,12 @@ strStripRight.defaults =
  * _.strRemoveAllSpaces( 'a b c d e', '*' );
  * // returns a*b*c*d*e
  *
- * @method strRemoveAllSpaces
+ * @method _removeAllSpaces
  * @namespace Tools
  *
 */
 
-function _strRemoveAllSpaces( src, sub )
+function _removeAllSpaces( src, sub )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -1445,7 +1445,7 @@ function _strRemoveAllSpaces( src, sub )
  *
  */
 
-function _strStripEmptyLines( srcStr )
+function _stripEmptyLines( srcStr )
 {
   let result = '';
   let lines = srcStr.split( '\n' );
@@ -1471,13 +1471,13 @@ function _strStripEmptyLines( srcStr )
 // split
 // --
 
-function strSplitsCoupledGroup( o )
+function splitsCoupledGroup( o )
 {
 
   if( _.arrayIs( o ) )
   o = { splits : o }
 
-  o = _.routine.options( strSplitsCoupledGroup, o );
+  o = _.routine.options( splitsCoupledGroup, o );
 
   o.prefix = _.array.as( o.prefix );
   o.postfix = _.array.as( o.postfix );
@@ -1526,7 +1526,7 @@ function strSplitsCoupledGroup( o )
   return o.splits;
 }
 
-strSplitsCoupledGroup.defaults =
+splitsCoupledGroup.defaults =
 {
   splits : null,
   prefix : '"',
@@ -1537,12 +1537,12 @@ strSplitsCoupledGroup.defaults =
 
 //
 
-function strSplitsUngroupedJoin( o )
+function splitsUngroupedJoin( o )
 {
 
   if( _.arrayIs( o ) )
   o = { splits : o }
-  o = _.routine.options( strSplitsUngroupedJoin, o );
+  o = _.routine.options( splitsUngroupedJoin, o );
 
   let s = o.splits.length-1;
   let l = null;
@@ -1583,7 +1583,7 @@ function strSplitsUngroupedJoin( o )
 
 }
 
-strSplitsUngroupedJoin.defaults =
+splitsUngroupedJoin.defaults =
 {
   splits : null,
 }
@@ -1732,7 +1732,7 @@ strSplitsQuotedRejoin_body.defaults =
 
 //
 
-let strSplitsQuotedRejoin = _.routine.unite( strSplitsQuotedRejoin_head, strSplitsQuotedRejoin_body );
+let splitsQuotedRejoin = _.routine.unite( strSplitsQuotedRejoin_head, strSplitsQuotedRejoin_body );
 
 // --
 //
@@ -1793,7 +1793,7 @@ strSplitsDropDelimeters_body.defaults =
 
 //
 
-let strSplitsDropDelimeters = _.routine.unite( strSplitsDropDelimeters_head, strSplitsDropDelimeters_body );
+let splitsDropDelimeters = _.routine.unite( strSplitsDropDelimeters_head, strSplitsDropDelimeters_body );
 
 // --
 //
@@ -1850,7 +1850,7 @@ strSplitsStrip_body.defaults =
 
 //
 
-let strSplitsStrip = _.routine.unite( strSplitsStrip_head, strSplitsStrip_body );
+let splitsStrip = _.routine.unite( strSplitsStrip_head, strSplitsStrip_body );
 
 // --
 //
@@ -1901,7 +1901,7 @@ strSplitsDropEmpty_body.defaults =
 
 //
 
-let strSplitsDropEmpty = _.routine.unite( strSplitsDropEmpty_head, strSplitsDropEmpty_body );
+let splitsDropEmpty = _.routine.unite( strSplitsDropEmpty_head, strSplitsDropEmpty_body );
 
 // --
 //
@@ -2144,7 +2144,7 @@ strSplitFast_body.defaults =
  * _.strSplitFast( { src : 'a ., b ., c ., d', delimeter : [ ', ', '.' ], preservingEmpty : 1  } );
  * // returns [ 'a', '', 'b', '', 'c', '', 'd' ]
  *
- * @method strSplitFast
+ * @method splitFast
  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
  * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
@@ -2153,11 +2153,11 @@ strSplitFast_body.defaults =
  *
  */
 
-let strSplitFast = _.routine.unite( strSplitFast_head, strSplitFast_body );
+let splitFast = _.routine.unite( strSplitFast_head, strSplitFast_body );
 
-_.assert( strSplitFast.head === strSplitFast_head );
-_.assert( strSplitFast.body === strSplitFast_body );
-_.assert( _.object.isBasic( strSplitFast.defaults ) );
+_.assert( splitFast.head === strSplitFast_head );
+_.assert( splitFast.body === strSplitFast_body );
+_.assert( _.object.isBasic( splitFast.defaults ) );
 
 //
 
@@ -2301,7 +2301,7 @@ defaults.onQuote = null;
  * _.strSplit( { src : 'a ., b ., c ., d', delimeter : [ ', ', '.' ], preservingEmpty : 1  } );
  * // returns [ 'a', '', 'b', '', 'c', '', 'd' ]
  *
- * @method strSplit
+ * @method split
  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
  * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
@@ -2312,25 +2312,25 @@ defaults.onQuote = null;
 
 let head =
 [
-  strSplitFast.head,
-  strSplitsQuotedRejoin.head,
-  strSplitsDropDelimeters.head,
-  strSplitsStrip.head,
-  strSplitsDropEmpty.head
+  splitFast.head,
+  splitsQuotedRejoin.head,
+  splitsDropDelimeters.head,
+  splitsStrip.head,
+  splitsDropEmpty.head
 ];
-let strSplit = _.routine.unite( head, strSplit_body );
+let split = _.routine.unite( head, strSplit_body );
 
-_.assert( strSplit.head !== strSplitFast.head );
-_.assert( _.routine.is( strSplit.head ) );
-_.assert( strSplit.body === strSplit_body );
-_.assert( _.object.isBasic( strSplit.defaults ) );
-_.assert( !!strSplit.defaults.preservingEmpty );
+_.assert( split.head !== splitFast.head );
+_.assert( _.routine.is( split.head ) );
+_.assert( split.body === strSplit_body );
+_.assert( _.object.isBasic( split.defaults ) );
+_.assert( !!split.defaults.preservingEmpty );
 
 //
 
-let strSplitNonPreserving = _.routine.uniteCloning( strSplit.head, strSplit.body );
+let splitNonPreserving = _.routine.uniteCloning( split.head, split.body );
 
-var defaults = strSplitNonPreserving.defaults;
+var defaults = splitNonPreserving.defaults;
 
 defaults.preservingEmpty = 0
 defaults.preservingDelimeters = 0;
@@ -2472,7 +2472,7 @@ _strSplitInlined_body.defaults =
 
 //
 
-let strSplitInlined = _.routine.unite( strSplitFast_head, _strSplitInlined_body );
+let splitInlined = _.routine.unite( strSplitFast_head, _strSplitInlined_body );
 
 //
 
@@ -2523,7 +2523,7 @@ let strSplitInlined = _.routine.unite( strSplitFast_head, _strSplitInlined_body 
  * _.strSplitInlinedStereo_({ src : '<abc>', prefix : '<', postfix : '>', onInlined });
  * // returns [ '', [ 'ABC' ], '' ]
  *
- * @method strSplitInlinedStereo
+ * @method splitInlinedStereo_
  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
  * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
@@ -2531,7 +2531,7 @@ let strSplitInlined = _.routine.unite( strSplitFast_head, _strSplitInlined_body 
  *
  */
 
-function strSplitInlinedStereo_( o )
+function splitInlinedStereo_( o )
 {
   /*
     New delimeter.
@@ -2548,7 +2548,7 @@ function strSplitInlinedStereo_( o )
   _.assert( _.strIs( o.src ) );
   _.assert( _.object.isBasic( o ) );
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routine.options( strSplitInlinedStereo_, o );
+  _.routine.options( splitInlinedStereo_, o );
 
   let isDefaultOnInlined = true;
 
@@ -2569,7 +2569,7 @@ function strSplitInlinedStereo_( o )
 
   let replacementForPrefix = '\u{20330}';
   let isReplacedPrefix = false;
-  let splitOptions = _.mapOnly_( null, o, strSplit.defaults );
+  let splitOptions = _.mapOnly_( null, o, split.defaults );
   splitOptions.preservingDelimeters = 1; /* for distinguishing between inlined and ordinary */
   splitOptions.delimeter = o.prefix === o.postfix ? o.prefix : [ o.prefix, o.postfix ];
   splitOptions.stripping = 0;
@@ -2770,7 +2770,7 @@ function strSplitInlinedStereo_( o )
 
 }
 
-strSplitInlinedStereo_.defaults =
+splitInlinedStereo_.defaults =
 {
   src : null,
   prefix : '❮',
@@ -3031,7 +3031,7 @@ strSplitInlinedStereo_.defaults =
 // converter
 // --
 
-function strFrom( src )
+function from( src )
 {
 
   if( src === null )
@@ -3161,6 +3161,50 @@ let StrExtension =
   parseType, /* xxx : move */
   _parseType,
 
+  quote,
+  unquote,
+  quotePairsNormalize,
+  quoteAnalyze,
+  _leftSingle_,
+  left_,
+  right_,
+
+  insideOf,
+  insideOf_,
+  outsideOf,
+
+  _removedBegin,
+  removeBegin,
+  _removedEnd,
+  removeEnd,
+
+  replaceBegin,
+  replaceEnd,
+  replace,
+
+  strip,
+  stripLeft,
+  stripRight,
+
+  _removeAllSpaces,
+  _stripEmptyLines,
+
+  splitsCoupledGroup,
+  splitsUngroupedJoin,
+  splitsQuotedRejoin,
+  splitsDropDelimeters,
+  splitsStrip,
+  splitsDropEmpty,
+
+  splitFast,
+  split,
+  splitNonPreserving,
+
+  splitInlined,
+  splitInlinedStereo_,
+
+  from,
+
 }
 
 /* xxx : duplicate exportString in namespace::diagnostic? */
@@ -3202,66 +3246,66 @@ let ToolsExtension =
 
   // decorator
 
-  strQuote,
-  strUnquote,
-  strQuotePairsNormalize,
-  strQuoteAnalyze,
+  strQuote : quote,
+  strUnquote : unquote,
+  strQuotePairsNormalize : quotePairsNormalize,
+  strQuoteAnalyze : quoteAnalyze,
 
   // splitter
 
-  _strLeftSingle_,
-  strLeft_,
-  _strRightSingle_,
-  strRight_,
+  _strLeftSingle_ : _leftSingle_,
+  strLeft_ : left_,
+  _strRightSingle_ : _rightSingle_,
+  strRight_ : right_,
 
   strsEquivalentAll : _.vectorizeAll( _.str.equivalent.bind( _.str ), 2 ),
   strsEquivalentAny : _.vectorizeAny( _.str.equivalent.bind( _.str ), 2 ),
   strsEquivalentNone : _.vectorizeNone( _.str.equivalent.bind( _.str ), 2 ),
 
-  strInsideOf,
-  strInsideOf_,
-  strOutsideOf, /* !!! deprecate */
+  strInsideOf : insideOf,
+  strInsideOf_ : insideOf_,
+  strOutsideOf : outsideOf, /* !!! deprecate */
 
   // replacers
 
-  _strRemovedBegin,
-  strRemoveBegin,
-  _strRemovedEnd,
-  strRemoveEnd,
+  _strRemovedBegin : _removedBegin,
+  strRemoveBegin : removeBegin,
+  _strRemovedEnd : _removedEnd,
+  strRemoveEnd : removeEnd,
 
-  strReplaceBegin,
-  strReplaceEnd,
-  strReplace,
+  strReplaceBegin : replaceBegin,
+  strReplaceEnd : replaceEnd,
+  strReplace : replace,
 
   // stripper
 
-  strStrip,
-  strStripLeft,
-  strStripRight,
-  _strRemoveAllSpaces,
-  strRemoveAllSpaces : _.vectorize( _strRemoveAllSpaces ),
-  _strStripEmptyLines,
-  strStripEmptyLines : _.vectorize( _strStripEmptyLines ),
+  strStrip : strip,
+  strStripLeft : stripLeft,
+  strStripRight : stripRight,
+  _strRemoveAllSpaces : _removeAllSpaces,
+  strRemoveAllSpaces : _.vectorize( _removeAllSpaces ),
+  _strStripEmptyLines : _stripEmptyLines,
+  strStripEmptyLines : _.vectorize( _stripEmptyLines ),
 
   // split
 
-  strSplitsCoupledGroup,
-  strSplitsUngroupedJoin,
-  strSplitsQuotedRejoin, /* qqq : light coverage required */
-  strSplitsDropDelimeters, /* qqq : light coverage required */
-  strSplitsStrip,
-  strSplitsDropEmpty,
+  strSplitsCoupledGroup : splitsCoupledGroup,
+  strSplitsUngroupedJoin : splitsUngroupedJoin,
+  strSplitsQuotedRejoin : splitsQuotedRejoin, /* qqq : light coverage required */
+  strSplitsDropDelimeters : splitsDropDelimeters, /* qqq : light coverage required */
+  strSplitsStrip : splitsStrip,
+  strSplitsDropEmpty : splitsDropEmpty,
 
-  strSplitFast,
-  strSplit,
-  strSplitNonPreserving,
+  strSplitFast : splitFast,
+  strSplit : split,
+  strSplitNonPreserving : splitNonPreserving,
 
-  strSplitInlined,
-  strSplitInlinedStereo_,
+  strSplitInlined : splitInlined,
+  strSplitInlinedStereo_ : splitInlinedStereo_,
 
   // converter
 
-  strFrom,
+  strFrom : from,
 
 }
 
