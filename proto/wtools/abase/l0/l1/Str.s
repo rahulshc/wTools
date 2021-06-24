@@ -94,7 +94,7 @@ function strsAreAll( src )
 
 //
 
-function strDefined( src )
+function defined( src )
 {
   if( !src )
   return false;
@@ -118,7 +118,7 @@ function strsDefined( src )
 
 //
 
-function strHas( src, ins )
+function has( src, ins )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( src ), () => `Expects string, got ${_.entity.strType( src )}` );
@@ -173,7 +173,7 @@ function strHas( src, ins )
  * _.strShort_({ src : 'st\nri\nng', limit : 1, heightLimit : 2, cutting : 'left', heightCutting : 'right' });
  * // returns o, o.result = 't\ni'
  *
- * @method strShort_
+ * @method short_
  * @throws { Exception } If no argument provided.
  * @throws { Exception } If( arguments.length ) is not equal 1 or 2.
  * @throws { Exception } If( o ) is extended with unknown property.
@@ -185,7 +185,7 @@ function strHas( src, ins )
  *
  */
 
-function strShort_( o )  /* version with binary search cutting */
+function short_( o )  /* version with binary search cutting */
 {
 
   if( arguments.length === 2 )
@@ -194,7 +194,7 @@ function strShort_( o )  /* version with binary search cutting */
   if( _.strIs( o ) )
   o = { src : arguments[ 0 ] };
 
-  _.routine.options( strShort_, o );
+  _.routine.options( short_, o );
 
   _.assert( _.strIs( o.src ) );
   _.assert( _.number.is( o.widthLimit ) );
@@ -278,7 +278,7 @@ function strShort_( o )  /* version with binary search cutting */
   }
 }
 
-strShort_.defaults =
+short_.defaults =
 {
   src : null,
   widthLimit : 40,
@@ -292,7 +292,7 @@ strShort_.defaults =
 
 //
 
-function strShortWidth( o )
+function shortWidth( o )
 {
 
   if( arguments.length === 2 )
@@ -301,7 +301,7 @@ function strShortWidth( o )
   if( _.strIs( o ) )
   o = { src : arguments[ 0 ] };
 
-  _.routine.options( strShortWidth, o );
+  _.routine.options( shortWidth, o );
 
   _.assert( _.strIs( o.src ) );
   _.assert( _.number.is( o.limit ) );
@@ -333,7 +333,7 @@ function strShortWidth( o )
   return o;
 }
 
-strShortWidth.defaults =
+shortWidth.defaults =
 {
   src : null,
   limit : 40,
@@ -344,14 +344,14 @@ strShortWidth.defaults =
 
 //
 
-function _strShortWidth( o )
+function _shortWidth( o )
 {
   /*
     input : array of lines
     output : array of lines ( each cutted down to o.limit )
   */
   _.assert( _.arrayIs( o.src ) );
-  _.routine.options( _strShortWidth, o );
+  _.routine.options( _shortWidth, o );
 
   let begin = '';
   let end = '';
@@ -553,7 +553,7 @@ function _strShortWidth( o )
 
 }
 
-_strShortWidth.defaults =
+_shortWidth.defaults =
 {
   src : null,
   limit : 40,
@@ -564,7 +564,7 @@ _strShortWidth.defaults =
 
 //
 
-function strShortHeight( o )
+function shortHeight( o )
 {
 
   if( arguments.length === 2 )
@@ -573,7 +573,7 @@ function strShortHeight( o )
   if( _.strIs( o ) )
   o = { src : arguments[ 0 ] };
 
-  _.routine.options( strShortHeight, o );
+  _.routine.options( shortHeight, o );
 
   _.assert( _.strIs( o.src ) );
   _.assert
@@ -599,7 +599,7 @@ function strShortHeight( o )
 
 }
 
-strShortHeight.defaults =
+shortHeight.defaults =
 {
   src : null,
   limit : null,
@@ -609,7 +609,7 @@ strShortHeight.defaults =
 
 //
 
-function _strShortHeight( o )  /* version with binary search cutting */
+function _shortHeight( o )  /* version with binary search cutting */
 {
   /*
     input : array of lines
@@ -617,7 +617,7 @@ function _strShortHeight( o )  /* version with binary search cutting */
   */
 
   _.assert( _.arrayIs( o.src ) );
-  _.routine.options( strShortHeight, o );
+  _.routine.options( shortHeight, o );
 
   o.changed = false;
 
@@ -710,7 +710,7 @@ function _strShortHeight( o )  /* version with binary search cutting */
 
 }
 
-_strShortHeight.defaults =
+_shortHeight.defaults =
 {
   src : null,
   limit : null,
@@ -723,7 +723,7 @@ _strShortHeight.defaults =
 //
 
 /**
- * The routine strConcat() provides the concatenation of array of elements ( or single element )
+ * The routine concat() provides the concatenation of array of elements ( or single element )
  * into a String. Returned string can be formatted by using options in options map {-o-}.
  *
  * @example
@@ -788,20 +788,20 @@ _strShortHeight.defaults =
  * The callback calls if first string {-src1-} end with line delimeter {-o.lineDelimter-} or second string {-src2-}
  * begins with line delimeter. Additionally accepts options map {-o-}.
  * @returns { String } - Returns concatenated string.
- * @function strConcat
+ * @function concat
  * @throws { Error } If arguments.length is less then one or greater than two.
  * @throws { Error } If options map {-o-} has unknown property.
  * @throws { Error } If property {-o.optionsForToStr-} is not a Aux.
- * @throws { Error } If routine strConcat does not belong module Tools.
+ * @throws { Error } If routine concat does not belong module Tools.
  * @namespace Tools
  */
 
-function strConcat( srcs, o )
+function concat( srcs, o )
 {
 
-  o = _.routine.options( strConcat, o || Object.create( null ) );
+  o = _.routine.options( concat, o || Object.create( null ) );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( this.strConcat === strConcat );
+  _.assert( this.strConcat === concat );
 
   if( o.onToStr === null )
   o.onToStr = onToStr;
@@ -876,7 +876,7 @@ function strConcat( srcs, o )
   }
 }
 
-strConcat.defaults =
+concat.defaults =
 {
   linePrefix : '',
   linePostfix : '',
@@ -888,7 +888,7 @@ strConcat.defaults =
 
 //
 
-function _strBeginOf( src, begin )
+function _beginOf( src, begin )
 {
 
   // _.assert( _.strIs( src ), 'Expects string' );
@@ -912,7 +912,7 @@ function _strBeginOf( src, begin )
 
 //
 
-function _strEndOf( src, end )
+function _endOf( src, end )
 {
 
   // _.assert( _.strIs( src ), 'Expects string' );
@@ -955,13 +955,13 @@ function _strEndOf( src, end )
  * // returns false
  *
  * @returns { Boolean } Returns true if param( begin ) is match with first chars of param( src ), otherwise returns false.
- * @function strBegins
+ * @function begins
  * @throws { Exception } If one of arguments is not a String.
  * @throws { Exception } If( arguments.length ) is not equal 2.
  * @namespace Tools
  */
 
-function strBegins( src, begin )
+function begins( src, begin )
 {
 
   _.assert( _.strIs( src ), 'Expects string {-src-}' );
@@ -1002,13 +1002,13 @@ function strBegins( src, begin )
  * // returns false
  *
  * @return { Boolean } Returns true if param( end ) is match with last chars of param( src ), otherwise returns false.
- * @function strEnds
+ * @function ends
  * @throws { Exception } If one of arguments is not a String.
  * @throws { Exception } If( arguments.length ) is not equal 2.
  * @namespace Tools
  */
 
-function strEnds( src, end )
+function ends( src, end )
 {
 
   _.assert( _.strIs( src ), () => `Expects argument::src of type::string, but got ${_.entity.strType( src )}` );
@@ -1051,11 +1051,11 @@ function strEnds( src, end )
  * @returns { String } Returns part of source string without tail( end ) or undefined.
  * @throws { Exception } If all arguments are not strings;
  * @throws { Exception } If ( argumets.length ) is not equal 2.
- * @function strBeginOf
+ * @function beginOf
  * @namespace Tools
  */
 
-function strBeginOf( src, begin )
+function beginOf( src, begin )
 {
 
   _.assert( _.strIs( src ), 'Expects string {-src-}' );
@@ -1099,11 +1099,11 @@ function strBeginOf( src, begin )
  * @returns { String } Returns part of source string without head( begin ) or undefined.
  * @throws { Exception } If all arguments are not strings;
  * @throws { Exception } If ( argumets.length ) is not equal 2.
- * @function strEndOf
+ * @function endOf
  * @namespace Tools
  */
 
-function strEndOf( src, end )
+function endOf( src, end )
 {
 
   _.assert( _.strIs( src ), 'Expects string {-src-}' );
@@ -1144,7 +1144,7 @@ function strEndOf( src, end )
  * _.strRemoveBegin( 'example', 'abc' );
  * // returns example
  *
- * @function strRemoveBegin
+ * @function removeBegin
  * @throws { Exception } Throws a exception if( src ) is not a String.
  * @throws { Exception } Throws a exception if( prefix ) is not a String.
  * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
@@ -1152,7 +1152,7 @@ function strEndOf( src, end )
  *
  */
 
-function strRemoveBegin( src, begin )
+function removeBegin( src, begin )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( src ), 'Expects string {-src-}' );
@@ -1182,7 +1182,7 @@ function strRemoveBegin( src, begin )
  * _.strRemoveEnd( 'example', 'abc' );
  * // returns example
  *
- * @function strRemoveEnd
+ * @function removeEnd
  * @throws { Exception } Throws a exception if( src ) is not a String.
  * @throws { Exception } Throws a exception if( postfix ) is not a String.
  * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
@@ -1190,7 +1190,7 @@ function strRemoveBegin( src, begin )
  *
  */
 
-function strRemoveEnd( src, end )
+function removeEnd( src, end )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( src ), 'Expects string {-src-}' );
@@ -1222,7 +1222,7 @@ function strRemoveEnd( src, end )
  * _.strRemove( 'example', 's' );
  * // returns example
  *
- * @function strRemove
+ * @function remove
  * @throws { Exception } Throws a exception if( srcStr ) is not a String.
  * @throws { Exception } Throws a exception if( insStr ) is not a String or a RegExp.
  * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
@@ -1230,7 +1230,7 @@ function strRemoveEnd( src, end )
  *
  */
 
-function strRemove( srcStr, insStr )
+function remove( srcStr, insStr )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( srcStr ), 'Expects string {-src-}' );
@@ -1255,6 +1255,30 @@ let StrExtension =
   is,
   like,
 
+  defined,
+
+  has,
+
+  short_,
+  _shortWidth,
+  shortHeight,
+  _shortHeight,
+
+  concat,
+
+  _beginOf,
+  _endOf,
+
+  begins,
+  ends,
+
+  beginOf,
+  endOf,
+
+  removeBegin,
+  removeEnd,
+  remove,
+
 }
 
 Object.assign( _.str, StrExtension );
@@ -1272,37 +1296,37 @@ let ToolsExtension =
   strsAreAll,
   // regexpLike,
   // strsLikeAll,
-  strDefined,
+  strDefined : defined,
   strsDefined,
 
-  strHas,
+  strHas : has,
 
   // converter
 
-  strstrShort_ : strShort_, /* xxx : remove */
-  strShort_,
-  strShortWidth,
-  _strShortWidth,
-  strShortHeight,
-  _strShortHeight,
+  strstrShort_ : short_, /* xxx : remove */
+  strShort_ : short_,
+  strShortWidth : shortWidth,
+  _strShortWidth : _shortWidth,
+  strShortHeight : shortHeight,
+  _strShortHeight : _shortHeight,
   // strShort, /* original version without binary search cutting */
   // strShort_2, /* non-binary search implementation */
-  strConcat,
+  strConcat : concat,
 
   //
 
-  _strBeginOf,
-  _strEndOf,
+  _strBeginOf : _beginOf,
+  _strEndOf : _endOf,
 
-  strBegins,
-  strEnds,
+  strBegins : begins,
+  strEnds : ends,
 
-  strBeginOf,
-  strEndOf,
+  strBeginOf : beginOf,
+  strEndOf : endOf,
 
-  strRemoveBegin,
-  strRemoveEnd,
-  strRemove,
+  strRemoveBegin : removeBegin,
+  strRemoveEnd : removeEnd,
+  strRemove : remove,
 
 }
 

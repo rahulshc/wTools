@@ -249,11 +249,11 @@ function equivalentShallow( src1, src2, accuracy )
   * // returns 'xabc'
   *
   * @returns { String } Returns result of prepending string( begin ) to source( src ) or original string.
-  * @function strPrependOnce
+  * @function prependOnce
   * @namespace Tools
   */
 
-function strPrependOnce( src, begin )
+function prependOnce( src, begin )
 {
   _.assert( _.strIs( src ) && _.strIs( begin ), 'Expects {-src-} and {-begin-} as strings' );
   if( src.lastIndexOf( begin, 0 ) === 0 )
@@ -279,11 +279,11 @@ function strPrependOnce( src, begin )
   * // returns 'abcx'
   *
   * @returns {string} Returns result of appending string( end ) to source( src ) or original string.
-  * @function strAppendOnce
+  * @function appendOnce
   * @namespace Tools
   */
 
-function strAppendOnce( src, end )
+function appendOnce( src, end )
 {
   _.assert( _.strIs( src ) && _.strIs( end ), 'Expects {-src-} and {-end-} as strings' );
   if( src.indexOf( end, src.length - end.length ) === -1 )
@@ -316,6 +316,9 @@ let StrExtension =
   equivalentShallow,
   equivalent : equivalentShallow,
 
+  prependOnce,
+  appendOnce,
+
 }
 
 Object.assign( _.str, StrExtension );
@@ -329,8 +332,8 @@ let ToolsExtension =
 
   /* qqq : for Rahul : ask */
 
-  strPrependOnce,
-  strAppendOnce,
+  strPrependOnce : prependOnce,
+  strAppendOnce : appendOnce,
 
 }
 
