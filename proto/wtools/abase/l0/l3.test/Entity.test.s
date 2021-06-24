@@ -1150,6 +1150,1226 @@ function strTypeWithoutTraitsGeneratedObject( test )
 // equaler
 // --
 
+function eqShallowBasic( test )
+{
+  /* */
+
+  test.case = `Null - Undefined`;
+  var src1 = null;
+  var src2 = undefined;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  /* */
+
+  test.case = `Boolean - Boolean`;
+  var src1 = true;
+  var src2 = false;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  /* */
+
+  test.case = `Boolean - Not Boolean`;
+  var src1 = true;
+  var src2 = false;
+  test.true( !_.entity.identicalShallow( src1, 1 ) );
+  test.true( !_.entity.identicalShallow( src2, 0 ) );
+  test.true( _.entity.equivalentShallow( src1, 1 ) );
+  test.true( _.entity.equivalentShallow( src2, 0 ) );
+
+  /* */
+
+  test.case = `Number - Number`;
+  var src1 = 1;
+  var src2 = 1 + 1e-15;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( _.entity.equivalentShallow( src1, src2 ) );
+
+  test.case = `NaN - Infinity`;
+  var src1 = NaN;
+  var src2 = Infinity;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `+0 - -0`
+  var src1 = +0;
+  var src2 = -0;
+  test.true( _.entity.identicalShallow( src1, src2 ) );
+  test.true( _.entity.identicalShallow( src2, src1 ) );
+  test.true( _.entity.equivalentShallow( src1, src2 ) );
+  test.true( _.entity.equivalentShallow( src2, src1 ) );
+
+  /* */
+
+  test.case = `Number - String`;
+  var src1 = 1;
+  var src2 = '1';
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Infinity - Null`;
+  var src1 = Infinity;
+  var src2 = null;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `NaN - Undefined`;
+  var src1 = NaN;
+  var src2 = undefined;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `NaN - Null`;
+  var src1 = NaN;
+  var src2 = null;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Number - Empty Array`;
+  var src1 = 3;
+  var src2 = [];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Number - Empty Map`;
+  var src1 = 3;
+  var src2 = {};
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Number - Non-Empty Array`;
+  var src1 = 3;
+  var src2 = [ 3 ];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Number - Non-Empty Map`;
+  var src1 = 3;
+  var src2 = { a : 3 };
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Number - Date`;
+  var src1 = 3;
+  var src2 = new Date();
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Number - Typed Array`;
+  var src1 = 3;
+  var src2 = new F32x( 3 );
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Number - RegExp`;
+  var src1 = 3;
+  var src2 = /abc/;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Number - Routine`;
+  var src1 = 3;
+  function src2 (){};
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Number - Routine returning Number`;
+  var src1 = 3;
+  var src2 = (function(){return 3;})();
+  test.true( _.entity.identicalShallow( src1, src2 ) );
+  test.true( _.entity.identicalShallow( src2, src1 ) );
+  test.true( _.entity.equivalentShallow( src1, src2 ) );
+  test.true( _.entity.equivalentShallow( src2, src1 ) );
+
+  /* */
+
+  test.case = `Empty String - String`;
+  var src1 = '';
+  var src2 = 'abc';
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `String - String`;
+  var src1 = 'ab';
+  var src2 = 'c';
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `String - String Object`;
+  var src1 = 'a';
+  var src2 = String( src1 );
+  test.true( _.entity.identicalShallow( src1, src2 ) );
+  test.true( _.entity.identicalShallow( src2, src1 ) );
+  test.true( _.entity.equivalentShallow( src1, src2 ) );
+  test.true( _.entity.equivalentShallow( src2, src1 ) );
+
+  /* */
+
+  test.case = `Empty String - undefined`;
+  var src1 = '';
+  var src2 = undefined;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty String - Null`;
+  var src1 = '';
+  var src2 = null;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty String - NaN`;
+  var src1 = '';
+  var src2 = NaN;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty String - Number`;
+  var src1 = '';
+  var src2 = 0;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty String - Empty Array`;
+  var src1 = '';
+  var src2 = [];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty String - Empty Map`;
+  var src1 = '';
+  var src2 = {};
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty String - Non-Empty Array`;
+  var src1 = '';
+  var src2 = [ '' ];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty String - Non-Empty Map`;
+  var src1 = '';
+  var src2 = { a : '' };
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty String - Typed Array`;
+  var src1 = '';
+  var src2 = new F32x( 3 );
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty String - RegExp`;
+  var src1 = '';
+  var src2 = /(?:)/;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty String - Routine`;
+  var src1 = '';
+  function src2(){}
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty String - Date`;
+  var src1 = '';
+  var src2 = new Date( );
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `String - Undefined`;
+  var src1 = 'abc';
+  var src2 = undefined;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `String - Null`;
+  var src1 = 'abc';
+  var src2 = null;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `String - NaN`;
+  var src1 = 'abc';
+  var src2 = NaN;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `String - Number`;
+  var src2 = 0;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `String - Empty Array`;
+  var src1 = 'abc';
+  var src2 = [];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `String - Empty Map`;
+  var src1 = 'abc';
+  var src2 = {};
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `String - Non-Empty Array`;
+  var src1 = 'abc';
+  var src2 = [ '' ];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `String - Non Empty Map`;
+  var src1 = '';
+  var src2 = { a : 'abc' };
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `String - Typed Array`;
+  var src1 = 'abc';
+  var src2 = new F32x( 3 );
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `String - RegExp`;
+  var src1 = 'abc';
+  var src2 = /(?:)/;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `String - Routine`;
+  var src1 = 'abc';
+  function src2(){}
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `String - NaN`;
+  var src1 = 'abc';
+  var src2 = new Date( );
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  /* */
+
+  test.case = `Empty RegExp - RegExp`;
+  var src1 = /(?:)/;
+  var src2 = /abc/;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `RegExp - RegExp without flag`;
+  var src1 = /abc/;
+  var src2 = /abc/iy;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `RegExp with flag - RegExp with same flags in different order`;
+  var src1 = /abc/iy;
+  var src2 = /abc/yi;
+  test.true( _.entity.identicalShallow( src1, src2 ) );
+  test.true( _.entity.identicalShallow( src2, src1 ) );
+  test.true( _.entity.equivalentShallow( src1, src2 ) );
+  test.true( _.entity.equivalentShallow( src2, src1 ) );
+
+  /* */
+
+  test.case = `Empty RegExp - Date`;
+  var src1 = /(?:)/;
+  var src2 = new Date();
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty RegExp - Undefined`;
+  var src1 = /(?:)/;
+  var src2 = undefined;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty RegExp - Null`;
+  var src1 = /(?:)/;
+  var src2 = null;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty RegExp - NaN`;
+  var src1 = /(?:)/;
+  var src2 = NaN;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty RegExp - Number`;
+  var src1 = /(?:)/;
+  var src2 = 0;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty RegExp - Empty Array`;
+  var src1 = /(?:)/;
+  var src2 = [];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty RegExp - Empty Map`;
+  var src1 = /(?:)/;
+  var src2 = {};
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty RegExp - Array includes empty RegExp`;
+  var src1 = /(?:)/;
+  var src2 = [ /(?:)/ ];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty RegExp - Map has Empty RegExp`;
+  var src1 = /(?:)/;
+  var src2 = { a : /(?:)/ };
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty RegExp - Typed Array`;
+  var src1 = /(?:)/;
+  var src2 = new F32x( 3 );
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty RegExp - Routine`;
+  var src1 = /(?:)/;
+  function src2(){}
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty RegExp - Date`;
+  var src1 = /(?:)/;
+  var src2 = new Date( );
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `RegExp - Date`;
+  var src1 = /abc/;
+  var src2 = new Date();
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `RegExp - Undefined`;
+  var src1 = /abc/;
+  var src2 = undefined;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `RegExp - Null`;
+  var src1 = /abc/;
+  var src2 = null;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `RegExp - NaN`;
+  var src1 = /abc/;
+  var src2 = NaN;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `RegExp - Number`;
+  var src1 = /abc/;
+  var src2 = 0;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `RegExp - Empty Array`;
+  var src1 = /abc/;
+  var src2 = [];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `RegExp - Empty Map`;
+  var src1 = /abc/;
+  var src2 = {};
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `RegExp - Array includes RegExp`;
+  var src1 = /abc/;
+  var src2 = [ /abc/ ];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `RegExp - Map has RegExp`;
+  var src1 = /abc/;
+  var src2 = { a : /abc/ };
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `RegExp - Typed Array`;
+  var src1 = /abc/;
+  var src2 = new F32x( 3 );
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `RegExp - Routine`;
+  var src1 = /abc/;
+  function src2(){}
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  /* */
+
+  test.case = `Routine - Routine`;
+  function src1(){};
+  function src2(){};
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  /* */
+
+  test.case = `Routine - Date`;
+  function src1(){};
+  var src2 = new Date();
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Routine - Undefined`;
+  var src2 = undefined;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Routine - Null`;
+  var src2 = null;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Routine - NaN`;
+  var src2 = NaN;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Routine - Number`;
+  var src2 = 0;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Routine - Empty Array`;
+  var src2 = [];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Routine - Empty Map`;
+  var src2 = {};
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Routine - Array includes Routine`;
+  var src2 = [ src1 ];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Routine - Map has Routine`;
+  var src2 = { a : src1 };
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Routine - Typed Array`;
+  var src2 = new F32x( 3 );
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Routine - RegExp`;
+  var src2 = /(?:)/;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  /* */
+
+  test.case = `Date - Date`;
+  var src1 = new Date();
+  var src2 = new Date();
+  src2.setFullYear( 1987 );
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  /* */
+
+  test.case = `Date - String`;
+  var src1 = new Date();
+  var src2 = '1';
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Date - Undefined`;
+  var src1 = new Date();
+  var src2 = undefined;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Date - Null`;
+  var src1 = new Date();
+  var src2 = null;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Date - NaN`;
+  var src1 = new Date();
+  var src2 = NaN;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Date - Number`;
+  var src1 = new Date();
+  var src2 = 0;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Date - Empty array`;
+  var src1 = new Date();
+  var src2 = [];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Date - Empty Map`;
+  var src1 = new Date();
+  var src2 = {};
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Date - Array includes Date`;
+  var src1 = new Date();
+  var src2 = [ src1 ];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Date - Map has Date`;
+  var src1 = new Date();
+  var src2 = { a : src1 };
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Date - Typed Array`;
+  var src1 = new Date();
+  var src2 = new F32x( 3 );
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Date - Empty RegExp`;
+  var src1 = new Date();
+  var src2 = /(?:)/;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Date - Routine`;
+  var src1 = new Date();
+  function src2(){}
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  /* */
+
+  test.case = `Empty Array - Empty Array`;
+  var src1 = [];
+  var src2 = [];
+  test.true( _.entity.identicalShallow( src1, src2 ) );
+  test.true( _.entity.identicalShallow( src2, src1 ) );
+  test.true( _.entity.equivalentShallow( src1, src2 ) );
+  test.true( _.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Same arrays having 0 as only element`;
+  var src1 = [ 0 ];
+  var src2 = [ 0 ];
+  test.true( _.entity.identicalShallow( src1, src2 ) );
+  test.true( _.entity.identicalShallow( src2, src1 ) );
+  test.true( _.entity.equivalentShallow( src1, src2 ) );
+  test.true( _.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Same arrays having 1 as only element`;
+  var src1 = [ 1 ];
+  var src2 = [ 1 ];
+  test.true( _.entity.identicalShallow( src1, src2 ) );
+  test.true( _.entity.identicalShallow( src2, src1 ) );
+  test.true( _.entity.equivalentShallow( src1, src2 ) );
+  test.true( _.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Same arrays having undefined as only element`;
+  var src1 = [ undefined ];
+  var src2 = [ undefined ];
+  test.true( _.entity.identicalShallow( src1, src2 ) );
+  test.true( _.entity.identicalShallow( src2, src1 ) );
+  test.true( _.entity.equivalentShallow( src1, src2 ) );
+  test.true( _.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Same arrays having null as only element`;
+  var src1 = [ null ];
+  var src2 = [ null ];
+  test.true( _.entity.identicalShallow( src1, src2 ) );
+  test.true( _.entity.identicalShallow( src2, src1 ) );
+  test.true( _.entity.equivalentShallow( src1, src2 ) );
+  test.true( _.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Array has null as only element - Array has undefined as only element`;
+  var src1 = [ null ];
+  var src2 = [ undefined ];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Nested arrays having same elements`;
+  var src1 = [ [ 1, 2, 3 ] ];
+  var src2 = [ [ 1, 2, 3 ] ];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Nested arrays having different elements`;
+  var src1 = [ [ 1, 2 ] ];
+  var src2 = [ [ 1, 2, 3 ] ];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  /* */
+
+  test.case = `Empty Array - String`;
+  var src1 = [];
+  var src2 = '1';
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Array - Undefined`;
+  var src1 = [];
+  var src2 = undefined;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Array - Null`;
+  var src1 = [];
+  var src2 = null;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Array - NaN`;
+  var src1 = [];
+  var src2 = NaN;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Array - Number`;
+  var src1 = [];
+  var src2 = 0;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Array - Empty Map`;
+  var src1 = [];
+  var src2 = {};
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Array - Map has Empty Array`;
+  var src1 = [];
+  var src2 = { a : src1 };
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Array - Typed Array`;
+  var src1 = [];
+  var src2 = new F32x( 3 );
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Array - RegExp`;
+  var src1 = [];
+  var src2 = /(?:)/;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Array - Date`;
+  var src1 = [];
+  var src2 = new Date();
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Array - Routine`;
+  var src1 = [];
+  function src2(){}
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  /* */
+
+  test.case = `Empty Map - Empty Map`;
+  var src1 = {};
+  var src2 = {};
+  test.true( _.entity.identicalShallow( src1, src2 ) );
+  test.true( _.entity.identicalShallow( src2, src1 ) );
+  test.true( _.entity.equivalentShallow( src1, src2 ) );
+  test.true( _.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Same Maps having 0 as only value`;
+  var src1 = { a : 0 };
+  var src2 = { a : 0 };
+  test.true( _.entity.identicalShallow( src1, src2 ) );
+  test.true( _.entity.identicalShallow( src2, src1 ) );
+  test.true( _.entity.equivalentShallow( src1, src2 ) );
+  test.true( _.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Same Maps having 1 as only value`;
+  var src1 = { a : 1 };
+  var src2 = { a : 1 };
+  test.true( _.entity.identicalShallow( src1, src2 ) );
+  test.true( _.entity.identicalShallow( src2, src1 ) );
+  test.true( _.entity.equivalentShallow( src1, src2 ) );
+  test.true( _.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Same Maps having undefined as only value`;
+  var src1 = { a : undefined };
+  var src2 = { a : undefined };
+  test.true( _.entity.identicalShallow( src1, src2 ) );
+  test.true( _.entity.identicalShallow( src2, src1 ) );
+  test.true( _.entity.equivalentShallow( src1, src2 ) );
+  test.true( _.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Same Maps having null as only value`;
+  var src1 = { a : null };
+  var src2 = { a : null };
+  test.true( _.entity.identicalShallow( src1, src2 ) );
+  test.true( _.entity.identicalShallow( src2, src1 ) );
+  test.true( _.entity.equivalentShallow( src1, src2 ) );
+  test.true( _.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Maps having unequal no of items`;
+  var src1 = { a : 1, b : 1 };
+  var src2 = { a : 1 };
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Nested maps having same items`;
+  var src1 = { a : { b : 1 } };
+  var src2 = { a : { b : 1 } };
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Nested Maps having different items`;
+  var src1 = { a : { b : 1, c : 2 } };
+  var src2 = { a : { b : 1 } };
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  /* */
+
+  test.case = `Empty Map - String`;
+  var src1 = {};
+  var src2 = '1';
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Map - Undefined`;
+  var src1 = {};
+  var src2 = undefined;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Map - Null`;
+  var src1 = {};
+  var src2 = null;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Map - NaN`;
+  var src1 = {};
+  var src2 = NaN;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Map - Number`;
+  var src1 = {};
+  var src2 = 0;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Map - Empty Array`;
+  var src1 = {};
+  var src2 = [];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Map - Non-Empty Array having 0 as only element`;
+  var src1 = {};
+  var src2 = [ 0 ];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Map - Non-Empty Array having 1 as only element`;
+  var src1 = {};
+  var src2 = [ 1 ];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Map - Non-Empty map holding a reference to empty map as only value`;
+  var src1 = {};
+  var src2 = { a : src1 };
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Map - Typed Array`;
+  var src1 = {};
+  var src2 = new F32x( 3 );
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Map - Empty RegExp`;
+  var src1 = {};
+  var src2 = /(?:)/;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Map - Date`;
+  var src1 = {};
+  var src2 = new Date();
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Empty Map - Routine`;
+  var src1 = {};
+  function src2(){}
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Non-Empty Map - String`;
+  var src1 = { a : '1'};
+  var src2 = '1';
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Non-Empty Map - Undefined`;
+  var src1 = { a : undefined };
+  var src2 = undefined;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Non-Empty Map - Null`;
+  var src1 = { a : null };
+  var src2 = null;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Non-Empty Map - NaN`;
+  var src1 = { a : NaN };
+  var src2 = NaN;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Non-Empty Map - Number`;
+  var src1 = { a :  0 };
+  var src2 = 0;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Non-Empty Map having empty array as only value - Empty Array`;
+  var src1 = { a :  [] };
+  var src2 = [];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Non-Empty Map having non-empty array as only value - Non-Empty Array having 0 as only element`;
+  var src1 = { a :  [ 0 ] };
+  var src2 = [ 0 ];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Non-Empty Map having non-empty array as only value - Non-Empty Array having 1 as only element`;
+  var src1 = { a :  [ 1 ] };
+  var src2 = [ 1 ];
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Non-Empty Map having typed array as only value - Typed Array`;
+  var src1 = { a :  new F32x( 3 ) };
+  var src2 = new F32x( 3 );
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Non-Empty Map having RegExp as only value - RegExp`;
+  var src1 = { a :  /(?:)/ };
+  var src2 = /(?:)/;
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Non-Empty Map having date as only value - Date`;
+  var src1 = { a : new Date() };
+  var src2 = new Date();
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+
+  test.case = `Non-Empty Map having routine as only value - Routine`;
+  var src1 = { a : function(){} };
+  function src2(){}
+  test.true( !_.entity.identicalShallow( src1, src2 ) );
+  test.true( !_.entity.identicalShallow( src2, src1 ) );
+  test.true( !_.entity.equivalentShallow( src1, src2 ) );
+  test.true( !_.entity.equivalentShallow( src2, src1 ) );
+}
+
+//
+
 function identicalShallowBasic( test )
 {
   /* */
@@ -7082,7 +8302,7 @@ const Proto =
     strTypeWithoutTraitsGeneratedObject,
 
     // equaler
-
+    eqShallowBasic,
     identicalShallowBasic, /* qqq : for Rahul : merge test routines identicalShallowBasic and equivalentShallowBasic into single test routine eqShallowBasic */
     eqShallowAllTypes,
     identicalShallowAllTypes, /* qqq : for Rahul : merge test routines identicalShallowAllTypes and equivalentShallowAllTypes into single test routine eqShallowAllTypes */
