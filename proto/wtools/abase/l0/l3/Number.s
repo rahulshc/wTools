@@ -333,19 +333,19 @@ function _equivalentShallow( a, b, accuracy )
 
   function sign( value )
   {
-    if( value > 0n )
-    return 1n;
-    if( value < 0n )
-    return -1n;
+    if( value > BigInt( 0 ) )
+    return BigInt( 1 );
+    if( value < BigInt( 0 ) )
+    return BigInt( -1 );
 
-    return 0n;
+    return BigInt( 0 );
   }
 
   /* - */
 
   function abs( value )
   {
-    if( sign( value ) === -1n )
+    if( sign( value ) === BigInt( -1 ) )
     return -value;
     return value;
   }
