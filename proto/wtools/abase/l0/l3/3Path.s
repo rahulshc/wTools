@@ -291,6 +291,45 @@ function refine( src )
 
 //
 
+function refineFaster( src )
+{
+
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.strIs( src ) );
+
+  let result = src;
+
+  const hasBackSlash = result.indexOf( '\\' ) !== -1;
+  const hasColon = result[ 1 ] === ':';
+  const charAtSecondIndex = result[ 2 ];
+  const charAtZeroIndex = result[ 0 ];
+
+  if( !hasBackSlash && !hasColon )
+  return result;
+
+  if( hasColon )
+  {
+    if( result.length > 3 )
+    {
+      if( charAtSecondIndex === '\\' || charAtSecondIndex === '/' )
+      {
+        result = `/${charAtZeroIndex}/${result.substring( 3 )}`;
+      }
+    }
+    else
+    {
+      result = `/${charAtZeroIndex}`;
+    }
+  }
+
+  if( hasBackSlash )
+  return result.replace( /\\/g, '/' );
+  else
+  return result;
+}
+
+//
+
 function _normalize( o )
 {
   // let debug = 0;
@@ -400,7 +439,180 @@ function _normalize( o )
   return result;
 }
 
+//
+
+function _normalize1( o )
+{
+  // let debug = 0;
+  // if( 0 )
+  // debug = 1;
+
+  _.routine.assertOptions( _normalize1, arguments );
+  _.assert( _.strIs( o.src ), 'Expects string' );
+
+  if( !o.src.length )
+  return '';
+
+  let result = o.src;
+
+  result = this.refineFaster( result );
+
+  // if( debug )
+  // console.log( 'normalize.refined : ' + result );
+
+  /* detrailing */
+
+  if( o.tolerant )
+  {
+    /* remove "/" duplicates */
+    result = result.replace( this._delUpDupRegexp, this.upToken );
+  }
+
+  let endsWithUp = false;
+  let beginsWithHere = false;
+
+  /* remove right "/" */
+
+  if( result !== this.upToken && !_.strEnds( result, this.upToken + this.upToken ) && _.strEnds( result, this.upToken ) )
+  {
+    endsWithUp = true;
+    result = _.strRemoveEnd( result, this.upToken );
+  }
+
+  /* undoting */
+
+  while( !_.strBegins( result, this.hereUpToken + this.upToken ) && _.strBegins( result, this.hereUpToken ) )
+  {
+    beginsWithHere = true;
+    result = _.strRemoveBegin( result, this.hereUpToken );
+  }
+
+  /* remove second "." */
+
+  let x = result.split( '/' );
+
+  if( x.includes( '.' ) )
+  {
+    let arr = [];
+
+    for( let i = 0; i<x.length; ++i )
+    {
+      if( x[ i ]!=='.' || ( i === 0 && x[ i ] === '.' ) )
+      arr.push( x[ i ] );
+    }
+    result = arr.join( '/' );
+
+    if( result === '' )
+    result = this.upToken;
+  }
+
+  // let foundHereToken = false;
+
+  // for( let i in result )
+  // {
+  //   if( result[ i ] === '.' && result[ i-1 ]!== '.' && result[ i+1 ]!== '.' )
+  //   {
+  //     foundHereToken = true;
+  //     break;
+  //   }
+  // }
+
+  // if( result.indexOf( this.hereToken ) !== -1 )
+  // {
+  //     while( this._delHereRegexp.test( result ) )
+  //     result = result.replace( this._delHereRegexp, function( match, postSlash )
+  //     {
+  //       return postSlash || '';
+  //     });
+  //     if( result === '' )
+  //     result = this.upToken;
+  // }
+
+  /* remove .. */
+
+  if( result.indexOf( this.downToken ) !== -1 )
+  {
+
+    while( this._delDownRegexp.test( result ) )
+    result = result.replace( this._delDownRegexp, function( /* match, notBegin, split, preSlash, postSlash */ )
+    {
+      let match = arguments[ 0 ];
+      let notBegin = arguments[ 1 ];
+      let split = arguments[ 2 ];
+      let preSlash = arguments[ 3 ];
+      let postSlash = arguments[ 4 ];
+
+      if( preSlash === '' )
+      return notBegin;
+      if( !notBegin )
+      return notBegin + preSlash;
+      else
+      return notBegin + ( postSlash || '' );
+    });
+
+    // let initialSlash = result.startsWith( '/' );
+
+    // let comps = result.split( '/' );
+
+    // let newComps = [];
+
+    // for( const i of comps )
+    // {
+    //   if( i!== '..' || ( !initialSlash && newComps.length===0 ) || ( newComps.length>0 && newComps[ newComps.length-1 ] === '..' ) )
+    //   {
+    //     newComps.push( i )
+    //   }
+    //   else if( newComps.length>0 )
+    //   {
+    //     newComps.pop();
+    //   }
+    // }
+
+    // comps = newComps;
+    // result = comps.join( '/' );
+
+    // if( initialSlash && !result.length )
+    // result = '/'+ result;
+
+  }
+
+  /* nothing left */
+
+  if( !result.length )
+  result = '.';
+
+  /* dot and trail */
+
+  if( o.detrailing )
+  if( result !== this.upToken && !_.strEnds( result, this.upToken + this.upToken ) )
+  result = _.strRemoveEnd( result, this.upToken );
+
+  if( !o.detrailing && endsWithUp )
+  if( result !== this.rootToken )
+  result = result + this.upToken;
+
+  if( !o.undoting && beginsWithHere )
+  result = this._dot( result );
+
+  // if( debug )
+  // console.log( 'normalize.result : ' + result );
+
+  return result;
+}
+
+//
+
 _normalize.defaults =
+{
+  src : null,
+  tolerant : false,
+  detrailing : false,
+  undoting : false,
+}
+
+//
+
+_normalize1.defaults =
 {
   src : null,
   tolerant : false,
@@ -427,6 +639,26 @@ _normalize.defaults =
 function normalize( src )
 {
   let result = this._normalize({ src, tolerant : false, detrailing : false, undoting : false });
+
+  _.assert( _.strIs( src ), 'Expects string' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( result.lastIndexOf( this.upToken + this.hereToken + this.upToken ) === -1 );
+  _.assert( !_.strEnds( result, this.upToken + this.hereToken ) );
+
+  if( Config.debug )
+  {
+    let i = result.lastIndexOf( this.upToken + this.downToken + this.upToken );
+    _.assert( i === -1 || !/\w/.test( result.substring( 0, i ) ) );
+  }
+
+  return result;
+}
+
+//
+
+function normalize1( src )
+{
+  let result = this._normalize1({ src, tolerant : false, detrailing : false, undoting : false });
 
   _.assert( _.strIs( src ), 'Expects string' );
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -1160,9 +1392,12 @@ let Extension =
   // reformer
 
   refine,
+  refineFaster,
 
   _normalize,
+  _normalize1,
   normalize,
+  normalize1,
   normalizeTolerant,
 
   canonize,
